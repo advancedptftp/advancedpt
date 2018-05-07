@@ -1,0 +1,91 @@
+﻿@model DataLayer.Models.tblTTriggerEmail
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>tblTTriggerEmail</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.EmailTo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EmailTo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EmailCC)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EmailCC)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EmailContent)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EmailContent)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TriggerOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TriggerOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SentOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SentOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMUser.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMUser.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMUser1.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMUser1.UserName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.EmailTrigger_Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

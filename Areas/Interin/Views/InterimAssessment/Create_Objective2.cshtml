@@ -1,0 +1,482 @@
+﻿@model DataLayer.Models.CIAInterim
+@using DataLayer;
+@using System.Data;
+<script>
+    var counting = @ViewBag.counts
+</script>
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    DataTable dtque = new DataTable();
+    DataTable dtObjOption = new DataTable();
+
+    if (TempData["Question"] != null)
+    {
+        dtque = (DataTable)TempData["Question"];
+    }
+    if (TempData["ObjectiveOption"] != null)
+    {
+        dtObjOption = (DataTable)TempData["ObjectiveOption"];
+    }
+  
+}
+<link href="~/Content/patientportal.css" rel="stylesheet" />
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<style>
+    .selectedRow {
+        background-color: rgba(249, 159, 62, 0.65);
+        color: white;
+    }
+</style>
+
+<style type="text/css">
+    .table-fixed thead {
+        width: 97%;
+    }
+
+    .table-fixed tbody {
+        height: 230px;
+        overflow-y: auto;
+        width: 100%;
+    }
+
+    .table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
+        display: block;
+    }
+
+        .table-fixed tbody td, .table-fixed thead > tr > th {
+            float: left;
+            border-bottom-width: 0;
+        }
+</style>
+<style>
+    .loadingdivschedule {
+        display: block;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 9998;
+        background-color: rgba(0,0,0,.3);
+        -webkit-animation: fade 500ms;
+        -moz-animation: fade 500ms;
+        -o-animation: fade 500ms;
+        animation: fade 500ms;
+    }
+
+    .loadingcontainerschedule {
+        width: 100%;
+        text-align: center;
+        padding-top: 26%;
+    }
+</style>
+
+<section class="bodyinner">
+    <div class="container">
+
+        <div class="report-form clearfix">
+            <h1 class="text-center" style="font-size:30px;"><strong>Interim Assessment</strong> </h1>
+            @using (Html.BeginForm("Create_Objective2", "InterimAssessment", FormMethod.Post, new { id = "Create", name = "Create" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(e => e.Patient_Id)
+                 @Html.HiddenFor(e => e.patientconditionId)
+                @Html.HiddenFor(e => e.CreatedBy)
+                @Html.HiddenFor(e => e.CreatedOn)
+                @Html.HiddenFor(e => e.ModifiedBy)
+                @Html.HiddenFor(e => e.ModifiedOn)
+                 @Html.HiddenFor(e => e.ObjectiveQuestion_Ids)
+                @Html.HiddenFor(e => e.ObjectiveOption_Ids)
+                // @Html.Hidden("count", (string)ViewBag.counts, new { @class = ""})
+
+                if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+
+                <div class="topforn">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table width="100%" border="0">
+                                <tr>
+                                    <td width="22%"><h3><strong>Objective</strong></h3></td>
+                                    <td width="78%"></td>
+                                </tr>
+                            </table>
+
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table width="100%" border="0">
+                                <tr>
+                                    <td><h4><strong>Patient Name:</strong>
+                                        @Html.Label("PatientName", (string)ViewBag.PatientName, new { @style = "color:black;font-size: 20px;", @readonly = true })</h4>
+
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                int questionDivCnt = dtque.Rows.Count;
+                int cnt = 1;
+                int i = 1;
+                int k = 1;
+                foreach (DataRow dr in dtque.Rows)
+                {
+                    string dtqueKey = dr["Details_Id"].ToString();
+                    Int64 ObjectiveQuestion_Id = Convert.ToInt64(dr["ObjectiveQuestion_Id"]);
+                    <div id="dvQues_@cnt">
+
+                        <div class="textheading ObjectiveQuestionIds">
+                            <h3><span id="span_@cnt">@dr["Questions"].ToString()</span></h3>
+                            <input type="hidden" class="ObjectiveQuestionId" id="hdn_" @dr["ObjectiveQuestion_Id"].ToString() value=@dr["ObjectiveQuestion_Id"].ToString() />
+                        </div>
+                        @*<div class="textheading">@dr["Questions"].ToString()</div>*@
+                        @*<div id="div_@cnt" class="row">
+                            @foreach (DataRow r1 in dtObjOption.Rows)
+                            {
+                                if (dtqueKey == r1["Details_Id"].ToString()) //&& ObjectiveQuestion_Id == Convert.ToInt64(r1["ObjectiveQuestion_Id"])
+                                {
+                                    <div class="col-md-3">
+                                        <div class="radio-tile-group selfscudileradio">
+                                            <div class="input-container radio bluetext">
+                                                <input type="checkbox" name='chkQues' id="chkQues" value="@r1["ObjectiveOption_Id"].ToString()" class="radio-button">
+                                                <div class="radio-tile">
+                                                    <label class="radio-tile-label">@r1["ObjectiveOption"].ToString()</label>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                }
+                            }
+
+                        </div>*@
+                        <div id="div_@cnt" class="row">
+                           
+                            @foreach (DataRow r1 in dtObjOption.Rows)
+                            { 
+                                
+                               
+                                if (dtqueKey == r1["Details_Id"].ToString())
+                                {
+                                   
+                                        @*<div class="radio-tile-group selfscudileradio">
+                                            <div class="input-container radio bluetext">
+                                                <input type="checkbox" name='chkQues' id="chkQues" value="@r1["ObjectiveOption_Id"].ToString()" class="radio-button ObjectiveOptionId">
+                                                <div class="radio-tile">
+                                                    <label id="lbl_@cnt" class="radio-tile-label ObjectiveOption_Ids"></label>
+                                                </div>
+                                            </div>
+                                        </div>*@
+                                        <div class="col-sm-12 radiosec">
+                                            <input id="chkQues_@i" class="checkbox-custom ObjectiveOptionId" name="chkQues" type="checkbox" value="@r1["ObjectiveOption_Id"].ToString()">
+                                            <label for="chkQues_@i" class="checkbox-custom-label">@r1["ObjectiveOption"].ToString() <input type="hidden" id="hdn_" @r1["ObjectiveOption_Id"].ToString() value=@r1["ObjectiveOption_Id"].ToString() /></label>
+                                        </div>
+                                    k++;
+                                    
+                                    if (k % 3 == 1)
+                                    {
+                                        <div class="clearfix"></div>
+                                    }
+                                    
+
+                                }
+                               
+                               
+                                
+                                
+                                i++;
+                            }
+
+                        </div>
+                        <div id="btnNext_@cnt" style="float:right">
+                            <input type="button" value="Next" class="btn btn-primary" onclick="Show(@cnt)" />
+                        </div>
+                        <div id="btnPrev_@cnt" style="float:left">
+                            <input type="button" value="Previous" class="btn btn-primary btn-lg" onclick="Previous(@cnt)" />
+                        </div>
+                    </div>
+
+                            cnt += 1;
+
+                }
+
+
+                @*<div style="float:left">
+                    <input type="button" id="btnPrev" class="btn btn-primary btn-lg" value="Previous" onclick="return fnPrev()" />
+                </div>*@
+    <div id="btnSaves" style="float:right">
+        <input type="submit" id="btnSave" class="btn btn-orange btn-lg" value="Save & Next" />
+    </div>
+
+                <div class="clearfix"></div>
+                <div>
+                    @Html.ActionLink("Back to List", "Index", new { id = "btnCreateLink" })
+                </div>
+            }
+        </div>
+    </div>
+
+
+
+
+</section>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //alert(counting);
+        var counti = counting;
+        if(counti > 1)
+        {
+            for (cnts = 2; cnts <= counti; cnts++) {
+                $("#dvQues_" + cnts).hide();
+                $("#btnSaves").hide();
+            }
+        }
+        else{
+            $("#btnSaves").show();
+            $("#btnNext_" + counti).hide();
+        }
+        
+     
+        //cnts++;
+    });
+
+    var ObjectiveOption_Ids = "";
+    var optionIds = "";
+    function Show(cnt)
+       
+    {
+        cnt++
+        //var count = counting;
+        $("#dvQues_" + cnt).show();
+        var counti = counting;
+        var countings=cnt - 1;
+        if(countings < counti-1)
+        {
+            
+            $("#btnNext_" + countings).hide();
+            $("#dvQues_" + countings).hide();
+            $("#btnSaves").hide();
+        }
+        else
+        {
+            $("#dvQues_" + countings).hide();
+            $("#btnNext_" + countings).hide();
+            $("#btnNext_" + counti).hide();
+            $("#btnSaves").show();
+        }
+
+        //For multiple ICD-10 code
+        $('.ObjectiveOptionId:checked').each(function () {
+            if(optionIds != "")
+                optionIds = optionIds + "," + $(this).val();
+            else
+                optionIds = $(this).val();
+        });
+
+        optionIds = optionIds; //+ "_";
+
+        //alert(optionIds);
+        //End
+    }
+    function Previous(cnt)
+       
+    {
+        cnt--
+        //var count = counting;
+       // $("#dvQues_" + cnt).show();
+        var counti = counting;
+        var countings=cnt + 1;
+        if(countings == counti)
+        {
+            
+            //$("#btnPrev_" + countings).hide();
+            $("#dvQues_" + cnt).show();
+            $("#dvQues_" + counti).hide();
+            $("#btnNext_" + cnt).show();
+            $("#btnSaves").hide();
+        }
+        else if(cnt < counti && cnt !=0 )
+        {
+            $("#dvQues_" + cnt).show();
+            $("#dvQues_" + countings).hide();
+            $("#btnNext_" + cnt).show();
+            $("#btnSaves").hide();
+        }
+        else{
+            fnPrev();
+        }
+    }
+
+    function fnPrev() {
+        $.ajax({
+            type: "post",
+            url: '@Url.Action("Create_Objective1", "InterimAssessment")',
+            datatype: "Json",
+            data: {Id: $('#patientconditionId').val() },
+            success: function (data) {
+                window.location.href = '@Url.Action("Create_Objective", "InterimAssessment")?id='+data
+
+            }
+                });
+               
+            }
+
+
+    @*function fnPrev() {
+        //alert('hi');
+        $.ajax({
+            url: '@Url.Action("Create_Objective1", "InterimAssessment")',
+            type: 'POST',
+
+            success: function (responce) {
+                // alert(responce);
+                window.location.href = '@Url.Action("Create_Objective2", "InterimAssessment")'
+            },
+            error: function (msg) {
+                //alert('Some error occured');
+            }
+        });*@
+
+    //}
+    function removeRow(cnt) {
+       
+       
+    }
+
+
+</script>
+<script type="text/javascript">
+    $("#btnSave").click(function () {
+
+        var ObjectiveQuestion_Ids = "";
+        $("input:hidden.ObjectiveQuestionId").each(function () {
+            ObjectiveQuestion_Ids = ObjectiveQuestion_Ids+","+$(this).val();
+        });
+
+        var indx = ObjectiveQuestion_Ids.indexOf(",");
+        var strlen = ObjectiveQuestion_Ids.length;
+        var str1 = ObjectiveQuestion_Ids.substring(indx + 1, strlen);
+
+        $("#ObjectiveQuestion_Ids").val(str1);
+
+        var _tempOption_Ids = "";
+
+        $('.ObjectiveOptionId:checked').each(function () {
+
+            if(optionIds != "") //For multiple ICD-10 code
+            {
+                _tempOption_Ids = optionIds;               
+                optionIds = "";  
+                
+            }
+            else
+            {
+                if(_tempOption_Ids == "")   //For only one ICD-10 code
+                {
+                    ObjectiveOption_Ids = ObjectiveOption_Ids + "," + $(this).val();
+
+                }
+                else //For multiple ICD-10 code
+                {
+                    var isExists =  _tempOption_Ids.includes($(this).val());
+                    //alert("isExists  " + isExists);
+                
+                    if(!isExists)  //not match the with existing id
+                    {
+                        //alert("inside isExists");
+                        //alert("ObjectiveOption_Ids  --->" + ObjectiveOption_Ids);
+                        //alert("_tempOption_Ids  --->" + _tempOption_Ids);
+
+                        if(ObjectiveOption_Ids != "" && _tempOption_Ids == ObjectiveOption_Ids)
+                        {
+                            if(ObjectiveOption_Ids != "")
+                                ObjectiveOption_Ids = _tempOption_Ids + $(this).val();
+                            else
+                                ObjectiveOption_Ids = $(this).val();
+
+                            //alert( "ObjectiveOption_Ids ==> ==>" + ObjectiveOption_Ids);
+                        } 
+                   
+                        if(ObjectiveOption_Ids != "" && _tempOption_Ids != ObjectiveOption_Ids)
+                        {
+                            if(ObjectiveOption_Ids != "")
+                                ObjectiveOption_Ids = ObjectiveOption_Ids + "," + $(this).val();
+                            else
+                                ObjectiveOption_Ids = $(this).val();
+
+                            //alert( "ObjectiveOption_Ids ==> ==>" + ObjectiveOption_Ids);
+                        } 
+                        if(ObjectiveOption_Ids == "")
+                        {
+                            ObjectiveOption_Ids = $(this).val();
+                            //alert( "ObjectiveOption_Ids  " + ObjectiveOption_Ids);
+                        }
+                        
+                    }
+                    else  //matches the existing id
+                    {
+                        //alert("in else part");
+                        //alert("ObjectiveOption_Ids  --->" + ObjectiveOption_Ids);
+                        //alert("_tempOption_Ids  --->" + _tempOption_Ids);
+                        
+                        isExists =  ObjectiveOption_Ids.includes($(this).val());
+                        //alert("isExists  " + isExists);
+
+                        if(!isExists)  //not match the with existing id
+                        {
+                            if(ObjectiveOption_Ids == "" && _tempOption_Ids != ObjectiveOption_Ids)
+                            {                      
+                                ObjectiveOption_Ids = _tempOption_Ids;
+                                //alert( "ObjectiveOption_Ids with _tempOption_Ids ==> ==>" + ObjectiveOption_Ids);
+                            }  
+
+                            if(ObjectiveOption_Ids != "" && _tempOption_Ids != ObjectiveOption_Ids)
+                            {                      
+                                ObjectiveOption_Ids = ObjectiveOption_Ids + "," + $(this).val();;
+                                //alert( "ObjectiveOption_Ids with ObjectiveOption_Ids ==> ==>" + ObjectiveOption_Ids);
+                            }  
+                        }
+
+                        //if(ObjectiveOption_Ids != "")
+                        //    ObjectiveOption_Ids = ObjectiveOption_Ids + "," + $(this).val();
+                        //else
+                        //    ObjectiveOption_Ids = $(this).val();
+                    }
+                }
+                
+
+               
+            }
+            
+        });
+
+        //alert(ObjectiveOption_Ids);
+
+        var indx2 = ObjectiveOption_Ids.indexOf(",");
+        var strlen2 = ObjectiveOption_Ids.length;
+        var str2 = ObjectiveOption_Ids.substring(indx2 + 1, strlen2);
+
+        //alert(str2);
+
+        $("#ObjectiveOption_Ids").val(str2);
+    });
+
+
+</script>

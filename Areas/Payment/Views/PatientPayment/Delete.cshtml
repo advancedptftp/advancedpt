@@ -1,0 +1,241 @@
+﻿@model DataLayer.Models.tblTPaymtPatient
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_PatientPortal.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>tblTPaymtPatient</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaymentDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentMode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaymentMode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsCash)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsCash)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsCard)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsCard)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CardHolderName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CardHolderName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CardNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CardNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CardType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CardType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ExipryDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ExipryDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CVV)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CVV)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsCheque)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsCheque)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ChequeNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ChequeNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ChequeDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ChequeDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BankName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BankName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BranchName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BranchName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IFSC)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IFSC)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalAmoutToPay)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalAmoutToPay)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PaidAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaidAmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DueAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DueAmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AdvancePaidAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AdvancePaidAmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AdvPtAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AdvPtAmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMLocation.Location_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMLocation.Location_Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMPatient.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMPatient.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMUser.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMUser.UserName)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

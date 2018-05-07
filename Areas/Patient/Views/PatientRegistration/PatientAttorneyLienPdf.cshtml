@@ -1,0 +1,286 @@
+﻿@model DataLayer.Models.tblTPatientAttorneyLien
+@using DataLayer;
+@{
+    ViewBag.Title = "PatientAttorneyLien_pdf";
+}
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>myadvancedpt.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="favicon.png">
+
+    <!-- Bootstrap core CSS -->
+
+
+</head>
+
+<body>
+    @using (Html.BeginForm("Create", "PatientRegistration", FormMethod.Post, new { name = "Create", id = "Create" }))
+    {
+        <div style="width:700px; margin:0 auto; padding:5px 0; font-family:verdana; font-size:13px; color:#333;">
+
+
+            <div style="padding:0 0 17px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="38%"><h2 style="padding:0; font-size:30px; margin:0; text-align:center;">Attorney Lien Form</h2></td>
+
+                    </tr>
+                </table>
+
+            </div>
+
+            <div style="padding:5px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="100%" valign="top">
+                            Attorney Name
+                            <span style="width:400px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                @Html.DisplayFor(m => m.AttorneyName, new { @class = "applitextfield1" })
+                            </span>
+
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+            <div style="padding:5px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="100%" valign="top">
+                            Address
+                            <span style="width:450px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                @Html.DisplayFor(m => m.AttorneyAddress1, new { @class = "applitextfield1" })
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+            <div style="padding:5px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="100%" valign="top">
+                            City
+                            <span style="width:200px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                @Html.DisplayFor(m => m.AttorneyCity, new { @class = "applitextfield1" })
+                            </span>
+                            State
+                            <span style="width:200px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                @Html.DisplayFor(m => m.AttorneyState, new { @class = "applitextfield1" })
+                            </span>
+
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+            <div style="padding:5px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="100%" valign="top">
+                            Zip
+                            <span style="width:200px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                @Html.DisplayFor(m => m.AttorneyZip, new { @class = "applitextfield1" })
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+            <div style="padding:5px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="100%" valign="top">
+                            Patient Name (Print)
+                            <span style="width:400px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                @Html.DisplayFor(m => m.tblTPatientCondition.tblMPatient.FirstName, new { @class = "applitextfield1" })
+                                @Html.DisplayFor(m => m.tblTPatientCondition.tblMPatient.LastName, new { @class = "applitextfield1" })
+                                @*@(Model.tblTPatientCondition.tblMPatient.FirstName+" "+Model.tblTPatientCondition.tblMPatient.LastName)*@
+                            </span>
+
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+            <div style="padding:5px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="100%" valign="top">
+                            Date of Accident
+                            <span style="width:200px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                @Html.DisplayFor(m => m.tblTPatientCondition.Date_Of_Accident, new { @class = "applitextfield1" })
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+            <div style="padding:5px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="100%" valign="top">
+                            <span>
+                                <p>agreement is made between Advanced Physical Therapy of Central Florida Inc., Patient (named above), and Attorney (named above). Advanced Physical Therapy of Central Florida Inc. will have a lien on all claims and causes of action of Patient regarding accident dated above and on all proceeds of any recovery, whether by settlement, arbitration award, or court judgment. The lien will secure payment of all amounts now or hereafter owed by patient to Advanced Physical Therapy of Central Florida Inc. for physical therapy/physical medicine/wellness or any service directly rendered to Patient out of such accident. Patient hereby directs Attorney to honor the lien and to pay funds secured directly to patient no later than 30 days* after the proceeds of any recovery are received by Attorney.</p>
+                            </span>
+                        </td>
+                   </tr>
+
+          
+                    <tr>
+                        <td width="100%" valign="top">
+
+                            <p>Attorney acknowledges notice of the lien herein by Patient and Advanced Physical Therapy of Central Florida Inc. and will honor the lien by paying funds secured directly to Advanced Physical Therapy of Central Florida Inc. no later than 30 days* after the proceeds of any recovery are received by Attorney.</p>
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td width="100%" valign="top">
+
+                            <p>Tue under signed, understands fully the limited nature of this lien, and by signature agrees to its provisions completely and instructs all other parties, and agents thereof, to comply with same.</p>
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td width="100%" valign="top">
+
+                            <p>*After 30 days a 1.5% interest rate will be added to the outstanding balance (18% annually).</p>
+
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+
+
+            <div style="padding:5px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="50%" valign="top">
+                            @*@Html.Partial("_SignPad")*@
+                             @{var imgurl = Url.Content("~/Images/nosignature.png");
+                            if (Model.PatientSignature != null)
+                            {
+                                imgurl = "data:image/png;base64," + Convert.ToBase64String(Model.PatientSignature);
+                            }
+                            }
+                            <img src="@imgurl" alt="Alternate Text" class="form-control" id="imgPatientSign" style="width: 375px; height: 90px;" />
+                            Patient Signature
+                        </td>
+                        <td width="50%" valign="top" style="padding-top:65px; padding-left:35px;">
+                            <span style="width:200px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                @Html.DisplayFor(m => m.PatientSignatureDate, new { @class = "applitextfield1" })
+                            </span>
+                            <br /> &nbsp;Date
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+            <div style="padding:5px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="100%" valign="top">
+                            Attorney Name (Print)
+                            <span style="width:450px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                @Html.DisplayFor(m => m.AttorneyName, new { @class = "applitextfield1" })
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+            <div style="padding:5px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="50%" valign="top">
+                            @*@Html.Partial("_SignPad")*@
+                          
+                               @{var imgurl2 = Url.Content("~/Images/nosignature.png");
+                            if (Model.AttorneySignature != null)
+                            {
+                                imgurl2 = "data:image/png;base64," + Convert.ToBase64String(Model.AttorneySignature);
+                            }
+                            }
+                            <img src="@imgurl2" alt="Alternate Text" class="form-control" id="imgPatientSign" style="width: 375px; height: 90px;" />
+                            Attorney Signature
+                        </td>
+                        <td width="50%" valign="top" style="padding-top:65px; padding-left:35px;">
+                            <span style="width:200px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                @Html.DisplayFor(m => m.AttorneySignatureDate, new { @class = "applitextfield1" })
+                            </span>
+                            <br /> &nbsp;Date
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+
+            <div style="padding:5px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="100%" valign="top">
+                            Witness/Facility Representative Name (Print)
+                            <span style="width:310px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                @Html.DisplayFor(m => m.WitnessName, new { @class = "applitextfield1" })
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+            <div style="padding:5px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="50%" valign="top">
+                            @*@Html.Partial("_SignPad")*@
+                          
+                               @{var imgurl3 = Url.Content("~/Images/nosignature.png");
+                            if (Model.WitnessSignature != null)
+                            {
+                                imgurl3 = "data:image/png;base64," + Convert.ToBase64String(Model.WitnessSignature);
+                            }
+                            }
+                            <img src="@imgurl3" alt="Alternate Text" class="form-control" id="imgPatientSign" style="width:375px; height:90px;" />
+                            Witness/Facility RepresentativeSignature
+                        </td>
+                        <td width="50%" valign="top" style="padding-top:65px; padding-left:35px;">
+                            <span style="width:200px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                @Html.DisplayFor(m => m.WitnessSignatureDate, new { @class = "applitextfield1" })
+                            </span>
+                            <br /> &nbsp;Date
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+        </div>
+    }
+
+
+
+
+
+
+
+
+</body>
+</html>

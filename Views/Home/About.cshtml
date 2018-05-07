@@ -1,0 +1,205 @@
+﻿
+@model DataLayer.Models.tblTIncidentForm
+@{
+    ViewBag.Title = "About";
+}
+<section class="bodyinner">
+    <div class="bodyleft">
+        <div class="select-style">
+            <select>
+                <option>Clinic Name 1</option>
+                <option>Clinic Name 2</option>
+                <option>Clinic Name 3</option>
+                <option>Clinic Name 4</option>
+            </select>
+        </div>
+        <div class="calender"><img src="@Url.Content("~/Images/calender.jpg")" alt="" /></div>
+        <div class="leftaccordian">
+
+            <div class="technology">Employee Forms</div>
+            <div class="thelanguage">
+                <ul class="accorlist">
+                    <li><a href="#">Incident Report Form</a></li>
+                    <li><a href="#">Payroll Addendum Form</a></li>
+                    <li><a href="#">Performance Good Deed Form</a></li>
+                    <li><a href="#">Maintenance Request Form</a></li>
+                    <li><a href="#">New Employee Questionnaire</a></li>
+                    <li><a href="#">Business Card Order Form</a></li>
+                </ul>
+            </div>
+
+            <div class="technology">DME Forms</div>
+            <div class="thelanguage">
+                <ul class="accorlist">
+                    <li><a href="#">Incident Report Form</a></li>
+                    <li><a href="#">Payroll Addendum Form</a></li>
+                    <li><a href="#">Performance Good Deed Form</a></li>
+                    <li><a href="#">Maintenance Request Form</a></li>
+                    <li><a href="#">New Employee Questionnaire</a></li>
+                    <li><a href="#">Business Card Order Form</a></li>
+                </ul>
+            </div>
+
+            <div class="technology">Clinic Documents</div>
+            <div class="thelanguage">
+                <ul class="accorlist">
+                    <li><a href="#">Incident Report Form</a></li>
+                    <li><a href="#">Payroll Addendum Form</a></li>
+                    <li><a href="#">Performance Good Deed Form</a></li>
+                    <li><a href="#">Maintenance Request Form</a></li>
+                    <li><a href="#">New Employee Questionnaire</a></li>
+                    <li><a href="#">Business Card Order Form</a></li>
+                </ul>
+            </div>
+
+
+
+
+
+        </div>
+    </div>
+    <div class="bodyright">
+
+
+        <div class="report-form clearfix">
+            <h2>Incident report Form<span>Heal At Home Healthcare</span></h2>
+            <div class="confident">
+                CONFIDENTIAL REPORT: SUBMIT ORIGINAL TO THE DIRECTOR OF NURSING WITHIN 24 HOURS OF INCIDENT. DO NOT SCAN OR COPY.
+            </div>
+            <form>
+
+                <div class="row">
+                    <div class="col-sm-6 col-md-3 form-group">
+                        <label>Name of Person Involved</label>
+                       @Html.TextBoxFor(m => m.Involved_Person_Name, new { @class="form-control"})
+                    </div>
+                    <div class="col-sm-6 col-md-3 form-group">
+                        <label for="date">Today’s Date:</label>
+                        @Html.TextBoxFor(m => m.CreatedOn, new { @class = "form-control datepicker datepicker-bg", placeholder = "mm/dd/yyyy", style = "width:100%;" })
+                    </div>
+                    <div class="col-sm-6 col-md-3 form-group">
+                        <label>MR# (if applicable)</label>
+                       @Html.TextBoxFor(m => m.MR_, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-6 col-md-3 form-group">
+                        <label for="location-incident">Office Location of Incident:</label><br>
+                        
+                        <label class="radio-inline">@Html.RadioButtonFor(m => m.Gender,"Male")Male</label>
+                        <label class="radio-inline">@Html.RadioButtonFor(m => m.Gender, "Female")Female</label>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-3 form-group">
+                        <label>Street Address of Occurrence</label>
+                        @Html.TextBoxFor(m => m.Street_Address, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-6 col-md-3 form-group">
+                        <label>City</label>
+                        @Html.TextBoxFor(m => m.City, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-6 col-md-3 form-group">
+                        <label>State</label>
+                        @Html.TextBoxFor(m => m.State, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-6 col-md-3 form-group">
+                        <label>Zip Code</label>
+                        @Html.TextBoxFor(m => m.Zip_Code, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-sm-6 col-md-3 form-group">
+                        <label for="date">Date of Occurrence :</label>
+                        @*<input name="date" type="text" class="form-control datepicker datepicker-bg" placeholder="mm/dd/yyyy" style="width:100%;">*@
+                        @Html.TextBoxFor(m => m.DateOfOccurance, new { @class = "form-control datepicker datepicker-bg", placeholder = "mm/dd/yyyy", style = "width:100%;" })
+                    </div>
+                    <div class="col-sm-6 col-md-3 form-group">
+                        <label for="date">Time of Incident</label>
+
+                        @Html.TextBoxFor(m => m.TimeOfIncident, new { @class = "form-control" })
+
+                    </div>
+                    <div class="col-sm-12 col-md-6 form-group">
+                        <label>Person Completing Report</label>
+                        @Html.TextBoxFor(m => m.Person_Completing_Report, new { @class = "form-control" })
+                    </div>
+                </div>
+                <hr>
+                <h3>Check Applicable Event:</h3><br>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="checjtick"><label class="checkbox-inline"><input name="optradio" type="checkbox">Hospital Admission</label></div>
+                        <div class="checjtick"><label class="checkbox-inline"><input name="optradio" type="checkbox">AMA</label></div>
+                        <div class="checjtick"><label class="checkbox-inline"><input name="optradio" type="checkbox">Cardiopulmonary Arrest</label></div>
+                        <div class="checjtick"><label class="checkbox-inline"><input name="optradio" type="checkbox">Abusive Behavior</label></div>
+                        <div class="p_bot15">
+                            <div class="checjtickinner"><label class="checkbox-inline"><input name="optradio" type="checkbox">Client</label></div>
+                            <div class="checjtickinner"><label class="checkbox-inline"><input name="optradio" type="checkbox">Family Member</label></div>
+                        </div>
+
+
+                        <div class="checjtick"><label class="checkbox-inline"><input name="optradio" type="checkbox">Medication Problem</label></div>
+                        <div class="p_bot15">
+                            <div class="checjtickinner"><label class="checkbox-inline"><input name="optradio" type="checkbox">Missed Dose</label></div>
+                            <div class="checjtickinner"><label class="checkbox-inline"><input name="optradio" type="checkbox">Incorrect Dose</label></div>
+                            <div class="checjtickinner"><label class="checkbox-inline"><input name="optradio" type="checkbox">Incorrect Medication</label></div>
+                            <div class="checjtickinner"><label class="checkbox-inline"><input name="optradio" type="checkbox">Reaction/Toxic Effect</label></div>
+                        </div>
+                        <div class="checjtick"><label class="checkbox-inline"><input name="optradio" type="checkbox">Suicide Threats or Attempts</label></div>
+
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="checjtick"><label class="checkbox-inline"><input name="optradio" type="checkbox">Equipment Failure</label></div>
+                        <div class="checjtickinner p_bot15">
+                            <div class="row">
+                                <div class="col-sm-6"><input type="text" class="form-control" placeholder="Lot#"></div>
+                                <div class="col-sm-6"><input type="text" class="form-control" placeholder="Tracking#"></div>
+                            </div>
+                        </div>
+
+                        <div class="checjtick"><label class="checkbox-inline"><input name="optradio" type="checkbox">Fall</label></div>
+                        <div class="p_bot15">
+                            <div class="checjtickinner"><label class="checkbox-inline"><input name="optradio" type="checkbox">Witnessed</label></div>
+                            <div class="checjtickinner"><label class="checkbox-inline"><input name="optradio" type="checkbox">Unwitnessed</label></div>
+                        </div>
+
+                        <div class="checjtick"><label class="checkbox-inline"><input name="optradio" type="checkbox">Infusion Equipment Problems</label></div>
+                        <div class="checjtick"><label class="checkbox-inline"><input name="optradio" type="checkbox">Employee Injury</label></div>
+                        <div class="checjtick"><label class="checkbox-inline"><input name="optradio" type="checkbox">Employee Property Missing or Damaged</label></div>
+                        <div class="checjtick"><label class="checkbox-inline"><input name="optradio" type="checkbox">Client Injury</label></div>
+                        <div class="checjtick"><label class="checkbox-inline"><input name="optradio" type="checkbox">Client Property Missing or Damaged</label></div>
+                        <div class="checjtick"><label class="checkbox-inline"><input name="optradio" type="checkbox">Surgical Complication or Infection</label></div>
+                        <div class="checjtick"><label class="checkbox-inline"><input name="optradio" type="checkbox">Adverse Reaction to Treatment or Procedure</label></div>
+                        <div class="checjtick"><label class="checkbox-inline"><input name="optradio" type="checkbox">Wound Disruption</label></div>
+                        <div class="checjtick"><label class="checkbox-inline"><input name="optradio" type="checkbox">Other</label></div>
+
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <div class="subbutt">
+
+                    <button type="submit" class="btn btn-orange pull-right">Submit</button>
+                </div>
+            </form>
+        </div>
+
+
+
+
+    </div>
+    <div class="clearfix"></div>
+</section>

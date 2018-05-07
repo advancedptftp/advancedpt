@@ -1,0 +1,286 @@
+﻿<link href="~/Content/bootstrap-treeview.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap-treeview.js"></script>
+<style>
+    #closepopup{
+            display: block;
+    float: right;
+    }
+    #output{
+            float: left;
+    padding: 5px;
+    }
+    .outputsec{
+            float: right;
+    }
+
+    .selected {
+        background-color: #9d9d9d !important;
+        color: #fff;
+        vertical-align: middle;
+        padding: 1.5em;
+    }
+
+    .tableICD{
+
+        border:2px solid #808080;
+        width:100%;
+        height:auto;
+        margin-top:5px;
+        
+    }
+</style>
+<div class="searchsec">
+    <input id="SearchStr" class="form-control searchInputICD" placeholder="Search">
+    <input id="DMEFormCode" class="form-control searchInputICD" placeholder="" type="hidden">
+    <input id="DMEICDRow" class="form-control" placeholder="" type="hidden" />
+    <button id="ICD10Search" onclick="SearchICDCodes()"><i class="fa fa-search" aria-hidden="true"></i></button>
+    <div class="clearfix"></div>
+   
+</div>
+<div class="outputsec">
+    <div id="output"></div>
+    <button id="closepopup" style="display:none" class="btn btn-orange pull-right" onclick="fnsubmit(this);">submit</button>
+</div>
+<div class="clearfix"></div>
+<div >
+    @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
+    <div class="table-responsive">
+        <table id="tblICDCodes" class="table table-bordered table-striped hidden">
+            <thead>
+                <tr>
+                    <th>ICD Code</th>
+                    <th>Disease Name</th>
+                    @*<th>Disease Name1</th>
+                    <th>Disease Name2</th>
+                    <th>Disease Name3</th>*@
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <div id="treeviewcontainer" style="height: 375px;overflow: auto;"></div>
+    </div>
+</div>
+
+<script>
+    function fnsubmit(obj) {
+        if ($(_selectedinput).hasClass("Disease_nameForICD")) {
+            $(_selectedinput).val(__selectedDisease_name);
+            $(_selectedinput).parents('.row').find('.ICD_CodeForICD').val(__selectedICDcode);
+
+        }
+        else {
+            $(_selectedinput).val(__selectedICDcode);
+            $(_selectedinput).parents('.row').find('.Disease_nameForICD').val(__selectedDisease_name);
+        }
+        $(obj).parents('.ICDSearch').dialog("close");
+    }
+    var __selectedICDcode;
+    var __selectedDisease_name;
+    var __selectedICDID;
+    function SearchICDCodes() {
+        var loading = "<div style='text-align:center;width:100%;height:80%;'><img id='imgLoading' src='@Url.Content("~/Images/loading.gif")' style='width:100px;height:100px;' /></div>";
+        $('#treeviewcontainer').html(loading);
+        var options = {};
+        @*options.url = "@Url.Action("LoadICDCodes", "KneeBraceCustomForm", new { Area = "DmeForm" })" + "?SearchContent=" + $('#SearchStr').val();*@
+        @*options.url = "@Url.Action("LoadICDCodeHeirarchy", "KneeBraceCustomForm", new { Area = "DmeForm" })" + "?SearchContent=" + $('#SearchStr').val() + "&DMEFormCode=" + $('#DMEFormCode').val();
+        options.type = "Get";
+        options.dataType = "json";
+        options.contentType = "application/json";
+        //options.data =  { SearchContent: $('#SearchStr').val(), DMEFormCode: $('#DMEFormCode').val() }  
+        options.success = function (data) {
+            
+            var $tree = $('#treeviewcontainer').treeview({
+                data: data,
+                onNodeSelected: function (event, node) {
+                    if (node.nodes != null) {
+                        $('#output').html('<p style="color:red">' + node.ICD + '</p>');
+                        $('#closepopup').hide();
+                    }
+                    else {
+                        $('#output').html('<p style="color:green">' + node.ICD + '</p>');
+                        $('#closepopup').show();
+                        __selectedDisease_name = node.Disease_name;
+                        __selectedICDcode = node.ICD;
+                        
+                        // $(obj).parents('.ICDSearch').dialog("close");
+                    }
+
+
+                }
+            });
+        };
+        options.error = function () { };*@
+        //$.ajax(options);
+
+
+        var DMEFormCode = $('#DMEFormCode').val();
+        var ICDRowCount = $("#DMEICDRow").val();
+        
+        //alert($('#DMEFormCode').val());
+
+
+        if (DMEFormCode == '' || DMEFormCode == null || DMEFormCode == undefined)
+        {
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("LoadICDCodeHeirarchy", "KneeBraceCustomForm", new { Area = "DmeForm" })",
+                data: {
+                SearchContent: $('#SearchStr').val()
+                },
+            datatype: "json",
+            success: function (data) {
+
+                $("#treeviewcontainer").html('');
+                $("#tblICDCodes").html('');                
+                $('#output').html('');
+                $('#closepopup').hide();
+                
+
+                var $tree = $('#treeviewcontainer').treeview({
+                    data: data,
+                    onNodeSelected: function (event, node) {
+                        if (node.nodes != null) {
+                            $('#output').html('<p style="color:red">' + node.ICD + '</p>');
+                            $('#closepopup').hide();
+                        }
+                        else {
+                            $('#output').html('<p style="color:green">' + node.ICD + '</p>');
+                            $('#closepopup').show();
+                            __selectedDisease_name = node.Disease_name;
+                            __selectedICDcode = node.ICD;
+
+                            // $(obj).parents('.ICDSearch').dialog("close");
+                        }
+
+
+                    }
+                });
+            },
+            error: function () { }
+        });
+
+        }
+        else
+        {
+
+            if (DMEFormCode == "L1111")
+            {
+                $('#DMEFormCode').val("");
+            }
+           if(ICDRowCount> 0)
+           {
+               $('#DMEFormCode').val("");
+           }
+
+            
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("LoadICD", "KneeBraceCustomForm", new { Area = "DmeForm" })",
+                data: {
+                SearchContent: $('#SearchStr').val(), DMEFormCode: $('#DMEFormCode').val()
+                },
+            datatype: "json",
+            success: function (data) {
+
+                $("#treeviewcontainer").html('');
+                $("#tblICDCodes tbody").html('');
+                $("#tblICDCodes").removeClass('hidden');
+                $('#output').html('');
+                $('#closepopup').hide();
+               
+                for (var i = 0; i < data.length; i++) {
+                    var row = "<tr>" +
+                              "<td class='icdCode'>" + data[i].ICD_Code + "</td>" +
+                              "<td class='diseaseName''>" + data[i].Disease_name + "</td>" +
+                              "</tr>";
+                    $("#tblICDCodes tbody").append(row);
+
+                }
+
+                if (data == undefined || data.length == 0)
+                {
+                    var row = "<tr>" +
+                              "<td colspan='2' style='color:Red; text-align:center;'>No record found </td>" +
+                              "</tr>";
+                    $("#tblICDCodes tbody").append(row);
+                }
+
+                
+
+                $("tr").click(function () {
+                    $('.selected').removeClass('selected');
+                    $(this).addClass("selected");
+                    var icdCode = $('.icdCode', this).html();
+                    var diseaseName = $('.diseaseName', this).html();
+                    //var note = $('.n', this).html();
+                    //alert('ICD_Code ===' + icdCode + ' Disease Name===' + diseaseNameundefined
+                    if (icdCode != undefined) {
+                        $('#output').html('<p style="color:green">' + icdCode + '</p>');
+                        $('#closepopup').show();
+                        __selectedDisease_name = diseaseName;
+                        __selectedICDcode = icdCode;
+                    }
+                   
+                });
+            },
+            error: function () { }
+        });
+
+        }
+
+        
+       
+        
+    }
+
+    var _selectedinput;
+    function refreshsearchresult() {
+        $('#output').html('');
+        $('#closepopup').hide();
+        $('#treeviewcontainer').html('');
+    }
+    function fnSelectICDCode(obj) {
+        __selectedICDID = $(obj).find('input').val();
+        __selectedDisease_name = $($(obj).find('td')[1]).html();
+        __selectedICDcode = $($(obj).find('td')[0]).html();
+        if ($(_selectedinput).hasClass("Disease_nameForICD")) {
+            $(_selectedinput).val(__selectedDisease_name);
+            $(_selectedinput).parents('.row').find('.ICD_CodeForICD').val(__selectedICDcode);
+            //$(_selectedinput).parents('.row').find('.icdidForICD').val(__selectedICDID);
+        }
+        else {
+            $(_selectedinput).val(__selectedICDcode);
+            $(_selectedinput).parents('.row').find('.Disease_nameForICD').val(__selectedDisease_name);
+            //$(_selectedinput).parents('.row').find('.icdidForICD').val(__selectedICDID);
+        }
+        $(obj).parents('.ICDSearch').dialog("close");
+    }
+    $(document).ready(function () {
+        BindOnFocusForICD();
+    });
+    function BindOnFocusForICD() {
+        $('.Disease_nameForICD').focus(function () {
+            _selectedinput = this;
+        });
+        $('.ICD_CodeForICD').focus(function () {
+            _selectedinput = this;
+        });
+        $('input').keypress(function (e) {
+            if (e.which == 13) {
+                if ($(this).hasClass("Disease_nameForICD") || $(this).hasClass("ICD_CodeForICD")) {
+                    refreshsearchresult();
+                    $('#SearchStr').val($(this).val());
+                    OpenDialog();
+                    return false;
+                }
+                if ($(this).hasClass("searchInputICD"))
+                    SearchICDCodes();
+            }
+        });
+    }
+
+
+</script>
+
+
+

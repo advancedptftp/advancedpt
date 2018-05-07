@@ -1,0 +1,274 @@
+﻿@model DataLayer.Models.PurchaseOrderDetails
+@using DataLayer;
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Purchase Order</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="favicon.png">
+
+    <!-- Bootstrap core CSS -->
+
+
+</head>
+
+<body>
+
+
+    <div style="width: 90%; margin:0 auto; padding: 40px 0; font-family: verdana; font-size: 25px; color: #333; ">
+
+
+        <div>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="25%" style="text-align:center;">
+                        <span>
+                            @{
+                                var imgurl51 = "";
+                                if (ViewBag.AdvanceptLogo != null)
+                                {
+                                    imgurl51 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.AdvanceptLogo);
+                                }
+                            }
+                            <img src="@imgurl51" alt="Alternate Text" id="imgWitnessSignature" />
+                        </span>
+                    </td>
+                    <td style="text-align:right; font-size:35px; color:#20419a; font-weight:bold;">PURCHASE ORDER</td>
+                </tr>
+            </table>
+        </div>
+        <div style="padding-bottom:25px;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="50%" style="font-size:30px; line-height:22px; padding-top:20px;">
+                        @*<strong> ATTN : @Model.PO.tblMUser.Name</strong>*@
+                        @*<strong>Advanced Physical Therapy of Central Florida</strong><br>
+                            5036 SE 110th Street<br>
+                            Belleview, FL 34420<br />
+                            Phone: (352)693-3378<br>
+                            Fax: (888) 758-9645*@
+
+                    </td>
+                    <td width="40%" valign="top" style="padding-top: 15px; font-size: 25px;">
+
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td width="26%" style="padding-bottom:4px;">DATE:</td>
+                                <td width="74%" style="border-bottom:1px solid #000;">@Model.PO.CreatedOn.GetExactValue()</td>
+                            </tr>
+                            <tr>
+                                <td style="padding-top:12px;">PO #:</td>
+                                <td width="74%" style="border-bottom:1px solid #000;">@Model.PO.PO_No</td>
+                            </tr>
+                        </table>
+
+
+
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <div style="padding-bottom:15px;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="51%" valign="top"  style="font-size:25px; line-height:40px;">
+                        <div style="background:#20419a; color:#fff; padding:5px 8px; margin-bottom:10px; text-align:center; font-weight:bold;">VENDOR</div>
+                        COMPANY NAME: @ViewBag.Vendor_Name<br>
+                        @*CONTACT OR DEPARTMENT: <br>*@
+                        STREET ADDRESS:@ViewBag.Street_Address<br>
+                        CITY: @ViewBag.VendorCity <br /> STATE: @ViewBag.VendorState <br /> ZIP: @ViewBag.ZIP_Code <br>
+                        PHONE: @ViewBag.Vendor_Phone<br>
+                        FAX: @ViewBag.Vendor_FAX  <br>
+
+
+
+                    </td>
+                    <td width="4%">&nbsp;</td>
+                    <td width="45%" valign="top" style="font-size:25px; line-height:40px;">
+
+                        <div style="background:#20419a; color:#fff; padding:5px 8px; margin-bottom:10px; text-align:center; font-weight:bold; margin-top:5px;">SHIP TO</div>
+                        NAME: @ViewBag.Name <br>
+                        COMPANY NAME:  Advanced P.T. of Central Florida  <br>  
+                        STREET ADDRESS: @ViewBag.StreetAddress <br>
+                        CITY: @ViewBag.City <br /> STATE: @ViewBag.State <br /> ZIP: @ViewBag.ZIP_Code1 <br />
+                        CUSTOMER ID: @ViewBag.Vendor_CustomerID
+
+                    </td>
+                </tr>
+            </table>
+
+
+        </div>
+
+        <div style="padding-bottom:25px;">
+            <table width="100%" border="1" cellspacing="0" cellpadding="0">
+                <thead>
+
+                    <tr>
+                        <td style="text-align:center; padding:15px; background:#20419a; color:#fff; font-size:20px; font-weight:bold;">SHIP VIA</td>
+                        <td style="text-align:center; padding:15px; background:#20419a; color:#fff; font-size:20px; font-weight:bold;">F.O.B.</td>
+                        <td style="text-align:center; padding:15px; background:#20419a; color:#fff; font-size:20px; font-weight:bold;">SHIPPING TERMS</td>
+                    </tr>
+                </thead>
+                <tr style="text-align:center">
+                    <td style="padding:10px;">UPS Ground</td>
+                    <td>N/A</td>
+                    <td>Pre-paid credit card</td>
+                </tr>
+            </table>
+
+
+        </div>
+
+        <div style="padding-bottom:20px;">
+            <table width="100%" border="1" cellspacing="0" cellpadding="0">
+                <thead>
+                    <tr>
+                        <td width="12%" style="text-align: center; padding: 15px; background: #20419a; color: #fff; font-size: 20px; font-weight: bold; ">ITEM #</td>
+                        <td width="33%" style="text-align: center; padding: 15px; background: #20419a; color: #fff; font-size: 20px; font-weight: bold; ">DESCRIPTION</td>
+                        <td width="13%" style="text-align: center; padding: 15px; background: #20419a; color: #fff; font-size: 20px; font-weight: bold; ">QTY</td>
+                        <td width="21%" style="text-align: center; padding: 15px; background: #20419a; color: #fff; font-size: 20px; font-weight: bold; ">UNIT PRICE</td>
+                        <td width="6%" style="text-align: center; padding: 15px; background: #20419a; color: #fff; font-size: 20px; font-weight: bold; ">TAX</td>
+                        <td width="21%" style="text-align: center; padding: 15px; background: #20419a; color: #fff; font-size: 20px; font-weight: bold; ">TOTAL</td>
+                    </tr>
+                </thead>
+                <tr>
+                    @for (int i = 0; i < Model.ItemDetails.Count; i++)
+                    {
+                        <td style="padding:8px; text-align:center;">@Html.DisplayFor(m => m.ItemDetails[i].Item_Name, new { @class = "applitextfield1", @style = "width:100%; margin:0;" })</td>
+                        <script> counter += 1; </script>
+                    }
+                    @for (int i = 0; i < Model.ItemDetails.Count; i++)
+                    {
+                        <td style="padding-left:5PX;">@Html.DisplayFor(m => m.ItemDetails[i].Item_Desc, new { @class = "applitextfield1", @style = "width:100%; margin:0;" })</td>
+                        <script> counter += 1; </script>
+
+                    }
+                    @for (int i = 0; i < Model.ItemDetails.Count; i++)
+                    {
+                        <td style="text-align:center">@Html.DisplayFor(m => m.ItemDetails[i].Item_Qty, new { @class = "applitextfield1", @style = "width:100%; margin:0;" })</td>
+                        <script> counter += 1; </script>
+                    }
+                    @for (int i = 0; i < Model.ItemDetails.Count; i++)
+                    {
+                        <td style="text-align:center">@Html.DisplayFor(m => m.ItemDetails[i].Unit_Price, new { @class = "applitextfield1", @style = "width:100%; margin:0;" })</td>
+                        <script> counter += 1; </script>
+
+                    }
+                    <td>&nbsp;</td>
+                    @for (int i = 0; i < Model.ItemDetails.Count; i++)
+                    {
+                        <td style="text-align:center">@Html.DisplayFor(m => m.ItemDetails[i].Line_Total_Price, new { @class = "applitextfield1", @style = "width:100%; margin:0;" })</td>
+                        <script> counter += 1; </script>
+
+                    }
+
+
+                </tr>
+                <tr>
+                    <td style="padding:4px;">&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td style="padding:4px;">&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td style="padding:4px;">&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td style="padding:4px;">&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td style="padding:4px;">&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td style="padding:4px;">&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+            </table>
+
+
+        </div>
+
+        <div>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="50%" valign="top">
+
+                        <div style="border:1px solid #999;padding-top:2px;">
+                            <div style="padding:12px; background:#ccc; text-align:center; font-size:18px; font-weight:bold;">COMMENTS OR SPECIAL INSTRUCTIONS</div>
+                            <div style="height:140px;"></div>
+
+
+                        </div>
+
+                    </td>
+                    <td width="10%">&nbsp;</td>
+                    <td width="45%" valign="top" style="font-size:25px; line-height:40px;">
+
+                        SUBTOTAL: @for (int i = 0; i < Model.ItemDetails.Count; i++)
+                        {
+                            @Html.DisplayFor(m => m.ItemDetails[i].Line_Total_Price, new { })
+
+
+                        }<br>
+
+                        @*TAXABLE:<br>
+
+                        TAX RATE
+
+                        TAX:<br>*@
+
+                        SHIPPING:&nbsp;&nbsp; 00.00<br>
+
+                        @*OTHER:<br>*@
+                        <div style="height:2px; background:#999; margin:0px 0;"></div>
+                        TOTAL:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @for (int i = 0; i < Model.ItemDetails.Count; i++)
+                        {
+                            @Html.DisplayFor(m => m.ItemDetails[i].Line_Total_Price, new { })
+                            <script> counter += 1; </script>
+
+                        }
+
+
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+
+
+
+    </div>
+</body>
+</html>

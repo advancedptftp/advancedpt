@@ -1,0 +1,182 @@
+﻿@model PagedList.IPagedList<DataLayer.Models.tblTPatientAttendance>
+@using PagedList.Mvc;
+@using DataLayer;
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<link href="/Content/semantic.css" rel="stylesheet">
+<body>
+
+</body>
+<section class="bodyinner2">
+    <div>
+        @*<p class="pull-right">
+                @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+            </p>*@
+
+        @{
+            bool? direction = ViewBag.SortDirection;
+            if (direction == null) { direction = false; }
+        }
+       
+        
+    </div>
+
+    <div>
+        <div id="dvIndexfourvisit">
+            @*@Html.Partial("~/Areas/Patient/Views/TodayAppointment/Indexfourvisit1.cshtml")*@
+        </div>
+
+
+        <div>
+            <br />
+            @using (Html.BeginForm("Indexfourvisit1", "TodayAppointment", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+            {
+                @Html.DropDownList("PageSize")
+            }
+            <div class="pull-left" style=" padding:10px;">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("Indexfourvisit1",
+                      new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction }))
+        </div>
+    </div>
+
+</section>
+
+<script>
+
+</script>
+
+<script>
+
+    @*var searchString = $("#searchString").val();
+
+    function fnSearch() {
+        alert(searchString);
+        $.ajax({
+            url: "@Url.Action("Indexfourvisit", "TodayAppointment")",
+            type: "GET",
+            dataType: "JSON",
+            data: { searchString: searchString },
+            success: function (data) {
+                alert(data);
+                $('#dvIndexfourvisit').html(data);
+            },
+            error: function () {
+                alert("Error occured.");
+            }
+        });
+    }*@
+
+
+    function loadlink() {
+        //$('#red').load('Indexfourvisit1.cshtml', function () {
+        //    //$(this).unwrap();
+
+        //});
+
+        //$("#dvIndexfourvisit").show();
+
+        $.ajax({
+            url: "@Url.Action("Indexfourvisit1", "TodayAppointment")",
+            contentType: "application/html",
+            type: "GET",
+            dataType: "HTML",
+            //data: { PatientConditionId: PatientConditionId },
+            success: function (data) {
+
+                $('#dvIndexfourvisit').html(data);
+
+
+            },
+            error: function () {
+                alert("Error occured.");
+            }
+        });
+        ///alert("hiiiiii");
+    }
+
+    //loadlink(); // This will run on page load
+
+    $(document).ready(function () {
+
+        $.ajax({
+            url: "@Url.Action("Indexfourvisit1", "TodayAppointment")",
+            contentType: "application/html",
+            type: "GET",
+            dataType: "HTML",
+            //data: { PatientConditionId: PatientConditionId },
+            success: function (data) {
+
+                $('#dvIndexfourvisit').html(data);
+
+
+            },
+            error: function () {
+                alert("Error occured.");
+            }
+        });
+        setInterval(function () {
+            loadlink() // this will run after every 5 seconds
+        }, 1500000);
+    });
+    $("#PageSize").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+
+
+
+    function fnConfirmationMail(PatientConditionId) {
+
+        $.ajax({
+            url: "@Url.Action("Index", "TodayAppointment")",
+            type: "POST",
+            dataType: "JSON",
+            data: { PatientConditionId: PatientConditionId },
+            success: function (data) {
+
+                $('#myModal').modal('hide');
+                var msg = data;
+                alert(msg);
+                //location.reload();
+
+            },
+            error: function () {
+                alert("Error occured.");
+            }
+        });
+
+    }
+
+
+    function fnrefreshdiv() {
+
+        $.ajax({
+            url: "@Url.Action("Fourvisitemail", "TodayAppointment")",
+            type: "POST",
+            dataType: "JSON",
+            data: { PatientConditionId: PatientConditionId },
+            success: function (data) {
+
+                $('#myModal').modal('hide');
+                var msg = data;
+                alert(msg);
+                //location.reload();
+
+            },
+            error: function () {
+                alert("Error occured.");
+            }
+        });
+
+    }
+</script>

@@ -1,0 +1,1465 @@
+﻿@model DataLayer.Models.DMEGenericForm
+@using DataLayer;
+@{
+    ViewBag.Title = "Knee Brace Custom Order";
+
+    var counter = 1;
+}
+
+<section class="bodyinner">
+    @*@using (Html.BeginForm("Create", "KneeBraceCustomForm", FormMethod.Post, new { name = "Create", id = "Create" }))
+        {*@
+
+    @*<div class="bodyleft">
+
+
+            @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+        </div>*@
+    <div class="container" style="width:100%">
+        @*class="bodyright"*@
+
+        <div class="report-form clearfix">
+            <h2>Generic DME Order Form Code: L0001</h2>
+            @*<div class="p_bot15"><strong>*MEDICARE PATIENTS: DO NOT PROCEED IF THEY HAVE BEEN ISSUED A ‘KNEE BRACE’ IN THE PAST 5 YEARS.</strong></div>*@
+
+            <div class="row" id="pname">
+                <div class="col-sm-6">
+                    Patient Name:
+                    @if (ViewBag.patientname != null)
+                    {
+                        <span> @ViewBag.patientname </span>
+                    }
+                    else
+                    {
+                        <span id="CustomForm_PatientName"></span>
+                    }
+
+                </div>
+                <div class="col-sm-6">
+                    DOB:
+                    @if (ViewBag.dob != null)
+                    {
+                        <span> @ViewBag.dob </span>
+                    }
+                    else
+                    {
+                        <span id="CustomForm_DOB"></span>
+                    }
+
+                </div>
+
+            </div>
+
+            <hr>
+            @using (Html.BeginForm("Create1", "GenericForm", FormMethod.Post, new { name = "Create2", id = "Create2" }))
+            {
+                <div id="dvFirst">
+                    @Html.AntiForgeryToken()
+
+                    @Html.HiddenFor(e => e.Prescription.DMEForm_Id)
+                    @*@Html.Hidden("CreatedOn", DateTime.Now)*@
+                    @Html.Hidden("HCPCSCode", "L1846")
+                    @Html.HiddenFor(e => e.Prescription.DMEFormCode)
+                    @Html.HiddenFor(e => e.Prescription.CreatedOn)
+                    @Html.HiddenFor(e => e.tblGenericDMEForm.DMEGenaric_Id)
+                    @Html.HiddenFor(e => e.Prescription.DMEClinicalStaffPrescription_Id)
+                    @Html.HiddenFor(e => e.tblGenericDMEForm.CreatedOn)
+                    @Html.HiddenFor(e => e.tblGenericDMEForm.CreatedBy)
+                    @Html.HiddenFor(e => e.PurchaseOrderItemDetail.DMEForm_Id)
+                    @Html.HiddenFor(e => e.tblGenericDMEForm.HCPCSCode)
+                    @*@Html.HiddenFor(e => e.tblGenericDMEForm.Patient_Id)*@
+                    @Html.HiddenFor(e => e.CustomBrace.CustomBrace_Desc)
+                    @Html.HiddenFor(e => e.PreviousTreatment.PreviousTreatment_Desc)
+                    @Html.HiddenFor(e => e.Prescription.IsItemReqByTherapist)
+                    @Html.HiddenFor(e => e.Prescription.IsItemReqByDoctor)
+                    @Html.HiddenFor(e => e.Prescription.IsItemReqByPatient)
+
+
+
+                    @if (ViewBag.Error != null)
+                    {
+                        @Html.Raw(ViewBag.Error)
+                    }
+
+                    <div id="dvPrescription">
+
+                        <div id="div_1">
+                            <div class="row">
+                                <div class="col-sm-12">
+
+
+                                    <div class="borderbox">
+                                        <div class="row">
+                                            <div class="col-md-12">
+
+
+                                                <div class="col-sm-4  form-group">
+                                                    Patient Name
+                                                    @Html.TextBoxFor(m => m.tblGenericDMEForm.Patient_Name, new { @class = "form-control" })
+                                                    <span id="Patient_Name" class="validateMsg"></span>
+                                                    <br />
+                                                    @Html.ValidationMessageFor(m => m.tblGenericDMEForm.Patient_Name)
+                                                </div>
+                                                <div class="col-sm-4 form-group">
+                                                    DOB
+                                                    @Html.TextBoxFor(m => m.tblGenericDMEForm.DOB, new { @class = "form-control", @readonly = "readonly", style = "width:100%;", @Value = @Model.tblGenericDMEForm.DOB.GetExactValue() })
+                                                    <span id="PatientDOB" class="validateMsg"></span>
+                                                    <br />
+                                                    @Html.ValidationMessageFor(m => m.tblGenericDMEForm.DOB)
+                                                </div>
+
+
+                                                <div class="col-sm-2 form-group" style="padding-top:30px;">
+                                                    <!-- Trigger the modal with a button -->
+                                                    <button type="button" id="btnTo" class="btn btn-primary PatientEmailSearchModal" data-toggle="modal" data-id="To" data-target="#PatientEmailSearchModal">Search Patient</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+                            <div class="borderbox">
+                                <div class="outerf">
+                                    @*<div class="stepheading"><strong>1. Clinical Staff </strong> <i>prescription</i></div>*@
+                                    <div class="hiddenform">
+
+                                        <div class="row">
+                                            <div class="col-sm-4 col-md-5">
+                                                Diagnosis
+                                            </div>
+                                            <div class="col-sm-4 col-md-5 ">
+                                                ICD-10 Code
+                                            </div>
+                                            <div class="col-sm-4 col-md-2">
+
+                                            </div>
+                                        </div>
+                                        <div id="dvDiagnosis">
+                                            <script>
+                                                var counter = 0;
+                                            </script>
+                                            @for (int i = 0; i < Model.DMEDiognosis.Count; i++)
+                                            {
+                                                <div class="row">
+                                                    <div class="col-sm-4 col-md-5 form-group">
+                                                        @Html.TextBoxFor(e => e.DMEDiognosis[i].Diagnosis_Desc, new { @class = "form-control Disease_nameForICD" })
+                                                        <span id="Diagnosis_Desc" class="validateMsg"></span>
+                                                    </div>
+                                                    <div class="col-sm-4 col-md-5 form-group">
+                                                        @Html.TextBoxFor(e => e.DMEDiognosis[i].ICD10Code, new { @class = "form-control ICD_CodeForICD" })
+                                                        <span id="ICD10Code" class="validateMsg"></span>
+                                                    </div>
+                                                    <div class="col-sm-4 col-md-2 form-group">
+                                                        <button id="addRows" class="addbutt" type="button" style="margin-top:0;" title="Add New Diagnosis"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                                        @Html.HiddenFor(e => e.DMEDiognosis[i].DMEDiagnosis_Id, new { @class = "icdidForICD" })
+                                                    </div>
+                                                </div>
+                                                <script>
+                                                    counter += 1;
+                                                </script>
+                                            }
+                                        </div>
+                                        <div class="p_bot15">
+                                            <button type="button" class="btn btn-primary pull-left" onclick="OpenDialog()">Search ICD-10</button>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div>
+                                            <div class="row form-group">
+                                                <div class="col-sm-12"></div>
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div class="subbutt">
+                                @*<button type="submit" class="btn btn-primary pull-right" onclick="return validateInputs();">Next  ></button>*@
+                                <input type="button" id="btnNext4" class="btn btn-primary pull-right" value="Next  >" onclick="fnShowDiv2()" />
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+
+                        <div id="div_2">
+                            <div class="clearfix"></div>
+
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6 form-group">
+                                    <label>DME Item Name</label>
+                                    @Html.TextBoxFor(m => m.tblGenericDMEForm.DMEGeraricName, new { @class = "form-control" })
+                                    <span id="DMEGeraricName" class="validateMsg"></span>
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.tblGenericDMEForm.DMEGeraricName)
+                                </div>
+                                <div class="col-sm-6 col-md-6 form-group">
+                                    <label>Manufacturer Item Order Number</label>
+                                    @Html.TextBoxFor(m => m.tblGenericDMEForm.DMEModelNo, new { @class = "form-control" })
+                                    <span id="DMEModelNo" class="validateMsg"></span>
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.tblGenericDMEForm.DMEModelNo)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 form-group">
+                                    <label>Description</label>
+                                    @Html.TextAreaFor(m => m.tblGenericDMEForm.Description, new { @class = "form-control" })
+                                    <span id="Description" class="validateMsg"></span>
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.tblGenericDMEForm.Description)
+                                </div>
+                            </div>
+                           
+                            <div class="subbutt">
+                                @*<button type="submit" class="btn btn-primary pull-right" onclick="return validateInputs();">Next  ></button>*@
+                                <input type="button" id="btnNext4" class="btn btn-primary pull-right" value="Next  >" onclick="fnShowDiv3()" />
+                                <input type="button" id="btnprev" class="btn btn-primary pull-left" value="<  Previous" onclick="fnPrevious3()" />
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+
+                        <div id="div_3">
+                            <div class="borderbox">
+                                <div class="row">
+                                    <div id="mydiv" class="col-sm-12">
+                                        <h3>Reason for custom vs. off the shelf brace (select one or more):</h3>
+
+                                        <div class="col-sm-12">
+                                            <div class="col-sm-6 ">
+
+
+                                                <input id="KneeBraceCustomFormCustomBrace_Desc1" class="checkbox-custom" name="IsCustomBrace_Desc" type="checkbox" value="1" onclick="fnchooseFreestyle(1);">
+
+                                                <label for="KneeBraceCustomFormCustomBrace_Desc1" class="checkbox-custom-label">
+
+                                                    <span>Disproportionate size of thigh and calf</span>
+                                                </label>
+                                            </div>
+
+                                            <div class="col-sm-6 ">
+
+
+                                                <input id="KneeBraceCustomFormCustomBrace_Desc2" class="checkbox-custom" name="IsCCustomBrace_Desc2" type="checkbox" value="2" onclick="fnchooseFreestyle(3);">
+
+                                                <label for="KneeBraceCustomFormCustomBrace_Desc2" class="checkbox-custom-label">
+                                                    <span>Minimal muscle mass upon which to suspend an orthosis</span>
+
+                                                </label>
+                                            </div>
+                                            <div class="clearfix">&nbsp;</div>
+                                            <div class="col-sm-6 ">
+
+
+                                                <input id="KneeBraceCustomFormCustomBrace_Desc3" class="checkbox-custom" name="IsCustomBrace_Desc3" type="checkbox" value="3" onclick="fnchooseFreestyle(2);">
+
+                                                <label for="KneeBraceCustomFormCustomBrace_Desc3" class="checkbox-custom-label">
+                                                    <span>A typical thigh and calf dimensions due to obesity (BMI greater than or equal to 30)</span>
+
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-6 ">
+
+
+                                                <input id="KneeBraceCustomFormCustomBrace_Desc4" class="checkbox-custom" name="IsCustomBrace_Desc4" type="checkbox" value="4" onclick="fnchooseFreestyle(3);">
+
+                                                <label for="KneeBraceCustomFormCustomBrace_Desc4" class="checkbox-custom-label">
+                                                    <span>Intimate fit is required for ligament protection or off-loading indication</span>
+
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <span id="Reasonforcustom" class="validateMsg"></span>
+                                </div>
+
+                            </div>
+
+                            <div class="subbutt">
+                                @*<button type="submit" class="btn btn-primary pull-right" onclick="return validateInputs();">Next  ></button>*@
+                                <input type="button" id="btnNext4" class="btn btn-primary pull-right" value="Next  >" onclick="fnShowDiv4()" />
+                                <input type="button" id="btnprev" class="btn btn-primary pull-left" value="<  Previous" onclick="fnPrevious4()" />
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+
+
+                        <div id="div_4">
+                            <div class="borderbox radiosection_with1">
+                                <div class="row">
+                                    <div id="Previous" class="col-sm-12">
+                                        <h3>Previous Treatments/Medications (select one or more only if applicable):</h3>
+
+                                        <div style="margin-left:10px;" class="previoustreatment">
+                                            <div class="radiosec">
+
+
+                                                <input id="PreviousTreatments1" class="checkbox-custom" name="IsCustomOAMedialOffLoader_01208" type="checkbox" value="1" onclick="fnchooseFreestyle(1);">
+
+                                                <label for="PreviousTreatments1" class="checkbox-custom-label">
+
+                                                    <span>Prior Surgery</span>
+                                                </label>
+                                            </div>
+
+                                            <div class="radiosec">
+
+
+                                                <input id="PreviousTreatments2" class="checkbox-custom" name="IsCustomLigamentBrace_01207" type="checkbox" value="2" onclick="fnchooseFreestyle(3);">
+
+                                                <label for="PreviousTreatments2" class="checkbox-custom-label">
+                                                    <span>NSAIDS/Pain Medications</span>
+
+                                                </label>
+                                            </div>
+                                            <div class="clearfix">&nbsp;</div>
+                                            <div class="radiosec">
+
+
+                                                <input id="PreviousTreatments3" class="checkbox-custom" name="IsCustomOALateralOffLoader_01300" type="checkbox" value="3" onclick="fnchooseFreestyle(2);">
+
+                                                <label for="PreviousTreatments3" class="checkbox-custom-label">
+                                                    <span>Injections</span>
+
+                                                </label>
+                                            </div>
+                                          
+                                            <div class="radiosec">
+
+
+                                                <input id="PreviousTreatments4" class="checkbox-custom" name="IsCustomLigamentBrace_01207" type="checkbox" value="4" onclick="fnchooseFreestyle(3);">
+
+                                                <label for="PreviousTreatments4" class="checkbox-custom-label">
+                                                    <span>Physical Therapy </span>
+
+                                                </label>
+                                            </div>
+                                            <div class="clearfix">&nbsp;</div>
+                                        </div>
+                                        <span id="PreviousTreatments" class="validateMsg"></span>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="subbutt">
+                                @*<button type="submit" class="btn btn-primary pull-right" onclick="return validateInputs();">Next  ></button>*@
+                                <input type="button" id="btnNext4" class="btn btn-primary pull-right" value="Next  >" onclick="fnShowDiv5()" />
+                                <input type="button" id="btnprev" class="btn btn-primary pull-left" value="<  Previous" onclick="fnPrevious5()" />
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+
+                     
+                        <div id="div_5">
+                            <div class="borderbox">
+                                <div class="row">
+                                    <div class="col-sm-12">
+
+                                        <h3>Item Requested By:</h3>
+                                        <div class="col-sm-12">
+
+                                            @if (@ViewBag.userrole == 13)
+                                            {
+                                                <div class="radiosec">
+                                                    <input id="Prescription1" class="checkbox-custom checkone1" name="IsItemReqByTherapist" type="checkbox" value="true" onchange="fnEnableDisableTextbox(this,'');">
+                                                    <label for="Prescription1" class="checkbox-custom-label">Therapist</label>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="radiosec">
+                                                    <input id="Prescription1" class="checkbox-custom checkone1" name="IsItemReqByTherapist" type="checkbox" value="true" onchange="fnEnableDisableTextbox(this,'');">
+                                                    <label for="Prescription1" class="checkbox-custom-label">Therapist</label>
+                                                </div>
+                                            }
+                                            <div class="radiosec">
+                                                <input id="Prescription2" class="checkbox-custom checkone1" name="IsItemReqByPatient" type="checkbox" value="true" onchange="fnEnableDisableTextbox1(this,'Prescription_Doctor_Name');">
+                                                <label for="Prescription2" class="checkbox-custom-label">Patient</label>
+                                            </div>
+                                            <div class="radiosec">
+                                                <input id="Prescription3" class="checkbox-custom checkone1" name="IsItemReqByDoctor" type="checkbox" value="true" onchange="fnEnableDisableTextbox2(this,'Prescription_Doctor_Name');">
+                                                <label for="Prescription3" class="checkbox-custom-label">Doctor</label>
+                                            </div>
+                                        </div>
+                                        <div id="Doctor_Name" class="col-sm-12">
+                                            <div class="col-sm-12 col-md-8 form-group p_top10">
+                                                @Html.TextBoxFor(e => e.Prescription.Doctor_Name, new { @class = "form-control" })
+                                                <span id="Doctor_Name" class="validateMsg"></span>
+                                            </div>
+                                            <div class="col-sm-2 " style="padding-top:10px;">
+                                                <!-- Trigger the modal with a button -->
+                                                <button type="button" id="btnTo1" class="btn btn-primary _SearchDoctor" data-toggle="modal" data-id="To" data-target="#_SearchDoctor">Search Doctor</button>
+                                            </div>
+
+                                        </div>
+                                        @if (@ViewBag.userrole == 13)
+                                        {
+                                            <div id="Therapist_Name" class="col-sm-12">
+                                                <div class="col-sm-12 col-md-8 form-group p_top10">
+                                                    <input type="text" value="@ViewBag.ptname" id="Prescription_Therapist_Name" name="Prescription_Therapist_Name" class="form-control" />
+                                                    @*@Html.TextBoxFor(e => e.Prescription.Therapist_Name, new { @class = "form-control", @Value = ViewBag.CompName })*@
+                                                    <span id="Doctor_Name" class="validateMsg"></span>
+
+                                                </div>
+
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div id="Therapist_Name" class="col-sm-12">
+                                                <div class="col-sm-12 col-md-8 form-group p_top10">
+
+                                                    @Html.TextBoxFor(e => e.Prescription.Therapist_Name, new { @class = "form-control", @Value = ViewBag.CompName })
+                                                    <span id="Doctor_Name" class="validateMsg"></span>
+
+                                                </div>
+
+                                            </div>
+                                        }
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div>
+                                <span id="ItemReqBy" style="color:red"></span>
+                            </div>
+                            <div class="subbutt">
+                                @*<button type="submit" class="btn btn-primary pull-right" onclick="return validateInputs();">Next  ></button>*@
+                                <button type="submit" class="btn btn-orange pull-right" onclick="return validateInputs();">Submit</button>
+                                <input type="button" id="btnprev" class="btn btn-primary pull-left" value="<  Previous" onclick="fnPrevious6()" />
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+    <div class="clearfix"></div>
+    <div id="Dialog-Box" class="ICDSearch">
+        @Html.Partial("_ICDSearch")
+    </div>
+
+
+    @*}*@
+</section>
+<div class="modal fade" id="PatientEmailSearchModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="padding-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Search Patient Name</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div id="searchPatient">
+                        <div class="row SearchFilterContainer" id="SearchFilterContainer">
+                            <div class="col-sm-6 col-md-3">
+                                <div class=headrightcont>Patient Name</div>
+                                <input id="txtPatientFirstName" type="text" class="applitextfield2" name="Fname" value="" />
+                            </div>
+                            @*<div class="col-sm-6 col-md-3">
+                                <div class=headrightcont>Last Name</div>
+                                <input id="txtPatientLastName" type="text" class="applitextfield2" name="Lname" value="" />
+                            </div>*@
+
+
+                            <div class="col-sm-6 col-md-3" style="display:none;">
+                                <div class="headrightcont">SSN</div>
+                                <input id="txtPatientSSN" type="text" class="applitextfield2" name="SSN" value="" />
+                            </div>
+                            <div class="col-sm-6 col-md-3" style="display:none;">
+                                <div class="headrightcont">Phone</div>
+                                <input id="txtPatientPhone" type="text" class="applitextfield2 UsCellFormat" name="Phone" value="" />
+                            </div>
+                            <div class="col-sm-6 col-md-3" style="display:none;">
+                                <div class=headrightcont>City</div>
+                                <input id="txtPatientCity" type="text" class="applitextfield2" name="City" value="" />
+                            </div>
+                            <div class="col-sm-6 col-md-3" style="display:none;">
+                                <div class=headrightcont>State</div>
+                                <input id="txtPatientState" type="text" class="applitextfield2" name="State" value="" />
+                            </div>
+                            <div class="col-sm-6 col-md-3" style="display:none;">
+                                <div class="headrightcont">Zip Code</div>
+                                <input id="txtPatientZipCode" type="text" class="applitextfield2" name="ZipCode" value="" maxlength="5" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="headrightcont">&nbsp;</div>
+                                <button class="btn btn-success fnSearchForPatient1" onclick="fnSearchForPatient();">Search</button>
+                            </div>
+                        </div>
+                        <div class="SearchResultContainer1">
+                            <table class="table table-bordered table-scroll" id="tblPatientList">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>DOB</th>
+                                        <th>Email</th>
+                                        @*<th>Mob No</th>
+                                            <th>Home Phone</th>
+                                            <th>Address</th>*@
+                                    </tr>
+                                </thead>
+                                <tbody> </tbody>
+                            </table>
+
+                            <div id="div_noRecPatient" style="text-align: center; vertical-align: middle; line-height: 38px; display:none;"><label style='color:red'>There no records are found !!</label></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="hdToCC" value="" />
+                <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="_SearchDoctor" role="dialog">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="padding-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 id="headingSearch" class="modal-title">Search Doctor</h3>
+
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div id="searchDoctor">
+                        <div class="row SearchFilterContainer" id="SearchFilterContainer">
+                            <div class="col-sm-6 col-md-3">
+                                <div class=headrightcont>First Name</div>
+                                <input id="txtDoctorFirstName" type="text" class="applitextfield2" name="name" value="" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class=headrightcont>Last Name</div>
+                                <input id="txtDoctorLastName" type="text" class="applitextfield2" name="name" value="" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class=headrightcont>NPI No</div>
+                                <input id="txtDoctorNpiNo" type="text" class="applitextfield2" name="name" value="" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="headrightcont">Phone</div>
+                                <input id="txtDoctorPhone" type="text" class="applitextfield2 UsCellFormat" name="name" value="" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class=headrightcont>City</div>
+                                <input id="txtDoctorCity" type="text" class="applitextfield2" name="name" value="" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class=headrightcont>State</div>
+                                <input id="txtDoctorState" type="text" class="applitextfield2" name="name" value="" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="headrightcont">Zip Code</div>
+                                <input id="" type="text" class="applitextfield2 zipcode" name="name" value="" maxlength="5" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="headrightcont">&nbsp;</div>
+                                <button class="btn btn-success" onclick="fnSearchForDoctor();">Search</button>
+                            </div>
+                        </div>
+                        <div class="SearchResultContainer">
+                            <table class="table table-bordered" id="tblDoctorList">
+                                <thead>
+                                    <tr>
+                                        <td>First Name</td>
+                                        <td>Last Name</td>
+                                        <td>NPI No</td>
+                                        <td>Phone1 </td>
+                                        <td>Phone2</td>
+                                        <td>Address</td>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            <div id="div_noRec" style="text-align: center; vertical-align: middle; line-height: 38px; display:none;"><label style='color:red'>There no records are found !!</label></div>
+                            <button style="display:none;" class="btn btn-success" id="btnAddNewDoctor" onclick="fnShowAddDoctorPane();">Add New Doctor</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<script>
+        function fnSearchForDoctor() {
+            $.ajax({
+                url: '@Url.Action("SearchForDoctor", "GenericForm")',
+                type: 'POST',
+                data: {
+                    FirstName: $('#txtDoctorFirstName').val(),
+                    LastName: $('#txtDoctorLastName').val(),
+                    NpiNo: $('#txtDoctorNpiNo').val(),
+                    Phone: $('#txtDoctorPhone').val(),
+                    City: $('#txtDoctorCity').val(),
+                    State: $('#txtDoctorState').val(),
+                    ZipCode: $('#txtDoctorZipCode').val()
+                },
+                success: function (json) {
+                    $("#tblDoctorList tbody").html('');
+                    for (var i = 0; i < json.length; i++) {
+                        var row = "<tr onclick='fnSelectRow(this);'>" +
+                                           " <td>  " + json[i].First_Name + "</td>" +
+                                            "<td>" + json[i].Last_Name + "</td>" +
+                                            "<td>" + json[i].NPI_No + "</td>" +
+                                            "<td>" + json[i].Phone1 + " </td>" +
+                                            "<td>" + json[i].Phone2 + "</td>" +
+                                            "<td> <input type='hidden' name='' value='" + json[i].Doctor_Id + "' class='doctorid' />" + json[i].Address + "</td>" +
+                                        "</tr>";
+                        $("#tblDoctorList tbody").append(row);
+                    }
+                    if (json.length == 0) {
+                        $("#div_noRec").show();
+                        $("#btnAddNewDoctor").show();
+                    }
+                },
+                error: function (msg) {
+                }
+            });
+        }
+        function fnSelectRow(obj) {
+            $("#tblDoctorList tbody tr").removeClass('selectedRow');
+            $(obj).addClass('selectedRow');
+            //alert($($(obj).find('td')[0]).html() + " " + $($(obj).find('td')[1]).html());
+            $('#_SearchDoctor').modal('hide');
+            //alert($($(obj).find('input')[0]).val());
+            $("#Prescription_Doctor_Name").val($($(obj).find('td')[0]).html() + " " + $($(obj).find('td')[1]).html());
+            //$("#Condition_DoctorID").val($($(obj).find('input')[0]).val());
+        }
+        $("#tblGenericDMEForm_Patient_Name").keypress(function (e) {
+            var code = (e.keyCode ? e.keyCode : e.which);
+            if (code === 13) {
+                fnSearchForPatient();
+                $("#btnTo").click();
+                return false;
+                // $("#btn").trigger("click");
+            }
+        });
+        function fnShowDiv2() {
+            var flag = true;
+
+            var pName = document.getElementById("tblGenericDMEForm_Patient_Name");
+            var dob = document.getElementById("tblGenericDMEForm_DOB");
+            var Diagnosis_Desc = document.getElementById("DMEDiognosis_0__Diagnosis_Desc");
+            var ICD10Code = document.getElementById("DMEDiognosis_0__ICD10Code");
+            if (pName != undefined && dob != undefined && Diagnosis_Desc.value != undefined && ICD10Code.value != undefined) {
+                if (pName.value == null || pName.value == "" || pName.value == '') {
+                    $("#Patient_Name").show();
+                    $("#Patient_Name").text("Enter Patient Name");
+                    pName.focus();
+                    flag = false;
+                }
+                if (dob.value == null || dob.value == "" || dob.value == '') {
+                    $("#PatientDOB").show();
+                    $("#PatientDOB").text("Enter Date of Birth.");
+                    dob.focus();
+                    flag = false;
+                }
+                if (Diagnosis_Desc.value == null || Diagnosis_Desc.value == "" || Diagnosis_Desc.value == '') {
+                    $("#Diagnosis_Desc").show();
+                    $("#Diagnosis_Desc").text("Enter Diagnosis_Desc");
+                    Diagnosis_Desc.focus();
+                    flag = false;
+                }
+                if (ICD10Code.value == null || ICD10Code.value == "" || ICD10Code.value == '') {
+                    $("#ICD10Code").show();
+                    $("#ICD10Code").text("Enter ICD10 Code");
+                    ICD10Code.focus();
+                    flag = false;
+                }
+                else {
+                    $("#Patient_Name").text("");
+                    $("#Patient_Name").hide();
+                    $("#PatientDOB").text("");
+                    $("#PatientDOB").hide();
+                    $("#Diagnosis_Desc").hide();
+                    $("#Diagnosis_Desc").text("");
+                    $("#ICD10Code").hide();
+                    $("#ICD10Code").text("");
+                    $("#div_1").hide();
+                    $("#div_2").show();
+                    $("#pname").show();
+                    $("#div_3").hide();
+                    $("#div_4").hide();
+                    $("#div_5").hide();
+                    $("#div_6").hide();
+                    $("#div_7").hide();
+                }
+            }
+        }
+        function fnPrevious3() {
+
+
+            $("#div_1").show();
+            $("#div_2").hide();
+            $("#pname").hide();
+            $("#div_3").hide();
+            $("#div_4").hide();
+            $("#div_5").hide();
+            $("#div_6").hide();
+            $("#div_7").hide();
+
+        }
+        function fnShowDiv3() {
+            var flag = true;
+            var DMEGeraricName = document.getElementById("tblGenericDMEForm_DMEGeraricName");
+            var Description = document.getElementById("tblGenericDMEForm_Description");
+            var DMEModelNo = document.getElementById("tblGenericDMEForm_DMEModelNo");
+
+            if (DMEGeraricName.value == "" || DMEGeraricName.value == null || DMEGeraricName.value == '') {
+                $("#DMEGeraricName").show();
+                $("#DMEGeraricName").text("Enter DMEGeraric Name");
+                DMEGeraricName.focus();
+                flag = false;
+            }
+            else
+            if (Description.value == "" || Description.value == null || Description.value == '') {
+                $("#Description").show();
+                $("#Description").text("Enter Description");
+                Description.focus();
+                flag = false;
+            }
+            else 
+            if (DMEModelNo.value == "" || DMEModelNo.value == null || DMEModelNo.value == '') {
+                $("#DMEModelNo").show();
+                $("#DMEModelNo").text("Enter DMEModel No");
+                DMEModelNo.focus();
+                flag = false;
+            }
+            else {
+                $("#DMEGeraricName").hide();
+                $("#DMEGeraricName").text("");
+                $("#DMEGeraricName").hide();
+                $("#DMEGeraricName").text("");
+                $("#Description").hide();
+                $("#Description").text("");
+                $("#DMEModelNo").hide();
+                $("#DMEModelNo").text("");
+                $("#div_1").hide();
+                $("#div_2").hide();
+                $("#pname").show();
+                $("#div_3").show();
+                $("#div_4").hide();
+                $("#div_5").hide();
+                $("#div_6").hide();
+                $("#div_7").hide();
+                flag = true;
+            }
+           
+           
+
+        }
+        function fnPrevious4() {
+            $("#div_1").hide();
+            $("#div_2").show();
+            $("#pname").show();
+            $("#div_3").hide();
+            $("#div_4").hide();
+            $("#div_5").hide();
+            $("#div_6").hide();
+            $("#div_7").hide();
+        }
+        function fnShowDiv4() {
+            var flag = true;
+            var allVals = [];
+            $('#mydiv :checked').each(function () {
+                allVals.push($(this).val());
+            });
+            $('#CustomBrace_CustomBrace_Desc').val(allVals)
+
+            if (allVals == null || allVals == "" || allVals == undefined) {
+                $("#Reasonforcustom").show();
+                $("#Reasonforcustom").text("Please select an option");
+
+                flag = false;
+            }
+            else {
+
+                $("#Reasonforcustom").hide();
+                $("#Reasonforcustom").text("");
+                $("#div_1").hide();
+                $("#div_2").hide();
+                $("#pname").show();
+                $("#div_3").hide();
+                $("#div_4").show();
+                $("#div_5").hide();
+                $("#div_6").hide();
+                $("#div_7").hide();
+                flag = true;
+            }
+        
+        }
+
+   
+        function fnPrevious5() {
+            $("#div_1").hide();
+            $("#div_2").hide();
+            $("#pname").show();
+            $("#div_3").show();
+            $("#div_4").hide();
+            $("#div_5").hide();
+            $("#div_6").hide();
+            $("#div_7").hide();
+        }
+        function fnShowDiv5() {
+
+            var allVals1 = [];
+            $('#Previous :checked').each(function () {
+                allVals1.push($(this).val());
+            });
+            //alert(allVals1)
+            $('#PreviousTreatment_PreviousTreatment_Desc').val(allVals1)
+
+
+            var flag = true;
+
+            if (allVals1 == null || allVals1 == "" || allVals1 == undefined) {
+                $("#PreviousTreatments").show();
+                $("#PreviousTreatments").text("Please select an option");
+
+                flag = false;
+            }
+            else {
+
+                $("#PreviousTreatments").hide();
+                $("#PreviousTreatments").text("");
+                $("#div_1").hide();
+                $("#div_2").hide();
+                $("#pname").show();
+                $("#div_3").hide();
+                $("#div_4").hide();
+                $("#div_5").show();
+                $("#div_6").hide();
+                $("#div_7").hide();
+
+                flag = true;
+            }
+
+
+        }
+        function fnPrevious6() {
+
+            $("#div_1").hide();
+            $("#div_2").hide();
+            $("#pname").show();
+            $("#div_3").hide();
+            $("#div_4").show();
+            $("#div_5").hide();
+            $("#div_6").hide();
+            $("#div_7").hide();
+
+
+
+        }
+      
+        function fnPrevious7() {
+            $("#div_1").hide();
+            $("#div_2").hide();
+            $("#pname").show();
+            $("#div_3").hide();
+            $("#div_4").hide();
+            $("#div_5").show();
+            $("#div_6").hide();
+            $("#div_7").hide();
+        }
+       
+        function fnMedicalNecessity(obj, KneeBraceCustomForm_Id) {
+            if ($(obj).is(":checked")) {
+                var url = "@Url.Action("MedicalNecessityPDF", "KneeBraceCustomForm", new { Area = "DmeForm" })" + "?id=" + KneeBraceCustomForm_Id;
+                //fnShowPopupForDetail(url);
+                popupwindow(url, 'Medical Necessity', 1000, 800);
+            }
+        }
+</script>
+
+<script type="text/javascript">
+    $(document).on("click", ".PatientEmailSearchModal", function () {
+        var myBookId = $(this).data('id');
+        $("#btnTo").val(myBookId);
+        fnSearchForPatient();
+    });
+    $(document).ready(function () {
+        //$("#KneeBraceCustomForm_IsCustomOAMedialOffLoader_01208").focus();
+        //alert($('#hdnItemCode').val());
+        //alert($("#CustomBrace_CustomBrace_Desc").val());
+        
+        var selected = $("#CustomBrace_CustomBrace_Desc").val();
+        var pnamet = @ViewBag.userrole;
+        if (selected) {
+            var chkArray = selected.split(',');
+            for (var i = 0; i < chkArray.length; i++) {
+                // alert('KneeBraceCustomFormCustomBrace_Desc' + chkArray[i]);
+                $('#KneeBraceCustomFormCustomBrace_Desc' + chkArray[i]).prop('checked', 'true');
+            }
+
+        }
+        var selected1 = $("#PreviousTreatment_PreviousTreatment_Desc").val();
+        if (selected1) {
+            var chkPrevious = selected1.split(',');
+            for (var i = 0; i < chkPrevious.length; i++) {
+                // alert('PreviousTreatments1' + chkPrevious[i]);
+                $('#PreviousTreatments' + chkPrevious[i]).prop('checked', 'true');
+            }
+            PreviousTreatments1
+        }
+        //alert($("#Prescription_IsItemReqByTherapist").val());
+        //alert($("#Prescription_IsItemReqByDoctor").val());
+        //alert($("#Prescription_IsItemReqByPatient").val());
+        if ($("#Prescription_IsItemReqByTherapist").val() == "True") {
+            //alert("ok");
+            $('#Prescription1').prop('checked', true);
+            $("#Doctor_Name").hide();
+            $("#Therapist_Name").show();
+
+        }
+        else if ($("#Prescription_IsItemReqByDoctor").val() == "True") {
+            $("#Doctor_Name").show();
+            $("#Therapist_Name").hide();
+            $("#Prescription3").prop("checked", true);
+
+
+
+        }
+        else if ($("#Prescription_IsItemReqByPatient").val() == "True") {
+            $("#Doctor_Name").hide();
+            $("#Therapist_Name").hide();
+            $("#Prescription2").prop("checked", true);
+
+        }
+        else if (pnamet == 13) {
+            $("#Doctor_Name").hide();
+            $("#Therapist_Name").show();
+            $('#Prescription1').prop('checked', true);
+        }
+        else {
+            $("#Doctor_Name").hide();
+            $("#Therapist_Name").hide();
+        }
+
+    });
+</script>
+<script type="text/javascript">
+        var k1 = "";
+        var ccto = "";
+
+        function fnSearchForPatient() {
+
+            var patientName = $('#tblGenericDMEForm_Patient_Name').val();
+            if(patientName != "")
+            {
+                //var _patientNameArr = patientName.split(' ');
+                $('#txtPatientFirstName').val(patientName);
+                //$('#txtPatientLastName').val(_patientNameArr[1]);
+            }
+           
+
+            $.ajax({
+                url: '@Url.Action("SearchForPatientNew", "GenericForm")',
+                type: "GET",
+                dataType: "JSON",
+                data: {
+                    PatientName: $('#txtPatientFirstName').val(),
+                    //LastName: $('#txtPatientLastName').val(),
+                    SSN: $('#txtPatientSSN').val(),
+                    Email: $('#txtPatientEmail').val(),
+                    Phone: $('#txtPatientPhone').val(),
+                    City: $('#txtPatientCity').val(),
+                    State: $('#txtPatientState').val(),
+                    ZipCode: $('#txtPatientZipCode').val()
+                },
+                success: function (json) {
+                    var count = 1;
+                    $("#tblPatientList tbody").html('');
+                    for (var i = 0; i < json.length; i++) {
+                        var __date = json[i].DOB;
+                        //alert('DOB:' + __date);
+                        var dateString = __date.substr(6);
+                        var currentTime = new Date(parseInt(dateString));
+                        var month;
+                        if (currentTime.getMonth() < 10) {
+                            month = currentTime.getMonth() + 1;
+                            month = '0' + month.toString();
+                        }
+
+                        else
+                            month = currentTime.getMonth() + 1;
+                        var day;
+                        if (currentTime.getDate() < 10) {
+
+                            day = currentTime.getDate();
+                            day = '0' + day.toString();
+                        }
+                        else {
+                            day = currentTime.getDate();
+                        }
+
+                        var year = currentTime.getFullYear();
+                        var date = month + "/" + day + "/" + year;
+                        //alert(date);
+                        var row = "<tr onclick='fnSelectPatientRow(this);'>" +
+                                            "<td>" + count + "</td>" +
+                                           "<td>" + json[i].First_Name + "</td>" +
+                                            "<td>" + json[i].Last_Name + "</td>" +
+                                            "<td>" + date + "</td>" +
+                                             "<td>" + json[i].Email + "</td>" +
+                                            //"<td>" + json[i].MobNo + " </td>" +
+                                            //"<td>" + json[i].Email + "</td>" +
+                                            //"<td>" + json[i].MobNo + " </td>" +
+                                            //"<td>" + json[i].Phone2 + "</td>" +
+                                            "<td> <input type='hidden' name='' value='" + json[i].Patient_Id + "' class='patientID' /><input type='hidden' name='' value='" + json[i].Email + "' class='patientEmail' />" + json[i].Address + "</td>" +
+                                            "<input type='hidden' name='" + "hdn__" + count + "' id='" + "hdn__" + count + "' value='" + date + "' class='patientID' />" +
+                                        "</tr>";
+                        $("#tblPatientList tbody").append(row);
+                        count = count + 1;
+                    }
+                    if (json.length == 0) {
+                        $("#div_noRecPatient").show();
+                        $("#tblGenericDMEForm_Patient_Name").val("");
+                        $("#Condition_PatientId").val("");
+                    }
+                },
+                error: function (msg) {
+                },
+            });
+        }
+
+        function fnShowPatientSearch() {
+            $('#_SearchPatient').modal();
+
+            $('#txtPatientFirstName').val("");
+            $('#txtPatientLastName').val("");
+            //$('#txtPatientFirstDOB').val("");
+            $('#txtPatientLastSSN').val("");
+            $('#txtPatientPhone').val("");
+            $('#txtPatientCity').val("");
+            $('#txtPatientState').val("");
+            $('#txtPatientZipCode').val("");
+        }
+        //For Patient
+        function fnSelectPatientRow(obj) {
+            //alert(obj);
+            $("#tblPatientList tbody tr").removeClass('selectedRow');
+            $(obj).addClass('selectedRow');
+            $('#PatientEmailSearchModal').modal('hide');
+            $("#tblGenericDMEForm_Patient_Name").val($($(obj).find('td')[1]).html() + " " + $($(obj).find('td')[2]).html());
+            //$("#KneeBraceCustomForm_DOB").val($($(obj).find('td')[3]).html());
+            //$("#KneeBraceCustomForm_DOB").val($($(obj).find('input')[3]).val());
+           // $("#tblGenericDMEForm_Patient_Name").val($($(obj).find('input')[0]).val());
+            $("#tblGenericDMEForm_DOB").val($($(obj).find('td')[3]).html());
+            $("#CustomForm_PatientName").html($($(obj).find('td')[1]).html() + " " + $($(obj).find('td')[2]).html());
+            $("#CustomForm_DOB").html($($(obj).find('td')[3]).html());
+            //$("#PatientUser_Email").val($($(obj).find('input')[1]).val());
+
+            //if ($("#hdToCC").val() == "To") {
+            //    k1 = k1 + ";" + $($(obj).find('input')[1]).val();
+            //    $("#EmailTo").val(k1.substr(1));
+
+            //}
+            //else if ($("#hdToCC").val() == "CC") {
+            //    ccto = ccto + ";" + $($(obj).find('input')[1]).val();
+            //    $("#EmailCC").val(ccto.substr(1));
+
+            //}
+            $('#txtPatientFirstName').val("");
+        }
+
+
+
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#div_2").hide();
+        $("#pname").hide();
+        $("#div_3").hide();
+        $("#div_4").hide();
+        $("#div_5").hide();
+        $("#div_6").hide();
+        $("#div_7").hide();
+        $("#Reasonforcustom").hide();
+        $("#CheckBoxAsRadioButton").hide();
+        $("#Patient_Name").hide();
+        $("#PatientDOB").hide();
+        $("#Fitting_ThighCircumference").hide();
+        $("#Fitting_CalfCircumference").hide();
+        $("#Fitting_KneeOffset").hide();
+        $("#Fitting_KneeWidth").hide();
+        $("#CirclePosition").hide();
+        $("#Gender").hide();
+        $("#CompleteLOMN_Initial").hide();
+        //$("#Therapist_Name").hide();
+        // $("#Doctor_Name").hide();
+        $("#Diagnosis_Desc").hide();
+        $("#ICD10Code").hide();
+
+        $('#KneeBraceCustomForm_DOB').datepicker('setEndDate', new Date());
+
+
+    });
+</script>
+
+<script type="text/javascript">
+
+    $(function () {
+        $("#addRows").click(function () {
+            //counter = 2;
+            $("#dvDiagnosis").append("<div class='row'><div id='Div"
+                + counter + "' class='col-sm-4 col-md-5 form-group'>" +
+                "<input class='form-control Disease_nameForICD'  id='DMEDiognosis_" + counter + "__Diagnosis_Desc' name='DMEDiognosis[" + counter + "].Diagnosis_Desc' type='text'>" +
+                "</div><div id='Div1" + counter + "' class='col-sm-4 col-md-5 form-group'>" +
+                "<input class='form-control ICD_CodeForICD' id='DMEDiognosis_" + counter + "__ICD10Code' name='DMEDiognosis[" + counter + "].ICD10Code'  type='text'>" +
+                "</div><div id='Div2" + counter +
+                "' class='col-sm-4 col-md-2 form-group'> <button  class='addbutt' type='button' style='margin-top:0;' title='Remove New Diagnosis' onclick='removeRow("
+                + counter + ")'><i class='fa fa-remove' aria-hidden='true'></i></button><input type='hidden' id='DMEDiognosis_" + counter + "__DMEDiagnosis_Id' name='DMEDiognosis[" + counter + "].DMEDiagnosis_Id' value='' class='icdidForICD' /></div></div>")
+            BindOnFocusForICD();
+            counter++;
+        });
+    });
+
+    function removeRow(cnt) {
+        $("#Div" + cnt).remove();
+        $("#Div1" + cnt).remove();
+        $("#Div2" + cnt).remove();
+        $("#Div3" + cnt).remove();
+        $("#Div4" + cnt).remove();
+        counter--;
+    }
+    $('#Dialog-Box').dialog({
+        autoOpen: false,
+        height: 500,
+        width: 700,
+        modal: true
+    });
+
+    function OpenDialog() {
+
+
+        var cnt = 0;
+
+        if (counter == 1) {
+            cnt = counter - 1;
+        }
+        else if (counter > 1) {
+            cnt = counter - 1;
+        }
+
+        var name = $('#Name').val();
+        var address = $('#Address').val();
+        $('#Dialog-Name').val(name);
+        $('#Dialog-Address').val(address);
+        $('#Dialog-Box').dialog("open");
+
+        if ($("#DMEDiognosis_" + cnt + "__Diagnosis_Desc").val() != "" && $("#DMEDiognosis_" + cnt + "__Diagnosis_Desc").val() != " " && $("#DMEDiognosis_" + cnt + "__Diagnosis_Desc").val() != '' && $("#DMEDiognosis_" + cnt + "__Diagnosis_Desc").val() != ' ') {
+            $("#SearchStr").val($("#DMEDiognosis_" + cnt + "__Diagnosis_Desc").val());
+        } else {
+            $("#SearchStr").val($("#DMEDiognosis_" + cnt + "__ICD10Code").val());
+        }
+        fn_ICD10_Code_Search()
+    }
+
+
+    function SearchICD10() {
+
+        // $('#Dialog-Box').dialog("close");
+
+        @*$.ajax({
+            url: '@Url.Action("ActionName", "ControllerName")',
+            type: 'POST',
+            data: {
+                code: $('#Dialog-Name').val()
+
+            },
+            success: function (msg) {
+            },
+            error: function (msg) {
+            }
+        });*@
+
+
+        }
+
+
+
+    //var formData = $('#Create').serializeObject();
+    //$.extend(formData, { 'count': counter }); //Send Additional data
+
+
+
+
+    function closeDiv() {
+        $('#Dialog-Box').dialog("close");
+    }
+    function fnEnableDisableTextbox(obj, textbox) {
+        //$('.enabledisable').attr("disabled", "disabled");
+        //$('.enabledisable').val('');
+        //if ($(obj).is(":checked")) {
+        //    $('#' + textbox).removeAttr("disabled");
+        //    $('.checkone1').not(obj).attr("checked", false);
+        //}
+        $('.checkone1').not(obj).attr("checked", false);
+        $('#Prescription_IsItemReqByPatient').val(false)
+        $('#Prescription_IsItemReqByTherapist').val(true)
+        $('#Prescription_IsItemReqByDoctor').val(false)
+        $("#Doctor_Name").hide();
+        $("#Therapist_Name").show();
+    }
+    function fnEnableDisableTextbox2(obj, textbox) {
+        $('.checkone1').not(obj).attr("checked", false);
+        $('#Prescription_IsItemReqByTherapist').val(false)
+        $('#Prescription_IsItemReqByPatient').val(false)
+        $('#Prescription_IsItemReqByDoctor').val(true)
+        $("#Doctor_Name").show();
+        $("#Therapist_Name").hide();
+    }
+    function fnEnableDisableTextbox1(obj, textbox) {
+        $('.checkone1').not(obj).attr("checked", false);
+        $('#Prescription_IsItemReqByTherapist').val(false)
+        $('#Prescription_IsItemReqByDoctor').val(false)
+        $('#Prescription_IsItemReqByPatient').val(true)
+        $("#Doctor_Name").hide();
+        $("#Therapist_Name").hide();
+    }
+</script>
+
+<script type="text/javascript">
+
+        var ModelNo = "";
+        var Desc = "";
+
+        function fnchooseFreestyle(m) {
+
+
+            ModelNo = m;
+            //alert('ModelNo  ==>' + ModelNo);
+            //alert(ModelNo);
+            //Model=01208
+            if (ModelNo == '01208') {
+                //alert('ModelNo  ==>'+ ModelNo);
+                Desc = "";
+                Desc = "Custom OA Medial Off-Loader";
+                //Set the PO Item Description + PO Code
+                $("#hdnItemDesc").val(Desc);
+                $("#hdnItemCode").val(ModelNo);
+                //alert(Desc);
+            }
+            if (ModelNo == '01300') {
+                //alert('ModelNo  ==>' + ModelNo);
+                Desc = "";
+                Desc = "Custom OA Lateral Off-Loader";
+                //Set the PO Item Description + PO Code
+                $("#hdnItemDesc").val(Desc);
+                $("#hdnItemCode").val(ModelNo);
+                //alert(Desc);
+            }
+            if (ModelNo == '01207') {
+                //alert('ModelNo  ==>' + ModelNo);
+                Desc = "";
+                Desc = "Custom OA Lateral Off-Loader";
+                //Set the PO Item Description + PO Code
+                $("#hdnItemDesc").val(Desc);
+                $("#hdnItemCode").val(ModelNo);
+                //alert(Desc);
+            }
+
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetItemDesc", "KneeBraceCustomForm")',
+                data: "{'ItemDesc':'" + $("#hdnItemDesc").val().trim() + "','ItemCode':'" + $("#hdnItemCode").val().trim() + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    //alert(data);
+
+                    var desc = data;
+                },
+                error: function () {
+                    alert("Failed to load Item");
+                }
+            });
+            //End
+        }
+
+
+</script>
+
+
+<script type="text/javascript">
+
+    function validateInputs() {
+
+        var flag = true;
+        if (($("#Prescription2").is(':checked')) || ($("#Prescription_Therapist_Name").val() != "") || ($("#Prescription_Doctor_Name").val() != "")) {
+            //alert(1);
+            flag = true;
+
+        }
+        else {
+            // alert(2);
+            $("#ItemReqBy").text("Please select an option");
+            flag = false;
+        }
+        //var CirclePosition = document.getElementById("KneeBraceCustomForm_CirclePosition");
+        //var CirclePosition = document.getElementById("KneeBraceCustomForm_CirclePosition");
+        //var Gender = document.getElementById("KneeBraceCustomForm_Gender");
+        //var Initial = document.getElementById("Prescription_CompleteLOMN_Initial");
+        //var Therapist_Name = document.getElementById("Prescription_Therapist_Name");
+        //var Doctor = document.getElementById("Prescription_Doctor_Name");
+
+
+
+
+
+
+
+
+
+        //if (CirclePosition != undefined) {
+        //    if (!CirclePosition.checked) {
+        //        $("#CirclePosition").show();
+        //        $("#CirclePosition").text("Select Circle Position");
+        //        CirclePosition.focus();
+        //        flag = false;
+        //    }
+        //    else {
+        //        $("#CirclePosition").text("");
+        //        $("#CirclePosition").hide();
+        //    }
+        //}
+
+        //if (Gender != undefined) {
+        //    if (!Gender.checked) {
+        //        $("#Gender").show();
+        //        $("#Gender").text("Select Gender");
+        //        Gender.focus();
+        //        flag = false;
+        //    }
+        //    else {
+        //        $("#Gender").text("");
+        //        $("#Gender").hide();
+        //    }
+        //}
+
+
+
+
+        //if (Initial != undefined) {
+        //    if (Initial.value == null || Initial.value == "" || Initial.value == '') {
+        //        $("#CompleteLOMN_Initial").show();
+        //        $("#CompleteLOMN_Initial").text("Enter Initial Value.");
+        //        Initial.focus();
+        //        flag = false;
+        //    }
+        //    else {
+        //        $("#CompleteLOMN_Initial").text("");
+        //        $("#CompleteLOMN_Initial").hide();
+        //    }
+        //}
+
+
+        //if (dob != undefined) {
+        //    if (dob.value == null || dob.value == "" || dob.value == '') {
+        //        $("#PatientDOB").show();
+        //        $("#PatientDOB").text("Enter Date of Birth.");
+        //        dob.focus();
+        //        flag = false;
+        //    }
+        //    else {
+        //        $("#PatientDOB").text("");
+        //        $("#PatientDOB").hide();
+        //    }
+        //}
+
+        //if (Initial != undefined) {
+        //    if (Initial.value == null || Initial.value == "" || Initial.value == '') {
+        //        $("#CompleteLOMN_Initial").show();
+        //        $("#CompleteLOMN_Initial").text("Enter Initial Value.");
+        //        Initial.focus();
+        //        flag = false;
+        //    }
+        //    else {
+        //        $("#CompleteLOMN_Initial").text("");
+        //        $("#CompleteLOMN_Initial").hide();
+        //    }
+        //}
+        ////////////////////////////////////////
+
+        //if ($("#Prescription_IsItemReqByTherapist").is(':checked')) {
+        //    if (Therapist_Name.value == "") {
+        //        $("#Therapist_Name").show();
+        //        $("#Therapist_Name").text("Enter Therapist Name");
+        //        Therapist_Name.focus();
+        //        flag = false;
+        //    }
+        //    else {
+        //        $("#Therapist_Name").hide();
+        //    }
+        //}
+        //else if ($("#Prescription_IsItemReqByDoctor").is(':checked')) {
+
+        //    if (Doctor.value == "") {
+
+        //        $("#Doctor_Name").show();
+        //        $("#Doctor_Name").text("Enter Doctor Name");
+        //        Doctor.focus();
+        //        flag = false;
+
+        //    }
+        //    else {
+        //        $("#Doctor_Name").text("");
+        //        $("#Doctor_Name").hide();
+        //    }
+        //}
+
+        //if ($("#Prescription_IsItemReqByPatient").is(':checked')) {
+        //    if ((Doctor.value == "") && (Therapist_Name.value == "")) {
+        //        return true;
+        //    }
+        //}
+        //else if ((Therapist_Name.value == "") && (Doctor.value == "")) {
+        //    $("#Therapist_Name").show();
+        //    $("#Therapist_Name").text("Enter Therapist Name");
+        //    Therapist_Name.focus();
+        //    $("#Doctor_Name").show();
+        //    $("#Doctor_Name").text("Enter Doctor Name");
+        //    Doctor.focus();
+        //    flag = false;
+        //}
+        //else {
+        //    flag = true;
+        //}
+
+
+        return flag;
+    }
+
+</script>

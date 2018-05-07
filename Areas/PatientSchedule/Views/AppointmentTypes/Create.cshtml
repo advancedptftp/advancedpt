@@ -1,0 +1,194 @@
+﻿@model DataLayer.Models.tblMPatSchdAppointmentType
+
+@{
+    ViewBag.Title = "Create";
+}
+<script src="~/Scripts/farbtastic/dataset.js"></script>
+<script src="~/Scripts/farbtastic/color_classifier.js"></script>
+<script src="~/Scripts/farbtastic/farbtastic.js"></script>
+<link href="~/Scripts/farbtastic/farbtastic.css" rel="stylesheet" />
+
+<section class="bodyinner">
+    <div class="container">
+       
+        <div class="bodyright" style="width:100%">
+
+            <div class="report-form clearfix">
+                <h2 class="text-center">Create Appointment Type</h2>
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.Hidden("CreatedOn", DateTime.Now)
+                    if (ViewBag.Error != null)
+                    {
+                        @Html.Raw(ViewBag.Error)
+                    }
+                    <div class="row">
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Short Name")
+                            @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @onchange = "Names()" })
+                            @*@Html.ValidationMessageFor(model => model.First_Name)*@
+                            <span id="ShortName" style="color:red"> Enter Short Name </span>
+                        </div>
+                        
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Description")
+                            @Html.TextBoxFor(model => model.Description, new { @class = "form-control", @onchange = "Descriptionss()" })
+                            @*@Html.ValidationMessageFor(model => model.Phone1)*@
+                            <span id="Description1" style="color:red"> Enter Description </span>
+                        </div>
+                        
+                    </div>
+                    <div class="row">
+
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Appointment Length in Minutes")
+                            @Html.TextBoxFor(model => model.AppointmentMinute, new { @class = "form-control ChargedHours" , onblur = "fn_Minut_Validation();"})
+                            @*@Html.ValidationMessageFor(model => model.Phone1)*@
+                        </div>
+                       
+                    </div>
+                     <div id="divErrMsg_A5" style="display:none;"><span id="spanA5" style="color:red;"></span></div>
+                    <div class="row">
+                        <div class="col-sm-11 form-group">
+                            <div style="width:100%">
+                                <div style="width:50%;float:left">
+                                    @Html.Label("Color Code")
+                                    @Html.TextBoxFor(model => model.ColorCode, new { @class = "form-control" })
+                                    @*@Html.ValidationMessageFor(model => model.Phone1)*@
+                                    <div class="form-group" id="colorDiv">                                   
+                                        <input type="text" id="iscolor" name="isColor" value="" style="width:30px; height:30px;" readonly="readonly" />
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="exampleInputUserType1">Color Name :</label><span style="color: red">*</span>
+                                        <input type="text" id="Colorname" name="Colorname" value="" class="form-control" />
+                                    </div>
+                                </div>
+                                <div style="width:50%;float:left; padding-left:20px;">
+                                    <div id="picker"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="clearfix"></div>
+                            
+                        </div>
+                    </div>
+                     <div class="row">
+                         <div class="col-sm-6 form-group">
+                             @Html.Label("Is Active")
+                             @Html.CheckBoxFor(model => model.IsActive, new { @class = "checkbox-inline", @checked = true })
+                         </div>
+                    </div>
+                    <div class="subbutt">
+                        <input type="submit" onclick="return validateInputs()" value="Create" class="btn btn-orange pull-right" />
+
+                    </div>
+                    <p>@Html.ActionLink("Back to List", "Index")</p>
+                }
+            </div>
+
+
+
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</section>
+<script>
+    $(document).ready(function () {
+
+        $('#picker').farbtastic('#ColorCode');
+        debugger;
+        var picker = $.farbtastic('#picker');  //picker variable
+        picker.linkTo(onColorChange); //link to callback
+
+        function onColorChange(color) {
+            var domHex = color;
+            window.classifier = new ColorClassifier();
+            get_dataset("@Url.Content("~/Scripts/farbtastic/dataset.js")", function (data) {//make sure your dataset is local
+                window.classifier.learn(data);
+                var theColorName = window.classifier.classify(domHex);
+                $('#Colorname').val(theColorName);
+                $('#ColorCode').val(color);
+                $('.field-validation-error').html('');
+
+                $('#iscolor').css('background-color', $('#ColorCode').val());
+            });
+        }
+        $("#Description1").hide();
+        $("#ShortName").hide();
+    });
+    function Names() {
+        $("#ShortName").hide();
+    }
+    function Descriptionss() {
+        $("#Description1").hide();
+    }
+    function fn_Minut_Validation() {
+        $("#spanA5").text('');
+        $("#divErrMsg_A5").hide();
+        //alert('minuite  == ' + $("#AppointmentMinute").val());
+        //For Month
+        if ($("#AppointmentMinute").val() != "") {
+            if ($("#AppointmentMinute").val() >= 1 && $("#AppointmentMinute").val() <= 60) {
+                for (var i = 1; i <= 9; i++) {
+                    if ($("#AppointmentMinute").val() == i) {
+                        $("#AppointmentMinute").val("0" + i);
+                    }
+                }
+                for (var i = 10; i <= 60; i++) {
+                    if ($("#AppointmentMinute").val() == i) {
+                        $("#AppointmentMinute").val(i);
+                    }
+                }
+                $("#spanA5").text('');
+                $("#divErrMsg_A5").hide();
+                $("#date").focus();
+            }
+            else {
+                $("#spanA5").text('Minute always less than 60 minute');
+                $("#divErrMsg_A5").show();
+                $("#AppointmentMinute").val(' ');
+                $("#AppointmentMinute").focus();
+            }
+        }
+    }
+
+</script>
+<script type="text/javascript">
+
+    function validateInputs() {
+        var flag = true;
+        
+        if ($("#Name").val() == "") {
+
+            $("#ShortName").show();
+            $("#Name").focus();
+            flag = false;
+        }
+       
+        else if ($("#Description").val() == "") {
+
+            $("#Description1").show();
+            $("#Description").focus();
+            flag = false;
+        }
+        else if ($("#AppointmentMinute").val() == "") {
+            $("#AppointmentMinute").val(' ');
+           // $("#Description1").show();
+            //$("#AppointmentMinute").focus();
+            $("#spanA5").text('Enter Minutes');
+            $("#divErrMsg_A5").show();
+            $("#AppointmentMinute").val(' ');
+            $("#AppointmentMinute").focus();
+            flag = false;
+        }
+
+        return flag;
+    }
+</script>

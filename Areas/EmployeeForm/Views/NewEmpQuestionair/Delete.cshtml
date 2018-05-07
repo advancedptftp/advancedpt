@@ -1,0 +1,176 @@
+﻿@model DataLayer.Models.tblTNewEmpQuestionair
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>tblTNewEmpQuestionair</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.EmpFirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EmpFirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EmpLastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EmpLastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PositionTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PositionTitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PositionDesc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PositionDesc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PersonalInterestDesc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PersonalInterestDesc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IdentifiesMeOrBelieveInDesc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IdentifiesMeOrBelieveInDesc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MostLikingsInCompanyDesc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MostLikingsInCompanyDesc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PatientCaringReasonsDesc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PatientCaringReasonsDesc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BecamePTReasonDesc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BecamePTReasonDesc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PatientWorkingWithMeDesc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PatientWorkingWithMeDesc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PatientComingForTreatmentDesc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PatientComingForTreatmentDesc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HaveProfilePicture)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HaveProfilePicture)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ApprovedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ApprovedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMUser.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMUser.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMUser1.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMUser1.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMUser2.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMUser2.UserName)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

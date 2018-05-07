@@ -1,0 +1,207 @@
+﻿@model DataLayer.Models.tblMLocation
+
+@{
+    ViewBag.Title = "";
+
+}
+
+<section class="bodyinner">
+    <div class="container">
+
+        <div class="user-form clearfix">
+
+            <h2 class="text-center">Create Location</h2>
+
+            @using (Html.BeginForm("Create", "LocationMaster", FormMethod.Post, new { id = "LocationMaster", name = "LocationMaster" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.Hidden("CreatedOn", DateTime.Now)
+                @Html.Hidden("WorkingDays");
+                                           if (ViewBag.Error != null)
+                                           {
+                                            @Html.Raw(ViewBag.Error)
+                                           }
+                                        <div class="row">
+
+                                            <div class="col-sm-5 form-group">
+                                                @Html.Label("Location:")
+                                                @Html.TextBoxFor(m => m.Location_Name, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(model => model.Location_Name)
+                                            </div>
+                                            <div class="col-sm-5 form-group">
+                                                @Html.Label("Address:")
+                                                @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(model => model.Address)
+                                            </div>
+
+                                        </div>
+                                        <div style="display:none">
+
+
+                                            <div class="row">
+                                                @*<div class="col-sm-9 form-group">
+                                                        @Html.Label("Working Days:")
+                                                        @foreach (var items in ViewBag.WorkingDays)
+                                                        {
+                                                            <input id="chk@(items.Value)" type="checkbox" class="chk" value="@items.Value" checked="@items.Selected" name="@items.Text" />
+                                                            @items.Text
+                                                        }
+                                                    </div>*@
+
+                                                <div class="col-sm-9 form-group">
+                                                    @Html.Label("Working Days:")<br />
+                                                    5
+                                                    <input id="RbWorkingDays5" type="radio" name="WorkingDays" value="2,3,4,5,6" />
+                                                    6
+                                                    <input id="RbWorkingDays6" type="radio" name="WorkingDays" value="2,3,4,5,6,7" />
+                                                    @*<input id="RbWorkingDays6" type="radio" name="Rb6WDays" />*@
+
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-5 form-group" id="div3DaysOption">
+                                                    @*form-group*@
+                                                    @Html.Label("Options for 3 Days a week:")
+                                                    <select class="form-control" id="ThreeDaysAWeek" name="ThreeDaysAWeek"></select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-5 form-group" id="div2DaysOption">
+                                                    @Html.Label("Options for 2 Days a week:")
+                                                    <select class="form-control" id="TwoDaysAWeek" name="TwoDaysAWeek"></select>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="row">
+                                                <div class="col-sm-5 form-group" id="div1DaysOption">
+                                                    @*form-group*@
+                                                    @Html.Label("Options for 1 Day a week::")
+                                                    <select class="form-control" id="OneDayAWeek" name="OneDayAWeek"></select>
+                                                    @*@Html.DropDownList("OneDayAWeek")*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-5 form-group">
+                                                @Html.Label("Is Active:")
+                                                @Html.CheckBoxFor(m => m.IsActive, new { @class = "chk" })
+                                            </div>
+                                        </div>
+
+                                        <div class="clearfix"></div>
+
+                                        <div class="subbutt">
+                                            <input type="submit" name="btnSave" id="btnSave" value="Create" class="btn btn-orange pull-right" />
+
+                                        </div>
+
+                                        <p>@Html.ActionLink("Back to list", "Index")</p>
+            }
+        </div>
+    </div>
+</section>
+<script>
+
+
+    $(document).ready(function () {
+        $('#ThreeDaysAWeek').html("");
+        $('#div3DaysOption').hide();
+        $('#TwoDaysAWeek').html("");
+        $('#div2DaysOption').hide();
+        $('#OneDayAWeek').html("");
+        $('#div1DaysOption').hide();
+    });
+</script>
+<script type="text/javascript">
+    //$("#btnSave").click(function () {
+    //    var selectedDays = new Array();
+    //    var n = $(".chk:checked").length;
+    //    if (n > 0) {
+    //        $(".chk:checked").each(function () {
+    //            selectedDays.push($(this).val());
+    //        });
+    //    }
+    //    $("#WorkingDays").val(selectedDays);
+    //    alert(selectedDays);
+    //});
+
+    $("#RbWorkingDays5").click(function () {
+        $('#ThreeDaysAWeek').html("");
+        $('#div3DaysOption').show();
+        $('#ThreeDaysAWeek').append('<option value="2,4,6">Mon,Wed,Fri</option>');
+        $("#WorkingDays").val("2,3,4,5,6");
+    }
+        );
+    $("#RbWorkingDays6").click(function () {
+        $('#ThreeDaysAWeek').html("");
+        $('#div3DaysOption').show();
+        $('#ThreeDaysAWeek').append('<option value="2,4,6">Mon,Wed,Fri</option>');
+        $('#ThreeDaysAWeek').append('<option value="3,5,7">Tue,Thur,Sat</option>');
+        $("#WorkingDays").val("2,3,4,5,6,7");
+    }
+        );
+
+    $("#RbWorkingDays5").click(function () {
+        $('#TwoDaysAWeek').html("");
+        $('#div2DaysOption').show();
+        $('#TwoDaysAWeek').append('<option value="2,4">Mon,Wed</option>');
+        $('#TwoDaysAWeek').append('<option value="2,5">Wed,Thur</option>');
+        $('#TwoDaysAWeek').append('<option value="2,6">Mon,Fri</option>');
+        $('#TwoDaysAWeek').append('<option value="3,5">Tue,Thur</option>');
+        $('#TwoDaysAWeek').append('<option value="3,6">Tue,Fri</option>');
+        $('#TwoDaysAWeek').append('<option value="4,6">Wed,Fri</option>');
+
+    }
+        );
+
+
+    $("#RbWorkingDays6").click(function () {
+        $('#2DaysOption').html("");
+        $('#div2DaysOption').show();
+        $('#TwoDaysAWeek').append('<option value="2,4">Mon,Wed</option>');
+        $('#TwoDaysAWeek').append('<option value="2,5">Mon,Thur</option>');
+        $('#TwoDaysAWeek').append('<option value="2,6">Mon,Fri</option>');
+        $('#TwoDaysAWeek').append('<option value="2,7">Mon,Sat</option>');
+        $('#TwoDaysAWeek').append('<option value="3,5">Tue,Thur</option>');
+        $('#TwoDaysAWeek').append('<option value="3,6">Tue,Fri</option>');
+        $('#TwoDaysAWeek').append('<option value="3,6">Tue,Sat</option>');
+        $('#TwoDaysAWeek').append('<option value="4,6">Wed,Fri</option>');
+        $('#TwoDaysAWeek').append('<option value="4,7">Wed,Sat</option>');
+        $('#TwoDaysAWeek').append('<option value="5,7">Thur,Sat</option>');
+
+    }
+        );
+
+    //$().click({
+    //    ("#1DaysOption")
+    //}
+    //    )
+
+
+    $("#RbWorkingDays5").click(function () {
+        $('#OneDayAWeek').html("");
+        $('#div1DaysOption').show();
+        $('#OneDayAWeek').append('<option value="2">Mon</option>');
+        $('#OneDayAWeek').append('<option value="3">Tue</option>');
+        $('#OneDayAWeek').append('<option value="4">Wed</option>');
+        $('#OneDayAWeek').append('<option value="5">Thur</option>');
+        $('#OneDayAWeek').append('<option value="6">Fri</option>');
+
+    }
+        );
+
+    $("#RbWorkingDays6").click(function () {
+        $('#OneDayAWeek').html("");
+        $('#div1DaysOption').show();
+        $('#OneDayAWeek').append('<option value="2">Mon</option>');
+        $('#OneDayAWeek').append('<option value="3">Tue</option>');
+        $('#OneDayAWeek').append('<option value="4">Wed</option>');
+        $('#OneDayAWeek').append('<option value="5">Thur</option>');
+        $('#OneDayAWeek').append('<option value="6">Fri</option>');
+        $('#OneDayAWeek').append('<option value="7">Sat</option>');
+    }
+        );
+
+</script>

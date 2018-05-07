@@ -1,0 +1,122 @@
+﻿@using DataLayer;
+@model DataLayer.Models.PatientCallrecord
+@{
+    ViewBag.Title = "CallRecord";
+  
+}
+
+<section class="bodyinner">
+    <div class="container">
+        <div class="bodyleft">
+
+            @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+        </div>
+        @using (@Html.BeginForm("CallRecord", "PatientActivation", FormMethod.Post))
+        {
+            <div class="bodyright">
+                <div class="report-form clearfix">
+                    @if (ViewBag.Error != null)
+                    {
+                        @Html.Raw(ViewBag.Error)
+                    }
+
+                    @Html.HiddenFor(e => e.PatientConditionID)
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6 form-group">
+                            <label>Last Name</label>
+                            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.LastName)
+                        </div>
+
+                        <div class="col-sm-6 col-md-6 form-group">
+                            <label for="date">First Name</label>
+                            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.FirstName)
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6 form-group">
+                            <label>Mobile No:</label>
+                            @Html.TextBoxFor(m => m.MobNo, new { @class = "form-control UsCellFormat" })
+                            @Html.ValidationMessageFor(m => m.MobNo)
+                        </div>
+
+                        <div class="col-sm-6 form-group">
+                            @Html.LabelFor(m => m.Email, new { })
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control input-validation-error" })
+                            @Html.ValidationMessageFor(m => m.Email)
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6 form-group">
+                            <label>Call Date</label>
+                            @*@Html.TextBoxFor(m => m.CallDate, new { @class = "form-control datetimepicker datepicker-bg", style = "width:100%;", @Value = (@Model.CallDate == null || @Model.CallDate == DateTime.MinValue) ? DateTime.Now.ToString("MM/dd/yyyy") : @Model.CallDate.GetExactValue(), @readonly = true })*@
+                            @Html.TextBoxFor(m => m.CallDate, new { @class = "form-control datetimepicker datepicker-bg", style = "width:100%;" })
+                            @Html.ValidationMessageFor(m => m.CallDate)
+                        </div>
+
+
+                        <div class="col-sm-6 col-md-6 form-group">
+                            <label>Answer Type</label>
+                            @Html.DropDownListFor(m => m.AnswerType, from AnswerType state in Enum.GetValues(typeof(AnswerType))
+                                                                     select new SelectListItem() { Text = state.ToCustomString(), Value = Convert.ToInt32((state)).ToString() }, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.AnswerType)
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6 form-group">
+                            <label>Note:</label>
+                            @Html.TextAreaFor(m => m.Note, new { @class = "form-control" })
+                        </div>
+                        <div class="col-sm-6 col-md-6 form-group">
+                            <label>Doctor:</label>
+                            @Html.DropDownList("Doctor_Id")
+
+                        </div>
+                    </div>
+
+                    <div class="subbutt">
+                        <input type="submit" id="btnSubmit" class="btn btn-orange pull-right" value="Submit" />
+                        <div class="clearfix"></div>
+                    </div>
+
+                </div>
+            </div>
+        }
+
+    </div>
+</section>
+<script>
+    $(document).ready(function () {
+        $("#Doctor_Id").addClass("form-control")
+        if($("#PatientConditionID").val() != "0")
+        {
+            $("#LastName").attr("disabled", "disabled");
+            $("#FirstName").attr("disabled", "disabled");
+            $("#Doctor_Id").attr("disabled", "disabled");
+            $("#MobNo").attr("disabled", "disabled");
+            $("#Email").attr("disabled", "disabled");
+        }
+        //var fullDate = new Date();
+        //var now = new Date(Date.now());
+
+        //var formatted = now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
+
+        //var twoDigitMonth = fullDate.getMonth() + ""; if (twoDigitMonth.length == 1) twoDigitMonth = "0" + twoDigitMonth;
+        //var twoDigitDate = fullDate.getDate() + ""; if (twoDigitDate.length == 1) twoDigitDate = "0" + twoDigitDate;
+        //var currentDate = twoDigitDate + "-" + twoDigitMonth + "-" + fullDate.getFullYear();
+        //$("#CallDate").val(currentDate + " " + formatted);
+    });
+
+    $("#btnSubmit").submit(function () {
+        $("#LastName").removeAttr("disabled");
+        $("#FirstName").removeAttr("disabled");
+        $("#Doctor_Id").removeAttr("disabled");
+        $("#MobNo").removeAttr("disabled");
+        $("#Email").removeAttr("disabled");
+        });
+</script>

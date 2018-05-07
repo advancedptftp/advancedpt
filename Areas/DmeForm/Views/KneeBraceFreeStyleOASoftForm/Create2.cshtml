@@ -1,0 +1,393 @@
+﻿@model DataLayer.Models.DMEOfficeStaffOrderFreeStyle
+@using DataLayer;
+@{
+    ViewBag.Title = "Knee Brace Custom Order";
+}
+
+
+
+<section class="bodyinner">
+    @*@using (Html.BeginForm("Create", "KneeBraceCustomForm", FormMethod.Post, new { name = "Create", id = "Create" }))
+    {*@
+       
+   
+        <div class="bodyright" style="width:100%">
+
+            <div class="report-form clearfix">
+                <h2>FreeStyle OA Soft Knee Brace Order Form HCPCS Code: L1843</h2>
+                <div class="p_bot15"><strong>*MEDICARE PATIENTS: DO NOT PROCEED IF THEY HAVE BEEN ISSUED A ‘KNEE BRACE’ IN THE PAST 5 YEARS.</strong></div>
+                <div class="row" id="pname">
+                    <div class="col-sm-4">
+                        Patient Name: @Html.Label("patientname", (string)@ViewBag.patientname)
+                    </div>
+                    <div class="col-sm-4">
+                        DOB: @Html.Label("dob", (string)@ViewBag.dob)
+
+                    </div>
+                    <div class="col-sm-4">
+                        <button type="button" id="btnTo" class="btn btn-primary pull-right" onclick="return fnShowpandinglist();">DME LOMN Pending List</button>
+
+                    </div>
+                </div>
+                <hr>
+              @using (Html.BeginForm("Create2", "KneeBraceFreeStyleOASoftForm", FormMethod.Post, new { name = "Create", id = "Create" }))
+              { 
+                <div id="dvFirst">
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(e => e.MCPreApproval.DMEOfficeStaffMC_Id)
+                   
+                    @*@Html.Hidden("DMEForm_Id", ViewData["id"].ToString())*@
+                    @Html.Hidden("CreatedOn", DateTime.Now)
+                    @Html.Hidden("DMEFormCode", "L1846")                    
+                  @Html.HiddenFor(e => e.Order.IsFaxLOMN)
+                    @Html.HiddenFor(e => e.MCPreApproval.DMEOfficeStaffMC_Id)
+                    @Html.HiddenFor(e => e.Order.DMEForm_Id)
+                    @Html.HiddenFor(e => e.Order.DMEOfficeStaffOrder_Id)
+                    @Html.HiddenFor(e => e.Order.DMEFormCode)
+                    @Html.HiddenFor(e => e.Order.CreatedOn)
+                    @Html.HiddenFor(e => e.KneeBraceFreeStyleOASoftForm.Patient_Id)
+                    @Html.HiddenFor(e => e.KneeBraceFreeStyleOASoftForm.KneeBraceFreeStyleOASoftForm_Id)
+                    @Html.HiddenFor(e => e.MCPreApproval.IsRegionC)
+                    @if (ViewBag.Error != null)
+                    {
+                        @Html.Raw(ViewBag.Error)
+                    }
+                    
+                    <div id="dvMC" >
+                        <div class="outerf">
+                            <div class="borderbox">
+                                <div class="hiddenform">
+                               
+                                    <div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-4">Patient’s MC#:</div>
+                                            <div class="col-sm-6">
+                                                @Html.TextBoxFor(m => m.MCPreApproval.PatientMCNo, new { @class = "form-control", @disabled = "disabled", @onclick = "hide()" })
+                                                <span id="PatientMCNo_Msg" class="validateMsg"></span>
+                                            </div>
+                                        </div>
+                                        @*<div class="row form-group">
+                                            <div class="col-sm-3">
+                                                <h3>Check Driver’s License Region C:</h3>
+                                            </div>
+                                            <div class="col-sm-3 radiosec">
+                                                @Html.RadioButtonFor(m => m.MCPreApproval.IsRegionC, true, new { @class = "radio-custom", @id = "IsRegionCYes" })
+                                                <label for="IsRegionCYes" class="radio-custom-label">Yes</label>
+                                               
+                                            </div>
+                                            <div class="col-sm-3 radiosec">
+                                                @Html.RadioButtonFor(m => m.MCPreApproval.IsRegionC, false, new { @class = "radio-custom", @id = "IsRegionCNo" })
+                                                <label for="IsRegionCNo" class="radio-custom-label">No</label>
+                                            </div>
+
+                                        </div>*@
+                                        <div class="row form-group">
+                                            <div class="col-sm-4">
+                                                <h3>Check Driver’s License Region C:</h3>
+                                            </div>
+                                            <div class="col-sm-2 radiosec ">
+                                                @Html.RadioButtonFor(m => m.MCPreApproval.IsRegionC, 1, new { @class = "radio-custom", @id = "IsRegionCYes", @onclick = "funcRegionCVal('IsRegionCYes');" })
+                                                <label for="IsRegionCYes" class="radio-custom-label">Yes</label>
+
+                                            </div>
+                                            <div class="col-sm-2 radiosec ">
+                                                @Html.RadioButtonFor(m => m.MCPreApproval.IsRegionC, 0, new { @class = "radio-custom", @id = "IsRegionCNo", @onclick = "funcRegionCVal('IsRegionCNo');" })
+                                                <label for="IsRegionCNo" class="radio-custom-label">No</label>
+                                            </div>
+                                            <div>
+                                                <span id="span_IsRegionC" class="validateMsg"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-12">
+                                                Call MC Rep: 1-866-270-4909 Tax ID: 13056
+                                                PTAN#: 6240770001 NPI: 1265657555 REGION C
+                                                Confirm: “No L1846, etc. past 5 yrs.” SEE REF GUIDE
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-4">
+                                                <h3>Same or similar device issued in the past 5 years?</h3>
+                                            </div>
+                                            <div class="col-sm-2 radiosec">
+                                                @Html.RadioButtonFor(m => m.MCPreApproval.IsSimilarDeviceIssued, true, new { @class = "radio-custom", @id = "IsSimilarDeviceIssuedYes", @onclick = "hide1()" })
+                                                <label for="IsSimilarDeviceIssuedYes" class="radio-custom-label">Yes</label>
+
+                                            </div>
+                                            <div class="col-sm-2 radiosec">
+                                                @Html.RadioButtonFor(m => m.MCPreApproval.IsSimilarDeviceIssued, false, new { @class = "radio-custom", @id = "IsSimilarDeviceIssuedNo", @onclick = "hide1()" })
+                                                <label for="IsSimilarDeviceIssuedNo" class="radio-custom-label">No</label>
+                                            </div>
+                                            <div>
+                                                <span id="span_IsSimilarDeviceIssued" class="validateMsg"></span>
+                                            </div>
+
+                                        </div>
+                                       
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="borderbox">
+                                <div class="hiddenform">
+
+                                    <div class="row form-group">
+                                        <div class="col-sm-4"><h3>Letter of Medical Necessity:</h3></div>
+                                        <div class="radiosec">
+                                            <input id="Order_IsFaxLo" class="checkbox-custom" name="IsFaxLOMN" type="checkbox" value="true" onclick="fnMedicalNecessity(this,@Model.Order.DMEForm_Id)">
+
+                                            <label for="Order_IsFaxLo" class="checkbox-custom-label">
+                                                <span>Generate</span>
+
+                                            </label>
+                                            <span id="span_Order_IsFaxLo" class="validateMsg"></span>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(m => m.Order.FaxLOMN_Date, new { @class = "form-control datepicker datepicker-bg DenyAdvanceDateSelection", @placeholder = "MM/dd/YYYY", style = "width:100%;", @Value = @Model.Order.FaxLOMN_Date.GetExactValue(), @onclick = "hide3()" })
+                                            <span id="FaxLOMN_Date" class="validateMsg"></span>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="subbutt">
+                                @*<button type="button" class="btn btn-primary pull-left" onclick="GotoPrescription()">Back</button>*@
+                                <button type="submit" onclick="return validateInputs()" class="btn btn-orange pull-right">Submit</button>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+
+
+
+
+
+                    </div>
+                    <hr>
+                </div>
+              }
+
+
+              
+
+
+
+            </div>
+
+        </div>
+
+        <div class="clearfix"></div>
+        
+        
+        
+      
+    @*}*@
+</section>
+<div class="modal fade" id="_Pandinglist" role="dialog">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="padding-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 id="headingSearchPatient" class="modal-title">Panding List</h3>
+            </div>
+            <div class="modal-body" style="width:95%; padding-left:60px;">
+                <div>
+                    <div id="searchPatient">
+                        <div class="row SearchFilterContainer" id="SearchFilterContainer">
+                            <table class="table table-fixed" id="tblPatientList" style="width: 95%; padding-left: 60px;">
+                                <thead>
+                                    <tr>
+                                        <th>Patient Name</th>
+                                        <th>DMEForm Status</th>
+                                        <th>HCPCS Code</th>
+                                        <th>pdf</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody> </tbody>
+                            </table>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer" style="padding:35px;">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    @*<button id="btnPatientSave" type="button" class="btn btn-primary">Save</button>*@
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function fnShowpandinglist() {
+        //  alert(PatientPayTran_Id);
+        $.ajax({
+            url: '@Url.Action("GetpandingList", "KneeBraceFreeStyleOASoftForm")',
+            type: 'POST',
+            data: {},
+            success: function (res) {
+                //alert(res.length);
+                $("#tblPatientList tbody").html('');
+                for (var i = 0; i < res.length; i++) {
+                    var re= res[i].split(" ");
+                    var row = "<tr>" +
+                                        " <td>  " + re[0] + " " + re[1] + "</td>" + " <td>  " + re[2] + " " + re[3] + "  " + re[4] + " " + re[5] + "</td>" + "<td>" + re[6] + "</td>"
+                                        + " <td> " + " <a href='javascript:void(0);' onclick='fnShowDetail(" + re[7] + ");'>"
+                                + "<i class='fa fa-file-pdf-o' aria-hidden='true'></i>"
+                            +"</a>" + "</td>" +
+                    "</tr>";
+                    $("#tblPatientList tbody").append(row);
+                }
+
+            },
+            error: function (msg) {
+            }
+        });
+
+        $('#_Pandinglist').modal();
+    }
+
+    function hide() {
+        $('#PatientMCNo_Msg').hide();
+    }
+    function hide1() {
+        $('#span_IsSimilarDeviceIssued').hide();
+    }
+
+    function hide2() {
+        $('#span_IsSimilarDeviceIssued').hide();
+    }
+    function hide3() {
+        $('#FaxLOMN_Date').hide();
+    }
+</script>
+
+<script>
+    function fnShowDetail(KneeBraceCustomForm_Id) {
+        //alert('this obj ===' + obj);
+
+            var url = "@Url.Action("MedicalNecessityPDF", "KneeBraceFreeStyleOASoftForm", new { Area = "DmeForm" })" + "?id=" + KneeBraceCustomForm_Id;
+            //fnShowPopupForDetail(url);
+            popupwindow(url, 'Medical Necessity', 1000, 800);
+
+    }
+</script>
+<script>
+    function fnMedicalNecessity(obj, KneeBraceCustomForm_Id) {
+        //alert('this obj ===' + obj);
+        if ($(obj).is(":checked")) {
+            $('#span_Order_IsFaxLo').hide();
+            var url = "@Url.Action("MedicalNecessityPDF", "KneeBraceFreeStyleOASoftForm", new { Area = "DmeForm" })" + "?id=" + KneeBraceCustomForm_Id;
+            //fnShowPopupForDetail(url);
+            popupwindow(url, 'Medical Necessity', 1000, 800);
+        }
+    }
+</script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#PatientMCNo").hide();
+        $("#MCPreApproval_PatientMCNo").val('@ViewBag.MC');
+        //$("#MCRep_Name").hide();
+        //$("#MCRep_BadgeNo").hide();
+        //$("#MCRep_Initial").hide();
+        //alert($("#Order_IsFaxLOMN").val());
+        if ($("#Order_IsFaxLOMN").val() == "True") {
+            //alert("ok");
+            $('#Order_IsFaxLo').prop('checked', true);
+        }
+        //alert($("#Order_FaxLOMN_Date").val());
+        if ($("#Order_FaxLOMN_Date").val() != "" )
+        {
+            
+            if ($("#MCPreApproval_IsRegionC").val() == "True") {
+
+                $("#IsRegionCYes").prop('checked', true);
+            }
+
+            if ($("#MCPreApproval_IsRegionC").val() == "False") {
+
+                $("#IsRegionCNo").prop('checked', true);
+            }
+        }
+       
+    });
+    $(document).ready(function () {
+        $("#MCPreApproval_PatientMCNo").focus();
+    });
+
+
+    //function validateInputs() {
+    //    var Fax_Date = document.getElementById("Order_FaxLOMN_Date");
+    //    var IsFax = document.getElementById("Order_IsFaxLo");
+
+    //    if (!IsFax.checked) {
+    //        $('#IsFaxLOMN').text("Please checked the checkbox");
+    //        $('#IsFaxLOMN').show();
+    //        IsFax.focus();
+    //        return false;
+    //    }
+    //    else {
+    //        $('#IsFaxLOMN').hide();
+    //        $('#Order_IsFaxLOMN').val(true);
+    //    }
+
+    //    if (Fax_Date != undefined) {
+    //        if (Fax_Date.value == null || Fax_Date.value == "" || Fax_Date.value == '') {
+    //            $('#FaxLOMN_Date').text("Please enter date.");
+    //            $('#FaxLOMN_Date').show();
+    //            Fax_Date.focus();
+    //            return false;
+    //        }
+    //        else {
+    //            $('#FaxLOMN_Date').hide();
+    //        }
+    //    }
+    //    //return false;
+    //}
+    function validateInputs() {
+        var flag = true;
+        if (($("#IsRegionCYes").is(':checked') == false) || ($("#IsRegionCNo").is(':checked') == false)) {
+            flag = false;
+            $('#span_IsRegionC').text("Please select an option");
+        }
+        if (($("#IsSimilarDeviceIssuedYes").is(':checked') == false) || ($("#IsSimilarDeviceIssuedNo").is(':checked') == false)) {
+            flag = false;
+            $('#span_IsSimilarDeviceIssued').text("Please select an option");
+        }
+        if (($("#Order_IsFaxLo").is(':checked') == false)) {           
+            flag = false;
+            $('#span_Order_IsFaxLo').text("Please generate the option");
+            $('#span_Order_IsFaxLo').show();
+        }
+       
+        if ($("#Order_FaxLOMN_Date").val() == "") {
+            $('#FaxLOMN_Date').text("Please enter date");
+            $('#FaxLOMN_Date').show();           
+            flag = false;           
+        }
+        else {
+            flag = true;
+            $('#span_IsRegionC').hide();
+        }
+
+        $('#MCPreApproval_PatientMCNo').removeAttr('disabled');
+        return flag;
+    }
+
+    function funcRegionCVal(e) {
+        //alert(e);
+        $('#span_IsRegionC').hide();
+        var isRegionCVal = $("#" + e + "").val();
+        //alert(isRegionCVal);
+        if (isRegionCVal == "1") { $("#MCPreApproval_IsRegionC").val("true"); }
+        else { $("#MCPreApproval_IsRegionC").val("false"); }
+    }
+</script>

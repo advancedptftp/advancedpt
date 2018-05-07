@@ -1,0 +1,525 @@
+﻿@model DataLayer.Models.CIAInterim
+@using DataLayer;
+@using DataLayer.Models;
+@{
+    ViewBag.Title = "Create1";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var Countr = 1;
+    string str1 = string.Empty;
+    string str2 = string.Empty;
+}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
+<div class="report-form clearfix">
+
+    <h2 class="text-center">Comprehensive Initial Assessment</h2>
+    @using (Html.BeginForm("Create1", "InterimAssessment", FormMethod.Post, new { id = "Create", name = "Create" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(e => e.Patient_Id)
+        @Html.HiddenFor(e => e.patientconditionId)
+        @Html.HiddenFor(e => e.CreatedBy)
+        @Html.HiddenFor(e => e.CreatedOn)
+        @Html.HiddenFor(e => e.ModifiedBy)
+        @Html.HiddenFor(e => e.ModifiedOn)
+        @Html.HiddenFor(e => e.EditObjective)
+
+        if (ViewBag.Error != null)
+        {
+            @Html.Raw(ViewBag.Error)
+        }
+           <div class="topforn">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="lefttext">
+                        @{
+        if (ViewBag.PatientName != null)
+        {
+            @ViewBag.PatientName
+        }
+                        }, DOB:
+                        @{
+        if (ViewBag.PatientDOB != null)
+        {
+            @ViewBag.PatientDOB
+        }
+                        }
+                        <br />
+                        @*Tx Time : 8:00-8:40 PM<br />*@
+                        @*POC: 3/11, ends 02/12/18*@
+
+                        @{
+        string hyfen = "-";
+        string space = " ";
+        string st1 = "Tx Time :";
+
+        if (ViewBag.TreatmentFromTime != null && ViewBag.TreatmentToTime != null)
+        {
+            @st1 @space @ViewBag.TreatmentFromTime @space @hyfen @space @ViewBag.TreatmentToTime
+        }
+                        }<br />
+
+                        POC:
+                        @{
+        string divideSign = "/";
+        string commaSign = ",";
+        string ends = "ends";
+
+        if (ViewBag.TotalNoofVisitRequired != null && ViewBag.CurrentVisitNo != null && ViewBag.TreatmentEndDate != null)
+        {
+            @ViewBag.CurrentVisitNo @divideSign @ViewBag.TotalNoofVisitRequired @commaSign @space @ends @space @ViewBag.TreatmentEndDate
+        }
+        <br />
+        if (ViewBag.Date_Of_injury != null)
+        {
+            string _Date_Of_injury = "Date Of injury : ";
+            @_Date_Of_injury @ViewBag.Date_Of_injury;
+        }
+        else
+        {
+            if (ViewBag.SurgeryDate != null)
+            {
+                string _SurgeryDate = "SurgeryDate : ";
+                @_SurgeryDate @ViewBag.SurgeryDate;
+            }
+            else
+            {
+                if (ViewBag.DateonSet != null)
+                {
+                    string _DateonSet = "Date on Set : ";
+                    @_DateonSet @ViewBag.DateonSet;
+                }
+            }
+        }
+        <br />
+        @*if (ViewBag.FromWhenProblemExist != null)
+        {
+            string _FromWhenProblemExist = "From When Problem Exist : ";
+            @_FromWhenProblemExist @ViewBag.FromWhenProblemExist;
+        }*@
+                        }
+
+
+                    </div>
+                    <div class="righttext">
+                        @*Sumit Paul, DOB:01/14/74<br />
+                            Tx Time : 8:00-8:40 PM*@
+                        @{
+     string str3 = string.Empty;
+        if (ViewBag.Disease_names != null)
+        {
+            string disease = ViewBag.Disease_names;
+            string[] diseasesplit = disease.Split(':');
+            for (var i = 0; i < diseasesplit.Count(); i++)
+                    {
+                <div>
+                    @diseasesplit[i]
+                        </div>
+                             <div class="clearfix"></div>
+             }
+           
+        }
+                        }
+                        @*@str2 <br />*@
+                        @*@str3*@
+                        Auth: 3/15, ends 03/31/18
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+            </div>
+
+            <div class="botheadingsec"> <span>OBJECTIVE</span></div>
+
+
+        </div>
+        @*<div class="topforn">
+            <div class="row">
+                <div class="col-sm-12">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="22%"><h3><strong>OBJECTIVE</strong></h3></td>
+                            <td width="78%"></td>
+                        </tr>
+                    </table>
+
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="20%"><h4><strong>Patient Name:</strong></h4></td>
+                            <td width="35%">
+                                @Html.TextBoxFor(m => m.PatientName, new { @class = "form-control", @readonly = true, @style = "font-size:24px;" })
+                            </td>
+                            <td width="45%">
+                                <div class="col-sm-1 form-group" style="padding-top:25px;"></div>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+
+            </div>
+        </div>*@
+
+        <div id="div1">
+            <div class="outerf">
+                <div class="hiddenform">
+                    <div class="row">
+                        <div class="col-sm-4 col-md-5 form-group">
+                            Diagnosis
+                        </div>
+                        <div class="col-sm-4 col-md-5 form-group">
+                            ICD-10 Code
+                        </div>
+                        <div class="col-sm-4 col-md-2 form-group">
+
+                        </div>
+                    </div>
+                    <div id="dvDiagnosis">
+                        <script>
+                            var counter = 0;
+                        </script>
+                        @if (Model.DMEDiognosis.Count > 1)
+                        {
+                            for (int i = 0; i < Model.DMEDiognosis.Count; i++)
+                            {
+                                if (i == 0)
+                                {
+                                    <div class="row">
+                                        <div class="col-sm-4 col-md-5 form-group">
+                                            @Html.TextBoxFor(e => e.DMEDiognosis[i].Diagnosis_Desc, new { @class = "form-control Disease_nameForICD class='Diagnosis_Desc'" })
+                                            <span id="Diagnosis_Desc" class="validateMsg"></span>
+                                        </div>
+                                        <div class="col-sm-4 col-md-5 form-group">
+                                            @Html.TextBoxFor(e => e.DMEDiognosis[i].ICD10Code, new { @class = "form-control ICD_CodeForICD" })
+                                            <span id="ICD10Code" class="validateMsg"></span>
+                                        </div>
+                                        <div class="col-sm-4 col-md-2 form-group">
+                                            <button id="addRows" class="addbutt" type="button" style="margin-top:0;" title="Add New Diagnosis"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                            @Html.HiddenFor(e => e.DMEDiognosis[i].DMEDiagnosis_Id, new { @class = "icdidForICD" })
+                                        </div>
+                                    </div>
+                                    <script>
+                                        counter += 1;
+                                    </script>
+                                }
+                                else
+                                {
+                                    <div id="Row_@i" class="row">
+                                        <div class="col-sm-4 col-md-5 form-group">
+                                            @Html.TextBoxFor(e => e.DMEDiognosis[i].Diagnosis_Desc, new { @class = "form-control Disease_nameForICD class='Diagnosis_Desc'" })
+                                            <span id="Diagnosis_Desc" class="validateMsg"></span>
+                                        </div>
+                                        <div class="col-sm-4 col-md-5 form-group">
+                                            @Html.TextBoxFor(e => e.DMEDiognosis[i].ICD10Code, new { @class = "form-control ICD_CodeForICD" })
+                                            <span id="ICD10Code" class="validateMsg"></span>
+                                        </div>
+                                        <div class="col-sm-4 col-md-2 form-group">
+                                            @*<button id="addRows" class="addbutt" type="button" style="margin-top:0;" title="Add New Diagnosis"><i class="fa fa-plus" aria-hidden="true"></i></button>*@
+                                            <button type='button' class='addbutt' style='margin-top:0;' title='Remove New Diagnosis' onclick="fn_RemoveRow(@i);">
+                                                <i class='fa fa-remove' aria-hidden='true'></i>
+                                            </button>
+                                            @Html.HiddenFor(e => e.DMEDiognosis[i].DMEDiagnosis_Id, new { @class = "icdidForICD" })
+                                        </div>
+                                    </div>
+                                    <script>
+                                        counter += 1;
+                                    </script>
+                                }
+
+                            }
+                        }
+                        else
+                        {
+                            for (int i = 0; i < Model.DMEDiognosis.Count; i++)
+                            {
+                                <div id="Row_@i" class="row">
+                                    <div class="col-sm-4 col-md-5 form-group">
+                                        @Html.TextBoxFor(e => e.DMEDiognosis[i].Diagnosis_Desc, new { @class = "form-control Disease_nameForICD class='Diagnosis_Desc'" })
+                                        <span id="Diagnosis_Desc" class="validateMsg"></span>
+                                    </div>
+                                    <div class="col-sm-4 col-md-5 form-group">
+                                        @Html.TextBoxFor(e => e.DMEDiognosis[i].ICD10Code, new { @class = "form-control ICD_CodeForICD" })
+                                        <span id="ICD10Code" class="validateMsg"></span>
+                                    </div>
+                                    <div class="col-sm-4 col-md-2 form-group">
+                                        <button id="addRows" class="addbutt" type="button" style="margin-top:0;" title="Add New Diagnosis"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                        @Html.HiddenFor(e => e.DMEDiognosis[i].DMEDiagnosis_Id, new { @class = "icdidForICD" })
+                                    </div>
+                                </div>
+                                <script>
+                                    counter += 1;
+                                </script>
+                            }
+                        }
+                    </div>
+                    <div class="p_bot15">
+                        <button type="button" id="btnOpenModal" class="btn btn-primary pull-left btn-lg" onclick="OpenDialog()">Search ICD-10</button>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div>
+                        <div class="row form-group">
+                            <div class="col-sm-12"></div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="subbutt">
+                    <input type="submit" id="btnNext" name="btnNext" onclick="return fn_checkValidation();" class="btn btn-primary pull-right btn-lg" value="Next >>" />
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div id="Dialog-Box" class="ICDSearch">
+            @Html.Partial("~/Areas/DmeForm/Views/Shared/_ICDSearch.cshtml")
+        </div>
+        <div class="row" style="margin-top:10px;">
+            @*<a href="@Url.Action("Index", "Subjective")" style="padding-left:15px;">Back to List</a>*@
+            <a href="@Url.Action("Index", "InterimAssessment")" style="padding-left:15px;"><span class="btn btn-primary btn-lg">Back to list</span> </a>
+        </div>
+    }
+</div>
+@*</div>
+    </section>*@
+
+@*<script type="text/javascript">
+        $(document).ready(function () {
+            $("#div1").show();
+            $("#div2").hide();
+        });
+
+        $("#btnNext").click(function () {
+            $("#div1").hide();
+            $("#div2").show();
+        });
+
+        $("#btnPrev").click(function () {
+            $("#div1").show();
+            $("#div2").hide();
+        });
+    </script>*@
+
+<script type="text/javascript">
+    $(function () {
+        $("#addRows").click(function () {
+            //counter = 2;
+            $("#dvDiagnosis").append("<div class='row'><div id='Div"
+                + counter + "' class='col-sm-4 col-md-5 form-group'>" +
+                "<input class='form-control Disease_nameForICD'  id='DMEDiognosis_" + counter + "__Diagnosis_Desc' name='DMEDiognosis[" + counter + "].Diagnosis_Desc' type='text' class='Diagnosis_Desc'>" +
+                "</div><div id='Div1" + counter + "' class='col-sm-4 col-md-5 form-group'>" +
+                "<input class='form-control ICD_CodeForICD' id='DMEDiognosis_" + counter + "__ICD10Code' name='DMEDiognosis[" + counter + "].ICD10Code'  type='text' class='ICD_CodeForICD'>" +
+                "</div><div id='Div2" + counter +
+                "' class='col-sm-4 col-md-2 form-group'> <button  class='addbutt' type='button' style='margin-top:0;' title='Remove New Diagnosis' onclick='removeRow("
+                + counter + ")'><i class='fa fa-remove' aria-hidden='true'></i></button><input type='hidden' id='DMEDiognosis_" + counter + "__DMEDiagnosis_Id' name='DMEDiognosis[" + counter + "].DMEDiagnosis_Id' value='' class='icdidForICD' /></div></div>")
+            BindOnFocusForICD();
+            counter++;
+        });
+    });
+
+    function fn_ChkDuplicateICD10_Codes() {
+        var arr1 = [];
+        var tot = 1;
+        var cnt = 0;
+        var item;
+
+        $(".ICD_CodeForICD").each(function () {
+            arr1.push($(this).val().replace(/[,.]/g, ''));
+        });
+
+        for (var i = 0; i < arr1.length; i++) {
+            for (var j = i; j < arr1.length; j++) {
+                if (arr1[i] == arr1[j]) {
+                    cnt++;
+                }
+                if (tot < cnt) {
+                    tot = cnt;
+                    item = arr1[i];
+                }
+            }
+            cnt = 0;
+        }
+        if (tot > 1) {
+            alertify.alert("ICD-10 Code " + item + " " + tot + " times repeated").setHeader('AdvancePT Says');
+            return false;
+        }
+    }
+
+    function fn_checkValidation() {
+        var cnt = 0;
+        if (counter == 1) {
+            cnt = counter - 1;
+        }
+        else if (counter > 1) {
+            cnt = counter - 1;
+        }
+
+        if (($("#DMEDiognosis_" + cnt + "__Diagnosis_Desc").val() == "") || ($("#DMEDiognosis_" + cnt + "__ICD10Code").val() == "")) {
+            alertify.alert("Please enter at least one option").setHeader('AdvancePT Says');
+            return false;
+        }
+        else {
+            var output = fn_ChkDuplicateICD10_Codes();
+            if (output == false) {
+                return false;
+            }
+        }
+    }
+
+    function fn_checkValidation2() {
+        var cnt = 0;
+
+        if (counter == 1) {
+            cnt = counter - 1;
+        }
+        else if (counter > 1) {
+            cnt = counter - 1;
+        }
+
+        if (($("#DMEDiognosis_" + cnt + "__Diagnosis_Desc").val() == "") || ($("#DMEDiognosis_" + cnt + "__ICD10Code").val() == "")) {
+            alertify.alert("Please enter at least one option").setHeader('AdvancePT Says');
+            return false;
+        }
+        else {
+            var output = fn_ChkDuplicateICD10_Codes();
+            if (output == false) {
+                return false;
+            }
+        }
+    }
+
+
+
+    //----- Remove Diagnosis Row -----//
+    function removeRow(cnt) {
+        $("#Div" + cnt).remove();
+        $("#Div1" + cnt).remove();
+        $("#Div2" + cnt).remove();
+        counter--;
+    }
+
+    $('#Dialog-Box').dialog({
+        autoOpen: false,
+        height: 500,
+        width: 700,
+        modal: true
+    });
+
+    function OpenDialog() {
+        var cnt = 0;
+
+        if (counter == 1) {
+            cnt = counter - 1;
+        }
+        else if (counter > 1) {
+            cnt = counter - 1;
+        }
+
+        //var name = $('#Name').val();
+        //var address = $('#Address').val();
+        //$('#Dialog-Name').val(name);
+        //$('#Dialog-Address').val(address);
+
+        if (($("#DMEDiognosis_" + cnt + "__Diagnosis_Desc").val() == "") && ($("#DMEDiognosis_" + cnt + "__ICD10Code").val() == "")) {
+            alertify.alert("Please enter at least one option.").setHeader('AdvancePT Says');
+            return false;
+        }
+        else if (($("#DMEDiognosis_" + cnt + "__Diagnosis_Desc").val() != "") && ($("#DMEDiognosis_" + cnt + "__ICD10Code").val() != "")) {
+            $('#Dialog-Box').dialog("open");
+            $("#SearchStr").val($("#DMEDiognosis_" + cnt + "__ICD10Code").val());
+        }
+        else {
+            $('#Dialog-Box').dialog("open");
+
+            if ($("#DMEDiognosis_" + cnt + "__Diagnosis_Desc").val() != "" && $("#DMEDiognosis_" + cnt + "__Diagnosis_Desc").val() != " " && $("#DMEDiognosis_" + cnt + "__Diagnosis_Desc").val() != '' && $("#DMEDiognosis_" + cnt + "__Diagnosis_Desc").val() != ' ') {
+                $("#SearchStr").val($("#DMEDiognosis_" + cnt + "__Diagnosis_Desc").val());
+            } else {
+                $("#SearchStr").val($("#DMEDiognosis_" + cnt + "__ICD10Code").val());
+            }
+            //------ Fire ICD10Search button click event -----//
+            //----- Call SearchICDCodes() ------//
+            fn_ICD10_Code_Search();
+        }
+    }
+
+
+    function SearchICD10() {
+
+        // $('#Dialog-Box').dialog("close");
+
+        @*$.ajax({
+            url: '@Url.Action("ActionName", "ControllerName")',
+            type: 'POST',
+            data: {
+                code: $('#Dialog-Name').val()
+
+            },
+            success: function (msg) {
+            },
+            error: function (msg) {
+            }
+        });*@
+
+
+        }
+
+
+
+    //var formData = $('#Create').serializeObject();
+    //$.extend(formData, { 'count': counter }); //Send Additional data
+
+
+    function fnEnableDisableTextbox(obj, textbox) {
+        $('.enabledisable').attr("disabled", "disabled");
+        $('.enabledisable').val('');
+        if ($(obj).is(":checked")) {
+            $('#' + textbox).removeAttr("disabled");
+        }
+    }
+
+
+    function closeDiv() {
+        $('#Dialog-Box').dialog("close");
+    }
+
+    //----- Remove The Diagnosis Row -----//
+    function fn_RemoveRow(rowNo) {
+        $("#Row_" + rowNo).remove();
+        counter--;
+    }
+
+
+
+</script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        if ('@ViewBag.InvalidBodyPartOption' != '') {
+            alertify.alert('@ViewBag.InvalidBodyPartOption').setHeader('AdvancePT Says');
+        }
+        if ('@ViewBag.msg' != '') {
+            alertify.alert('@ViewBag.msg').setHeader('AdvancePT Says');
+        }
+
+        if ('@ViewBag.PatientName' != null) {
+            $("#PatientName").val('@ViewBag.PatientName');
+        }
+
+        if ('@ViewBag.ForEditObjective' != null && '@ViewBag.ForEditObjective' == "True") {
+            $("#EditObjective").val('@ViewBag.ForEditObjective');
+        }
+
+    });
+
+</script>

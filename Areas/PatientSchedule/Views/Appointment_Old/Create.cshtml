@@ -1,0 +1,150 @@
+﻿@model DataLayer.Models.tblTPatSchdAppointment
+@using DataLayer
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<section class="bodyinner">
+    <div class="container">
+
+        <div class="report-form clearfix">
+            <h2 class="text-center">Create Appointment</h2>
+            @using (Html.BeginForm("Create", "Appointment", FormMethod.Post, new { id = "Appointment", name = "Appointment" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.Hidden("CreatedOn", DateTime.Now)
+                @Html.HiddenFor(e => e.CreatedBy)
+
+                if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+                <div class="row">
+                    <div class="col-sm-4 form-group">
+                        @Html.Label("Appointment Date:")
+                        @Html.TextBoxFor(m => m.AppointmentDate, new { @class = "form-control datetimepicker1 datepicker-bg" })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-10 form-group">
+                        <div class="col-sm-5 form-group">
+                            @Html.Label("From Time:")
+                            @Html.TextBoxFor(e => e.FromTime, new { @class = "form-control clockpicker" })
+                        </div>
+                        <div class="col-sm-5 form-group">
+                            @Html.Label("To Time")
+                            @Html.TextBoxFor(e => e.ToTime, new { @class = "form-control clockpicker" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-10 form-group">
+                        <div class="col-sm-5 form-group">
+                            @Html.Label("Patient:")
+                            @Html.DropDownListFor(m => m.PatientID, (SelectList)ViewBag.Patient, new { @class = "applitextfield2" })
+                        </div>
+                        <div class="col-sm-5 form-group">
+                            @Html.Label("Resource:")
+                            @Html.DropDownListFor(m => m.ResourceID, from Resource ResourceType in Enum.GetValues(typeof(Resource))
+                                                                         select new SelectListItem() { Text = ResourceType.ToCustomString(), Value = ((int)ResourceType).ToCustomString() }, new { @class = "applitextfield2" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-10 form-group">
+                        <div class="divresource1 col-sm-5 form-group">
+                            @Html.Label("Employee1:")
+                            <select id="Resource1" class="applitextfield2"></select>
+                            @*@Html.DropDownList("Resource1")*@
+                        </div>
+
+                        <div class="divresource2 col-sm-5 form-group">
+                            @Html.Label("Resource2:")
+                            <select id="Resource2" class="applitextfield2"></select>
+                            @*@Html.DropDownList("Resource2")*@
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+                </div>
+            }
+
+            <div>
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".divresource1").hide();
+        $(".divresource2").hide();
+    });
+
+    $("#ResourceID").change(function () {
+        var selectedText = $(this).find("option:selected").text();
+        var selectedValue = $(this).val();
+
+        if (selectedValue == 2 || selectedValue == 4) {
+            fnGetResource1(selectedValue);
+            fnGetResource2();
+        }
+        else {
+            fnGetResource1();
+        }
+    });
+
+    function fnGetResource1(selectedValue) {
+        $.ajax({
+            //contentType: 'application/json',
+            url: '@Url.Action("GetResource", "Appointment")',
+            type: "POST",
+            dataType: "JSON",
+            data: { ResourceType: $("#ResourceID").val(), flag: selectedValue },
+            success: function (result) {
+
+                $("#Resource1").empty().append($("<option value=0>Select a Employee name</option>"));
+                $("#Resource2").empty().append($("<option value=0>Select a Employee name</option>"));
+
+                for (var i in result) {
+
+                    if (result[i].EmpType == null) {
+                        $(".divresource1").show();
+                        $(".divresource2").hide();
+                        $("#Resource1").append($("<option></option>").val(result[i].Employee_Id).text(result[i].EmpName));
+                    }
+                    else if (result[i].EmpType == 1 || result[i].EmpType == 2) {
+                        $(".divresource1").show();
+                        $(".divresource2").hide();
+                        $("#Resource1").append($("<option></option>").val(result[i].Employee_Id).text(result[i].EmpName));
+                    }
+                    else if (result[i].EmpType == 2) {
+                        $(".divresource1").show();
+                        $(".divresource2").show();
+                        $("#Resource2").append($("<option></option>").val(result[i].Employee_Id).text(result[i].EmpName));
+                    }
+                    else if (result[i].EmpType == 3) {
+                        $(".divresource1").show();
+                        $(".divresource2").show();
+                        $("#Resource2").append($("<option></option>").val(result[i].Employee_Id).text(result[i].EmpName));
+                    }
+
+
+                }
+            },
+            error: function () {
+                $("#divEMployee").hide();
+                alert("Data Not Found.")
+            }
+        });
+    }
+</script>

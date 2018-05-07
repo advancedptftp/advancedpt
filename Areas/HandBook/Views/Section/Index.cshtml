@@ -1,0 +1,264 @@
+﻿
+   @model PagedList.IPagedList<DataLayer.Models.tblMHandbookSection>
+
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Index";
+}
+<style>
+    .SortHeader {
+        color: #fff;
+    }
+
+    .sortorderasc {
+        color: black;
+    }
+
+    .sortorderdesc {
+        color: green;
+    }
+    .searchsec {
+        width: 372px;
+    } 
+</style>
+<section class="bodyinner2">
+    <center><h2>Section Name </h2></center>
+    <div>
+        <div class="searchsec">
+            <select class="form-control" id="SearchField">
+                <option value="0" selected>-- Select --</option>
+                <option value="1">5</option>
+                <option value="2">10</option>
+                <option value="3">20</option>
+                <option value="4">30</option>
+            </select>
+            </div>
+            <p class="pull-right">
+                @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+            </p>
+            @using (Html.BeginForm("Index", "Section", FormMethod.Get))
+            {
+                <div class="searchsec">
+                    @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search by Section Name,Chapter Name" })
+                    <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                    <div class="clearfix"></div>
+                </div>
+            }
+            <div class="clearfix"></div>
+        </div>
+
+    <div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            @{ var classname = "botharrow";}
+                            @if ((ViewBag.CurrentSort == "SectionName" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                            {
+                                classname = "bottarrow";
+                            }
+                            else if ((ViewBag.CurrentSort == "SectionName" && ViewBag.SortDirection == false))
+                            {
+                                classname = "toparrow";
+                            }
+                            @Html.ActionLink("Section Name", "Index", new { sortOrder = "SectionName", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname })
+
+                        </th>
+                        <th>
+                            @{ var classname1 = "botharrow";}
+                            @if ((ViewBag.CurrentSort == "ChapterName" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                            {
+                                classname1 = "bottarrow";
+                            }
+                            else if ((ViewBag.CurrentSort == "ChapterName" && ViewBag.SortDirection == false))
+                            {
+                                classname1 = "toparrow";
+                            }
+                            @Html.ActionLink("Chapter Name", "Index", new { sortOrder = "ChapterName", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname1 })
+                            @*@Html.Label("Page Number")*@
+
+                        </th>
+                        
+
+                        <th></th>
+                       
+                       
+                    </tr>
+
+
+                </thead>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                       
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SectionName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.tblMHandBookChapter.ChapterName)
+                        </td>
+                      
+                        <td>
+
+                            <a href="@Url.Action("Edit", "Section", new { id = item.Section_Id })">
+                                <i class="fa fa-edit" aria-hidden="true"></i>
+                            </a>
+
+                            &nbsp;&nbsp;
+
+                            <a href="@Url.Action("Delete", "Section", new { id = item.Section_Id })">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                            </a>
+
+                        </td>
+                      
+                      
+                    </tr>
+                }
+
+            </table>
+
+        </div>
+        <div>
+            <br />
+            @using (Html.BeginForm("Index", "Section", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+            {
+                @Html.DropDownList("PageSize")
+            }
+            @{
+                bool? direction = ViewBag.SortDirection;
+                if (direction == null) { direction = false; }
+            }
+            <div class="pull-left" style=" padding:10px;">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                      new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction }))
+        </div>
+    </div>
+
+</section>
+
+<script>
+    $("#PageSize").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+</script>
+<script>
+
+    $("#SearchField").change(function () {
+        //alert(11);
+        $.ajax({
+            url: '@Url.Action("PapulateDropdown", "Section")',
+            type: 'POST',
+            dataType: "json",
+            data: {
+
+                value: $("#SearchField option:selected").text(),
+
+            },
+            cache: 'false',
+            success: function (result) {
+                //alert(result);
+            },
+            error: function (e) {
+                alert('Error Occured' + e);
+            }
+        });
+    });
+   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.SectionName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModifiedOn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tblMHandBookChapter.ChapterName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tblMUser.UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tblMUser1.UserName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.SectionName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreatedOn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ModifiedOn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tblMHandBookChapter.ChapterName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tblMUser.UserName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tblMUser1.UserName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Section_Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Section_Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Section_Id })
+        </td>
+    </tr>
+}
+
+</table>*@

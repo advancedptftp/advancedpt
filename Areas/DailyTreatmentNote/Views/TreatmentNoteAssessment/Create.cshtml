@@ -1,0 +1,417 @@
+﻿@*@model DataLayer.Models.tblTDTNAssessment*@
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+
+<style>
+    .selectedRow {
+        background-color: rgba(249, 159, 62, 0.65);
+        color: white;
+    }
+</style>
+<style type="text/css">
+    .table-fixed thead {
+        width: 97%;
+    }
+
+    .table-fixed tbody {
+        height: 230px;
+        overflow-y: auto;
+        width: 100%;
+    }
+
+    .table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
+        display: block;
+    }
+
+        .table-fixed tbody td, .table-fixed thead > tr > th {
+            float: left;
+            border-bottom-width: 0;
+        }
+</style>
+<style>
+    .loadingdivschedule {
+        display: block;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 9998;
+        background-color: rgba(0,0,0,.3);
+        -webkit-animation: fade 500ms;
+        -moz-animation: fade 500ms;
+        -o-animation: fade 500ms;
+        animation: fade 500ms;
+    }
+
+    .loadingcontainerschedule {
+        width: 100%;
+        text-align: center;
+        padding-top: 26%;
+    }
+</style>
+<link href="~/Content/patientportal.css" rel="stylesheet" />
+<section class="bodyinner">
+    <div class="container">
+
+        <div class="report-form clearfix">
+            <div class="topforn">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="lefttext">
+                            @{
+                                if (ViewBag.PatientName != null)
+                                {
+                                    @ViewBag.PatientName
+                                }
+                            }, DOB:
+                            @{
+                                if (ViewBag.PatientDOB != null)
+                                {
+                                    @ViewBag.PatientDOB
+                                }
+                            }
+                            <br />
+                            @*Tx Time : 8:00-8:40 PM<br />*@
+                            @*POC: 3/11, ends 02/12/18*@
+
+                            @{
+                                string hyfen = "-";
+                                string space = " ";
+                                string st1 = "Tx Time :";
+
+                                if (ViewBag.TreatmentFromTime != null && ViewBag.TreatmentToTime != null)
+                                {
+                                    @st1 @space @ViewBag.TreatmentFromTime @space @hyfen @space @ViewBag.TreatmentToTime
+                                }
+                            }<br />
+
+                            POC:
+                            @{
+                                string divideSign = "/";
+                                string commaSign = ",";
+                                string ends = "ends";
+
+                                if (ViewBag.TotalNoofVisitRequired != null && ViewBag.CurrentVisitNo != null && ViewBag.TreatmentEndDate != null)
+                                {
+                                    @ViewBag.CurrentVisitNo @divideSign @ViewBag.TotalNoofVisitRequired @commaSign @space @ends @space @ViewBag.TreatmentEndDate
+                                }
+                                <br />
+                                if (ViewBag.Date_Of_injury != null)
+                                {
+                                    string _Date_Of_injury = "Date Of injury : ";
+                                    @_Date_Of_injury @ViewBag.Date_Of_injury;
+                                }
+                                else
+                                {
+                                    if (ViewBag.SurgeryDate != null)
+                                    {
+                                        string _SurgeryDate = "SurgeryDate : ";
+                                        @_SurgeryDate @ViewBag.SurgeryDate;
+                                    }
+                                    else
+                                    {
+                                        if (ViewBag.DateonSet != null)
+                                        {
+                                            string _DateonSet = "Date onset : ";
+                                            @_DateonSet @ViewBag.DateonSet;
+                                        }
+                                    }
+                                }
+                                <br />
+                                @*if (ViewBag.FromWhenProblemExist != null)
+                            {
+                                string _FromWhenProblemExist = "From When Problem Exist : ";
+                                @_FromWhenProblemExist @ViewBag.FromWhenProblemExist;
+                            }*@
+                            }
+
+
+                        </div>
+                        <div class="righttext">
+                            @*Sumit Paul, DOB:01/14/74<br />
+                        Tx Time : 8:00-8:40 PM*@
+                            @{
+                                //string str3 = string.Empty;
+                                //if (ViewBag.Disease_name != null)
+                                //{
+                                //    str3 = Convert.ToString(ViewBag.Disease_name);
+                                //}
+                                //if (ViewBag.BodyPart != null)
+                                //{
+                                //    str1 = Convert.ToString(ViewBag.BodyPart);
+                                //    str2 = str1.First().ToString().ToUpper() + str1.Substring(1);
+                                //}
+
+
+                                string s1 = string.Empty;
+                                int pos1 = 0;
+                                string icdCode = string.Empty;
+                                string disease = string.Empty;
+                                string _desc = string.Empty;
+
+                                if (ViewBag.IcdCodeWithDisease != null)
+                                {
+
+                                    foreach (var item in ViewBag.IcdCodeWithDisease)
+                                    {
+                                        s1 = Convert.ToString(item);
+                                        pos1 = s1.IndexOf('_');
+                                        icdCode = s1.Substring(0, pos1);
+                                        string NewICDCode = icdCode.Insert(3, ".");
+                                        disease = s1.Substring(pos1 + 1);
+                                        _desc = NewICDCode + commaSign + space + @disease;
+                                        <p>@_desc</p>
+                                    }
+                                }
+                            }
+
+                            @*@str3<br />*@
+                            Auth: 3/15, ends 03/31/18
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                </div>
+
+                <div class="botheadingsec">DAILY TREATMENT NOTE ASSESSMENT</div>
+
+
+            </div>
+
+            @using (Html.BeginForm("Create", "TreatmentNoteSubjective", FormMethod.Post, new { id = "Create", name = "Create" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+
+
+                if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+
+               
+
+                <div id="div1">
+                    <div id="divSymptomsExperienced2">
+                        <div style="padding-top:20px;">
+                            @*<h2>Patient demonstrates:</h2>*@
+                        </div>
+                        <div>
+                            @if (ViewData.Model != null)
+                            {
+                                int j = 1;
+                                foreach (var item in ViewData.Model)
+                                {
+
+                                    @*<div class="radiosec1">
+                                        <input id="chk_@item["AssmtNoteId"]" class="checkbox-custom chk1" name="@item["NoteDesc"]" type="checkbox">
+                                        <label for="chk_@item["AssmtNoteId"]" class="checkbox-custom-label">@item["NoteDesc"]</label>
+                                    </div>*@
+                                    <div class="radiosec">
+                                        <input id="chk_@item["AssmtNoteId"]" class="checkbox-custom Class1 radioOpt" name="@item["NoteDesc"]" type="checkbox" value="@item["AssmtNoteId"]" >
+                                        <label for="chk_@item["AssmtNoteId"]" class="checkbox-custom-label">@item["NoteDesc"]</label>
+                                    </div>
+                                    j++;
+                                    if (j % 3 == 1)
+                                    {
+                                        <div class="clearfix"></div>
+                                    }
+                                }
+                            }
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    
+                </div>
+    <div style="float:right">
+
+        <a href="#" onclick="fn_Save1()">
+            <i class="btn btn-primary" aria-hidden="true">Save</i>
+
+        </a>
+    </div>
+                
+                <div class="clearfix"></div>
+               <div class="row">
+                                <a href="@Url.Action("Index", "TreatmentNoteSubjective", new { Area = "DailyTreatmentNote" })">
+                                    <i>Back to List</i>
+                                </a>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Modal -->
+@*@Html.Partial("~/Views/Shared/_SearchPatientPartial.cshtml")*@
+@{Html.RenderPartial("~/Views/Shared/_SearchPatientPartial.cshtml");}
+
+<!-- End Modal -->
+
+
+<script>
+   
+    //function save (id) {
+    //    alert(id);
+    //    treatmentassesmentnote = treatmentassesmentnote + id + ",";
+    //    alert(treatmentassesmentnote);
+    //};
+    function fn_Save1() {
+        var treatmentassesmentnote = "";
+        if ($('.Class1').filter(':checked').length > 0) {
+            
+            $('.Class1').filter(':checked').each(function () {
+                if (treatmentassesmentnote == "")
+                {
+                    treatmentassesmentnote= this.value;
+                }
+                else {
+                    treatmentassesmentnote = treatmentassesmentnote + "," + this.value;
+                }
+               
+            });
+           
+            //alert(treatmentassesmentnote);
+        }
+        // treatmentassesmentsave(treatmentassesmentnote);
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("Createsave", "TreatmentNoteAssessment")',
+            datatype: "Json",
+            data: { TreatmentNoteAssessmentid: treatmentassesmentnote },
+            success: function (data) {
+                //alert(data);
+                var splitdata = data.split(',');
+                if (splitdata[0] == true) {
+
+                    $("#msgaa").show();
+                }
+                else {
+                    window.location.href = '@Url.Action("Create", "TreatmentNotePlan")?PC_id=' + splitdata[1] + '&p_id=' + splitdata[2] + '';
+                   // window.location.href = '@Url.Action("Index", "TreatmentNoteSubjective", new { msg = "Record saved succesfully" })';
+                }
+
+            }
+
+        });
+
+    };
+
+    function treatmentassesmentsave(treatmentassesmentnote) {
+       
+    }
+    //$(document).ready(function () {
+    //    $("#dvid_2").hide();
+    //    $("#dvid_3").hide();
+    //    $("#dvid_4").hide();
+
+    //});
+
+    //function fnShowDiv1() {
+
+    //    $("#dvid_1").show();
+    //    $("#dvid_2").hide();
+    //    $("#dvid_3").hide();
+    //    $("#dvid_4").hide();
+    //}
+
+    //function fnShowDiv2() {
+
+    //    var allChecked = true;
+    //    var validated = false;
+
+    //    if ($('.PatientComplains_of').filter(':checked').length > 0) {
+    //        $("#dvid_1").hide();
+    //        $("#dvid_2").show();
+    //        $("#dvid_3").hide();
+    //        $("#dvid_4").hide();
+    //    } else {
+    //        alertify.alert("Please select any options").setHeader('AdvancePT Says');
+    //        //return false;
+    //    }
+    //}
+
+    //function fnShowDiv3() {
+
+    //    if ($('.PatientAffetcs_of').filter(':checked').length > 0) {
+    //        $("#dvid_1").hide();
+    //        $("#dvid_2").hide();
+    //        $("#dvid_3").show();
+    //        $("#dvid_4").hide();
+    //    } else {
+    //        alertify.alert("Please select any options").setHeader('AdvancePT Says');
+    //        //return false;
+    //    }
+
+    //}
+    //function fnShowDiv4() {
+
+    //    if (($('.Present_Intensity_Symptom').filter(':checked').length > 0) && ($('.Worst_Intensity_Symptom').filter(':checked').length > 0) && ($('.Best_Intensity_Symptom').filter(':checked').length > 0)) {
+    //        $("#dvid_1").hide();
+    //        $("#dvid_2").hide();
+    //        $("#dvid_3").hide();
+    //        $("#dvid_4").show();
+    //    } else {
+    //        alertify.alert("Please select any options").setHeader('AdvancePT Says');
+    //        //return false;
+    //    }
+
+
+    //}
+</script>
+
+<script type="text/javascript">
+
+    //$("#btnSave").click(function () {
+
+    //    //---------------Check Radio Buttons Is Checked Or Not-----------------//
+    //    //alert($('.PerformIndipendentWithAssist').filter(':checked').length);
+    //    if ($('.PerformIndipendentWithAssist').filter(':checked').length > 0) {
+    //        // if($('input:radio:checked').length > 0){
+    //        $("#dvid_1").hide();
+    //        $("#dvid_2").hide();
+    //        $("#dvid_3").hide();
+    //        $("#dvid_4").show();
+    //    } else {
+    //        //alert("in else part");
+    //        alertify.alert("Please select any perform independent with assist options").setHeader('AdvancePT Says');
+    //        return false;
+    //    }
+
+    //    //-----------------------------------------------------//
+    //    var Complains_of = "";
+    //    $('.PatientComplains_of:checked').each(function () {
+    //        Complains_of = Complains_of + "," + $(this).val();
+    //    });
+    //    //alert(Complains_of);
+    //    $("#ComplainsIds").val(Complains_of);
+
+    //    //-------------------------------------------//
+    //    //------Check Patient TextBox Is Empty Or Not-------//
+    //    if ($("#PatientName").val().length == 0) {
+    //        alertify.alert("Please enter the patient name").setHeader('AdvancePT Says');
+    //        return false;
+    //    }
+    //    //---------------------------//
+    //    var Affetcs_of = "";
+    //    $('.PatientAffetcs_of:checked').each(function () {
+    //        Affetcs_of = Affetcs_of + "," + $(this).val();
+    //    });
+
+    //    //alert(Affetcs_of);
+
+    //    $("#AffectsIds").val(Affetcs_of);
+
+    //});
+
+    //$("#btnReset").click(function () {
+    //    $("#tblPatientList tbody").html('');            // Clear the table body
+    //});
+
+</script>

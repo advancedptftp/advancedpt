@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    Layout = null;
+}
+@model PTPMS.Areas.UserManagement.Models.LoginPage
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AdvancePT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="http://karmickproduction.com/designer/advanced/html/favicon.png">
+    @Styles.Render("~/SiteContent/Css")
+</head>
+<body>
+    <div class="wrapper">
+        @using (Html.BeginForm("Login", "Home", FormMethod.Post, new { @class = "login" }))
+        {
+            <section class="loginsec">
+                <div class="logos"><img src="@Url.Content("~/Images/logo.png")" alt=""></div>
+                <div class="formlogin">
+                    <div class="loginheading"><h2>SIGN IN</h2></div>
+                    <div class="formsec">
+                        <form>
+                            <div class="form-group">
+                                @Html.TextBoxFor(e => e.UserName, new { @class="form-control", placeholder="User Name"})
+                            </div>
+                            <div class="form-group">
+                                @Html.TextBoxFor(e => e.Password, new { @class="form-control",type = "password", placeholder="Password" })
+                            </div>
+                            
+                            
+                            <div>
+                                <button type="submit" class="btn btn-default left">LOGIN</button>
+                                &nbsp;&nbsp;
+                                <a href="@Url.Action("FaceDetection", "Home")" class="elements">
+                                    <h4><b><i class="fa-video-camera"></i> Face Detection Login</b></h4>
+                                </a>
+                            </div>
+                            @if (ViewBag.Error != null)
+                            {
+                                <span style="color:red;">@ViewBag.Error</span>
+                            }
+                            <span class="lost"></span>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+
+                </div>
+            </section>
+
+        }
+
+    </div>
+
+    @Scripts.Render("~/SiteContent/Js")
+</body>
+</html>

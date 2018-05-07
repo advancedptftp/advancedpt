@@ -1,0 +1,208 @@
+﻿@model DataLayer.Models.CIA
+@using DataLayer;
+@using DataLayer.Models;
+@using System.Data;
+@using System.Collections;
+@{
+    int i = 1;
+    string Keyword = string.Empty;
+    string KeywordArrayList = string.Empty;
+
+    ViewBag.Title = "Create1";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    DataTable dtWithBodyPartForDisplay = new DataTable();
+    if (TempData["dtWithBodyPartForDisplay"] != null)
+    {
+        dtWithBodyPartForDisplay = (DataTable)TempData["dtWithBodyPartForDisplay"];
+    }
+}
+
+
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<div class="report-form clearfix">
+
+    <h2 class="text-center">Comprehensive Initial Assessment</h2>
+    @using (Html.BeginForm("Create1_1", "Objective", FormMethod.Post, new { id = "Create1_1", name = "Create1_1" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(e => e.PatientCondition_Id)
+        @Html.HiddenFor(e => e.Patient_Id)
+        @Html.HiddenFor(e => e.CreatedBy)
+        @Html.HiddenFor(e => e.CreatedOn)
+        @Html.HiddenFor(e => e.ModifiedBy)
+        @Html.HiddenFor(e => e.ModifiedOn)
+        @Html.HiddenFor(e => e.EditObjective)
+        @Html.HiddenFor(e => e.KeyWordWithOption)
+
+        if (ViewBag.Error != null)
+        {
+            @Html.Raw(ViewBag.Error)
+        }
+
+        <div class="topforn">
+            <div class="row">
+                <div class="col-sm-12">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="22%"><h3><strong>OBJECTIVE</strong></h3></td>
+                            <td width="78%"></td>
+                        </tr>
+                    </table>
+
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="20%"><h4><strong>Patient Name:</strong></h4></td>
+                            <td width="35%">
+                                @Html.TextBoxFor(m => m.PatientName, new { @class = "form-control", @readonly = true, @style = "font-size:24px;" })
+                            </td>
+                            <td width="45%">
+                                <div class="col-sm-1 form-group" style="padding-top:25px;"></div>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="row">
+            <div id="divCreate1_1">
+                <div>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Body Part</th>
+                                <th>&nbsp;</th>
+                                <th>&nbsp;</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+        foreach (DataRow dr1 in dtWithBodyPartForDisplay.Rows)
+        {
+            KeywordArrayList += @dr1["Keyword"].ToString() + "|";
+            string BodyPart = string.Empty;
+            BodyPart = @dr1["Keyword"].ToString();
+            BodyPart = char.ToUpper(BodyPart[0]) + BodyPart.Substring(1);
+            <tr>
+                <td><span style="font-size:30px;color:#000">@i.ToString()</span></td>
+                <td><span style="font-size:30px;color:#000">@BodyPart</span></td>
+
+                <td>
+                    <div class="radiosec" style="width:100%;">
+                        @Html.RadioButton("row_" + @i, "R", new { @class = "radio-custom Row_" + @dr1["Keyword"].ToString(), @id = "rdoRawR_" + @i })
+                        <label for="rdoRawR_@i" class="radio-custom-label">Right</label>
+                    </div>
+
+                </td>
+                <td>
+                    <div class="radiosec" style="width:100%;">
+                        @Html.RadioButton("row_" + @i, "L", new { @class = "radio-custom Row_" + @dr1["Keyword"].ToString(), @id = "rdoRawL_" + @i })
+                        <label for="rdoRawL_@i" class="radio-custom-label">Left</label>
+                    </div>
+
+                </td>
+                <td>
+                    <div class="radiosec" style="width:100%;">
+                        @Html.RadioButton("row_" + @i, "B", new { @class = "radio-custom Row_" + @dr1["Keyword"].ToString(), @id = "rdoRawB_" + @i })
+                        <label for="rdoRawB_@i" class="radio-custom-label">Both</label>
+                    </div>
+
+                </td>
+            </tr>
+            i++;
+        }                         }
+                        </tbody>
+                    </table>
+
+                </div>
+                @*//---- Back To Objective Page 1 ----//*@
+                <div id="divBackToObjective" style="float:left;">
+                    <input type="button" id="btnBackToObjective" class="btn btn-primary btn-lg" value="<< Previous" />
+                </div>
+
+                <div class="subbutt">
+                    <input type="submit" id="btnNextPageCreate2" name="btnNextPageCreate2" class="btn btn-primary pull-right btn-lg" value="Next >>" />
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+
+    }
+</div>
+
+<script type="text/javascript">
+
+    //--- Set Patient Name   ----//
+    $(document).ready(function () {
+        if ('@ViewBag.PatientName' != "") {
+            $("#PatientName").val('@ViewBag.PatientName');
+        }
+        if ('@ViewBag.InvalidBodyPartOption' != "") {
+            alertify.alert('@ViewBag.InvalidBodyPartOption').setHeader('AdvancePT Says');
+        }
+    });
+
+    $("#btnNextPageCreate2").click(function () {
+        var cnt1 = '@i';
+        var TotalRow = parseInt(cnt1) - 1;
+        //alert(TotalRow);
+        var KeywordArray = '@KeywordArrayList'.split('|');
+        var KeyWordWithOption = '';
+
+        for (var j1 = 0; j1 < TotalRow; j1++) {
+            var Option = "";
+            //Chech For Right/Left/Both Options Are Selected Or Not For Each Keyword ( Bodypart ) 
+            if ($('.Row_' + KeywordArray[j1]).filter(':checked').length > 0) {
+                $('.Row_' + KeywordArray[j1] + ':checked').each(function () {
+                    Option += $(this).val();
+                });
+            }
+            else {
+                alertify.alert("Please select the options as per the each bodypart").setHeader('AdvancePT Says'); 
+                return false;
+            }
+            KeyWordWithOption += KeywordArray[j1] + Option + "|";
+        }
+
+        //alert(KeyWordWithOption);
+        $("#KeyWordWithOption").val(KeyWordWithOption);
+        //return false;
+    });
+
+    //------ Back To Objection Part For Edit --------//
+    $("#btnBackToObjective").click(function () {
+        window.location.href = '@Url.Action("Create1", "Objective")?Patient_Id=' + Patient_Id + "&PatientCondition_Id=" + PatientCondition_Id + "&Flag=" + 1;
+    });
+
+
+    //---- Disabled the F5 Button ----//
+    $(function () {
+        $(document).keydown(function (e) {
+            return (e.which || e.keyCode) != 116;
+        });
+    });
+
+    //---- Script to disabled the back button of browser ----//
+    history.pushState(null, null, '');
+    window.addEventListener('popstate', function (event) {
+        history.pushState(null, null, '');
+    });
+
+    //---- End Script ----//
+
+</script>

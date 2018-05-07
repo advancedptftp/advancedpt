@@ -1,0 +1,261 @@
+﻿@model DataLayer.Models.tblTGoodDeedForm
+
+@{
+    Layout = null;
+}
+@using DataLayer;
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>myadvancedpt.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="favicon.png">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+    <!-- Bootstrap core CSS -->
+
+
+</head>
+
+<body>
+
+
+    <div style="width:700px; margin:0 auto; padding:5px 0; font-family:verdana; font-size:13px; color:#333;">
+
+
+        <div style="padding:0 0 20px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="39%">
+                        <h2 style="padding:0; font-size:20px; margin:0;">
+                            Good Deed Report Form<br>
+                            <span style="font-size:15px; font-weight:normal;">Heal At Home Healthcare</span>
+                        </h2>
+                    </td>
+                    <td width="61%"><div style="padding:10px; text-align:center; border:2px dashed #333; font-size:13px; font-weight:bold;">CONFIDENTIAL REPORT: SUBMIT ORIGINAL TO THE DIRECTOR OF NURSING WITHIN 24 HOURS OF INCIDENT. DO NOT SCAN OR COPY.</div></td>
+                </tr>
+            </table>
+
+        </div>
+        <div style="padding:0 0 5px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="48%" style="padding-right:10px;">
+                        <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.TodaysDate</div>
+                        Today's Date
+                    </td>
+                    <td width="52%" style="padding-right:10px;" valign="top">
+                        <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@ViewBag.Location
+                        </div>
+                        Office Location
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <div style="padding:0 0 5px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="37%" style="padding-right:10px;">
+                        <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.EmpFirstName</div>
+                        Employee First Name
+                    </td>
+                    <td width="32%" style="padding-right:10px;">
+                        <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.EmpLastName</div>
+                        Employee Last Name
+                    </td>
+                    <td width="31%" style="padding-right:10px;" valign="top">
+                        <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.JobTitle</div>
+                        Job Title
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <div style="padding:0 0 5px 0;">
+            <table width="100%" border="0">
+                <tr>
+
+                    <td width="31%" style="padding-right:10px;" valign="top">
+                        <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.GoodDeedPerformed</div>
+                        @*<div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;"></div>*@
+                        Provide details of the good deed preformed
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <div style="padding:0 0 5px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="29%" style="padding-right:10px;">
+                        <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.WitnessFirstLastName</div>
+                        Witness First & Last Name
+                    </td>
+                    <td width="37%" style="padding-right:10px;">
+                        <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.GoodDeedDt</div>
+                        Date When Good Deed Happened
+                    </td>
+                    <td width="34%" style="padding-right:10px;" valign="top">
+                        <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.GoodDeedTm</div>
+                        Time When Good Deed Happened
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<section class="bodyinner">
+    <div class="container">
+        <div class="bodyleft">
+
+            @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+        </div>
+        <div class="bodyright">
+
+            <div class="report-form clearfix">
+                <h2>GoodDeed report Form</h2>
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(model => model.GoodDeed_Id)
+                    @Html.Hidden("ModifiedOn", DateTime.Now)
+                    @Html.HiddenFor(model => model.CreatedOn)
+                    @Html.HiddenFor(model => model.CreatedBy)
+                    if (ViewBag.Error != null)
+                    {
+                        @Html.Raw(ViewBag.Error)
+                    }
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6 form-group">
+                            @Html.Label("Today's Date")
+                            @Html.TextBoxFor(model => model.TodaysDate, new { @class = "form-control", style = "width:100%;", @Value = DateTime.Now.ToString("MM/dd/yyyy"), @readonly = "readonly" })
+                            @Html.ValidationMessageFor(model => model.TodaysDate)
+                        </div>
+
+                        <div class="col-sm-6 col-md-6 form-group">
+
+
+                            @Html.Label("Office Location")
+                            @Html.DropDownList("OfficeLocation")
+                            @Html.ValidationMessageFor(model => model.OfficeLocation)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-4 form-group">
+                            @Html.Label("Employee First Name")
+                            @Html.TextBoxFor(model => model.EmpFirstName, new { @class = "form-control", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(model => model.EmpFirstName)
+                        </div>
+                        <div class="col-sm-6 col-md-4 form-group">
+                            @Html.Label("Employee Last Name")
+                            @Html.TextBoxFor(model => model.EmpLastName, new { @class = "form-control", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(model => model.EmpLastName)
+                        </div>
+                        <div class="col-sm-6 col-md-4 form-group">
+                            @Html.Label("Job Title")
+                            @Html.TextBoxFor(model => model.JobTitle, new { @class = "form-control", @readonly = "readonly" })
+
+                            @Html.ValidationMessageFor(model => model.JobTitle)
+                        </div>
+
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 form-group">
+                            @Html.Label("Provide details of the good deed preformed")
+                            @Html.TextAreaFor(model => model.GoodDeedPerformed, new { @class = "form-control", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(model => model.GoodDeedPerformed)
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-4 form-group">
+                            @Html.Label("Witness First & Last Name")
+                            &nbsp;&nbsp;
+                            @Html.TextBoxFor(model => model.WitnessFirstLastName, new { @class = "form-control", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(model => model.WitnessFirstLastName)
+                        </div>
+                        <div class="col-sm-6 col-md-4 form-group">
+                            @Html.Label("Date When Good Deed Happened")
+
+                            @Html.TextBoxFor(model => model.GoodDeedDt, new { @class = "form-control ", placeholder = "mm/dd/yyyy", style = "width:100%;", @Value = DateTime.Now.ToString("MM/dd/yyyy"), @readonly = "readonly" })
+                            @Html.ValidationMessageFor(model => model.GoodDeedDt)
+                        </div>
+                        <div class="col-sm-6 col-md-4 form-group">
+                            @Html.Label("Time When Good Deed Happened")
+                            @Html.TextBoxFor(model => model.GoodDeedTm, new { @class = "form-control", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(model => model.GoodDeedTm)
+                        </div>
+
+                    </div>
+                    <hr>
+
+
+
+                    <div class="subbutt">
+                        <input type="submit" value="Approve" class="btn btn-orange pull-right" id="btnapprov" />
+
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <p>@Html.ActionLink("Back to List", "Index")</p>
+                }
+            </div>
+
+
+
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</section>*@
+
+
+<script>
+    $('#OfficeLocation').addClass('form-control'); $('#OfficeLocation').attr('disabled', 'disabled');
+</script>
+@*<script>
+    $("#btnapprov").click(function () {
+        $('#OfficeLocation').prop('disabled', false);
+    });
+</script>*@
+@*<script>
+        jQuery('.datepicker').datepicker();
+    </script>*@

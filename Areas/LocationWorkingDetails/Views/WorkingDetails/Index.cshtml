@@ -1,0 +1,243 @@
+﻿@model PagedList.IPagedList<DataLayer.Models.tblTLocationWorkingDetail>
+@using PagedList.Mvc;
+@using DataLayer;
+@{
+    int SlNo = 0;
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var LocationFil = ViewBag.locage as List<KeyValuePair<string, int>>;
+}
+
+<center><h2 style="margin-top:20px;">Location Working Schedule </h2></center>
+
+
+
+
+<section class="bodyinner2">
+    <div>
+        <div class="location">
+            <div class="row">
+                <div class="col-sm-6 form-group">
+                    @using (Html.BeginForm("Index", "WorkingDetails", new { sortOrder = ViewBag.CurrentSort, CurrentSort = ViewBag.CurrentSort, locationID = ViewBag.Location }, FormMethod.Post, new { @style = "float:left;width:400px;" }))
+                    {
+
+
+                        @Html.Label("Location:")
+                        @Html.DropDownList("LocationId", "--Select Location--")
+                    }
+
+                </div>
+                <p class="pull-right">
+                    @Html.ActionLink("Create New Record", "Create", null, new { @class = "btn btn-primary" })
+
+                </p>
+            </div>
+        </div>
+    </div>
+    <div id="LocationData">
+        <div class="clearfix"></div>
+        <div class="clearfix"></div>
+        <div>
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-striped">
+
+                    <thead>
+                        <tr>
+                            <th>Sl No</th>
+                            <th>Location Name</th>
+                            <th>Day opening</th>
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        @if (LocationFil != null)
+                        {
+                            foreach (var item in LocationFil)
+                            {
+
+                                <tr>
+                                    <td>
+                                        <label>@(SlNo += 1)</label>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Key)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Value)
+                                    </td>
+                                </tr>
+
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="3">
+                                    <label>Record not found</label>
+                                </td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+            @*<div>
+                <br />
+                @using (Html.BeginForm("Index", "WorkingDetails", new { sortOrder = ViewBag.CurrentSort, CurrentSort = ViewBag.CurrentSort, locationID = ViewBag.Location }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+                {
+                    @Html.DropDownList("PageSize")
+                }
+                @{
+                    bool? direction = ViewBag.SortDirection;
+                    if (direction == null) { direction = false; }
+                }
+                <div class="pull-left" style=" padding:10px;">
+                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                </div>
+
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction, locationID = ViewBag.Location }))
+            </div>*@
+        </div>
+
+    </div>
+    <div id="MainDiv">
+        <div>
+
+            @*@using (Html.BeginForm("Index", "WorkingDetails", FormMethod.Get))
+                {
+
+                    <div class="searchsec">
+
+                        @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search by Location" })
+                        <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                        <div class="clearfix"></div>
+                    </div>
+                }*@
+            <div class="clearfix"></div>
+            <div class="clearfix"></div>
+        </div>
+
+
+        <div>
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-striped">
+
+                    <thead>
+                        <tr>
+                            <th>Location</th>
+                            <th>Day Name</th>
+                            <th>Open From</th>
+                            <th>Open To</th>
+                            @*<th></th>*@
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            if (item.IsClosed == false)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.tblMLocation.Location_Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DayName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.OpenFrom)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.OpenTo)
+                                    </td>
+                                    @*<td>
+                                        <a href="@Url.Action("Edit", "WorkingDetails", new { id = item.LocationId })">
+                                            <i class="fa fa-edit" aria-hidden="true"></i>
+                                        </a>
+                                        &nbsp;&nbsp;
+                                    </td>*@
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.tblMLocation.Location_Name)
+                                    </td>
+                                    <td>
+                                        <label style="color:red"> @item.DayName</label>
+                                    </td>
+                                    <td>
+                                        <label style="color:red">Off Day</label>
+                                    </td>
+                                    <td>
+                                        <label style="color:red">Off Day</label>
+                                    </td>
+                                    @*<td>
+                                        <a href="@Url.Action("Edit", "WorkingDetails", new { id = item.LocationId })">
+                                            <i class="fa fa-edit" aria-hidden="true"></i>
+                                        </a>
+                                        &nbsp;&nbsp;
+                                    </td>*@
+                                </tr>
+                            }
+
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+</section>
+<script>
+    $(document).ready(function () {
+        if ('@ViewBag.ID' != null && '@ViewBag.ID' != "") {
+            alertify.alert("Record saved successfully").setHeader('AdvancePT Says');
+        }
+        if ('@ViewBag.AlertMassage' == "LocationNotSave") {
+            alertify.alert("Record not found").setHeader('AdvancePT Says');
+        }
+
+    });
+    $('#PageSize').addClass("form-control");
+    $('#LocationId').addClass('col-sm-5 form-control');
+    $('#PageSize').on('change', function (event) {
+        var form = $(event.target).parents('form');
+        form.submit();
+    });
+    $('#LocationId').on('change', function (event) {
+        debugger;
+        if ('@Model.Count' > 0) {
+            $('#MainDiv').show();
+            $('#LocationData').hide();
+            var form = $(event.target).parents('form');
+            form.submit();
+           // alertify.alert("Location Have not Data").setHeader('AdvancePT Says');
+        }
+        else {
+
+            $('#MainDiv').hide();
+            $('#LocationData').show();
+            var form = $(event.target).parents('form');
+            form.submit();
+        }
+        
+
+    });
+    var loID = $('#LocationId').val();
+    if (loID == "" || '@Model.Count' == 0) {
+        $('#MainDiv').hide();
+        $('#LocationData').show();
+    }
+    else {
+        $('#MainDiv').show();
+        $('#LocationData').hide();
+        //ViewBag.Location = loID;
+    }
+
+</script>

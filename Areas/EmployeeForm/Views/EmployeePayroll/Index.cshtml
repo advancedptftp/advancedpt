@@ -1,0 +1,177 @@
+﻿@model PagedList.IPagedList<DataLayer.Models.tblTEmployeePayroll>
+@using PagedList.Mvc;
+@using DataLayer;
+@{
+    ViewBag.Title = "Index";
+    var IsApprover = ViewContext.Controller.IsApprover(2);
+}
+<style>
+    .searchsec {
+        width: 480px;
+    }
+</style>
+<center><h2 style="margin-top:20px;">Employee Payroll List</h2></center>
+<section class="bodyinner2">
+    <div>
+        <p class="pull-right">
+            @Html.ActionLink("Create New Record", "Create", null, new { @class = "btn btn-primary" })
+        </p>
+        @using (Html.BeginForm("Index", "EmployeePayroll", FormMethod.Get))
+        {
+            <div class="searchsec">
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search by Employee First Name,Employee Last Name" })
+                <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                <div class="clearfix"></div>
+            </div>
+        }
+        <div class="clearfix"></div>
+    </div>
+
+    <div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>
+
+                            @Html.DisplayName("Today's Date")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Employee First Name")
+
+                        </th>
+                        <th>
+                            @Html.DisplayName("Employee Last Name")
+
+                        </th>
+                        <th>
+                            @Html.DisplayName("Payroll Start Date")
+
+                        </th>
+                        <th>
+                            @Html.DisplayName("Payroll End Date")
+
+                        </th>
+
+
+                        <th>
+
+                            @Html.DisplayName("Approved On")
+                        </th>
+
+
+                        <th>
+                            @Html.DisplayName("Approved By")
+                        </th>
+
+                        <th class="tdList_Edit"></th>
+                        <th class="tdList_Details"></th>
+                        <th class="tdList_PDF"></th>
+                        <th class="tdList_Approve"></th>
+                    </tr>
+
+
+                </thead>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.Label(@item.Today_date == null ? "" : @item.Today_date.Value.GetExactValue())
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Emp_firstname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Emp_lastname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Payroll_startdate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Payroll_Enddate)
+                        </td>
+
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ApprovedOn)
+                        </td>
+
+
+                        <td>
+                            @if (item.ApprovedBy != null )
+                            {
+                                @item.tblMUser.Name
+                            }
+                        </td>
+
+                        <td class="tdList_Edit">
+                            @if (item.ApprovedBy == null)
+                            {
+                                <a href="@Url.Action("Edit", "EmployeePayroll", new { id = item.EmpPayroll_Id })">
+                                    <i class="fa fa-edit" aria-hidden="true"></i>
+                                </a>
+                            }
+                        </td>
+                        <td class="tdList_Details">
+
+                            <a href="@Url.Action("Details", "EmployeePayroll", new { id = item.EmpPayroll_Id })">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                        <td class="tdList_PDF">
+                            <a href="javascript:void(0);" onclick="fnShowDetail(@item.EmpPayroll_Id);">
+                                <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                        <td class="tdList_Approve">
+                            @if (item.ApprovedBy == null && IsApprover)
+                            {
+                                @Html.ActionLink("Approve", "Approve", new { id = item.EmpPayroll_Id }, new { @class = "btn btn-success" })
+                            }
+
+                        </td>
+
+                    </tr>
+                }
+
+            </table>
+
+        </div>
+        <div>
+            <br />
+            @using (Html.BeginForm("Index", "EmployeePayroll", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+            {
+                @Html.DropDownList("PageSize")
+            }
+            @{
+                bool? direction = ViewBag.SortDirection;
+                if (direction == null) { direction = false; }
+            }
+            <div class="pull-left" style=" padding:10px;">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                      new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction }))
+        </div>
+    </div>
+
+</section>
+<script>
+    function fnShowDetail(EmpPayroll_Id) {
+        var url = "@Url.Action("employeepayrollform", "EmployeePayroll", new { Area = "EmployeeForm" })" + "?id=" + EmpPayroll_Id;
+        //fnShowPopupForDetail(url);
+        popupwindow(url, 'employeepayrollform', 1000, 800);
+    }
+</script>
+
+<script>
+    $("#PageSize").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+</script>

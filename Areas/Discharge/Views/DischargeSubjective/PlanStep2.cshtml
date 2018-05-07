@@ -1,0 +1,1178 @@
+﻿@model DataLayer.Models.tblTCIAInterimPlan
+@using DataLayer;
+@{
+    Layout = null;
+    string str1 = string.Empty;
+    string str2 = string.Empty;
+}
+@{
+   
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var treatment = Model.Treatment_Ids;
+    var splittreatment = treatment.Split(',');
+    int splittreatmentcount = splittreatment.Count();
+
+    //DataLayer.Models.CIAPlanTreatment _CIAPlanTreatment = new DataLayer.Models.CIAPlanTreatment();
+    List<DataLayer.Models.CIAPlanTreatment> lstCIAPlanTreatment = new List<DataLayer.Models.CIAPlanTreatment>();
+    lstCIAPlanTreatment = ViewBag.PlanTreatment;
+}
+
+
+<section class="bodyinner">
+    <div class="container">
+
+        <div class="report-form clearfix">
+            <h2 class="text-center" style="font-size:50px;">Treatment Sequence of plan</h2>
+            @using (Html.BeginForm("PlanStep2", "InterimAssessment", FormMethod.Post, new { id = "Create", name = "Create" }))
+            {
+              
+                if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+                 @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(e => e.PatientCondition_Id)
+                @Html.HiddenFor(e => e.Patient_Id)
+                @Html.HiddenFor(e => e.PatientPTExam_Id)
+                @Html.HiddenFor(e => e.PhysicalTherapyGoals)
+                @Html.HiddenFor(e => e.NoOfWeeksToAchieveGoal)
+                @Html.HiddenFor(e => e.NoOfVisitsPerWeekNeeded)
+                @Html.HiddenFor(e => e.TotalNoOfVisitNeeded)
+                @Html.HiddenFor(e => e.Treatment_Ids)
+                @Html.HiddenFor(e => e.CreatedBy)
+                @Html.HiddenFor(e => e.CreatedOn)
+                @Html.HiddenFor(e => e.ModifiedBy)
+                @Html.HiddenFor(e => e.ModifiedOn)
+                @Html.HiddenFor(e => e.Treatment_Sequence)
+             
+              <div class="topforn">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="lefttext">
+                        @{
+        if (ViewBag.PatientName != null)
+        {
+            @ViewBag.PatientName
+        }
+                        }, DOB:
+                        @{
+        if (ViewBag.PatientDOB != null)
+        {
+            @ViewBag.PatientDOB
+        }
+                        }
+                        <br />
+                        @*Tx Time : 8:00-8:40 PM<br />*@
+                        @*POC: 3/11, ends 02/12/18*@
+
+                        @{
+        string hyfen = "-";
+        string space = " ";
+        string st1 = "Tx Time :";
+
+        if (ViewBag.TreatmentFromTime != null && ViewBag.TreatmentToTime != null)
+        {
+            @st1 @space @ViewBag.TreatmentFromTime @space @hyfen @space @ViewBag.TreatmentToTime
+        }
+                        }<br />
+
+                        POC:
+                        @{
+        string divideSign = "/";
+        string commaSign = ",";
+        string ends = "ends";
+
+        if (ViewBag.TotalNoofVisitRequired != null && ViewBag.CurrentVisitNo != null && ViewBag.TreatmentEndDate != null)
+        {
+            @ViewBag.CurrentVisitNo @divideSign @ViewBag.TotalNoofVisitRequired @commaSign @space @ends @space @ViewBag.TreatmentEndDate
+        }
+        <br />
+        if (ViewBag.Date_Of_injury != null)
+        {
+            string _Date_Of_injury = "Date Of injury : ";
+            @_Date_Of_injury @ViewBag.Date_Of_injury;
+        }
+        else
+        {
+            if (ViewBag.SurgeryDate != null)
+            {
+                string _SurgeryDate = "SurgeryDate : ";
+                @_SurgeryDate @ViewBag.SurgeryDate;
+            }
+            else
+            {
+                if (ViewBag.DateonSet != null)
+                {
+                    string _DateonSet = "Date on Set : ";
+                    @_DateonSet @ViewBag.DateonSet;
+                }
+            }
+        }
+        <br />
+        @*if (ViewBag.FromWhenProblemExist != null)
+        {
+            string _FromWhenProblemExist = "From When Problem Exist : ";
+            @_FromWhenProblemExist @ViewBag.FromWhenProblemExist;
+        }*@
+                        }
+
+
+                    </div>
+                    <div class="righttext">
+                        @*Sumit Paul, DOB:01/14/74<br />
+                            Tx Time : 8:00-8:40 PM*@
+                        @{
+            string str3 = string.Empty;
+        if (ViewBag.Disease_names != null)
+        {
+            string disease = ViewBag.Disease_names;
+            string[] diseasesplit = disease.Split(':');
+            for (var i = 0; i < diseasesplit.Count(); i++)
+                    {
+                <div>
+                    @diseasesplit[i]
+                        </div>
+                             <div class="clearfix"></div>
+             }
+           
+        }
+                        }
+                        @*@str2 <br />*@
+                        @*@str3*@
+                        Auth: 3/15, ends 03/31/18
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+            </div>
+
+            @*<div class="botheadingsec">Daily Treatment Note <span>OBJECTIVE</span></div>*@
+
+
+        </div>
+
+                <div id="divid_1">
+                    @*<h2><center>Treatment Sequence</center></h2>*@
+                    @*<div class="row">
+                        <div class="col-sm-12">
+                            <table width="100%" border="0">
+                                <tr>
+                                    <td width="20%"><h4><strong>Patient Name:</strong></h4></td>
+                                    <td width="35%">
+                                        @Html.TextBoxFor(m => m.tblMPatient.FirstName,(string)@ViewBag.patientname, new { @class = "form-control", @readonly = true, @style = "font-size:24px;" })
+
+
+                                    </td>
+                                    <td width="45%"><div class="col-sm-1 form-group" style="padding-top:25px;"></div></td>
+                                </tr>
+                            </table>
+
+                        </div>
+
+                    </div>*@
+                    <div class="clearfix">&nbsp;</div>
+                    @{
+                        int iCount = 1;
+                        string inputTypeNumberIdName = string.Empty;
+                        string divID = string.Empty;
+                        string spanID = string.Empty;
+                        
+                            foreach (var item in lstCIAPlanTreatment)
+                            {
+                                inputTypeNumberIdName = "Treatment_Sequence" + Convert.ToString(iCount);
+                                divID = "divMsg" + Convert.ToString(iCount);
+                                spanID = "spanPlanErrMsg" + Convert.ToString(iCount);
+                                
+                                <div class="col-md-12 form-group">
+                                   <div class="col-md-6 form-group">
+                                     <label for="chkQues" class="checkbox-custom-label" id="lblchkQues">@item.TreatmentDesc</label>
+                                   </div>
+                                   <div class="col-md-6 form-group">
+                                       <input type="number" name='@inputTypeNumberIdName' id='@inputTypeNumberIdName' class="form-control treatmentSeq"
+                                              style="width: 100px;height:75px;font-size:47px;" onblur="fn_CheckRange_Treatment_Sequence()" /> 
+                                   </div>
+                                   <div id='@divID' style="display:none;"><span id='@spanID' style="color:red; font-size:medium;"></span></div>
+                             
+                                </div>
+                        
+                                iCount = iCount + 1;
+                            }
+                    }
+
+
+
+                    @*@for (int i = 0; i < splittreatmentcount; i++)
+                    {
+                        string id = splittreatment[i];
+                        if (id == "1")
+                        {
+                             <div class="col-md-12 form-group">
+                                 <div class="col-md-6 form-group">
+                                     <label for="chkQues" class="checkbox-custom-label" id="lblchkQues">Therapeutic Exercise</label>
+                                     </div>
+                                 <div class="col-md-6 form-group">
+                                     <input type="number" name="Treatment_Sequence1" id="Treatment_Sequence1" class="form-control" style="width: 100px;height:75px;font-size:47px;" onblur="fn_CheckRange_Treatment_Sequence1($(this).val())" />
+                                     </div>
+                                 <div id="divMsg1" style="display:none;"><span id="spanPlanErrMsg1" style="color:red; font-size:medium;"></span></div>
+                             
+                              </div>
+                           
+                        }
+                        if (id == "2")
+                        { <div class="col-md-12 form-group">
+                                 <div class="col-md-6 form-group">
+                                     <label for="chkQues" class="checkbox-custom-label" id="lblchkQues">Therapeutic Activities</label>
+                                     </div>
+                                 <div class="col-md-6 form-group">
+                                     <input type="number" name="Treatment_Sequence2" id="Treatment_Sequence2" class="form-control" style="width: 100px; height: 75px; font-size: 47px;" onblur="fn_CheckRange_Treatment_Sequence2($(this).val())" />
+                                     </div>
+                              <div id="divMsg2" style="display:none;"><span id="spanPlanErrMsg2" style="color:red; font-size:medium;"></span></div>
+                                 </div>
+                       
+                        }
+                        if (id == "3")
+                        {
+                             <div class="col-md-12 form-group">
+                                 <div class="col-md-6 form-group">
+                                     <label for="chkQues" class="checkbox-custom-label" id="lblchkQues">Gait Training</label>
+                                     </div>
+                                 <div class="col-md-6 form-group">
+                                     <input type="number" name="Treatment_Sequence3" id="Treatment_Sequence3" class="form-control" style="width: 100px; height: 75px; font-size: 47px;" onblur="fn_CheckRange_Treatment_Sequence3($(this).val())" />
+                                     </div>
+                                 <div id="divMsg3" style="display:none;"><span id="spanPlanErrMsg3" style="color:red; font-size:medium;"></span></div>
+                                 </div>
+                            
+                        }
+                        if (id == "5")
+                        {
+                             <div class="col-md-12 form-group">
+                                 <div class="col-md-6 form-group">
+                                     <label for="chkQues" class="checkbox-custom-label" id="lblchkQues">Manual Therapy</label>
+                                     </div>
+                                 <div class="col-md-6 form-group">
+                                     <input type="number" name="Treatment_Sequence5" id="Treatment_Sequence5" class="form-control" style="width: 100px; height: 75px; font-size: 47px;" onblur="fn_CheckRange_Treatment_Sequence5($(this).val())" />
+                                     </div>
+                                 <div id="divMsg5" style="display:none;"><span id="spanPlanErrMsg5" style="color:red; font-size:medium;"></span></div>
+                                 </div>
+                        
+                        }
+                        if (id == "6")
+                        {
+                             <div class="col-md-12 form-group">
+                                 <div class="col-md-6 form-group">
+                                     <label for="chkQues" class="checkbox-custom-label" id="lblchkQues">ADL Training</label>
+                                     </div>
+                                 <div class="col-md-6 form-group">
+                                     <input type="number" name="Treatment_Sequence6" id="Treatment_Sequence6" class="form-control" style="width: 100px; height: 75px; font-size: 47px;" onblur="fn_CheckRange_Treatment_Sequence6($(this).val())" />
+                                          </div>
+                                 <div id="divMsg6" style="display:none;"><span id="spanPlanErrMsg6" style="color:red; font-size:medium;"></span></div>
+                                 </div>
+                        }
+                        if (id == "7")
+                        { <div class="col-md-12 form-group">
+                                 <div class="col-md-6 form-group">
+                                     <label for="chkQues" class="checkbox-custom-label" id="lblchkQues">Orthotic Fitting & Training</label>
+                                     </div>
+                                 <div class="col-md-6 form-group">
+                                     <input type="number" name="Treatment_Sequence7" id="Treatment_Sequence7" class="form-control" style="width: 100px; height: 75px; font-size: 47px;" onblur="fn_CheckRange_Treatment_Sequence7($(this).val())" />
+                                     </div>
+                              <div id="divMsg7" style="display:none;"><span id="spanPlanErrMsg7" style="color:red; font-size:medium;"></span></div>
+                                 </div>
+
+                            
+                        }
+                        if (id == "8")
+                        {
+                             <div class="col-md-12 form-group">
+                                 <div class="col-md-6 form-group">
+                                     <label for="chkQues" class="checkbox-custom-label" id="lblchkQues">Wheelchair Fitting & Training</label>
+                                     </div>
+                                 <div class="col-md-6 form-group">
+                                     <input type="number" name="Treatment_Sequence8" id="Treatment_Sequence8" class="form-control" style="width: 100px; height: 75px; font-size: 47px;" onblur="fn_CheckRange_Treatment_Sequence8($(this).val())" />
+                                     </div>
+                                 <div id="divMsg8" style="display:none;"><span id="spanPlanErrMsg8" style="color:red; font-size:medium;"></span></div>
+                                 </div>
+                         
+                        }
+
+                        if (id == "9")
+                        { <div class="col-md-12 form-group">
+                                 <div class="col-md-6 form-group">
+                                     <label for="chkQues" class="checkbox-custom-label" id="lblchkQues">Tissue Mobilization</label>
+                                     </div>
+                                 <div class="col-md-6 form-group">
+                                     <input type="number" name="Treatment_Sequence9" id="Treatment_Sequence9" class="form-control" style="width: 100px; height: 75px; font-size: 47px;" onblur="fn_CheckRange_Treatment_Sequence9($(this).val())" />
+                                     </div>
+                              <div id="divMsg9" style="display:none;"><span id="spanPlanErrMsg9" style="color:red; font-size:medium;"></span></div>
+                                 </div>
+
+                       
+                        }
+
+                        if (id == "10")
+                        {
+                             <div class="col-md-12 form-group">
+                                 <div class="col-md-6 form-group">
+                                     <label for="chkQues" class="checkbox-custom-label" id="lblchkQues">Canalith Repositioning</label>
+                                     </div>
+                                 <div class="col-md-6 form-group">
+                                     <input type="number" name="Treatment_Sequence10" id="Treatment_Sequence10" class="form-control" style="width: 100px; height: 75px; font-size: 47px;" onblur="fn_CheckRange_Treatment_Sequence10($(this).val())" />
+                                     </div>
+                                 <div id="divMsg10" style="display:none;"><span id="spanPlanErrMsg10" style="color:red; font-size:medium;"></span></div>
+                                 </div>
+                            
+                        }
+                        if (id == "11")
+                        {
+                             <div class="col-md-12 form-group">
+                                 <div class="col-md-6 form-group">
+                                     <label for="chkQues" class="checkbox-custom-label" id="lblchkQues">Mechanical Traction</label>
+                                     </div>
+                                 <div class="col-md-6 form-group">
+                                     <input type="number" name="Treatment_Sequence11" id="Treatment_Sequence11" class="form-control" style="width: 100px; height: 75px; font-size: 47px;" onblur="fn_CheckRange_Treatment_Sequence11($(this).val())" />
+                                     </div>
+                                 <div id="divMsg11" style="display:none;"><span id="spanPlanErrMsg11" style="color:red; font-size:medium;"></span></div>
+                                 </div>
+                            
+                        }
+                        if (id == "12")
+                        { <div class="col-md-12 form-group">
+                                 <div class="col-md-6 form-group">
+                                     <label for="chkQues" class="checkbox-custom-label" id="lblchkQues">Ultrasound</label>
+                                     </div>
+                                 <div class="col-md-6 form-group">
+                                     <input type="number" name="Treatment_Sequence12" id="Treatment_Sequence12" class="form-control" style="width: 100px; height: 75px; font-size: 47px;" onblur="fn_CheckRange_Treatment_Sequence12($(this).val())" />
+                                     </div>
+                              <div id="divMsg12" style="display:none;"><span id="spanPlanErrMsg12" style="color:red; font-size:medium;"></span></div>
+                                 </div>
+                          
+                        }
+                        if (id == "13")
+                        {
+                             <div class="col-md-12 form-group">
+                                 <div class="col-md-6 form-group">
+                                     <label for="chkQues" class="checkbox-custom-label" id="lblchkQues">TENS Training</label>
+                                     </div>
+                                 <div class="col-md-6 form-group">
+                                     <input type="number" name="Treatment_Sequence13" id="Treatment_Sequence13" class="form-control" style="width: 100px; height: 75px; font-size: 47px;" onblur="fn_CheckRange_Treatment_Sequence13($(this).val())" />
+                                     </div>
+                                 <div id="divMsg13" style="display:none;"><span id="spanPlanErrMsg13" style="color:red; font-size:medium;"></span></div>
+                                 </div>
+                         
+                        }
+                        if (id == "14")
+                        {
+                             <div class="col-md-12 form-group">
+                                 <div class="col-md-6 form-group">
+                                     <label for="chkQues" class="checkbox-custom-label" id="lblchkQues">Ionto/Phonophoresis</label>
+                                     </div>
+                                 <div class="col-md-6 form-group">
+                                     <input type="number" name="Treatment_Sequence14" id="Treatment_Sequence14" class="form-control" style="width: 100px; height: 75px; font-size: 47px;" onblur="fn_CheckRange_Treatment_Sequence14($(this).val())" />
+                                     </div>
+                                 <div id="divMsg14" style="display:none;"><span id="spanPlanErrMsg14" style="color:red; font-size:medium;"></span></div>
+                                 </div>
+                            
+                        }
+
+                    }*@
+
+                </div>
+
+                <div class="clearfix"></div>
+                <div style="float:right">
+                    <input type="submit" id="btnSave" class="btn btn-orange btn-lg" value="Save & Next To Assessment >>" disabled="disabled" />
+                </div>
+
+
+                <div class="clearfix"></div>
+
+                <div class="row">
+                   
+                    <a href="@Url.Action("Index", "InterimAssessment")" style="padding-left:15px;"><span class="btn btn-primary btn-lg">Back to list</span> </a>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+    var Plans = "";
+    $("#btnSave").click(function () {
+        
+        var Treatment_Sequence = "";
+        //var treatmentcount1 = '@ViewBag.treatmentcount';
+
+        $(".treatmentSeq").each(function (e) {           
+            var id = e + 1;  
+            var txtVal = $("#Treatment_Sequence" + id + "").val();
+            if (Treatment_Sequence == "") {
+                Treatment_Sequence = txtVal;
+            }
+            else {
+                Treatment_Sequence = Treatment_Sequence + "," + txtVal;
+            }
+        });
+        $("#Treatment_Sequence").val(Treatment_Sequence);
+
+        @*var splittreatmentcount = '@ViewBag.treatment';
+        var splittreatment = splittreatmentcount.split(',');
+        var treatmentcount = '@ViewBag.treatmentcount';
+        var iCount = 1;
+        for (i = 0; i < treatmentcount; i++) {
+            //var Treatment='Treatment_Sequence'+i;
+            //alert($('#Treatment_Sequence' + splittreatment[i]).val());
+            var Treatment_Sequencevalue = $('#Treatment_Sequence' + iCount).val();
+            //alert(Treatment_Sequencevalue);
+            if (Treatment_Sequencevalue != "" && parseInt(Treatment_Sequencevalue) > 0)
+
+            {
+                if (Treatment_Sequence == "") {
+                    Treatment_Sequence = Treatment_Sequencevalue;
+                }
+                else {
+                    Treatment_Sequence = Treatment_Sequence + "," + Treatment_Sequencevalue;
+                }
+
+                //alert(Treatment_Sequence);
+            }
+            else
+            {
+                alert("Please enter valid sequence");
+                $("#btnSave").prop('disabled', true);
+                return false;
+            }
+
+            iCount = iCount + 1;
+            
+            
+        }
+        $("#Treatment_Sequence").val(Treatment_Sequence);
+        $("#divMsg1").hide();
+        $("#divMsg2").hide();
+        $("#divMsg3").hide();
+        $("#divMsg4").hide();
+        $("#divMsg5").hide();
+        $("#divMsg6").hide();
+        $("#divMsg7").hide();
+        $("#divMsg8").hide();
+        $("#divMsg9").hide();
+        $("#divMsg10").hide();
+        $("#divMsg11").hide();
+        $("#divMsg12").hide();
+        $("#divMsg13").hide();
+        $("#divMsg14").hide();*@
+    });
+</script>
+
+<script type="text/javascript">
+  
+    function fn_CheckRange_Treatment_Sequence()
+    {
+        
+            var treatmentcount1 = '@ViewBag.treatmentcount';
+            $(".treatmentSeq").each(function (e) {
+                //alert($(this).val());
+                var id = e + 1;
+                var prevId = id - 1;
+
+                var txtVal = $("#Treatment_Sequence" + id + "").val();
+                var preTxtVal = $("#Treatment_Sequence" + prevId + "").val();
+               // alert(txtVal);
+                
+                if (txtVal == undefined || txtVal == "") {
+                    $("#spanPlanErrMsg" + id + "").text("Please enter treatment sequence");
+                    $("#divMsg" + id + "").show();
+                    //$(".Treatment_Sequence1").focus();
+                    $("#btnSave").prop('disabled', true);
+                    return false;
+                   
+                }
+                else
+                {
+                    if (parseInt(txtVal) <= 0 || txtVal == preTxtVal) {
+                        $("#spanPlanErrMsg" + id + "").text("Please enter valid treatment sequence");
+                        $("#divMsg" + id + "").show();
+                        //$(".Treatment_Sequence1").focus();
+                        $("#btnSave").prop('disabled', true);
+                        return false;
+                    }
+                    else if (txtVal > treatmentcount1) {
+                        $("#spanPlanErrMsg" + id + "").text("Treatment sequence must be less than or equal to " + treatmentcount1 + "");
+                        $("#divMsg" + id + "").show();
+                        //$(".Treatment_Sequence1").focus();
+                        $("#btnSave").prop('disabled', true);
+                        return false;
+                    }
+                    else
+                    {
+                        $("#spanPlanErrMsg" + id + "").text("");
+                        $("#divMsg" + id + "").hide();
+                        $("#btnSave").prop('disabled', false);
+                    }
+                }
+            });
+            
+                $("#divMsg" + id + "").hide();
+                $("#btnSave").prop('disabled', false);
+            
+        
+    }
+
+    function fn_CheckRange_Treatment_Sequence1(val1) {
+
+        var v1 = val1;
+       
+        var treatmentcount1 = '@ViewBag.treatmentcount';
+        if (parseInt(v1) > parseInt(treatmentcount1) || v1 == "") {
+            $("#spanPlanErrMsg1").text("Please enter valid Sequence");
+            $("#divMsg1").show();
+            $("#btnSave").prop('disabled', true);
+        }
+        else {
+            $("#divMsg1").hide();
+            $("#btnSave").prop('disabled', false);
+            //$("#divMsg1").show();
+            if ($("#Treatment_Sequence2").val() == v1 || $("#Treatment_Sequence3").val() == v1 || $("#Treatment_Sequence5").val() == v1 || $("#Treatment_Sequence6").val() == v1 || $("#Treatment_Sequence7").val() == v1 || $("#Treatment_Sequence8").val() == v1 || $("#Treatment_Sequence9").val() == v1 || $("#Treatment_Sequence10").val() == v1 || $("#Treatment_Sequence11").val() == v1 || $("#Treatment_Sequence12").val() == v1 || $("#Treatment_Sequence13").val() == v1 || $("#Treatment_Sequence2=14").val() == v1) {
+                $("#spanPlanErrMsg1").text("Please enter valid Sequence");
+                $("#divMsg1").show();
+                $("#divMsg2").hide();
+                $("#divMsg3").hide();
+                $("#divMsg4").hide();
+                $("#divMsg5").hide();
+                $("#divMsg6").hide();
+                $("#divMsg7").hide();
+                $("#divMsg8").hide();
+                $("#divMsg9").hide();
+                $("#divMsg10").hide();
+                $("#divMsg11").hide();
+                $("#divMsg12").hide();
+                $("#divMsg13").hide();
+                $("#divMsg14").hide();
+                $(".Treatment_Sequence1").focus();
+                $("#btnSave").prop('disabled', true);
+                return false;
+            }
+            else {
+                $("#divMsg1").hide();
+                $("#btnSave").prop('disabled', false);
+            }
+        }
+
+        }
+       
+    function fn_CheckRange_Treatment_Sequence2(val1) {
+
+        var v1 = val1;
+        var treatmentcount1 = '@ViewBag.treatmentcount';
+        if (parseInt(v1) > parseInt(treatmentcount1)) {
+            $("#spanPlanErrMsg2").text("Please enter valid Sequence");
+            $("#divMsg2").show();
+            $("#btnSave").prop('disabled', true);
+        }
+        else {
+            $("#divMsg2").hide();
+            $("#btnSave").prop('disabled', false);
+            if ($("#Treatment_Sequence1").val() == v1 || $("#Treatment_Sequence3").val() == v1 || $("#Treatment_Sequence5").val() == v1 || $("#Treatment_Sequence6").val() == v1 || $("#Treatment_Sequence7").val() == v1 || $("#Treatment_Sequence8").val() == v1 || $("#Treatment_Sequence9").val() == v1 || $("#Treatment_Sequence10").val() == v1 || $("#Treatment_Sequence11").val() == v1 || $("#Treatment_Sequence12").val() == v1 || $("#Treatment_Sequence13").val() == v1 || $("#Treatment_Sequence2=14").val() == v1) {
+                $("#spanPlanErrMsg2").text("Please enter valid Sequence");
+                $("#divMsg2").show();
+                $("#divMsg1").hide();
+                $("#divMsg3").hide();
+                $("#divMsg4").hide();
+                $("#divMsg5").hide();
+                $("#divMsg6").hide();
+                $("#divMsg7").hide();
+                $("#divMsg8").hide();
+                $("#divMsg9").hide();
+                $("#divMsg10").hide();
+                $("#divMsg11").hide();
+                $("#divMsg12").hide();
+                $("#divMsg13").hide();
+                $("#divMsg14").hide();
+                $(".Treatment_Sequence2").focus();
+                $("#btnSave").prop('disabled', true);
+                return false;
+            }
+            else {
+                $("#divMsg1").hide();
+                $("#divMsg2").hide();
+                $("#divMsg3").hide();
+                $("#divMsg4").hide();
+                $("#divMsg5").hide();
+                $("#divMsg6").hide();
+                $("#divMsg7").hide();
+                $("#divMsg8").hide();
+                $("#divMsg9").hide();
+                $("#divMsg10").hide();
+                $("#divMsg11").hide();
+                $("#divMsg12").hide();
+                $("#divMsg13").hide();
+                $("#divMsg14").hide();
+                $("#btnSave").prop('disabled', false);
+            }
+        }
+    }
+    function fn_CheckRange_Treatment_Sequence3(val1) {
+
+        var v1 = val1;
+        var treatmentcount1 = '@ViewBag.treatmentcount';
+        if (parseInt(v1) > parseInt(treatmentcount1)) {
+            $("#spanPlanErrMsg3").text("Please enter valid Sequence");
+            $("#divMsg3").show();
+            $("#btnSave").prop('disabled', true);
+        }
+        else {
+            $("#divMsg3").hide();
+            $("#btnSave").prop('disabled', false);
+            if ($("#Treatment_Sequence1").val() == v1 || $("#Treatment_Sequence2").val() == v1 || $("#Treatment_Sequence5").val() == v1 || $("#Treatment_Sequence6").val() == v1 || $("#Treatment_Sequence7").val() == v1 || $("#Treatment_Sequence8").val() == v1 || $("#Treatment_Sequence9").val() == v1 || $("#Treatment_Sequence10").val() == v1 || $("#Treatment_Sequence11").val() == v1 || $("#Treatment_Sequence12").val() == v1 || $("#Treatment_Sequence13").val() == v1 || $("#Treatment_Sequence2=14").val() == v1) {
+                $("#spanPlanErrMsg3").text("Please enter valid Sequence");
+                $("#divMsg3").show();
+                $("#divMsg2").hide();
+                $("#divMsg1").hide();
+                $("#divMsg4").hide();
+                $("#divMsg5").hide();
+                $("#divMsg6").hide();
+                $("#divMsg7").hide();
+                $("#divMsg8").hide();
+                $("#divMsg9").hide();
+                $("#divMsg10").hide();
+                $("#divMsg11").hide();
+                $("#divMsg12").hide();
+                $("#divMsg13").hide();
+                $("#divMsg14").hide();
+                $(".Treatment_Sequence3").focus();
+                $("#btnSave").prop('disabled', true);
+                return false;
+            }
+            else {
+                $("#btnSave").prop('disabled', false);
+                $("#divMsg1").hide();
+                $("#divMsg2").hide();
+                $("#divMsg3").hide();
+                $("#divMsg4").hide();
+                $("#divMsg5").hide();
+                $("#divMsg6").hide();
+                $("#divMsg7").hide();
+                $("#divMsg8").hide();
+                $("#divMsg9").hide();
+                $("#divMsg10").hide();
+                $("#divMsg11").hide();
+                $("#divMsg12").hide();
+                $("#divMsg13").hide();
+                $("#divMsg14").hide();
+            }
+        }
+    }
+    function fn_CheckRange_Treatment_Sequence5(val1) {
+
+        var v1 = val1;
+        var treatmentcount1 = '@ViewBag.treatmentcount';
+        if (parseInt(v1) > parseInt(treatmentcount1)) {
+            $("#spanPlanErrMsg5").text("Please enter valid Sequence");
+            $("#divMsg5").show();
+            $("#btnSave").prop('disabled', true);
+        }
+        else {
+            $("#divMsg5").hide();
+            $("#btnSave").prop('disabled', false);
+            if ($("#Treatment_Sequence2").val() == v1 || $("#Treatment_Sequence3").val() == v1 || $("#Treatment_Sequence1").val() == v1 || $("#Treatment_Sequence6").val() == v1 || $("#Treatment_Sequence7").val() == v1 || $("#Treatment_Sequence8").val() == v1 || $("#Treatment_Sequence9").val() == v1 || $("#Treatment_Sequence10").val() == v1 || $("#Treatment_Sequence11").val() == v1 || $("#Treatment_Sequence12").val() == v1 || $("#Treatment_Sequence13").val() == v1 || $("#Treatment_Sequence2=14").val() == v1) {
+                $("#spanPlanErrMsg5").text("Please enter valid Sequence");
+                $("#divMsg5").show();
+                $("#divMsg2").hide();
+                $("#divMsg3").hide();
+                $("#divMsg4").hide();
+                $("#divMsg1").hide();
+                $("#divMsg6").hide();
+                $("#divMsg7").hide();
+                $("#divMsg8").hide();
+                $("#divMsg9").hide();
+                $("#divMsg10").hide();
+                $("#divMsg11").hide();
+                $("#divMsg12").hide();
+                $("#divMsg13").hide();
+                $("#divMsg14").hide();
+                $(".Treatment_Sequence5").focus();
+                $("#btnSave").prop('disabled', true);
+                return false;
+            }
+            else {
+                $("#btnSave").prop('disabled', false);
+                $("#divMsg1").hide();
+                $("#divMsg2").hide();
+                $("#divMsg3").hide();
+                $("#divMsg4").hide();
+                $("#divMsg5").hide();
+                $("#divMsg6").hide();
+                $("#divMsg7").hide();
+                $("#divMsg8").hide();
+                $("#divMsg9").hide();
+                $("#divMsg10").hide();
+                $("#divMsg11").hide();
+                $("#divMsg12").hide();
+                $("#divMsg13").hide();
+                $("#divMsg14").hide();
+            }
+        }
+    }
+    function fn_CheckRange_Treatment_Sequence6(val1) {
+
+        var v1 = val1;
+        var treatmentcount1 = '@ViewBag.treatmentcount';
+        if (parseInt(v1) > parseInt(treatmentcount1)) {
+            $("#spanPlanErrMsg6").text("Please enter valid Sequence");
+            $("#divMsg6").show();
+            $("#btnSave").prop('disabled', true);
+        }
+        else {
+            $("#divMsg6").hide();
+            $("#btnSave").prop('disabled', false);
+            if ($("#Treatment_Sequence2").val() == v1 || $("#Treatment_Sequence3").val() == v1 || $("#Treatment_Sequence5").val() == v1 || $("#Treatment_Sequence1").val() == v1 || $("#Treatment_Sequence7").val() == v1 || $("#Treatment_Sequence8").val() == v1 || $("#Treatment_Sequence9").val() == v1 || $("#Treatment_Sequence10").val() == v1 || $("#Treatment_Sequence11").val() == v1 || $("#Treatment_Sequence12").val() == v1 || $("#Treatment_Sequence13").val() == v1 || $("#Treatment_Sequence2=14").val() == v1) {
+                $("#spanPlanErrMsg6").text("Please enter valid Sequence");
+                $("#divMsg6").show();
+                $("#divMsg2").hide();
+                $("#divMsg3").hide();
+                $("#divMsg4").hide();
+                $("#divMsg5").hide();
+                $("#divMsg1").hide();
+                $("#divMsg7").hide();
+                $("#divMsg8").hide();
+                $("#divMsg9").hide();
+                $("#divMsg10").hide();
+                $("#divMsg11").hide();
+                $("#divMsg12").hide();
+                $("#divMsg13").hide();
+                $("#divMsg14").hide();
+                $(".Treatment_Sequence6").focus();
+                $("#btnSave").prop('disabled', true);
+                return false;
+            }
+            else {
+                $("#divMsg1").hide();
+                $("#divMsg2").hide();
+                $("#divMsg3").hide();
+                $("#divMsg4").hide();
+                $("#divMsg5").hide();
+                $("#divMsg6").hide();
+                $("#divMsg7").hide();
+                $("#divMsg8").hide();
+                $("#divMsg9").hide();
+                $("#divMsg10").hide();
+                $("#divMsg11").hide();
+                $("#divMsg12").hide();
+                $("#divMsg13").hide();
+                $("#divMsg14").hide();
+                $("#btnSave").prop('disabled', false);
+            }
+        }
+    }
+   
+    function fn_CheckRange_Treatment_Sequence7(val1) {
+
+        var v1 = val1;
+        var treatmentcount1 = '@ViewBag.treatmentcount';
+        if (parseInt(v1) > parseInt(treatmentcount1)) {
+            $("#spanPlanErrMsg7").text("Please enter valid Sequence");
+            $("#divMsg7").show();
+            $("#btnSave").prop('disabled', true);
+        }
+        else {
+            $("#divMsg7").hide();
+            $("#btnSave").prop('disabled', false);
+            if ($("#Treatment_Sequence2").val() == v1 || $("#Treatment_Sequence3").val() == v1 || $("#Treatment_Sequence5").val() == v1 || $("#Treatment_Sequence6").val() == v1 || $("#Treatment_Sequence1").val() == v1 || $("#Treatment_Sequence8").val() == v1 || $("#Treatment_Sequence9").val() == v1 || $("#Treatment_Sequence10").val() == v1 || $("#Treatment_Sequence11").val() == v1 || $("#Treatment_Sequence12").val() == v1 || $("#Treatment_Sequence13").val() == v1 || $("#Treatment_Sequence2=14").val() == v1) {
+                $("#spanPlanErrMsg7").text("Please enter valid Sequence");
+                $("#divMsg7").show();
+                $("#divMsg2").hide();
+                $("#divMsg3").hide();
+                $("#divMsg4").hide();
+                $("#divMsg5").hide();
+                $("#divMsg6").hide();
+                $("#divMsg1").hide();
+                $("#divMsg8").hide();
+                $("#divMsg9").hide();
+                $("#divMsg10").hide();
+                $("#divMsg11").hide();
+                $("#divMsg12").hide();
+                $("#divMsg13").hide();
+                $("#divMsg14").hide();
+                $(".Treatment_Sequence7").focus();
+                $("#btnSave").prop('disabled', true);
+                return false;
+            }
+            else {
+                $("#divMsg1").hide();
+                $("#divMsg2").hide();
+                $("#divMsg3").hide();
+                $("#divMsg4").hide();
+                $("#divMsg5").hide();
+                $("#divMsg6").hide();
+                $("#divMsg7").hide();
+                $("#divMsg8").hide();
+                $("#divMsg9").hide();
+                $("#divMsg10").hide();
+                $("#divMsg11").hide();
+                $("#divMsg12").hide();
+                $("#divMsg13").hide();
+                $("#divMsg14").hide();
+                $("#btnSave").prop('disabled', false);
+            }
+        }
+    }
+    function fn_CheckRange_Treatment_Sequence8(val1) {
+
+        var v1 = val1;
+        var treatmentcount1 = '@ViewBag.treatmentcount';
+        if (parseInt(v1) > parseInt(treatmentcount1)) {
+            $("#spanPlanErrMsg8").text("Please enter valid Sequence");
+            $("#divMsg8").show();
+            $("#btnSave").prop('disabled', true);
+        }
+        else {
+            $("#divMsg8").hide();
+            $("#btnSave").prop('disabled', false);
+            if ($("#Treatment_Sequence2").val() == v1 || $("#Treatment_Sequence3").val() == v1 || $("#Treatment_Sequence5").val() == v1 || $("#Treatment_Sequence6").val() == v1 || $("#Treatment_Sequence7").val() == v1 || $("#Treatment_Sequence1").val() == v1 || $("#Treatment_Sequence9").val() == v1 || $("#Treatment_Sequence10").val() == v1 || $("#Treatment_Sequence11").val() == v1 || $("#Treatment_Sequence12").val() == v1 || $("#Treatment_Sequence13").val() == v1 || $("#Treatment_Sequence2=14").val() == v1) {
+                $("#spanPlanErrMsg8").text("Please enter valid Sequence");
+                $("#divMsg8").show();
+                $("#divMsg2").hide();
+                $("#divMsg3").hide();
+                $("#divMsg4").hide();
+                $("#divMsg5").hide();
+                $("#divMsg6").hide();
+                $("#divMsg7").hide();
+                $("#divMsg1").hide();
+                $("#divMsg9").hide();
+                $("#divMsg10").hide();
+                $("#divMsg11").hide();
+                $("#divMsg12").hide();
+                $("#divMsg13").hide();
+                $("#divMsg14").hide();
+                $(".Treatment_Sequence8").focus();
+                $("#btnSave").prop('disabled', true);
+                return false;
+            }
+            else {
+                $("#divMsg1").hide();
+                $("#divMsg2").hide();
+                $("#divMsg3").hide();
+                $("#divMsg4").hide();
+                $("#divMsg5").hide();
+                $("#divMsg6").hide();
+                $("#divMsg7").hide();
+                $("#divMsg8").hide();
+                $("#divMsg9").hide();
+                $("#divMsg10").hide();
+                $("#divMsg11").hide();
+                $("#divMsg12").hide();
+                $("#divMsg13").hide();
+                $("#divMsg14").hide();
+                $("#btnSave").prop('disabled', false);
+            }
+        }
+    }
+    function fn_CheckRange_Treatment_Sequence9(val1) {
+
+        var v1 = val1;
+        var treatmentcount1 = '@ViewBag.treatmentcount';
+        if (parseInt(v1) > parseInt(treatmentcount1)) {
+            $("#spanPlanErrMsg9").text("Please enter valid Sequence");
+            $("#divMsg9").show();
+            $("#btnSave").prop('disabled', true);
+        }
+        else {
+            $("#divMsg9").hide();
+            $("#btnSave").prop('disabled', false);
+            if ($("#Treatment_Sequence2").val() == v1 || $("#Treatment_Sequence3").val() == v1 || $("#Treatment_Sequence5").val() == v1 || $("#Treatment_Sequence6").val() == v1 || $("#Treatment_Sequence7").val() == v1 || $("#Treatment_Sequence8").val() == v1 || $("#Treatment_Sequence1").val() == v1 || $("#Treatment_Sequence10").val() == v1 || $("#Treatment_Sequence11").val() == v1 || $("#Treatment_Sequence12").val() == v1 || $("#Treatment_Sequence13").val() == v1 || $("#Treatment_Sequence2=14").val() == v1) {
+                $("#spanPlanErrMsg").text("Please enter valid Sequence");
+                $("#divMsg9").show();
+                $("#divMsg2").hide();
+                $("#divMsg3").hide();
+                $("#divMsg4").hide();
+                $("#divMsg5").hide();
+                $("#divMsg6").hide();
+                $("#divMsg7").hide();
+                $("#divMsg8").hide();
+                $("#divMsg1").hide();
+                $("#divMsg10").hide();
+                $("#divMsg11").hide();
+                $("#divMsg12").hide();
+                $("#divMsg13").hide();
+                $("#divMsg14").hide();
+                $(".Treatment_Sequence9").focus();
+                $("#btnSave").prop('disabled', true);
+                return false;
+            }
+            else {
+                $("#divMsg1").hide();
+                $("#divMsg2").hide();
+                $("#divMsg3").hide();
+                $("#divMsg4").hide();
+                $("#divMsg5").hide();
+                $("#divMsg6").hide();
+                $("#divMsg7").hide();
+                $("#divMsg8").hide();
+                $("#divMsg9").hide();
+                $("#divMsg10").hide();
+                $("#divMsg11").hide();
+                $("#divMsg12").hide();
+                $("#divMsg13").hide();
+                $("#divMsg14").hide();
+                $("#btnSave").prop('disabled', false);
+            }
+        }
+    }
+    function fn_CheckRange_Treatment_Sequence10(val1) {
+
+        var v1 = val1;
+        var treatmentcount1 = '@ViewBag.treatmentcount';
+        if (parseInt(v1) > parseInt(treatmentcount1) || v1 == "") {
+            $("#spanPlanErrMsg10").text("Please enter valid Sequence");
+            $("#divMsg10").show();
+            $("#btnSave").prop('disabled', true);
+        }
+        else {
+            $("#divMsg10").hide();
+            $("#btnSave").prop('disabled', false);
+            if ($("#Treatment_Sequence2").val() == v1 || $("#Treatment_Sequence3").val() == v1 || $("#Treatment_Sequence5").val() == v1 || $("#Treatment_Sequence6").val() == v1 || $("#Treatment_Sequence7").val() == v1 || $("#Treatment_Sequence8").val() == v1 || $("#Treatment_Sequence9").val() == v1 || $("#Treatment_Sequence1").val() == v1 || $("#Treatment_Sequence11").val() == v1 || $("#Treatment_Sequence12").val() == v1 || $("#Treatment_Sequence13").val() == v1 || $("#Treatment_Sequence2=14").val() == v1) {
+                $("#spanPlanErrMsg10").text("Please enter valid Sequence");
+                $("#divMsg10").show();
+                $("#divMsg2").hide();
+                $("#divMsg3").hide();
+                $("#divMsg4").hide();
+                $("#divMsg5").hide();
+                $("#divMsg6").hide();
+                $("#divMsg7").hide();
+                $("#divMsg8").hide();
+                $("#divMsg9").hide();
+                $("#divMsg1").hide();
+                $("#divMsg11").hide();
+                $("#divMsg12").hide();
+                $("#divMsg13").hide();
+                $("#divMsg14").hide();
+                $(".Treatment_Sequence10").focus();
+                $("#btnSave").prop('disabled', true);
+                return false;
+            }
+            else {
+                $("#divMsg1").hide();
+                $("#divMsg2").hide();
+                $("#divMsg3").hide();
+                $("#divMsg4").hide();
+                $("#divMsg5").hide();
+                $("#divMsg6").hide();
+                $("#divMsg7").hide();
+                $("#divMsg8").hide();
+                $("#divMsg9").hide();
+                $("#divMsg10").hide();
+                $("#divMsg11").hide();
+                $("#divMsg12").hide();
+                $("#divMsg13").hide();
+                $("#divMsg14").hide();
+                $("#btnSave").prop('disabled', false);
+            }
+        }
+    }
+    function fn_CheckRange_Treatment_Sequence11(val1) {
+
+        var v1 = val1;
+        var treatmentcount1 = '@ViewBag.treatmentcount';
+        if (parseInt(v1) > parseInt(treatmentcount1)) {
+            $("#spanPlanErrMsg11").text("Please enter valid Sequence");
+            $("#divMsg11").show();
+            $("#btnSave").prop('disabled', true);
+        }
+        else {
+            $("#divMsg11").hide();
+            $("#btnSave").prop('disabled', false);
+            if ($("#Treatment_Sequence2").val() == v1 || $("#Treatment_Sequence3").val() == v1 || $("#Treatment_Sequence5").val() == v1 || $("#Treatment_Sequence6").val() == v1 || $("#Treatment_Sequence7").val() == v1 || $("#Treatment_Sequence8").val() == v1 || $("#Treatment_Sequence9").val() == v1 || $("#Treatment_Sequence10").val() == v1 || $("#Treatment_Sequence1").val() == v1 || $("#Treatment_Sequence12").val() == v1 || $("#Treatment_Sequence13").val() == v1 || $("#Treatment_Sequence2=14").val() == v1) {
+                $("#spanPlanErrMsg11").text("Please enter valid Sequence");
+                $("#divMsg11").show();
+                $("#divMsg2").hide();
+                $("#divMsg3").hide();
+                $("#divMsg4").hide();
+                $("#divMsg5").hide();
+                $("#divMsg6").hide();
+                $("#divMsg7").hide();
+                $("#divMsg8").hide();
+                $("#divMsg9").hide();
+                $("#divMsg10").hide();
+                $("#divMsg1").hide();
+                $("#divMsg12").hide();
+                $("#divMsg13").hide();
+                $("#divMsg14").hide();
+                $(".Treatment_Sequence11").focus();
+                $("#btnSave").prop('disabled', true);
+                return false;
+            }
+            else {
+                $("#divMsg1").hide();
+                $("#divMsg2").hide();
+                $("#divMsg3").hide();
+                $("#divMsg4").hide();
+                $("#divMsg5").hide();
+                $("#divMsg6").hide();
+                $("#divMsg7").hide();
+                $("#divMsg8").hide();
+                $("#divMsg9").hide();
+                $("#divMsg10").hide();
+                $("#divMsg11").hide();
+                $("#divMsg12").hide();
+                $("#divMsg13").hide();
+                $("#divMsg14").hide();
+                $("#btnSave").prop('disabled', false);
+            }
+        }
+    }
+    function fn_CheckRange_Treatment_Sequence12(val1) {
+
+        var v1 = val1;
+        var treatmentcount1 = '@ViewBag.treatmentcount';
+        if (parseInt(v1) > parseInt(treatmentcount1)) {
+            $("#spanPlanErrMsg12").text("Please enter valid Sequence");
+            $("#divMsg12").show();
+            $("#btnSave").prop('disabled', true);
+        }
+        else {
+            $("#divMsg12").hide();
+            $("#btnSave").prop('disabled', false);
+            if ($("#Treatment_Sequence2").val() == v1 || $("#Treatment_Sequence3").val() == v1 || $("#Treatment_Sequence5").val() == v1 || $("#Treatment_Sequence6").val() == v1 || $("#Treatment_Sequence7").val() == v1 || $("#Treatment_Sequence8").val() == v1 || $("#Treatment_Sequence9").val() == v1 || $("#Treatment_Sequence10").val() == v1 || $("#Treatment_Sequence11").val() == v1 || $("#Treatment_Sequence1").val() == v1 || $("#Treatment_Sequence13").val() == v1 || $("#Treatment_Sequence2=14").val() == v1) {
+                $("#spanPlanErrMsg12").text("Please enter valid Sequence");
+                $("#divMsg12").show();
+                $("#divMsg2").hide();
+                $("#divMsg3").hide();
+                $("#divMsg4").hide();
+                $("#divMsg5").hide();
+                $("#divMsg6").hide();
+                $("#divMsg7").hide();
+                $("#divMsg8").hide();
+                $("#divMsg9").hide();
+                $("#divMsg10").hide();
+                $("#divMsg11").hide();
+                $("#divMsg1").hide();
+                $("#divMsg13").hide();
+                $("#divMsg14").hide();
+                $(".Treatment_Sequence12").focus();
+                $("#btnSave").prop('disabled', true);
+                return false;
+            }
+            else {
+                $("#divMsg1").hide();
+                $("#divMsg2").hide();
+                $("#divMsg3").hide();
+                $("#divMsg4").hide();
+                $("#divMsg5").hide();
+                $("#divMsg6").hide();
+                $("#divMsg7").hide();
+                $("#divMsg8").hide();
+                $("#divMsg9").hide();
+                $("#divMsg10").hide();
+                $("#divMsg11").hide();
+                $("#divMsg12").hide();
+                $("#divMsg13").hide();
+                $("#divMsg14").hide();
+                $("#btnSave").prop('disabled', false);
+            }
+        }
+    }
+    function fn_CheckRange_Treatment_Sequence13(val1) {
+
+        var v1 = val1;
+        var treatmentcount1 = '@ViewBag.treatmentcount';
+        if (parseInt(v1) > parseInt(treatmentcount1)) {
+            $("#spanPlanErrMsg13").text("Please enter valid Sequence");
+            $("#divMsg13").show();
+            $("#btnSave").prop('disabled', true);
+        }
+        else {
+            $("#divMsg13").hide();
+            $("#btnSave").prop('disabled', false);
+            if ($("#Treatment_Sequence2").val() == v1 || $("#Treatment_Sequence3").val() == v1 || $("#Treatment_Sequence5").val() == v1 || $("#Treatment_Sequence6").val() == v1 || $("#Treatment_Sequence7").val() == v1 || $("#Treatment_Sequence8").val() == v1 || $("#Treatment_Sequence9").val() == v1 || $("#Treatment_Sequence10").val() == v1 || $("#Treatment_Sequence11").val() == v1 || $("#Treatment_Sequence12").val() == v1 || $("#Treatment_Sequence1").val() == v1 || $("#Treatment_Sequence2=14").val() == v1) {
+                $("#spanPlanErrMsg13").text("Please enter valid Sequence");
+                $("#divMsg13").show();
+                $("#divMsg2").hide();
+                $("#divMsg3").hide();
+                $("#divMsg4").hide();
+                $("#divMsg5").hide();
+                $("#divMsg6").hide();
+                $("#divMsg7").hide();
+                $("#divMsg8").hide();
+                $("#divMsg9").hide();
+                $("#divMsg10").hide();
+                $("#divMsg11").hide();
+                $("#divMsg12").hide();
+                $("#divMsg1").hide();
+                $("#divMsg14").hide();
+                $(".Treatment_Sequence13").focus();
+                $("#btnSave").prop('disabled', true);
+                return false;
+            }
+            else {
+                $("#divMsg1").hide();
+                $("#divMsg2").hide();
+                $("#divMsg3").hide();
+                $("#divMsg4").hide();
+                $("#divMsg5").hide();
+                $("#divMsg6").hide();
+                $("#divMsg7").hide();
+                $("#divMsg8").hide();
+                $("#divMsg9").hide();
+                $("#divMsg10").hide();
+                $("#divMsg11").hide();
+                $("#divMsg12").hide();
+                $("#divMsg13").hide();
+                $("#divMsg14").hide();
+                $("#btnSave").prop('disabled', false);
+            }
+        }
+    }
+    function fn_CheckRange_Treatment_Sequence14(val1) {
+
+        var v1 = val1;
+        var treatmentcount1 = '@ViewBag.treatmentcount';
+        if (parseInt(v1) > parseInt(treatmentcount1)) {
+            $("#spanPlanErrMsg14").text("Please enter valid Sequence");
+            $("#divMsg14").show();
+            $("#btnSave").prop('disabled', true);
+        }
+        else {
+            $("#divMsg14").hide();
+            $("#btnSave").prop('disabled', false);
+            if ($("#Treatment_Sequence2").val() == v1 || $("#Treatment_Sequence3").val() == v1 || $("#Treatment_Sequence5").val() == v1 || $("#Treatment_Sequence6").val() == v1 || $("#Treatment_Sequence7").val() == v1 || $("#Treatment_Sequence8").val() == v1 || $("#Treatment_Sequence9").val() == v1 || $("#Treatment_Sequence10").val() == v1 || $("#Treatment_Sequence11").val() == v1 || $("#Treatment_Sequence12").val() == v1 || $("#Treatment_Sequence13").val() == v1 || $("#Treatment_Sequence2=1").val() == v1) {
+                $("#spanPlanErrMsg14").text("Please enter valid Sequence");
+                $("#divMsg14").show();
+                $("#divMsg2").hide();
+                $("#divMsg3").hide();
+                $("#divMsg4").hide();
+                $("#divMsg5").hide();
+                $("#divMsg6").hide();
+                $("#divMsg7").hide();
+                $("#divMsg8").hide();
+                $("#divMsg9").hide();
+                $("#divMsg10").hide();
+                $("#divMsg11").hide();
+                $("#divMsg12").hide();
+                $("#divMsg13").hide();
+                $("#divMsg1").hide();
+                $(".Treatment_Sequence14").focus();
+                $("#btnSave").prop('disabled', true);
+                return false;
+            }
+            else {
+                $("#btnSave").prop('disabled', false);
+                $("#divMsg1").hide();
+                $("#divMsg2").hide();
+                $("#divMsg3").hide();
+                $("#divMsg4").hide();
+                $("#divMsg5").hide();
+                $("#divMsg6").hide();
+                $("#divMsg7").hide();
+                $("#divMsg8").hide();
+                $("#divMsg9").hide();
+                $("#divMsg10").hide();
+                $("#divMsg11").hide();
+                $("#divMsg12").hide();
+                $("#divMsg13").hide();
+                $("#divMsg14").hide();
+            }
+        }
+    }
+</script>

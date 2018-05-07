@@ -1,0 +1,179 @@
+﻿@model IEnumerable<DataLayer.Models.tblTTreatmentRelatedVideo>
+@using PagedList.Mvc;
+@using DataLayer;
+@{
+    ViewBag.Title = "Index";
+    if (ViewBag.Error != null)
+    {
+        @Html.Raw(ViewBag.Error)
+    }
+
+}
+
+<center><h2 style="margin-top:20px;">Treatment Related Video List</h2></center>
+<section class="bodyinner2">
+    <div>
+        <p class="pull-right">
+            @Html.ActionLink("Create New Record", "Create", null, new { @class = "btn btn-primary" })
+        </p>
+        @using (Html.BeginForm("Index", "TreatmentRelatedVideos", FormMethod.Get))
+        {
+            @*<div class="col-sm-3">
+                    <select class="form-control" id="SearchField">
+                        <option selected>-- Select --</option>
+                    </select>
+
+                </div>*@
+            <div class="searchsec">
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search here ..." })
+                <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                <div class="clearfix"></div>
+            </div>
+        }
+        <div class="clearfix"></div>
+    </div>
+
+    <div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayName("Video Link")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Description")
+                        </th>
+                        <th colspan="3">
+                            @Html.DisplayName("Status")
+                        </th>
+
+
+                    </tr>
+
+                </thead>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.HiddenFor(e => item.VideoId);
+
+                            @if (item.IsActive == true)
+                            {
+                                <a href="@Html.DisplayFor(e => item.VideoLink)">  @Html.DisplayFor(e => item.VideoLink)</a>
+                            }
+                            else
+                            {
+                                <a href="#">@Html.DisplayFor(e => item.VideoLink)</a>
+                            }
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(e => item.VideoDesc)
+                        </td>
+
+                        <td align="center">
+                            @if (item.IsActive == true)
+                            {<label class="fa fa-unlock" style="color: #0f68e6; "></label> }
+                            else
+                            {<label class="fa fa-lock" style="color: #eb1923;"></label> }
+                        </td>
+                        <td>
+                            @*<a href="@Url.Action("Delete", "TreatmentRelatedVideos", new { id = item.VideoId , onclick = "return confirm('Are you sure you wish to delete this Offer Discount Item Details?');" }))">
+                                    <i class="fa fa-close" aria-hidden="true"></i>
+                                </a>*@
+
+
+                            @Html.ActionLink("X", "Delete", new { id = item.VideoId }, new { onclick = "return confirm('Are you sure to delete this treatment related video ?');" })
+
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Edit", "TreatmentRelatedVideos", new { id = item.VideoId })">
+                                <i class="fa fa-edit" aria-hidden="true"></i>
+                            </a>
+                        </td>
+
+                    </tr>
+                }
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+
+
+
+    @*----------test----------------*@
+
+    @*<div class="clearfix"></div>
+        <div>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @if (item.IsActive == true)
+                                {
+                                    <div id="divVideoDisplay">
+                                        <div class="row">
+                                            <div class="col-sm-6 form-group">
+                                                @Html.DisplayFor(e => item.VideoDesc)<br />
+                                                <iframe src="@item.VideoLink" width="300" height="200" frameborder="0" allowfullscreen></iframe>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+
+            </div>
+
+        </div>
+        <div class="container"></div>*@
+    @*------------------------------*@
+
+
+
+
+</section>
+
+<script type="text/javascript">
+    function fnConfirmation(obj) {
+
+        alert($("#item_VideoId").val());
+        var txt;
+        var r = confirm("Do you want to cancel this appointment");
+        if (r == true) {
+            //alert(PatientId);
+            $.ajax({
+                url: '@Url.Action("Delete","TreatmentRelatedVideos")' + "?id=" + $('#hdnAppointmentId').val(),
+                type: 'GET',
+                dataType: 'JSON',
+                //data: { things: false },
+                success: function (data) {
+                    //$('#ModalReschedule').modal('hide');
+                    $('#myModal').modal('hide');
+                    alert(data);
+                    location.reload();
+
+                },
+                error: function () {
+                    alert("Error occured.");
+                }
+            });
+        } else {
+            txt = "Cancel";
+        }
+    }
+
+</script>

@@ -1,0 +1,1062 @@
+﻿@model DataLayer.Models.tblTKneeBraceFusionLigamentForm
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+<section class="bodyinner">
+    @using (Html.BeginForm("Create", "KneeBraceFusionLigamentOrderForm", FormMethod.Post, new { name = "Create", id = "Create" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="bodyleft">
+            @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+        </div>
+
+        <div class="bodyright">
+
+            <div class="report-form clearfix">
+                <h2>Fusion Ligament Knee Brace Order Form HCPCS Code: L1845</h2>
+                <div class="p_bot15"><strong>*MEDICARE PATIENTS: DO NOT PROCEED IF THEY HAVE BEEN ISSUED A ‘KNEE BRACE’ IN THE PAST 5 YEARS.</strong></div>
+
+                <hr>
+                <div id="dvFirst">
+
+                    <h3>Fusion Ligament Description:</h3>
+                    <div class="row p_bot20">
+
+                        <div class="col-sm-12">
+                            <div class="rightgray">
+                                <ul>
+                                    <li><strong>Provides patients with protection for ACL, PCL & Collateral Ligaments (7 Sizes Available).</strong></li>
+                                    <li><strong>Precise fit that won’t compromise mobility. Aligns and supports the knee.</strong></li>
+                                    <li><strong>Provides medial/lateral & anterior/posterior support.</strong></li>
+                                    <li><strong>Ideal for sports activities.</strong></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <img src="~/Images/KneeBraceFusionLigamentOrderFormpic1.jpg" alt="Knee Brace Fusion Ligament Order Form pic1" />
+                        </div>
+
+                        <div class="col-sm-5">
+                            <div class="rightgray">
+                                <h4>L1845 Code Includes the Following:</h4>
+                                <ul>
+                                    <li>Orthosis</li>
+                                    <li>All Straps, Closures and Padding</li>
+                                    <li>Fitting & Adjustment</li>
+                                </ul>
+                            </div>
+
+                        </div>
+                        <div class="col-sm-5">
+
+                            <div class="rightgray">
+                                <h4>Manufacturer: BREG</h4>
+                                <p>*Note: Order Custom Brace if Thigh & Calf Measurements DO NOT Fall in the Ranges Noted in the Chart Below (see custom form).</p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <hr>
+
+                    <h3>Fitting</h3>
+                    <div class="row">
+
+                        <div class="col-md-7 col-sm-12">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Size #</th>
+                                            <th>Size</th>
+                                            <th>
+                                                6” Above
+                                                Mid-Patella
+                                            </th>
+                                            <th>
+                                                6” Below
+                                                Mid-Patella
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th>X = 2 </th>
+                                            <th>Small</th>
+                                            <th>15 - 18 inches</th>
+                                            <th>12 – 14 inches</th>
+                                        </tr>
+                                        <tr>
+                                            <th>X =3 </th>
+                                            <th>Medium</th>
+                                            <th>18 - 21 inches</th>
+                                            <th>14 – 16 inches</th>
+                                        </tr>
+                                        <tr>
+                                            <th>X = 4 </th>
+                                            <th>Large</th>
+                                            <th>21 - 24 inches</th>
+                                            <th>16 – 18 inches</th>
+                                        </tr>
+                                        <tr>
+                                            <th>X = 5 </th>
+                                            <th>X-Large</th>
+                                            <th>24 - 27 inches</th>
+                                            <th>18 – 20 inches</th>
+                                        </tr>
+                                        <tr>
+                                            <th>X =6 </th>
+                                            <th>XX-Large</th>
+                                            <th>27 - 30 inches</th>
+                                            <th>20 – 22 inches</th>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5 col-sm-12">
+                            <div class="borderbox">
+                                <div class="abovetext">
+                                    <div class="pull-left">Above : @Html.TextBoxFor(model => model.Fitting_Above) in</div>
+                                    <div class="pull-right">Below: @Html.TextBoxFor(model => model.Fitting_Below) in</div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="row p_bot15">
+                                    <div class="col-sm-2 p_top10">Size </div>
+                                    <div class="col-sm-5">
+                                        <select class="form-control">
+                                            <option value="">S-2</option>
+                                            <option value="1 - Activations">M-3</option>
+                                            <option value="2 - Villages">L-4</option>
+                                            <option value="3 - Ocala East">XL-5</option>
+                                            <option value="4 - Belleview">XXL-6</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped">
+                                        <tbody>
+                                            <tr>
+                                                <th>005XX</th>
+                                                <th>Breg Fusion</th>
+                                                <th>LEFT</th>
+                                            </tr>
+                                            <tr>
+                                                <th>005XX</th>
+                                                <th>Breg Fusion</th>
+                                                <th>RIGHT</th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="row p_bot15">
+                                    <div class="col-sm-2 p_top10">Model#</div>
+                                    <div class="col-sm-5">
+                                        <input class="form-control" id="" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="subbutt">
+                        <button type="button" class="btn btn-orange pull-right" onclick="GotoSecondPanel();">Next Step</button>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+
+                <div id="dvSecond" class="secondstep" style="display:none;">
+
+                    <h3>To-Do-List</h3>
+
+                    <div class="row">
+                        <div class="col-sm-6 col-md-4 form-group">
+                            <label>Patient Name</label>
+                            @Html.TextBoxFor(model => model.Patient_Name, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Patient_Name)
+                        </div>
+                        <div class="col-sm-6 col-md-4 form-group">
+                            <label for="date">DOB</label>
+                            @Html.TextBoxFor(model => model.DOB, new { @class = "form-control datepicker datepicker-bg", style = "width:100%;", @Value = DateTime.Now.ToString("MM/dd/yyyy"), @Readonly = true })
+                            @Html.ValidationMessageFor(model => model.DOB)
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="todo_inner">
+                                <div class="outerf">
+                                    <div class="stepheading"><strong>1. Office Staff </strong> <i>(MC preapproval only)</i></div>
+                                    <div class="hiddenform">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label class="checkbox-inline"><input name="optradio" type="checkbox">Verify Insurance Prior to Proceeding with MC</label>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="row form-group">
+                                                <div class="col-sm-5 p_top10">Patient’s MC#:</div>
+                                                <div class="col-sm-7">
+                                                    @Html.TextBoxFor(model => model.PatientMC, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(model => model.PatientMC)
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col-sm-7">Check Driver’s License Region C:</div>
+                                                <div class="col-sm-5">
+                                                    <label class="radio-inline">@Html.RadioButtonFor(model => model.IsCheckDriversLicenseRegionC, "1")YES</label>
+                                                    <label class="radio-inline">@Html.RadioButtonFor(model => model.IsCheckDriversLicenseRegionC, "0")NO</label>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col-sm-12">
+                                                    Call MC Rep: 1-866-270-4909 Tax ID: 13056<br>
+                                                    PTAN#: 6240770001 NPI: 1265657555 REGION C<br>
+                                                    Confirm: “No L1846, etc. past 5 yrs.” SEE REF GUIDE
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col-sm-5 p_top10">MC Rep Name:</div>
+                                                <div class="col-sm-7">
+                                                    @Html.TextBoxFor(model => model.MC_RepName, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(model => model.MC_RepName)
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col-sm-4 p_top10">MC Rep Badge#:</div>
+                                                <div class="col-sm-4">
+                                                    @Html.TextBoxFor(model => model.MC_BadgeNo, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(model => model.MC_BadgeNo)
+                                                </div>
+                                                <div class="col-sm-1 p_top10">Int:</div>
+                                                <div class="col-sm-3">
+                                                    @Html.TextBoxFor(model => model.MC_Int, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(model => model.MC_Int)
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="outerf">
+                                    <div class="stepheading"><strong>2. Clinical Staff </strong> <i>prescription</i></div>
+                                    <div class="hiddenform">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label class="checkbox-inline">
+                                                    <input name="optradio" type="checkbox">Diagnosis
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="row form-group">
+                                                <div class="col-sm-12">
+                                                    @Html.TextAreaFor(model => model.Diagnosis_Desc, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(model => model.Diagnosis_Desc)
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label class="checkbox-inline">
+                                                    <input name="optradio" type="checkbox">Item Requested By
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="p_left15">
+                                                <label class="checkbox-inline">
+                                                    <input name="optradio" type="checkbox">Therapist
+                                                </label>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 form-group p_top10">
+                                                        @Html.TextBoxFor(model => model.Therapist_Name, new { @class = "form-control" })
+                                                        @Html.ValidationMessageFor(model => model.Therapist_Name)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="p_left15">
+                                                <label class="checkbox-inline">
+                                                    <input name="optradio" type="checkbox">Patient
+                                                </label>
+                                            </div>
+                                            <div class="p_left15">
+                                                <label class="checkbox-inline"><input name="optradio" type="checkbox">Doctor</label>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 form-group p_top10">
+                                                        @Html.TextBoxFor(model => model.Doctor_Name, new { @class = "form-control" })
+                                                        @Html.ValidationMessageFor(model => model.Doctor_Name)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label class="checkbox-inline">
+                                                    @Html.CheckBox("IsCompleLetterOfMedNec", new { @class = "checkbox-inline" }) Complete
+                                                    <strong>Letter of Medical Necessity</strong>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="p_left15">
+                                            <div class="row form-group">
+                                                <div class="col-sm-3 p_top10">Int</div>
+                                                <div class="col-sm-5">
+                                                    @Html.TextBoxFor(model => model.CompleLetterOfMedNec_Int, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(model => model.CompleLetterOfMedNec_Int)
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label class="checkbox-inline">
+                                                    @Html.CheckBox("IsGiveFromLetterOfMedNec", new { @class = "checkbox-inline" })
+                                                    Give FORM & LETTER of Med.Nec. to Office Staff
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-6">
+                            <div class="todo_inner">
+                                <div class="outerf">
+                                    <div class="stepheading"><strong>3. Office Staff </strong> <i>order</i></div>
+                                    <div class="hiddenform">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label class="checkbox-inline">
+                                                    @Html.CheckBox("IsFAXLetterOfMedNec", new { @class = "checkbox-inline" }) Fax Letter of Med.Nec.
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="row form-group">
+                                                <div class="col-sm-3 p_top10">Date</div>
+                                                <div class="col-sm-5">
+                                                    @Html.TextBoxFor(model => model.FAXLetterOfMedNec_Date, new { @class = "form-control datepicker datepicker-bg", style = "width:100%;", @Value = DateTime.Now.ToString("MM/dd/yyyy"), @Readonly = true })
+                                                    @Html.ValidationMessageFor(model => model.FAXLetterOfMedNec_Date)
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label class="checkbox-inline">
+                                                    @Html.CheckBox("IsRecivedLetterOfMedNec", new { @class = "checkbox-inline" }) Receive Letter of Med.Nec.
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="row form-group">
+                                                <div class="col-sm-3 p_top10">Date</div>
+                                                <div class="col-sm-5">
+                                                    @Html.TextBoxFor(model => model.ReceivedLetterOfMedNec_Date, new { @class = "form-control datepicker datepicker-bg", style = "width:100%;", @Value = DateTime.Now.ToString("MM/dd/yyyy"), @Readonly = true })
+                                                    @Html.ValidationMessageFor(model => model.ReceivedLetterOfMedNec_Date)
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label class="checkbox-inline">
+                                                    @Html.CheckBox("IsOrderOrthosis", new { @class = "checkbox-inline" }) Order Orthosis
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="row form-group">
+                                                <div class="col-sm-3 p_top10">Date</div>
+                                                <div class="col-sm-5">
+                                                    @Html.TextBoxFor(model => model.OrderOrthosis_Date, new { @class = "form-control datepicker datepicker-bg", style = "width:100%;", @Value = DateTime.Now.ToString("MM/dd/yyyy"), @Readonly = true })
+                                                    @Html.ValidationMessageFor(model => model.OrderOrthosis_Date)
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row p_top15">
+                                            <div class="col-sm-12 col-md-12 form-group">
+
+                                                Ph# 800-321-0607 Acct#: 23298 <br>
+                                                Use Individual Office Login & Password<br>
+                                                <div class="row form-group">
+                                                    <div class="col-sm-5 p_top10">Confirmation#</div>
+                                                    <div class="col-sm-7">
+                                                        @Html.TextBoxFor(model => model.ConfimationNo, new { @class = "form-control" })
+                                                        @Html.ValidationMessageFor(model => model.ConfimationNo)
+                                                    </div>
+                                                </div>
+                                                PO#: Last Name of the Patient
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="outerf">
+                                    <div class="stepheading"><strong>4. Office Staff </strong> <i>paperwork</i></div>
+
+                                    <div class="row p_top15">
+                                        <div class="col-sm-3 p_top10">Int</div>
+                                        <div class="col-sm-4">
+
+                                            <input class="form-control" id="" type="text">
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="hiddenform">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label class="checkbox-inline">
+
+                                                    <input name="optradio" type="checkbox">Delivery Ticket complete, pt signs, give pt carbon copy
+
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label class="checkbox-inline">
+
+                                                    <input name="optradio" type="checkbox">AOB complete, pt signs, give pt carbon copy
+
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label class="checkbox-inline">
+
+                                                    <input name="optradio" type="checkbox">Check List complete with staff initials, pt signs, keep in chart
+
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label class="checkbox-inline">
+
+                                                    <input name="optradio" type="checkbox">HIPPA #1 complete, pt signs, keep in chart
+
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label class="checkbox-inline">
+
+                                                    <input name="optradio" type="checkbox">HIPPA #2 give to pt
+
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label class="checkbox-inline">
+
+                                                    <input name="optradio" type="checkbox">Protocol for Complaints give to pt
+
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label class="checkbox-inline">
+
+                                                    <input name="optradio" type="checkbox">MC DMEPOS Supplier Standards give to pt
+
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12">
+                            <div class="todo_inner">
+                                <div class="outerf">
+                                    <div class="stepheading"><strong>5. Clinical & Office Staff </strong> <i>deliver</i></div>
+                                    <div class="hiddenform">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label class="checkbox-inline">
+                                                    @Html.CheckBox("IsReceivedOrthosis", new { @class = "checkbox-inline" }) Received Orthosis
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="p_left15 p_bot15">
+                                                <div class="row">
+                                                    <div class="col-sm-1 p_top10">Date</div>
+                                                    <div class="col-sm-3">
+                                                        @Html.TextBoxFor(model => model.ReceivedOrthosis_Date, new { @class = "form-control datepicker datepicker-bg", style = "width:100%;", @Value = DateTime.Now.ToString("MM/dd/yyyy"), @Readonly = true })
+                                                        @Html.ValidationMessageFor(model => model.ReceivedOrthosis_Date)
+                                                    </div>
+                                                    <div class="col-sm-1 p_top10">By</div>
+                                                    <div class="col-sm-3">
+                                                        @Html.TextBoxFor(model => model.ReceivedOrthosisBy, new { @class = "form-control" })
+                                                        @Html.ValidationMessageFor(model => model.ReceivedOrthosisBy)
+                                                    </div>
+                                                    <div class="col-sm-4 p_top10">
+                                                        Condition:
+                                                        <label class="radio-inline">@Html.RadioButtonFor(model => model.ConditionReceived, "Good")Good</label>
+                                                        <label class="radio-inline">@Html.RadioButtonFor(model => model.ConditionReceived, "Bad")Bad</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label class="checkbox-inline">
+                                                    @Html.CheckBox("IsFitInstructed", new { @class = "checkbox-inline" })Fit & Instructed
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="p_left15 p_bot15">
+                                                <div class="row">
+                                                    <div class="col-sm-1 p_top10">Date</div>
+                                                    <div class="col-sm-3">
+                                                        @Html.TextBoxFor(model => model.FitInstructed_Date, new { @class = "form-control datepicker datepicker-bg", style = "width:100%;", @Value = DateTime.Now.ToString("MM/dd/yyyy"), @Readonly = true })
+                                                        @Html.ValidationMessageFor(model => model.FitInstructed_Date)
+                                                    </div>
+                                                    <div class="col-sm-1 p_top10">By</div>
+                                                    <div class="col-sm-3">
+                                                        @Html.TextBoxFor(model => model.FitInstructedBy, new { @class = "form-control" })
+                                                        @Html.ValidationMessageFor(model => model.FitInstructedBy)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label class="checkbox-inline">
+                                                    @Html.CheckBox("IsCompletePaperWork", new { @class = "checkbox-inline" }) Complete Paperwork
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="p_left15 p_bot15">
+                                                <div class="row">
+                                                    <div class="col-sm-1 p_top10">Date</div>
+                                                    <div class="col-sm-3">
+                                                        @Html.TextBoxFor(model => model.CompletePaperWork_Date, new { @class = "form-control datepicker datepicker-bg", style = "width:100%;", @Value = DateTime.Now.ToString("MM/dd/yyyy"), @Readonly = true })
+                                                        @Html.ValidationMessageFor(model => model.CompletePaperWork_Date)
+                                                    </div>
+                                                    <div class="col-sm-1 p_top10">By</div>
+                                                    <div class="col-sm-3">
+                                                        @Html.TextBoxFor(model => model.CompletePaperWorkBy, new { @class = "form-control" })
+                                                        @Html.ValidationMessageFor(model => model.CompletePaperWorkBy)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="subbutt">
+                        <button type="button" class="btn btn-primary pull-left" onclick="GotoFirstPanel();">Back</button>
+                        <button type="submit" class="btn btn-orange pull-right">Submit</button>
+                        <div class="clearfix"></div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="clearfix"></div>
+    }
+
+
+
+</section>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#dvSecond").hide();
+    });
+
+    function GotoSecondPanel() {
+        $("#dvFirst").hide();
+        $("#dvSecond").show();
+    }
+
+    function GotoFirstPanel() {
+        $("#dvFirst").show();
+        $("#dvSecond").hide();
+    }
+
+</script>
+
+
+
+
+
+
+@*@using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>tblTKneeBraceFusionLigamentForm</h4>
+            <hr />
+            @Html.ValidationSummary(true)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.HCPCSCode, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.HCPCSCode)
+                    @Html.ValidationMessageFor(model => model.HCPCSCode)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Fitting_Above, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Fitting_Above)
+                    @Html.ValidationMessageFor(model => model.Fitting_Above)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Fitting_Below, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Fitting_Below)
+                    @Html.ValidationMessageFor(model => model.Fitting_Below)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Circle_Size, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Circle_Size)
+                    @Html.ValidationMessageFor(model => model.Circle_Size)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Circle_Type, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Circle_Type)
+                    @Html.ValidationMessageFor(model => model.Circle_Type)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Manufacturer_Name, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Manufacturer_Name)
+                    @Html.ValidationMessageFor(model => model.Manufacturer_Name)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Patient_Name, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Patient_Name)
+                    @Html.ValidationMessageFor(model => model.Patient_Name)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DOB, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.DOB)
+                    @Html.ValidationMessageFor(model => model.DOB)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.PatientMC, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.PatientMC)
+                    @Html.ValidationMessageFor(model => model.PatientMC)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsCheckDriversLicenseRegionC, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.IsCheckDriversLicenseRegionC)
+                    @Html.ValidationMessageFor(model => model.IsCheckDriversLicenseRegionC)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CallMCRepNo, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.CallMCRepNo)
+                    @Html.ValidationMessageFor(model => model.CallMCRepNo)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Tax_ID, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Tax_ID)
+                    @Html.ValidationMessageFor(model => model.Tax_ID)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.PTAN, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.PTAN)
+                    @Html.ValidationMessageFor(model => model.PTAN)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.NPI, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.NPI)
+                    @Html.ValidationMessageFor(model => model.NPI)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.RegionC_Confirm, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.RegionC_Confirm)
+                    @Html.ValidationMessageFor(model => model.RegionC_Confirm)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.MC_RepName, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.MC_RepName)
+                    @Html.ValidationMessageFor(model => model.MC_RepName)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.MC_BadgeNo, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.MC_BadgeNo)
+                    @Html.ValidationMessageFor(model => model.MC_BadgeNo)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.MC_Int, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.MC_Int)
+                    @Html.ValidationMessageFor(model => model.MC_Int)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Diagnosis_Desc, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Diagnosis_Desc)
+                    @Html.ValidationMessageFor(model => model.Diagnosis_Desc)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Therapist_Name, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Therapist_Name)
+                    @Html.ValidationMessageFor(model => model.Therapist_Name)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Doctor_Name, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Doctor_Name)
+                    @Html.ValidationMessageFor(model => model.Doctor_Name)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsCompleLetterOfMedNec, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.IsCompleLetterOfMedNec)
+                    @Html.ValidationMessageFor(model => model.IsCompleLetterOfMedNec)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CompleLetterOfMedNec_Int, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.CompleLetterOfMedNec_Int)
+                    @Html.ValidationMessageFor(model => model.CompleLetterOfMedNec_Int)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsGiveFromLetterOfMedNec, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.IsGiveFromLetterOfMedNec)
+                    @Html.ValidationMessageFor(model => model.IsGiveFromLetterOfMedNec)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsFAXLetterOfMedNec, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.IsFAXLetterOfMedNec)
+                    @Html.ValidationMessageFor(model => model.IsFAXLetterOfMedNec)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.FAXLetterOfMedNec_Date, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.FAXLetterOfMedNec_Date)
+                    @Html.ValidationMessageFor(model => model.FAXLetterOfMedNec_Date)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsRecivedLetterOfMedNec, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.IsRecivedLetterOfMedNec)
+                    @Html.ValidationMessageFor(model => model.IsRecivedLetterOfMedNec)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ReceivedLetterOfMedNec_Date, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ReceivedLetterOfMedNec_Date)
+                    @Html.ValidationMessageFor(model => model.ReceivedLetterOfMedNec_Date)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsOrderOrthosis, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.IsOrderOrthosis)
+                    @Html.ValidationMessageFor(model => model.IsOrderOrthosis)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.OrderOrthosis_Date, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.OrderOrthosis_Date)
+                    @Html.ValidationMessageFor(model => model.OrderOrthosis_Date)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.PhoneNo, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.PhoneNo)
+                    @Html.ValidationMessageFor(model => model.PhoneNo)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.AcctNo, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.AcctNo)
+                    @Html.ValidationMessageFor(model => model.AcctNo)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Note, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Note)
+                    @Html.ValidationMessageFor(model => model.Note)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ConfimationNo, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ConfimationNo)
+                    @Html.ValidationMessageFor(model => model.ConfimationNo)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.PO, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.PO)
+                    @Html.ValidationMessageFor(model => model.PO)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.PaperWorkStatus_Id, "PaperWorkStatus_Id", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("PaperWorkStatus_Id", String.Empty)
+                    @Html.ValidationMessageFor(model => model.PaperWorkStatus_Id)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsReceivedOrthosis, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.IsReceivedOrthosis)
+                    @Html.ValidationMessageFor(model => model.IsReceivedOrthosis)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ReceivedOrthosis_Date, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ReceivedOrthosis_Date)
+                    @Html.ValidationMessageFor(model => model.ReceivedOrthosis_Date)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ReceivedOrthosisBy, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ReceivedOrthosisBy)
+                    @Html.ValidationMessageFor(model => model.ReceivedOrthosisBy)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ConditionReceived, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ConditionReceived)
+                    @Html.ValidationMessageFor(model => model.ConditionReceived)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsFitInstructed, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.IsFitInstructed)
+                    @Html.ValidationMessageFor(model => model.IsFitInstructed)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.FitInstructed_Date, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.FitInstructed_Date)
+                    @Html.ValidationMessageFor(model => model.FitInstructed_Date)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.FitInstructedBy, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.FitInstructedBy)
+                    @Html.ValidationMessageFor(model => model.FitInstructedBy)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsCompletePaperWork, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.IsCompletePaperWork)
+                    @Html.ValidationMessageFor(model => model.IsCompletePaperWork)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CompletePaperWork_Date, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.CompletePaperWork_Date)
+                    @Html.ValidationMessageFor(model => model.CompletePaperWork_Date)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CompletePaperWorkBy, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.CompletePaperWorkBy)
+                    @Html.ValidationMessageFor(model => model.CompletePaperWorkBy)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Revised_Date, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Revised_Date)
+                    @Html.ValidationMessageFor(model => model.Revised_Date)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ApprovedBy, "ApprovedBy", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("ApprovedBy", String.Empty)
+                    @Html.ValidationMessageFor(model => model.ApprovedBy)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ApprovedOn, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ApprovedOn)
+                    @Html.ValidationMessageFor(model => model.ApprovedOn)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CreatedBy, "CreatedBy", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("CreatedBy", String.Empty)
+                    @Html.ValidationMessageFor(model => model.CreatedBy)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CreatedOn, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.CreatedOn)
+                    @Html.ValidationMessageFor(model => model.CreatedOn)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ModifiedBy, "ModifiedBy", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("ModifiedBy", String.Empty)
+                    @Html.ValidationMessageFor(model => model.ModifiedBy)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ModifiedOn, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ModifiedOn)
+                    @Html.ValidationMessageFor(model => model.ModifiedOn)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }*@
+
+

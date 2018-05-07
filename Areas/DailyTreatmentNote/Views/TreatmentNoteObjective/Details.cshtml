@@ -1,0 +1,156 @@
+﻿@model DataLayer.Models.tblTCIAObjective
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="divMain">
+    <script type="text/javascript">
+                        function fn_CreateDynamicDiv() {
+                            var totalNoDiv = 0;
+                            var array1 = new Array();
+
+                        }
+    </script>
+
+    <div id="">
+        <div class="ObjectivePlanHeading">Sitting</div>
+        <div id="div1">
+            <div class="carrying">
+                <div class="row">
+                    <div class="col-sm-10 col-sm-offset-1">
+                        <div class="row">
+                            <div class="col-sm-6" style="padding-bottom:15px;">Title :</div>
+                            <div class="col-sm-6" style="padding-bottom:15px;"><input type='text' id='txt' class='form-control OptionValue'></div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6" style="padding-bottom:15px;">Title :</div>
+                            <div class="col-sm-6" style="padding-bottom:15px;"><input type='text' id='txt' class='form-control OptionValue'></div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6" style="padding-bottom:15px;">Title :</div>
+                            <div class="col-sm-6" style="padding-bottom:15px;"><input type='text' id='txt' class='form-control OptionValue'></div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="padding-top:20px;">
+        <div id="divPreviousbtn" style="float: left; padding-left: 15px; ">
+            <input type="button" id="btnPrev" class="btn btn-primary btn-lg" value="<<Previous">
+        </div>
+        <div id="divNextbtn0" style="float:right; padding-right: 15px;">
+            <input type="button" id="btnNext" name="btnNext__" class="btn btn-primary btn-lg" value="Next >>">
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div>
+    <h4>tblTCIAObjective</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ICD_Codes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ICD_Codes)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ObjectiveQuestion_Ids)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ObjectiveQuestion_Ids)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ObjectiveOption_Ids)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ObjectiveOption_Ids)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMPatient.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMPatient.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMUser.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMUser.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMUser1.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMUser1.UserName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Objective_Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

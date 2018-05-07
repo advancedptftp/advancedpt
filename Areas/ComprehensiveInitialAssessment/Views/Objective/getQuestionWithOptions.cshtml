@@ -1,0 +1,619 @@
+﻿@model DataLayer.Models.CIA
+@using System.Data;
+@using DataLayer;
+
+@{
+    ViewBag.Title = "getQuestionWithOptions";
+    DataTable dtQuestion = new DataTable();
+    DataTable dtAnsware = new DataTable();
+    DataTable dtDistinctQuestion = new DataTable();
+    
+    int questionCount = 0;
+    int TotalanswerCount = 0;
+    int answerCount = 0;
+    int cnt = 1;
+    string BodyPart = string.Empty;
+
+    //if (TempData["dtDistinctQuestion"] != null)
+    //{
+    //    dtQuestion = (DataTable)TempData["dtDistinctQuestion"];
+    //    questionCount = dtDistinctQuestion.Rows.Count;
+    //}
+    
+    //if (TempData["OptionSet"] != null)
+    //{
+    //    dtAnsware = (DataTable)TempData["OptionSet"];
+    //    TotalanswerCount = dtAnsware.Rows.Count;
+    //}
+
+    if (Session["dtQuestionSet2"] != null)
+    {
+        dtQuestion = (DataTable)Session["dtQuestionSet2"];
+        questionCount = dtQuestion.Rows.Count;
+    }
+
+    if (Session["dtObjectiveOption"] != null)
+    {
+        dtAnsware = (DataTable)Session["dtObjectiveOption"];
+        TotalanswerCount = dtAnsware.Rows.Count;
+    }
+}
+<script>
+    var BodyPart = "";
+</script>
+
+<section class="bodyinner">
+    <div class="container">
+        <div class="report-form clearfix">
+            @using (Html.BeginForm("SaveQuestionWithAnsware", "Objective", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(e => e.PatientCondition_Id)
+                @Html.HiddenFor(e => e.Patient_Id)
+                @Html.HiddenFor(e => e.PatientMaxCondition_Id)
+                @Html.HiddenFor(e => e.Objective_Id)
+                @Html.HiddenFor(e => e.ObjectiveQuestion_Id)
+                @Html.HiddenFor(e => e.ObjectiveOption_Id)
+                @Html.HiddenFor(e => e.ObjectivePercentile)
+                @Html.HiddenFor(e => e.Objective_Percentile)
+                @Html.HiddenFor(e => e.ObjectiveReportDesc)
+                @Html.HiddenFor(e => e.CreatedBy)
+                @Html.HiddenFor(e => e.CreatedOn)
+
+                if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+
+                //------------ Open Modal For ICD-10 Details -------------//
+                <div id="divModalWithButton">
+                    <div class="modal fade" id="myModal" role="dialog">
+                        <div class="modal-dialog modal-sm">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">ICD-10 Details</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Body Part(s) With ICD-10 Code(s):</p>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Body Part</th>
+                                                <th>ICD-10 Code</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                foreach (DataRow dr in dtQuestion.Rows)
+                {
+                    string Desc = string.Empty;
+                    string WhichBodyPart = string.Empty;
+                    Desc = @dr["BodyPart"].ToString();
+                    WhichBodyPart = char.ToUpper(Desc[0]) + Desc.Substring(1);
+                                            <tr>
+                                                <td><span style="font-size:17px;color:#000">@WhichBodyPart</span></td>
+                                                <td><span style="font-size:17px;color:#000">@dr["ICD_Codes"].ToString()</span></td>
+                                            </tr>
+                }
+                                            }
+
+
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="divShowICD_CodeDtl" style="float:right">
+                        <input type="button" id="btnShowICD_CodeDtl" value="ICD Details" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" />
+                    </div>
+                </div>
+                //------------ End of ICD-10 Details ------------------//
+
+
+                //------------ Question -------------//
+
+                foreach (DataRow dr1 in dtQuestion.Rows)
+                {
+                    string ICDCodeAll = dr1["ICD_Codes"].ToString();
+                    string ICDCode = string.Empty;
+                    int pos1 = dr1["ICD_Codes"].ToString().IndexOf(',');
+                    if (pos1 > 0)
+                    {
+                        string[] arrayICDCode = dr1["ICD_Codes"].ToString().Split(',');
+                        ICDCode = arrayICDCode[0].ToString();
+                    }
+                    else
+                    {
+                        ICDCode = dr1["ICD_Codes"].ToString(); 
+                    }
+                    string dtqueKey = dr1["ObjectiveQuestion_Id"].ToString();
+
+                    string question = dr1["Questions"].ToString();
+                    int startpos = question.IndexOf("your");
+                    int pos2 = question.IndexOf("?");
+                    int lastpos = startpos + 5;
+                    int diff = pos2 - lastpos;
+
+                    string KeyWord = question.Substring(lastpos, diff);
+                    //string KeyWord = dr1["BodyPart"].ToString();
+                    KeyWord = KeyWord.First().ToString().ToUpper() + String.Join("", KeyWord.Skip(1));
+                    answerCount = 1;
+
+                    //int intSubDivIdCount = dtAnsware.AsEnumerable().Where(x => x["ICDCodes"].ToString() == ICDCode).ToList().Count;
+                    int intSubDivIdCount = dtAnsware.AsEnumerable().Where(x => x["ICDCode"].ToString() == ICDCode).ToList().Count;
+                    <input type="hidden" id="HDNSubDivCount_@cnt" value="@intSubDivIdCount" />
+
+                    <div id="divQues_@cnt" class="divGroup">
+
+                        <label id="lbl_Header_@cnt.ToString()" class="textheading">
+                            <span id="span_@cnt" style="float:left; font-size:40px;">@cnt. @KeyWord</span>
+                            <span id="span_bodyPart" style="float:left;padding-top: 10px; padding-left: 14px;"> ( ICD Code: <strong> @ICDCodeAll</strong> )</span>
+                        </label>
+
+                        @* //----------- For Answer --------------//*@
+                        @foreach (DataRow dr2 in dtAnsware.Rows)
+                        {
+                            //if (dtqueKey == dr2["ObjectiveQuestion_Id"].ToString())
+                            if (ICDCode == dr2["ICDCode"].ToString())
+                            {
+                                BodyPart = dr1["BodyPart"].ToString().Replace(" ", "");
+                                if (dr2["ObjectiveOption"].ToString() == "Strength")
+                                {
+                                    <div id="divAnsware_@cnt@answerCount" class="row @BodyPart" style="padding-bottom:25px;">
+                                        <div class="row">
+                                            <div class="col-sm-5">
+                                                <div style="padding-bottom:6px;">@dr2["ObjectiveOption"]</div>
+                                                <div class="row">
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control percentage" id="txt_@cnt.ToString()#@dr1["ObjectiveQuestion_Id"].ToString()$@dr2["ObjectiveOption_Id"].ToString()" />
+                                                    </div>
+                                                    <div class="col-sm-1">
+                                                        (%)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-7">
+                                                <div>Note:</div>
+                                                <textarea class="form-control txtareaNote" id="txtArea_@cnt.ToString()#@dr1["ObjectiveQuestion_Id"].ToString()$@dr2["ObjectiveOption_Id"].ToString()" rows="2" cols="80" onblur="fn_ConvertToSentanceCase(this);"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="padding-top:25px;">
+                                            <div class="col-sm-7">
+                                                <input type="button" id="btnPreviousAnsware__@cnt@answerCount" value="<< Previous" style="float:left;" class="btn btn-primary btn-lg" onclick="fn_ShowPreviousAnsware(this)" />
+                                                <div style="clear:both;"></div>
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <input type="button" id="btnNextAnsware__@cnt@answerCount" value="Next >>" style="float:right;" class="btn btn-primary btn-lg" onclick="fn_ShowNextAnsware()" />
+                                                <div style="clear:both;"></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    answerCount++;
+                                    TotalanswerCount++;
+                                }
+                                else if (dr2["ObjectiveOption"].ToString() == "Range of Motion")
+                                {
+                                    <div id="divAnsware_@cnt@answerCount" class="row @BodyPart" style="padding-bottom:25px;">
+                                        <div class="row">
+                                            <div class="col-sm-5">
+                                                <div style="padding-bottom:6px;">@dr2["ObjectiveOption"]</div>
+                                                <div class="row">
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control percentage" id="txt_@cnt.ToString()#@dr1["ObjectiveQuestion_Id"].ToString()$@dr2["ObjectiveOption_Id"].ToString()" />
+                                                    </div>
+                                                    <div class="col-sm-1">
+                                                        (%)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-7">
+                                                <div>Note:</div>
+                                                <textarea class="form-control txtareaNote" id="txtArea_@cnt.ToString()#@dr1["ObjectiveQuestion_Id"].ToString()$@dr2["ObjectiveOption_Id"].ToString()" rows="2" cols="80" onblur="fn_ConvertToSentanceCase(this);"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="row" style="padding-top:25px;">
+                                            <div class="col-sm-7">
+                                                <input type="button" id="btnPreviousAnsware__@cnt@answerCount" value="<< Previous" style="float:left;" class="btn btn-primary btn-lg" onclick="fn_ShowPreviousAnsware()" />
+                                                <div style="clear:both;"></div>
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <input type="button" id="btnNextAnsware__@cnt@answerCount" value="Next >>" style="float:right;" class="btn btn-primary btn-lg" onclick="fn_ShowNextAnsware()" />
+                                                <div style="clear:both;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    answerCount++;
+                                    TotalanswerCount++;
+                                }
+                                else
+                                {
+                                    <div id="divAnsware_@cnt@answerCount" class="row @BodyPart" style="padding-bottom:25px;">
+                                        <div class="row">
+                                            <div class="col-sm-5" style="padding-top:85px;">
+                                                <span>@dr2["ObjectiveOption"]</span>
+                                            </div>
+                                            <div class="col-sm-7">
+                                                <div>Note:</div>
+                                                <textarea class="form-control txtareaNote" id="txtArea_@cnt.ToString()#@dr1["ObjectiveQuestion_Id"].ToString()$@dr2["ObjectiveOption_Id"].ToString()" rows="2" cols="80" onblur="fn_ConvertToSentanceCase(this);"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="padding-top:25px;">
+                                            <div class="col-sm-7">
+                                                <input type="button" id="btnPreviousAnsware__@cnt@answerCount" value="<< Previous" style="float:left;" class="btn btn-primary btn-lg" onclick="fn_ShowPreviousAnsware()" />
+                                                <div style="clear:both;"></div>
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <input type="button" id="btnNextAnsware__@cnt@answerCount" value="Next >>" style="float:right;" class="btn btn-primary btn-lg" onclick="fn_ShowNextAnsware()" />
+                                                <div style="clear:both;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    answerCount++;
+                                    TotalanswerCount++;
+                                }
+                            }
+
+                        }
+                        @* //----------- End Answer --------------//*@
+
+                        <div class="clearfix"></div>
+
+
+                    </div>
+
+                        cnt++;
+
+                }
+               
+                //------------------ End of Questions  ----------------------//
+
+                //---- Back To Objective Page 1 ----//
+                <div id="divBackToObjective" style="float:left;">
+                    @*<input type="button" id="btnBackToObjective" class="btn btn-orange btn-lg" value="<< Back To Objective" />*@
+                    <input type="button" id="btnBackToObjective11" class="btn btn-orange btn-lg" value="<< Back To Objective" />
+                </div>
+
+                <div id="btnNext" style="float:right">
+                    <input type="submit" id="btnSaveOption" class="btn btn-orange btn-lg" value="Save & Next To Plan >>" />
+                </div>
+            }
+        </div>
+    </div>
+    <input type="hidden" id="HDNCurrentSubDivCounter" value="0" />
+    <input type="hidden" id="HDNCurrentDivCounter" value="0" />
+
+</section>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var totalDivCount = '@cnt';
+        for (var i = 1; i <= totalDivCount; i++) {
+            var vHdnSubDivCount = 'HDNSubDivCount_' + i;
+            var HdnInnerCounter = $('#' + vHdnSubDivCount).val();
+            var vHeaderControlId = 'lbl_Header_' + i;
+            if (i == 1) {
+                $('#' + vHeaderControlId).show();
+            }
+            else {
+                $('#' + vHeaderControlId).hide();
+            }
+            for (var j = 1; j <= HdnInnerCounter; j++) {
+                var vControlId = 'divAnsware_' + i + j;
+                if ((i == 1) && (j == 1)) {
+                    $('#' + vControlId).show();
+                }
+                else {
+                    $('#' + vControlId).hide();
+
+                }
+            }
+        }
+        $('#HDNCurrentSubDivCounter').val('1');
+        $('#HDNCurrentDivCounter').val('1');
+        $('#btnPreviousAnsware__11').hide();
+        //debugger;
+        var MainDivCount = parseInt('@cnt');
+        var vSubdivCountId = 'HDNSubDivCount_' + 1;
+        var vSubDivCount = parseInt($('#' + vSubdivCountId).val());
+        if (vSubDivCount == 1 && MainDivCount - 1 == 1) {
+            $('#btnNextAnsware__11').hide();
+            $('#btnSaveOption').show();
+        }
+        else {
+            $('#btnSaveOption').hide();
+        }
+    });
+
+    function fn_ShowNextAnsware() {
+        //debugger;
+        var totalDivCount = parseInt('@cnt');
+        //current pos
+        var vCurrentDivPos = parseInt($('#HDNCurrentDivCounter').val());
+        var vCurrentSubDivPos = parseInt($('#HDNCurrentSubDivCounter').val());
+        //total div counts
+        var vHdnSubDivCount = 'HDNSubDivCount_' + vCurrentDivPos;
+        var oldHdnDivInnerCounter = $('#' + vHdnSubDivCount).val();
+        var vSubDivShowPos = vCurrentSubDivPos + 1;
+        //debugger;
+        if (vSubDivShowPos <= oldHdnDivInnerCounter) {
+            $('#HDNCurrentSubDivCounter').val(vSubDivShowPos);
+            var CurrentdivControlId = 'divAnsware_' + vCurrentDivPos + vSubDivShowPos;
+            $('#' + CurrentdivControlId).show();
+            var PreviousDivControlId = 'divAnsware_' + vCurrentDivPos + vCurrentSubDivPos;
+            $('#' + PreviousDivControlId).hide();
+            if (vSubDivShowPos == oldHdnDivInnerCounter) {
+                if (vCurrentDivPos == totalDivCount - 1) {
+                    $('#btnSaveOption').show();
+                    var vNextControlIdVal = 'btnNextAnsware__' + vCurrentDivPos + vSubDivShowPos;
+                    $('#' + vNextControlIdVal).hide();
+                }
+            }
+        }
+        else {
+            var newvSubDivShowPos = 1;
+            vSubDivShowPos = vSubDivShowPos - 1;
+            var vMainDivCurrentPOS = vCurrentDivPos + 1;
+            var vHdnSubDivCountCrtlId = 'HDNSubDivCount_' + vMainDivCurrentPOS;
+            var vMDubDivCount = $('#' + vHdnSubDivCountCrtlId).val();
+            if (totalDivCount - 1 == vMainDivCurrentPOS) {
+                if (vMDubDivCount == 1) {
+                    $('#btnSaveOption').show();
+                    var vNextControlIdVal = 'btnNextAnsware__' + vMainDivCurrentPOS + vMDubDivCount;
+                    $('#' + vNextControlIdVal).hide();
+                }
+            }
+            $('#HDNCurrentDivCounter').val(vMainDivCurrentPOS);
+            $('#HDNCurrentSubDivCounter').val(newvSubDivShowPos);
+            var CurrentdivControlId = 'divAnsware_' + vMainDivCurrentPOS + newvSubDivShowPos;
+            $('#' + CurrentdivControlId).show();
+            var PreviousDivControlId = 'divAnsware_' + vCurrentDivPos + vSubDivShowPos;
+            $('#' + PreviousDivControlId).hide();
+            var vPreviousLableID = 'lbl_Header_' + vCurrentDivPos;
+            $('#' + vPreviousLableID).hide();
+            var vCurrentLableId = 'lbl_Header_' + vMainDivCurrentPOS;
+            $('#' + vCurrentLableId).show();
+        }
+
+
+    }
+    function fn_ShowPreviousAnsware() {
+        //debugger;
+        $('#btnSaveOption').hide();
+        var totalDivCount = '@cnt';
+        //current pos
+        var vCurrentDivPos = parseInt($('#HDNCurrentDivCounter').val());
+        var vCurrentSubDivPos = parseInt($('#HDNCurrentSubDivCounter').val());
+        //total div counts
+        var vHdnSubDivCount = 'HDNSubDivCount_' + vCurrentDivPos;
+        var oldHdnDivInnerCounter = $('#' + vHdnSubDivCount).val();
+        var vSubDivShowPos = vCurrentSubDivPos - 1;
+        if (vSubDivShowPos != 0) {
+            $('#HDNCurrentSubDivCounter').val(vSubDivShowPos);
+            var CurrentdivControlId = 'divAnsware_' + vCurrentDivPos + vSubDivShowPos;
+            $('#' + CurrentdivControlId).show();
+            var PreviousDivControlId = 'divAnsware_' + vCurrentDivPos + vCurrentSubDivPos;
+            $('#' + PreviousDivControlId).hide();
+        }
+        else {
+            var vMainDivCurrentPOS = vCurrentDivPos - 1;
+            var vSubdivCountId = 'HDNSubDivCount_' + vMainDivCurrentPOS;
+            var vSubDivCount = parseInt($('#' + vSubdivCountId).val());
+            $('#HDNCurrentDivCounter').val(vMainDivCurrentPOS);
+            $('#HDNCurrentSubDivCounter').val(vSubDivCount);
+            var CurrentdivControlId = 'divAnsware_' + vMainDivCurrentPOS + vSubDivCount;
+            $('#' + CurrentdivControlId).show();
+            var PreviousDivControlId = 'divAnsware_' + vCurrentDivPos + '1';
+            $('#' + PreviousDivControlId).hide();
+            var vPreviousLableID = 'lbl_Header_' + vCurrentDivPos;
+            $('#' + vPreviousLableID).hide();
+            var vCurrentLableId = 'lbl_Header_' + vMainDivCurrentPOS;
+            $('#' + vCurrentLableId).show();
+        }
+    }
+
+    function Show() {
+        @*var totalDivCount = parseInt('@cnt');
+        //current pos
+        var vCurrentDivPos = parseInt($('#HDNCurrentDivCounter').val());
+        var vCurrentSubDivPos = parseInt($('#HDNCurrentSubDivCounter').val());
+
+        if (totalDivCount > vCurrentDivPos) {
+            var CurrentdivControlId = 'divAnsware_' + vCurrentDivPos + vCurrentSubDivPos;
+
+            var vCDivPos = vCurrentDivPos + 1;
+            var vSubdivCountId = 'HDNSubDivCount_'+vMainDivCurrentPOS;
+            var vSubDivCount = parseInt($('#' + vSubdivCountId).val());
+
+            var vPreDivId = 'divAnsware_' + vCurrentDivPos + 1;
+
+            var vShowDivId = 'divAnsware_' + vCDivPos + 1;
+            var DivShowId = $('#' + vShowDivId).show();
+
+            $('#HDNCurrentSubDivCounter').val('1');
+        }*@
+
+    }
+    function Previous() {
+
+    }
+
+    $(".percentage").keypress(function (e) {
+
+        //if the letter is not digit then display error and don't type anything
+        if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+            //display error message
+            alertify.alert("Accept numeric only.").setHeader('AdvancePT Says');
+            return false;
+        }
+    });
+
+    $('.percentage').bind('keyup', function (e) {
+
+        //alert($(this).val().length);
+        if ($(this).val().length > 3) {
+            $(this).val($(this).val().substring(0, $(this).val().length - 1));          //Remove from 4th character
+            alertify.alert("Maximum 3 character only.").setHeader('AdvancePT Says');
+
+            return false;
+        }
+        else {
+            var amt = parseInt($(this).val());
+            //alert(amt);
+            if (amt > 100) {
+                $(this).focus();
+                alertify.alert("Percentage Range should be 0 - 100").setHeader('AdvancePT Says');
+                return false;
+            }
+
+        }
+
+    });
+
+    $("#btnSaveOption").click(function () {
+
+
+        //------ Validation ------//
+
+        var txthasValue = false;
+        var txtareahasValue = false;
+
+
+        $(".txtareaNote").each(function () {
+            if ($(this).val() == '') {
+                txtareahasValue = true;
+            }
+        });
+
+        $(".percentage").each(function () {
+            if ($(this).val() == '') {
+                txthasValue = true;
+            }
+        });
+
+        if (txtareahasValue == true && txthasValue == true) {
+            alertify.alert("Please enter the percentage(%) and note as per the options").setHeader('AdvancePT Says');
+            return false;
+        }
+        else if (txthasValue == true) {
+            alertify.alert("Please enter the percentage(%) as per the options").setHeader('AdvancePT Says');
+            return false;
+        }
+        //else if (txtareahasValue == true) {
+        //    alertify.alert("Please enter the note as per the options").setHeader('AdvancePT Says');
+        //    return false;
+        //}
+
+        // Percentage TextBox
+        var PercentageTextBox = "";
+        var textboxId = "";
+        var groupId = "";
+        $("input:text.percentage").each(function () {
+            textboxId = $(this).attr('id');
+            var indxPos = textboxId.indexOf('#');
+            var str1 = textboxId.substring(indxPos + 1)
+            //alert(str1);
+            var indxPos$ = str1.indexOf('$');
+            //alert(indxPos$);
+            var questionId = str1.substring(0, indxPos$);
+            //alert(questionId);
+            var ansId = str1.substring(indxPos$ + 1);
+            //alert(questionId);
+            //alert(ansId);
+            groupId = questionId + "_" + ansId + "!";
+            //alert(groupId);
+
+            PercentageTextBox = PercentageTextBox + "," + groupId + $(this).val();
+            //alert("PercentageTextBox: == > " + PercentageTextBox);
+        });
+        //alert("PercentageTextBox: ----- > " + PercentageTextBox);
+
+        var indx = PercentageTextBox.indexOf(",");
+        var strlen = PercentageTextBox.length;
+        var str1 = PercentageTextBox.substring(indx + 1, strlen);
+        $("#Objective_Percentile").val(str1);
+        //alert($("#Objective_Percentile").val());
+
+        //Note
+        var NoteTextBox = "";
+        var textareaId = "";
+        var txtarea_groupId = "";
+        $("textarea").each(function () {
+            textareaId = $(this).attr('id');
+            var indxPos = textareaId.indexOf('#');
+            var str2 = textareaId.substring(indxPos + 1)
+            var indxPos$ = str2.indexOf('$');
+            var questionId2 = str2.substring(0, indxPos$);
+            var ansId2 = str2.substring(indxPos$ + 1);
+            txtarea_groupId = questionId2 + "_" + ansId2 + "~";
+
+            NoteTextBox = NoteTextBox + "|" + txtarea_groupId + $(this).val();
+        });
+        //alert("Note Text Area: ----- > " + NoteTextBox);
+
+        var indx2 = NoteTextBox.indexOf("|");
+        var strlen2 = NoteTextBox.length;
+        var str2 = NoteTextBox.substring(indx2 + 1, strlen2);
+        $("#ObjectiveReportDesc").val(str2);
+        //alert($("#ObjectiveReportDesc").val());
+
+    });
+</script>
+
+<script type="text/javascript">
+    function fn_ConvertToSentanceCase(obj) {
+        var string = $(obj).val();
+        var n = string.split(".");
+        var vfinal = ""
+        for (i = 0; i < n.length; i++) {
+            var spaceput = ""
+            var spaceCount = n[i].replace(/^(\s*).*$/, "$1").length;
+            n[i] = n[i].replace(/^\s+/, "");
+            var newstring = n[i].charAt(n[i]).toUpperCase() + n[i].slice(1);
+            for (j = 0; j < spaceCount; j++)
+                spaceput = spaceput + " ";
+            vfinal = vfinal + spaceput + newstring + ".";
+        }
+        vfinal = vfinal.substring(0, vfinal.length - 1);
+        //alert(vfinal);
+        $(obj).val(vfinal);
+    }
+</script>
+
+<script type="text/javascript">
+    //------ Back To Objection Part For Edit --------//
+    $("#btnBackToObjective11").click(function () {
+        window.location.href = '@Url.Action("Create1", "Objective")?Patient_Id=' + Patient_Id + "&PatientCondition_Id=" + PatientCondition_Id + "&Flag=" + 1;
+    });
+</script>
+
+<script type="text/javascript">
+    //---- Disabled the F5 Button ----//
+    $(function () {
+        $(document).keydown(function (e) {
+            return (e.which || e.keyCode) != 116;
+        });
+    });
+    //---- End of F5 Button ----//
+
+    //---- Script to disabled the back button of browser ----//
+    history.pushState(null, null, '');
+    window.addEventListener('popstate', function (event) {
+        history.pushState(null, null, '');
+    });
+
+    //---- End Script ----//
+</script>

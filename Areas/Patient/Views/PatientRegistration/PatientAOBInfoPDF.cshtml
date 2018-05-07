@@ -1,0 +1,297 @@
+﻿@model DataLayer.Models.PatientAOBInfo
+@using DataLayer;
+@{
+    ViewBag.Title = "PatientAOBInfoPDF";
+}
+
+<body>
+
+
+    <body>
+
+
+        <div style="width: 1100px; margin: 0 auto; padding: 20px 0; padding-top: 30px; font-family: verdana; font-size: 18px; color: #333;">
+
+
+            <div style="padding:55px 0 8px 0; font-size:40px; font-weight:bold; border-bottom:5px solid #0c57a1; color:#0c57a1; position:relative;">
+                <div style="position:absolute; right:0; top:-12px;"><img src="~/Images/logo.png" width="250" height="120" alt="" /></div>
+                My Assignment of Benefits
+
+
+            </div>
+            <div style="padding:15px 0;">
+                <table width="100%" border="0" style=" font-size: 18px;">
+                    <tr>
+                        <td width="15%" height="22">Patient Name:</td>
+                        <td width="28%">
+                            <div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:7px;">
+                                @Html.DisplayFor(m => m.FirstName, new { @class = "applitextfield1", id = "FirstName" })
+                                @Html.DisplayFor(m => m.LastName, new { @class = "applitextfield1", id = "LastName" })
+                            </div>
+                        </td>
+                        <td width="15%">Date of Birth:</td>
+                        <td width="20%"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:7px;">@Model.DOB.GetExactValue()</div></td>
+                        <td width="6%">Date:</td>
+                        @if (Model.createdon == null || Model.createdon.GetExactValue() == "")
+                        {
+                            <td width="14%"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:7px;">@DateTime.Now.Date.GetExactValue()</div></td>
+                        }
+                        else
+                        {
+                        <td width="14%"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:7px;">@Model.createdon.GetExactValue()</div></td>    
+                        }
+                        
+                    </tr>
+                </table>
+
+            </div>
+            <div style="padding:18px 0; border-bottom:5px solid #0c57a1; position:relative;">
+                <div style="position:absolute; background:#0c57a1; padding:6px 20px; color:#fff; font-size:18px; font-weight:bold; left:0; top:18px;">POLICY&nbsp;INFORMATION</div>
+            </div>
+            <div style="padding-top:25px;">
+                <table width="100%" border="0" style=" font-size: 18px;">
+                    <tr>
+                        <td width="28%" valign="top"><strong>Primary Medical Insurance:</strong> </td>
+                        <td width="77%" valign="bottom">
+                            <div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; ">@Model.InsuranceCompanyName</div>
+                        </td>
+</tr>
+                </table>
+
+            </div>
+            <div style="padding:0 0 15px 20px;">
+
+                <div>
+                    <table width="100%" border="0" style=" font-size: 18px;">
+                        <tr>
+                            <td width="14%" valign="top" >Policy Number</td>
+                            <td width="35%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">@Model.PolicyNumber</div></td>
+                            <td width="13%" valign="top" align="right">Group Number</td>
+                            <td width="35%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; text-align:right; ">@Model.GroupNumber</div></td>
+                        </tr>
+                    </table>
+
+                </div>
+                <strong>Policy Holder Information (If policy holder is someone other than patient.)</strong>
+                <div style="padding-top:12px;">
+                    <table width="100%" border="0" style=" font-size: 18px;">
+                        <tr>
+                            <td width="7%" valign="top">Name:</td>
+                            <td width="33%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">@Model.HolderName</div></td>
+                            <td width="24%" valign="top">Relationship to Patient :</td>
+                            <td width="36%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; ">@Model.PatientRelationship</div></td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding-top:6px;">
+                    <table width="100%" border="0" style=" font-size: 18px;">
+                        <tr>
+                            <td width="13%" valign="top">Date&nbsp;Of&nbsp;Birth:</td>
+                            <td width="34%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">@Model.HolderDOB.GetExactValue()</div></td>
+                            <td width="5%" valign="top">SSN:</td>
+                            <td width="29%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; ">@Model.SSN</div></td>
+                            <td width="7%" valign="top">Phone:</td>
+                            <td width="29%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; ">@Model.HolderPhone</div></td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding-top:6px;">
+                    <table width="100%" border="0" style=" font-size: 18px;">
+                        <tr>
+                            <td width="10%" valign="top">Address:</td>
+                            <td width="90%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">@Model.PolicyHolderAddress</div></td>
+
+
+                        </tr>
+                    </table>
+
+                </div>
+
+            </div>
+            <div>
+                <table width="100%" border="0" style=" font-size: 18px;">
+                    <tr>
+                        <td width="30%" valign="top"><strong>Secondary Medical Insurance:</strong></td>
+                        <td width="70%" valign="bottom"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; ">@Model.InsuranceCompanyName2</div></td>
+                    </tr>
+                </table>
+
+            </div>
+            <div style="padding:0 0 15px 15px;">
+
+                <div>
+                    <table width="100%" border="0" style=" font-size: 18px;">
+                        <tr>
+                            <td width="13%" valign="top">Policy&nbsp;Number</td>
+                            <td width="42%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">@Model.PolicyNumber2</div></td>
+                            <td width="18%" valign="top" align="right">Group Number</td>
+                            <td width="33%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; ">@Model.GroupNumber2</div></td>
+                        </tr>
+                    </table>
+
+                </div>
+                <strong>Policy Holder Information (If policy holder is someone other than patient.)</strong>
+                <div style="padding-top:12px;">
+                    <table width="100%" border="0" style=" font-size: 18px;">
+                        <tr>
+                            <td width="7%" valign="top">Name:</td>
+                            <td width="33%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">@Model.HolderName2</div></td>
+                            <td width="24%" valign="top" align="right">Relationship to Patient :</td>
+                            <td width="36%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; ">@Model.PatientRelationship2</div></td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding-top:6px;">
+                    <table width="100%" border="0" style=" font-size: 18px;">
+                        <tr>
+                            <td width="13%" valign="top">Date&nbsp;of&nbsp;Birth:</td>
+                            <td width="34%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">@Model.HolderDOB2.GetExactValue()</div></td>
+                            <td width="5%" valign="top">SSN:</td>
+                            <td width="29%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; ">@Model.SSN2</div></td>
+                            <td width="7%" valign="top">Phone:</td>
+                            <td width="29%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; ">@Model.HolderPhone</div></td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding-top:6px;">
+                    <table width="100%" border="0" style=" font-size: 18px;">
+                        <tr>
+                            <td width="10%" valign="top">Address:</td>
+                            <td width="90%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:3px; margin-right:10px;">@Model.PolicyHolderAddress2</div></td>
+
+
+                        </tr>
+                    </table>
+
+                </div>
+
+            </div>
+
+            <div style="padding:15px 0; border-bottom:5px solid #0c57a1; position:relative;">
+                <div style="position:absolute; background:#0c57a1; padding:6px 20px; color:#fff; font-size:18px; font-weight:bold; left:0; top:18px;">BENEFIT INFORMATION</div>
+            </div>
+
+            <div style="padding:25px 0 5px 30px;">
+                <div style="padding-top:6px;">
+                    <table width="100%" border="0" style=" font-size: 18px;">
+                        <tr>
+                            <td width="15%" valign="top">Deductible:</td>
+                            <td width="20%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">@Model.Deductible</div></td>
+                            <td width="8%" valign="top">Copay:</td>
+                            <td width="23%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px;">@Model.CoPay</div></td>
+                            <td width="10%" valign="top">Maximums:</td>
+                            <td width="24%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px;"></div></td>
+                        </tr>
+                    </table>
+
+                </div>
+
+
+            </div>
+
+            I hereby instruct and direct the above insurance company(s) to pay by check made out to: Advanced Physical Therapy of Central Florida (P: 352-693-3378) and mailed to 303 SE 17th Street #309-229, Ocala, Florida 34471. If my/this current policy prohibits direct payment to doctor/therapist, I hereby also instruct and direct you to make out the check to me and mail it to the above address for the professional or medical expense benefits allowable, and otherwise payable to me under my current insurance policy as payment toward the total charges for the professional services rendered.<br>
+            <br>
+
+
+            <strong style="font-size:16px;font-size: 20px;">This is a direct assignment of my rights and benefits under this policy.</strong>
+            <div style="padding:10px 0;">
+                This payment will not exceed my indebtedness to the above-mentioned assignee, and I have agreed to pay, in a current manner, any balance of said professional service charges over and above this insurance payment. Please check each box and sign at the bottom.
+            </div>
+
+            <div style="padding: 0 0 20px 30px; font-size: 18px; ">
+                <div style="padding:0 0 6px 0;"><input type="checkbox" checked="checked">&nbsp;A photocopy of this Assignment shall be considered as effective and valid as the original.</div>
+                <div style="padding:0 0 6px 0;"><input type="checkbox" checked="checked">&nbsp;I authorize the release of any medical or other information pertinent to my case to any insurance company, adjuster, or attorney involved in this case for the purpose of processing claims and securing payment of benefits.</div>
+                <div style="padding:0 0 6px 0;"><input type="checkbox" checked="checked">&nbsp;I authorize the use of this signature on all insurance submissions.</div>
+                <div style="padding:0 0 6px 0;"><input type="checkbox" checked="checked">&nbsp;I authorize the “Healthcare Provider” named above to deposit checks made in my name.</div>
+                <div style="padding:0 0 6px 0;">
+                    <input type="checkbox" checked="checked">&nbsp;I authorize the “Healthcare Provider” named above to initiate a complaint to the Insurance Commissioner
+                    for any reason on my behalf.
+                </div>
+                <div style="padding:0 0 6px 0;"><input type="checkbox" checked="checked">&nbsp;I understand that I am financially responsible for all charges whether or not paid by insurance.</div>
+
+            </div>
+
+            <div style="padding:0 0 8px 0;">
+                <table width="100%" border="0" style=" font-size: 18px;">
+                    <tr>
+                        <td width="25%" height="20"><strong>Signature of Policyholder:</strong></td>
+                        <td width="43%">
+                            @{var imgurl2 = "";
+                            if (Model.SignOfPolicyholder != null)
+                            {
+                                imgurl2 = "data:image/png;base64," + Convert.ToBase64String(Model.SignOfPolicyholder);
+                            }
+                            }
+                            <img src="@imgurl2" alt="" id="imgPolicyholderSign" style="width: 250px; height: 70px;" />
+                        </td>
+                        <td width="7%">Date:</td>
+                        <td width="25%"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;"></div></td>
+                    </tr>
+                </table>
+
+
+            </div>
+            <div style="padding:0 0 8px 0;">
+                <table width="100%" border="0" style=" font-size: 18px;">
+                    <tr>
+                        <td width="25%" height="20">
+                            <strong>Signature of Claimant:</strong><br>
+                            (If other than Policyholder)
+                        </td>
+                        <td width="43%">
+                            @{var imgurl4 = "";
+                            if (Model.ClaimantSignature != null)
+                            {
+                                imgurl4 = "data:image/png;base64," + Convert.ToBase64String(Model.ClaimantSignature);
+                            }
+                        }
+                        <img src="@imgurl4" alt="" id="imgClaimantSignature" style="width: 200px; height: 70px;" />
+                    </td>
+                    <td width="7%">Date:</td>
+                    <td width="25%"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;"></div></td>
+                </tr>
+            </table>
+
+
+        </div>
+        <div style="padding:0 0 8px 0;">
+            <table width="100%" border="0" style=" font-size: 18px;">
+                <tr>
+                    <td width="25%" height="20"><strong>Signature of Witness:</strong></td>
+                    <td width="43%">
+                        @{var imgurl3 = "";
+                        if (Model.WitnessSignature != null)
+                        {
+                            imgurl3 = "data:image/png;base64," + Convert.ToBase64String(Model.WitnessSignature);
+                        }
+                        }
+                        <img src="@imgurl3" alt="" id="imgWitnessSignature" style="width: 200px; height: 70px; " />
+                    </td>
+                    <td width="7%">Date:</td>
+                    <td width="25%"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;"></div></td>
+                </tr>
+            </table>
+
+
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+</body>

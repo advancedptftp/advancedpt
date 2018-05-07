@@ -1,0 +1,46 @@
+body {padding:25px 0; margin:0; border-top:3px solid #f58f21; text-align:center; color:#4f4f4f; font-size:68px; line-height:73px; font-family: 'proxima_novalight';}
+.logo {padding:0;}
+.maintext {padding:25px 0 75px 0; letter-spacing:-1px; line-height:75px;}
+.maintext span{display:block; color:#1f6eb1 ; font-family: 'proxima_nova_rgbold'; font-size:62px;}
+a.yesbutt {display:inline-block; padding:7px 10px; border-radius:7px; border:none; background:#f58f21; color:#fff; font-size:32px; font-family: 'proxima_nova_rgbold'; text-decoration:none; min-width:150px;}
+a:hover.yesbutt{background:#a15401;}
+a.nobutt {display:inline-block; padding:7px 10px; border-radius:7px; border:none; background:#ab0f10; color:#fff; font-size:32px; font-family: 'proxima_nova_rgbold'; text-decoration:none; min-width:150px;}
+a:hover.nobutt{background:#680001;}
+
+.okbutt {display:inline-block; padding:20px 40px; border-radius:7px; border:none; background:#f58f22; color:#fff; font-size:32px; font-family: 'proxima_nova_rgbold'; text-decoration:none;  cursor:pointer;}
+.okbutt:hover{background:#a15401;}
+
+.imputfield{ border-left:none; border-top:none; border-right:none; border-bottom:2px solid #8b8b8b; width:410px; text-align:center; height:67px; font-size:25px;}
+
+.enrollbu {padding: 15px 52px;
+    font-size: 45px;
+    font-weight: bold;
+    background: #1f6eb1;
+    border-radius: 8px;
+    margin-bottom: 18px;
+    margin-top: 25px;
+    color: #fff;
+    border: 5px solid #fff;
+    box-shadow: 0 0 5px #ccc;
+    cursor:pointer;
+
+}
+.ortext {font-size:44px; color:#f58f21; font-family: 'proxima_nova_rgbold';}
+
+
+@media only screen and (min-width : 320px) and (max-width : 639px) {
+	
+	img{max-width:100%;}
+	body {font-size:34px; line-height:32px;}
+	.maintext span {font-size:35px; line-height:40px;}
+	.maintext {padding:25px 20px 75px 20px;}
+	.imputfield {width:95%; margin:0 2% 30px 2%;}
+}
+
+@media only screen and (min-width : 768px) and (max-width : 1023px) {
+	
+	img{max-width:100%;}
+	
+}
+
+

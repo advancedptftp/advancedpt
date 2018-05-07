@@ -1,0 +1,196 @@
+﻿
+@{
+    ViewBag.Title = "CreatePaymentInfo";
+}
+
+
+<section class="bodyinner">
+    <div class="container">
+        <div class="bodyleft">
+
+            @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+        </div>
+        <div class="bodyright">
+            <div class="report-form clearfix">
+                <h2 style="padding-bottom:15px;">Patient Express Registration</h2>
+                <h3 class="pull-left p_top05">
+                    Advanced Physical Therapy
+                    of Central Florida
+                </h3>
+                <div class="patient"><input name="date" class="form-control datepicker datepicker-bg" placeholder="mm/dd/yyyy" type="text"></div>
+                <div class="clearfix"></div>
+
+
+             
+                   
+                    <div class="tabcont">
+
+                        <h3 class="pull-left">Payment Info</h3>
+                        <p class="pull-right p_top15"><strong>**CHECK ONLY ONE BOX.**</strong></p>
+                        <div class="clearfix"></div>
+
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12">
+
+
+
+                                <h4>I am paying TODAY by . . .</h4>
+                                <div class="outerf">
+                                    <label class="checkbox-inline"><input name="optradio" type="checkbox"><strong>INSURANCE and would like to . .</strong></label>
+                                    <div class="innerhiddenform">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label class="checkbox-inline">
+                                                    <input name="optradio" type="checkbox">Have you deal directly with them. I will assign my
+                                                    benefi ts to you by completing the “Assignment of
+                                                    Benefi ts Form”. Fees may apply. The following
+                                                    information is required prior to 1st visit.
+                                                </label>
+
+                                            </div>
+
+
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+
+                                                My coinsurance/copay is & <input type="text" class="form-control">
+                                            </div>
+                                            <div class="col-sm-6">
+
+                                                My deductible is & <input type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="row p_top15">
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label class="checkbox-inline">
+                                                    <input name="optradio" type="checkbox">Get a 30% discount by paying the entire bill at the
+                                                    time of service. I’ll get reimbursement on my own.
+                                                    (Ask the front desk person for details)
+                                                </label>
+
+                                            </div>
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="outerf">
+                                    <label class="checkbox-inline"><input name="optradio" type="checkbox"><strong>WORKERS COMP</strong></label>
+                                    <p><strong>You must fill in all info under “My Condition”</strong></p>
+                                </div>
+
+
+
+
+
+
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+
+
+                                <div class="outerf">
+                                    <label class="checkbox-inline"><input name="optradio" type="checkbox"><strong>CASH, CHECK, CREDIT and would like a . . .</strong></label>
+                                    <div class="innerhiddenform">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label class="checkbox-inline"><input name="optradio" type="checkbox">$499 basic treatment package of 6 treatments to be used within 60 days of today's date</label>
+                                            </div>
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label class="checkbox-inline">
+                                                    <input name="optradio" type="checkbox">$799 comprehensive treatment package of 12 visits to
+                                                    be used within 90 days of today's date
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label class="checkbox-inline">
+                                                    <input name="optradio" type="checkbox">$2000 advanced treatment package of 30 visits to be
+                                                    used within 12 months of today’s date
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label class="checkbox-inline">
+                                                    <input name="optradio" type="checkbox">I'd like to apply for a payment plan to the above
+                                                    selected package
+                                                </label>
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <div class="outerf">
+                                    <label class="checkbox-inline"><input name="optradio" type="checkbox"><strong>I have an ATTORNEY and would like to . . .</strong></label>
+                                    <div class="innerhiddenform">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label class="checkbox-inline">
+                                                    <input name="optradio" type="checkbox">Get a 30% discount by paying up front. I’ll get
+                                                    reimbursed after my case settles.
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label class="checkbox-inline">
+                                                    <input name="optradio" type="checkbox">Wait until my case settles before paying. I will
+                                                    complete the “Attorney Lien” form. Fees may apply.
+                                                </label>
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+                        <div class="subbutt">
+                            <button type="submit" class="btn btn-primary pull-left">Back</button>
+                            <button type="submit" class="btn btn-orange pull-right">Proceed to Next Step</button>
+                            <div class="clearfix"></div>
+                        </div>
+
+                    </div>
+              
+
+
+
+
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+
+</section>
+<script>
+    $('#Credentials').addClass('form-control');
+</script>
+<script>
+    $('#CompanyId').addClass('form-control');
+</script>
+<script>
+    $('#OfficeLocation').addClass('form-control');
+</script>
+<script>
+    $('#PhoneExt').addClass('form-control');
+</script>
+<script>
+    $('#PositionTitle').addClass('form-control');
+</script>
+<script>
+    jQuery('.datepicker').datepicker();
+</script>
+<script>
+    $('#selectState').addClass('form-control');
+
+</script>

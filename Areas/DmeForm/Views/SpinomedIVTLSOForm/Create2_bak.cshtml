@@ -1,0 +1,158 @@
+﻿@model DataLayer.Models.DMEOfficeStaffMCSpinomedIVTLSOForm
+@using DataLayer;
+@{
+    ViewBag.Title = "Spinomed IV TLSO Order Form";
+}
+
+
+
+<section class="bodyinner">
+   
+    <div class="bodyleft">
+       
+
+        @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+    </div>
+        <div class="bodyright">
+
+            <div class="report-form clearfix">
+                <h2>Spinomed IV TLSO Order Form: In Stock HCPCS Code: L0456</h2>
+                <div class="p_bot15"><strong>*MEDICARE PATIENTS: DO NOT PROCEED IF THEY HAVE BEEN ISSUED A ‘BACK BRACE’IN THE PAST 5 YEARS.</strong></div>
+
+                <hr>
+              @using (Html.BeginForm("Create2", "SpinomedIVTLSOForm", FormMethod.Post, new { name = "OfficeStaffMC_TLSO_Step2", id = "OfficeStaffMC_TLSO_Step2" }))
+              { 
+                <div id="dvFirst">
+                    @Html.AntiForgeryToken()
+
+                    @Html.HiddenFor(e => e.MCPreApproval.DMEForm_Id)
+                    @Html.HiddenFor(e => e.MCPreApproval.DMEFormCode)
+                    @Html.HiddenFor(e => e.MCPreApproval.CreatedOn)
+                    @Html.HiddenFor(e => e.MCPreApproval.DMEOfficeStaffMC_Id)
+                    @Html.HiddenFor(e => e.MCPreApproval.DMEForm_Id)
+                    @Html.Hidden("CreatedOn", DateTime.Now)
+                    @Html.HiddenFor(e => e.MCPreApproval.CreatedOn)
+
+                    @if (ViewBag.Error != null)
+                    {
+                        @Html.Raw(ViewBag.Error)
+                    }
+                    
+                    <div id="dvMC" class="todo_inner">
+                        <div class="outerf">
+                            <div class="stepheading"><strong>2. Office Staff </strong> <i>(MC preapproval only)</i></div>
+                            <div class="hiddenform">
+                                @*<div class="row">
+                                    <div class="col-sm-12 col-md-12 form-group">
+                                        <label class="checkbox-inline"><input name="optradio" type="checkbox">Verify Insurance Prior to Proceeding with MC</label>
+                                    </div>
+                                </div>*@
+                                <div>
+                                    <div class="row form-group">
+                                        <div class="col-sm-5 p_top10">Patient’s MC#:</div>
+                                        <div class="col-sm-6">@Html.TextBoxFor(m => m.MCPreApproval.PatientMCNo, new { @class = "form-control" })</div>
+                                        <span id="PatientMCNo" class="validateMsg"></span>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-sm-5">Check Driver’s License Region C:</div>
+                                        <div class="col-sm-6">
+                                                <label class="radio-inline">@Html.RadioButtonFor(m => m.MCPreApproval.IsRegionC,true) Yes</label>
+                                                <label class="radio-inline">@Html.RadioButtonFor(m => m.MCPreApproval.IsRegionC,false ) No</label>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-sm-12">
+                                            Call MC Rep: 1-866-270-4909 Tax ID: 13056
+                                            PTAN#: 6240770001 NPI: 1265657555 REGION C
+                                            Confirm: “No L1846, etc. past 5 yrs.” SEE REF GUIDE
+                                        </div>
+                                    </div>
+                                    @*<div class="row form-group">
+                                        <div class="col-sm-3 p_top10">MC Rep Name:</div>
+                                        <div class="col-sm-4">@Html.TextBoxFor(m => m.MCPreApproval.MCRep_Name, new { @class = "form-control" })</div>
+                                        <span id="MCRep_Name" class="validateMsg"></span>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-sm-3 p_top10">MC Rep Badge#:</div>
+                                        <div class="col-sm-4">@Html.TextBoxFor(m => m.MCPreApproval.MCRep_BadgeNo, new { @class = "form-control" })</div>
+                                        <span id="MCRep_BadgeNo" class="validateMsg"></span>
+                                        <div class="col-sm-1 p_top10">Int:</div>
+                                        <div class="col-sm-3">@Html.TextBoxFor(m => m.MCPreApproval.MCRep_Initial, new { @class = "form-control" })</div>
+                                        <span id="MCRep_Initial" class="validateMsg"></span>
+
+                                    </div>*@
+                                    <div class="row form-group">
+                                        <div class="col-sm-6">Same or similar device issued in the past 5 years?</div>
+                                        <div class="col-sm-6">
+                                            <label class="radio-inline">@Html.RadioButtonFor(m => m.MCPreApproval.IsSimilarDeviceIssued, true)Yes</label>
+                                            <label class="radio-inline">@Html.RadioButtonFor(m => m.MCPreApproval.IsSimilarDeviceIssued, false)No</label>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="subbutt">
+                                @*<button type="button" class="btn btn-primary pull-left" onclick="GotoPrescription()">Back</button>*@
+                                <button type="submit" class="btn btn-orange pull-right" onclick="return validateInputs();">Submit</button>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+              }
+
+            </div>
+
+        </div>
+
+        <div class="clearfix"></div>
+    
+</section>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#PatientMCNo").hide();
+        $("#MCRep_Name").hide();
+        $("#MCRep_BadgeNo").hide();
+        $("#MCRep_Initial").hide();
+    });
+
+    function validateInputs() {
+        var PatientMCNo = document.getElementById("MCPreApproval_PatientMCNo");
+        var MCRep_Name = document.getElementById("MCPreApproval_MCRep_Name");
+        var MCRep_BadgeNo = document.getElementById("MCPreApproval_MCRep_BadgeNo");
+        var MCRep_Initial = document.getElementById("MCPreApproval_MCRep_Initial");
+
+        if (PatientMCNo.value == "") {
+            $("#PatientMCNo").show();
+            $("#PatientMCNo").text("Enter PatientMC No");
+            PatientMCNo.focus();
+            return false;
+        }
+        if (MCRep_Name.value == "") {
+            $("#MCRep_Name").show();
+            $("#MCRep_Name").text("Enter MCRep Name");
+            MCRep_Name.focus();
+            return false;
+        }
+        if (MCRep_BadgeNo.value == "") {
+            $("#MCRep_BadgeNo").show();
+            $("#MCRep_BadgeNo").text("Enter MCRep Badge No");
+            MCRep_BadgeNo.focus();
+            return false;
+        }
+        if (MCRep_Initial.value == "") {
+            $("#MCRep_Initial").show();
+            $("#MCRep_Initial").text("Enter MCRep Initial");
+            MCRep_Initial.focus();
+            return false;
+        }
+        
+
+    }
+</script>
+

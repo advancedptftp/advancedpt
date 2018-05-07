@@ -1,0 +1,167 @@
+﻿@model PagedList.IPagedList<DataLayer.Models.tblTTriggerEmail>
+@using DataLayer;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Index";
+}
+<style>
+    .SortHeader {
+        color: #fff;
+    }
+
+    .sortorderasc {
+        color: black;
+    }
+
+    .sortorderdesc {
+        color: green;
+    }
+
+    .searchsec {
+        width: 350px;
+    }
+</style>
+<center><h2 style="margin-top:20px;">Trigger Email List</h2></center>
+
+
+<section class="bodyinner2">
+    <div>
+        <p class="pull-right">
+            @Html.ActionLink("Create New Record", "Create", null, new { @class = "btn btn-primary" })
+        </p>
+        @using (Html.BeginForm("Index", "TriggerEmail", FormMethod.Get))
+        {
+            <div class="searchsec">
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @id = "txtSearchString", placeholder = "Search here ..." })
+                <button id="btnSearch"><i class="fa fa-search" aria-hidden="true"></i></button>
+                <div class="clearfix"></div>
+            </div>
+        }
+        <div class="clearfix"></div>
+    </div>
+
+    <div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+
+                        <th>
+                            @{ var classname = "botharrow";}
+                            @if ((ViewBag.CurrentSort == "Template Type" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                            {
+                                classname = "bottarrow";
+                            }
+                            else if ((ViewBag.CurrentSort == "Template Type" && ViewBag.SortDirection == false))
+                            {
+                                classname = "toparrow";
+                            }
+                            @Html.ActionLink("Template Type", "Index", new { sortOrder = "TemplateType", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname })
+
+                        </th>
+
+                        <th>
+                            @Html.DisplayName("To")
+                        </th>
+                        <th>
+                            @Html.DisplayName("CC")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Trigger On")
+                        </th>
+                        <th>@Html.DisplayName("Sent On")</th>
+
+                    </tr>
+
+                </thead>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @item.tblMTemplateType.TemplateType
+                        </td>
+                        <td>
+                            @{
+                                string strEmailTo = item.EmailTo;
+                                if (strEmailTo != null)
+                                {
+                                    string[] values = strEmailTo.Split(';');
+                                    for (int i = 0; i < values.Length; i++)
+                                    {
+                                        values[i] = values[i].Trim();
+                                        <a href="@Url.Action("EmailToPdf", "TriggerEmail", new { emailid = values[i], systemName = item.tblMTemplateType.SystemName })">
+                                            @Html.DisplayFor(modelItem => values[i])
+                                        </a>
+                                    }
+                                }
+
+                            }
+
+
+                            @*@Html.DisplayFor(modelItem => item.EmailTo)*@
+
+                            @*<a href="@Url.Action("EmailToPdf", "TriggerEmail", new { emailid = item.EmailTo, systemName = item.tblMTemplateType.SystemName })">
+                                    @Html.DisplayFor(modelItem => item.EmailTo)
+                                </a>*@
+
+                        </td>
+                        <td>
+                            @{
+                                string strEmailcc = item.EmailCC;
+                                if (strEmailcc != null)
+                                {
+                                    string[] valuesOther = strEmailcc.Split(';');
+                                    for (int i = 0; i < valuesOther.Length; i++)
+                                    {
+                                        valuesOther[i] = valuesOther[i].Trim();
+                                        <a href="@Url.Action("EmailToPdf", "TriggerEmail", new { emailid = valuesOther[i], systemName = item.tblMTemplateType.SystemName })">
+                                            @Html.DisplayFor(modelItem => valuesOther[i])
+                                        </a>
+                                    }
+                                }
+
+                            }
+                        
+                        
+                        
+                        @*@Html.DisplayFor(modelItem => item.EmailCC)*@</td>
+                        <td>@Html.DisplayFor(modelItem => item.TriggerOn)</td>
+                        <td>@Html.DisplayFor(modelItem => item.SentOn)</td>
+
+                    </tr>
+                }
+
+            </table>
+
+        </div>
+        <div>
+            <br />
+            @using (Html.BeginForm("Index", "TriggerEmail", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+            {
+                @Html.DropDownList("PageSize")
+            }
+            @{
+                bool? direction = ViewBag.SortDirection;
+                if (direction == null) { direction = false; }
+            }
+            <div class="pull-left" style=" padding:10px;">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                      new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction }))
+        </div>
+    </div>
+
+</section>
+
+<script>
+    $("#PageSize").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+</script>

@@ -1,0 +1,240 @@
+﻿@model PagedList.IPagedList<DataLayer.Models.tblInterimAssessment>
+@using PagedList.Mvc;
+@using DataLayer;
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+@*@if (ViewBag.Error != null)
+{
+    @Html.Raw(ViewBag.Error)
+}*@
+@if (ViewBag.Error != null)
+{
+    <script>
+        alertify.alert('@ViewBag.Error').setHeader('AdvancePT Says');
+    </script>
+
+}
+<link href="/Content/semantic.css" rel="stylesheet">
+<style>
+    .NewPatient {
+        background-color: rgba(205, 216, 36, 0.68) !important;
+    }
+</style>
+@*<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">*@
+
+<body>
+
+</body>
+<section class="bodyinner2">
+    <div>
+        <h2 class="text-center">List For Interim Assessment</h2>
+        @*<p class="pull-right">
+                @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+            </p>*@
+        <p class="pull-right">
+            @Html.ActionLink("Interim Details", "Index_Detail", null, new { @class = "btn btn-primary" })
+        </p>
+        @{
+            bool? direction = ViewBag.SortDirection;
+            if (direction == null) { direction = false; }
+        }
+
+        @using (Html.BeginForm("Index", "InterimAssessment", FormMethod.Get))
+        {
+
+            <div class="searchsec">
+
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search by.." })
+                <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                <div class="clearfix"></div>
+            </div>
+        }
+        <div class="clearfix"></div>
+    </div>
+
+    <div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+
+                        <th>
+
+                            @Html.DisplayName("Patient name")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Appointment Date")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Number Of Visit")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Day's")
+                        </th>
+                        <th>
+
+                        </th>
+                        <th>
+
+                        </th>
+                    </tr>
+
+                </thead>
+
+                @foreach (var item in Model)
+                {
+
+                    if (@item.Daydiff >= 14 && @item.Noofvisit < 6)
+                    {
+                    <tr>
+
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PatientName)
+                        </td>
+                        <td>
+                            @*@Html.DisplayFor(modelItem => item.PaymentDate)*@
+                            @item.AppointmentDate.GetExactValue()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Noofvisit)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Daydiff)
+                        </td>
+
+                        <td>
+                            <a href="@Url.Action("Create_Assessment", "InterimAssessment", new { id = item.PatientConditionId })">
+                                <i class="btn btn-primary" aria-hidden="true" >Create Interim Assessment</i>
+                            </a>
+                        </td>
+                        <td width="40px">
+                            <a href="@Url.Action("Edit", "InterimAssessment", new { id = item.PatientConditionId })">
+                                <i class="fa fa-edit" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                   }
+                   else if (@item.Daydiff >= 14 && @item.Noofvisit >= 6)
+                   {
+                    <tr>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PatientName)
+                        </td>
+                        <td>
+                            @*@Html.DisplayFor(modelItem => item.PaymentDate)*@
+                            @item.AppointmentDate.GetExactValue()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Noofvisit)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Daydiff)
+                        </td>
+
+                        <td width="40px">
+                            <a href="@Url.Action("Create", "InterimAssessment", new { id = item.PatientConditionId })">
+                                <i class="btn btn-primary" aria-hidden="true" >Create Interim Assessment</i>
+                            </a>
+
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Edit", "InterimAssessment", new { id = item.PatientConditionId })">
+                                <i class="fa fa-edit" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                   }
+                   else if (@item.Daydiff < 14 && @item.Noofvisit >= 6)
+                   {
+                    <tr>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PatientName)
+                        </td>
+                        <td>
+                            @*@Html.DisplayFor(modelItem => item.PaymentDate)*@
+                            @item.AppointmentDate.GetExactValue()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Noofvisit)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Daydiff)
+                        </td>
+                        <td>
+                           
+                            <a href="@Url.Action("Create", "InterimAssessment", new { id = item.PatientConditionId })">
+                                <i class="btn btn-primary" aria-hidden="true">Create Interim Assessment</i>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Edit", "InterimAssessment", new { id = item.PatientConditionId })">
+                                <i class="fa fa-edit" aria-hidden="true" ></i>
+                            </a>
+                        </td>
+
+                    </tr>
+                   }
+                
+                }
+
+            </table>
+
+        </div>
+        <div>
+            <br />
+            @using (Html.BeginForm("Index", "InterimAssessment", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+            {
+            @Html.DropDownList("PageSize")
+            }
+            <div class="pull-left" style=" padding:10px;">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                      new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction }))
+        </div>
+    </div>
+
+</section>
+
+<script>
+    $(document).ready(function () {
+
+    });
+    $("#PageSize").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+
+    function fnCreateInterim(PatientConditionId) {
+        alert("ok");
+        $.ajax({
+            url: "@Url.Action("Create", "InterimAssessment")",
+            type: "POST",
+        dataType: "JSON",
+        data: { PatientConditionId: PatientConditionId },
+        success: function (data) {
+
+            $('#myModal').modal('hide');
+            var msg = data;
+            alert(msg);
+            //location.reload();
+
+        },
+        error: function () {
+            alert("Error occured.");
+        }
+    });
+
+    }
+</script>

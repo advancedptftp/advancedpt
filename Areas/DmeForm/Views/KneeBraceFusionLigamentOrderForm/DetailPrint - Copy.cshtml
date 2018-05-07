@@ -1,0 +1,567 @@
+﻿@model DataLayer.Models.KneeBraceCustomFormDetail
+@{
+    Layout = null;
+}
+@using DataLayer;
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>myadvancedpt.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="favicon.png">
+
+    <!-- Bootstrap core CSS -->
+
+
+</head>
+
+<body>
+
+
+    <div style="width:700px; margin:0 auto; padding:5px 0; font-family:verdana; font-size:13px; color:#333;">
+
+
+        <div style="padding:0 0 10px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="50%">
+                        <h2 style="padding:0; font-size:20px; margin:0;">
+                            BREG Custom Knee Brace Order Form<br>
+                        </h2>
+                    </td>
+                    <td width="50%"><div style="padding:10px; text-align:center; font-size:19px; font-weight:bold;">HCPCS Code: L1846</div></td>
+                </tr>
+            </table>
+
+        </div>
+
+        <div style="padding:10px 0 12px 0; text-align:center; font-weight:bold; border-bottom:1px solid #606060; margin-bottom:20px;">*MEDICARE PATIENTS: DO NOT PROCEED IF THEY HAVE BEEN ISSUED A ‘KNEE BRACE’ IN THE PAST 5 YEARS.</div>
+
+
+        <div style="padding:0 0 5px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="31%" style="padding-right:10px;">
+                        <h3 style="padding:0 0 8px 0; margin:0;"> Description:</h3>
+                        <div style="padding:0 0 5px 0;">&nbsp;@Html.CheckBoxFor(e => e.KneeBraceCustomForm.IsCustomOAMedialOffLoader_01208, new { @class = "checkbox-inline", @disabled = "disabled" })
+                                     01208 Custom OA Medial Off-Loader</div>
+                        <div style="padding:0 0 5px 0;">&nbsp;@Html.CheckBoxFor(e => e.KneeBraceCustomForm.IsCustomOALateralOffLoader_01300, new { @class = "checkbox-inline", @disabled = "disabled" })
+                                    01300 Custom OA Lateral Off-Loader</div>
+                        <div style="padding:0 0 5px 0;">&nbsp;@Html.CheckBoxFor(e => e.KneeBraceCustomForm.IsCustomLigamentBrace_01207, new { @class = "checkbox-inline", @disabled = "disabled" })
+                                    01207 Custom Ligament Brace
+                        </div>
+
+
+
+
+
+                    </td>
+
+                    <td width="31%" style="padding-right:10px;" valign="top">
+
+                        <div style="border:2px solid #000; padding:15px;">
+                            <strong>L1846 Code Includes the Following:</strong>
+                            <div style="padding:6px 0 0 0;">
+                                Orthosis<br>
+
+                                All Straps, Closures and Padding<br>
+
+                                Fitting & Adjustment
+                            </div>
+
+                        </div>
+
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <div style="padding:0 0 5px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="31%" style="padding-right:10px;">
+
+                        <h3 style="margin:8px 0;">Fitting:</h3>
+                        <div style="padding:15px; border:2px solid #000;">
+                            <div style="padding:0 0 7px 0;">
+                                <table width="100%" border="0">
+                                    <tr>
+                                        <td width="27%">1. Thigh Circumference:</td>
+                                        <td width="34%"><div style="padding:3px 0 3px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:18px;">@Model.KneeBraceCustomForm.Fitting_ThighCircumference
+                                            </div></td>
+                                        <td width="39%">inches (6 inches above mid-patella)</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div style="padding:0 0 7px 0;">
+                                <table width="100%" border="0">
+                                    <tr>
+                                        <td width="27%">2. Calf Circumference:</td>
+                                        <td width="34%"><div style="padding:3px 0 3px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:18px;">@Model.KneeBraceCustomForm.Fitting_CalfCircumference</div></td>
+                                        <td width="39%">inches (6 inches below mid-patella)</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div style="padding:0 0 7px 0;">
+                                <table width="100%" border="0">
+                                    <tr>
+                                        <td width="27%">3. Knee Offset:</td>
+                                        <td width="34%"><div style="padding:3px 0 3px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:18px;">@Model.KneeBraceCustomForm.Fitting_KneeOffset</div></td>
+                                        <td width="39%">inches (push in plunger on tool)</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div style="padding:0 0 7px 0;">
+                                <table width="100%" border="0">
+                                    <tr>
+                                        <td width="27%">4. Knee Width:</td>
+                                        <td width="34%"><div style="padding:3px 0 3px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:18px;">@Model.KneeBraceCustomForm.Fitting_KneeWidth</div></td>
+                                        <td width="39%">inches (use width caliper)</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+
+
+                    </td>
+
+
+                </tr>
+            </table>
+
+        </div>
+        <div style="padding:0 0 5px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="31%" style="padding-right:10px;">
+
+                        <div style="padding:15px; border:2px solid #000;">
+                            <div style="padding:0 0 7px 0;">
+                                <table width="100%" border="0">
+                                    <tr>
+                                        <td width="27%"><strong>Circle:</strong></td>
+                                        <td width="39%">@Html.RadioButtonFor(m => m.KneeBraceCustomForm.CirclePosition, "RIGHT", new { @disabled = "disabled" })RIGHT&nbsp;&nbsp;@Html.RadioButtonFor(m => m.KneeBraceCustomForm.CirclePosition, "LEFT", new { @disabled = "disabled" })LEFT&nbsp;&nbsp;</td>
+                                        <td width="27%"><strong>Gender:</strong></td>
+                                        <td width="34%">@Html.RadioButtonFor(m => m.KneeBraceCustomForm.Gender, "M", new { @disabled = "disabled" })Male&nbsp;&nbsp;@Html.RadioButtonFor(m => m.KneeBraceCustomForm.Gender, "F", new { @disabled = "disabled" })Female&nbsp;&nbsp;</td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </div>
+
+
+
+                    </td>
+
+
+                </tr>
+            </table>
+
+        </div>
+        <div style="padding:15px 0 5px 0;">
+            <div style="padding:0 0 8px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="25%"><h3 style="padding:0 0 5px 0; margin:0;">To-Do-List:</h3></td>
+                        <td width="15%">Patient Name:</td>
+                        <td width="31%"><div style="padding:3px 0 3px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:18px;">@Model.KneeBraceCustomForm.Patient_Name</div></td>
+                        <td width="6%">DOB:</td>
+                        <td width="23%"><div style="padding:3px 0 3px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:18px;">@Model.KneeBraceCustomForm.DOB</div></td>
+                    </tr>
+                </table>
+
+            </div>
+            <div style="padding:10px; border:2px solid #000; margin-top:10px;">
+                <h3 style="padding:0 0 15px 0; margin:0;">1. Office Staff <span style="font-weight:normal; font-style:italic;">MC preapproval only</span></h3>
+                <div style="padding:0 0 20px 0;">
+
+                    <input name="optradio" type="checkbox" disabled="disabled">Verify Insurance Prior to Proceeding with MC
+                    <div style="padding:5px 0 0 0;">
+                        <table width="100%" border="0">
+                            <tr>
+                                <td width="24%">Patient’s MC#:</td>
+                                <td width="76%"><div style="padding:3px 0 3px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:18px;">@Model.MCPreApproval.PatientMCNo</div></td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div style="padding:5px 0 0 0;">
+                        <table width="100%" border="0">
+                            <tr>
+                                <td width="34%">Check Driver’s License Region C</td>
+                                <td width="66%">@Html.RadioButtonFor(m => m.MCPreApproval.IsRegionC, Model.MCPreApproval.IsRegionC, new {@disabled=true }) Yes&nbsp;&nbsp;@Html.RadioButtonFor(m => m.MCPreApproval.IsRegionC, !Model.MCPreApproval.IsRegionC, new { @disabled = true }) No</td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div style="padding:5px 0 0 0;">
+                        Call MC Rep: 1-866-270-4909 Tax ID: 13056 PTAN#: 6240770001 NPI: 1265657555 REGION C Confirm: “No L1846, etc. past 5 yrs.” SEE REF GUIDE
+                    </div>
+                    @*<div style="padding:5px 0 0 0;">
+                        <table width="100%" border="0">
+                            <tr>
+                                <td width="24%">MC Rep Name</td>
+                                <td width="76%">
+                                    <div style="padding:3px 0 3px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:18px;">
+                                        @Model.MCPreApproval.MCRep_Name
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:5px 0 0 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="19%">MC Rep Badge#:</td>
+                            <td width="34%"><div style="padding:3px 0 3px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:18px;">@Model.MCPreApproval.MCRep_BadgeNo</div></td>
+                            <td width="7%" style="padding-left:15px;">Int</td>
+                            <td width="40%"><div style="padding:3px 0 3px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:18px;">@Model.MCPreApproval.MCRep_Initial</div></td>
+                        </tr>
+                    </table>
+
+                </div>*@
+                    <div style="padding:5px 0 0 0;">
+                        <table width="100%" border="0">
+                            <tr>
+                                <td width="60%">Same or similar device issued in the past 5 years?</td>
+                                <td width="39%">@Html.RadioButtonFor(m => m.MCPreApproval.IsSimilarDeviceIssued, true, new { @disabled = "disabled" })Yes&nbsp;&nbsp;@Html.RadioButtonFor(m => m.MCPreApproval.IsSimilarDeviceIssued, false, new { @disabled = "disabled" })No&nbsp;&nbsp;</td>
+                            </tr>
+                        </table>
+
+                    </div>
+            </div>
+        </div>
+            <div style="padding:10px; border:2px solid #000; margin-top:10px;">
+                <h3 style="padding:0 0 15px 0; margin:0;">2. Clinical Staff <span style="font-weight:normal; font-style:italic;">prescription</span></h3>
+                <div style="padding:0 0 20px 0;">
+                    <div style="padding:5px 0 0 0;">
+                        <table width="100%" border="0">
+                            <tr>
+                                <td width="69%" style="padding-right:15px;">
+                                    <input type="checkbox">Diagnosis<br>
+                                    <div style="padding:7px 0 7px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:18px;">
+                                        <div id="dvDiagnosis">
+                                            <script>
+                                                var counter = 0;
+                                            </script>
+                                            @for (int i = 0; i < Model.DMEDiognosis.Count; i++)
+                                            {
+                                                <div class="row">
+                                                    <div class="col-sm-4 col-md-5 form-group">
+                                                        @*@Html.TextBoxFor(e => e.DMEDiognosis[i].Diagnosis_Desc, new { @class = "form-control Disease_nameForICD", @disabled = "disabled" })*@
+                                                        @Model.DMEDiognosis[i].Diagnosis_Desc
+                                                    </div>
+                                                    <div class="col-sm-4 col-md-5 form-group">
+                                                        @*@Html.TextBoxFor(e => e.DMEDiognosis[i].ICD10Code, new { @class = "form-control ICD_CodeForICD", @disabled = "disabled" })*@
+                                                        @Model.DMEDiognosis[i].ICD10Code
+                                                    </div>
+                                                    @*<div class="col-sm-4 col-md-2 form-group">
+                                                    <button id="addRows" class="addbutt" type="button" style="margin-top:0;" title="Add New Diagnosis"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                                    @Html.HiddenFor(e => e.DMEDiognosis[i].DMEDiagnosis_Id, new { @class = "icdidForICD", @disabled = "disabled" })
+                                                </div>*@
+                                                </div>
+                                                <script>
+                                                    counter += 1;
+                                                </script>
+                                            }
+
+                                        </div>
+                                    </div>
+                                    @*<div style="padding:7px 0 7px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:18px;"></div>
+                                <div style="padding:7px 0 7px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:18px;"></div>*@
+
+                                </td>
+                                <td width="31%">
+                                    ICD-9 Code<br>
+                                    <div style="padding:7px 0 7px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:18px;"></div>
+                                    @*<div style="padding:7px 0 7px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:18px;"></div>
+                                <div style="padding:7px 0 7px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:18px;"></div>*@
+
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div style="padding:5px 0 0 0;">
+                        <table width="100%" border="0">
+                            <tr>
+                                <td width="69%" style="padding-right:15px;">
+                                    <input type="checkbox">Item Requested By:<br>
+                                    <div style="padding:7px 0 7px 0;">
+                                        <table width="100%" border="0">
+                                            <tr>
+                                                <td width="19%">
+                                                    @Html.CheckBoxFor(e => e.Prescription.IsItemReqByTherapist, new { @class = "", @disabled = "disabled" })
+                                                    Therapist
+                                                </td>
+                                                <td width="81%"><div style="padding:7px 0 7px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:18px;">@Model.Prescription.Therapist_Name</div></td>
+                                            </tr>
+                                        </table>
+
+                                    </div>
+                                    <div style="padding:7px 0 7px 0;">
+                                        <table width="100%" border="0">
+                                            <tr>
+                                                <td width="15%">
+                                                    @Html.CheckBoxFor(e => e.Prescription.IsItemReqByPatient, new { @class = "", @disabled = "disabled" })
+                                                    Patient
+                                                </td>
+                                                <td width="11%">
+                                                    @Html.CheckBoxFor(e => e.Prescription.IsItemReqByDoctor, new { @class = "", @disabled = "disabled" })
+                                                    Doctor
+                                                </td>
+                                                <td width="74%"><div style="padding:7px 0 7px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:18px;">@Model.Prescription.Doctor_Name</div></td>
+                                            </tr>
+                                        </table>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div style="padding:5px 0 0 0;">
+                        <table width="100%" border="0">
+                            <tr>
+                                <td width="69%" style="padding-right:15px;">
+                                    <div>
+                                        <table width="100%" border="0">
+                                            <tr>
+                                                <td width="77%">
+                                                    @Html.CheckBoxFor(e => e.Prescription.IsCompleteLOMN, new { @class = "", @disabled = "disabled" })
+                                                    Complete <strong> of Medical Necessity</strong>
+                                                </td>
+                                                <td width="5%">Int</td>
+                                                <td width="18%"><div style="padding:7px 0 7px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:18px;">@Model.Prescription.CompleteLOMN_Initial</div></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+
+
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div style="padding:5px 0 0 0;">
+                        <table width="100%" border="0">
+                            <tr>
+                                <td width="69%" style="padding-right:15px;">
+                                    <div>
+                                        <table width="100%" border="0">
+                                            <tr>
+                                                <td width="77%">
+                                                    @Html.CheckBoxFor(e => e.Prescription.IsGiveFormAndLOMN, new { @class = "", @disabled = "disabled" })
+                                                    Give FORM &amp; LETTER of Med.Nec. to Office Staff
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+
+
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+            <div style="padding:10px; border:2px solid #000; margin-top:10px;">
+                <h3 style="padding:0 0 5px 0; margin:0;">3. Office Staff <span style="font-weight:normal; font-style:italic;">order</span></h3>
+
+                <div style="padding:0 0 20px 0;">
+                    <div style="padding:0px 0 7px 0;">
+                        <table width="100%" border="0">
+                            <tr>
+                                <td width="58%">
+                                    @Html.CheckBoxFor(e => e.Order.IsFaxLOMN, new { @class = "checkbox-inline", @disabled = "disabled" })
+                                    Fax Letter of Med.Nec.
+                                </td>
+                                <td width="8%">Date</td>
+                                <td width="34%">
+                                    <div style="padding:7px 0 7px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:18px;">
+                                        @*@Html.TextBoxFor(m => m.Order.FaxLOMN_Date, new { @class = "form-control  datepicker-bg", style = "width:100%;", @Readonly = true })*@
+                                        @Model.Order.FaxLOMN_Date
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div style="padding:0px 0 7px 0;">
+                        <table width="100%" border="0">
+                            <tr>
+                                <td width="58%">
+                                    @Html.CheckBoxFor(e => e.Order.IsReceiveLOMN, new { @class = "checkbox-inline", @disabled = "disabled" })
+                                    Receive Letter of Med.Nec.
+                                <td width="8%">Date</td>
+                                <td width="34%"><div style="padding:7px 0 7px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:18px;">@Model.Order.ReceiveLOMN_Date</div></td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div style="padding:0px 0 7px 0;">
+                        <table width="100%" border="0">
+                            <tr>
+                                <td width="58%">
+                                    @Html.CheckBoxFor(e => e.Order.IsOrderOrthosis, new { @class = "checkbox-inline", @disabled = "disabled" })
+                                    Order Orthosis
+                                </td>
+                                <td width="8%">Date</td>
+                                <td width="34%"><div style="padding:7px 0 7px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:18px;">@Model.Order.OrderOrthosis_Date</div></td>
+                            </tr>
+                        </table>
+
+                    </div>
+
+                    Ph# 800-321-0607 Acct#: 23298<br>
+                    NOTE: Ground Shipping/UPS
+                    <div style="padding:0px 0 7px 0;">
+                        <table width="100%" border="0">
+                            <tr>
+                                <td width="18%">Confirmation#:</td>
+                                <td width="82%"><div style="padding:7px 0 7px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:18px;">@Model.Order.ConfirmationNo</div></td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    PO#: Last Name of the Patient
+                </div>
+            </div>
+            <div style="padding:10px; border:2px solid #000; margin-top:10px;">
+                <div style="padding:0 0 10px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="63%"><h3 style="padding:0 0 5px 0; margin:0;">4. Office Staff <span style="font-weight:normal; font-style:italic;">paperwork</span></h3></td>
+                            <td width="5%">Int:</td>
+                            <td width="32%"><div style="padding:7px 0 7px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:18px;">@Model.Paperwork.PrepareChartPaperwork_Initial</div></td>
+                        </tr>
+                    </table>
+
+
+                </div>
+
+                <div style="padding:0 0 20px 0;">
+                    <div style="padding:0 0 10px 0;"><input type="checkbox">&nbsp;Prepare Chart Paperwork</div>
+
+                    <div style="padding:0 0 5px 10px;">@Html.CheckBoxFor(e => e.Paperwork.IsDeliveryTicketComplete, new { @class = "checkbox-inline", @disabled = "disabled" })Delivery Ticket complete, pt signs, give pt carbon copy</div>
+                    <div style="padding:0 0 5px 10px;">@Html.CheckBoxFor(e => e.Paperwork.IsAOBComplete, new { @class = "checkbox-inline", @disabled = "disabled" })AOB complete, pt signs, give pt carbon copy</div>
+                    <div style="padding:0 0 5px 10px;">@Html.CheckBoxFor(e => e.Paperwork.IsCheckListComplete, new { @class = "checkbox-inline", @disabled = "disabled" })Check List complete with staff initials, pt signs, keep in chart</div>
+                    <div style="padding:0 0 5px 10px;">@Html.CheckBoxFor(e => e.Paperwork.IsHIPPA1Complete, new { @class = "checkbox-inline", @disabled = "disabled" })HIPPA #1 complete, pt signs, keep in chart</div>
+                    <div style="padding:0 0 5px 10px;">@Html.CheckBoxFor(e => e.Paperwork.IsHIPPA2GiveToPT, new { @class = "checkbox-inline", @disabled = "disabled" })HIPPA #2 give to pt</div>
+                    <div style="padding:0 0 5px 10px;">@Html.CheckBoxFor(e => e.Paperwork.IsProtocolComplaintsGiveToPT, new { @class = "checkbox-inline", @disabled = "disabled" })Protocol for Complaints give to pt</div>
+                    <div style="padding:0 0 5px 10px;">@Html.CheckBoxFor(e => e.Paperwork.IsMC_DMEPOS_Supplier_StandardsGiveToPT, new { @class = "checkbox-inline", @disabled = "disabled" })MC DMEPOS Supplier Standards give to pt</div>
+                </div>
+
+            </div>
+            <div style="padding:10px; border:2px solid #000; margin-top:10px;margin-bottom:10px;">
+                <h3 style="padding:0 0 5px 0; margin:0;">5. Clinical & Office Staff <span style="font-weight:normal; font-style:italic;">deliver</span></h3>
+                <div style="padding:0 0 20px 0;">
+                    <div style="padding:5px 0 6px 0;">
+                        <table width="100%" border="0">
+                            <tr>
+                                <td width="24%">
+                                    @Html.CheckBox("IsReceivedOrthosis", new { @class = "checkbox-inline", @disabled = "disabled" })
+                                    Received Orthosis
+                                </td>
+                                <td width="7%">Date:</td>
+                                <td width="21%"><div style="padding:7px 0 7px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:18px;">@Model.Deliver.ReceivedOrthosis_Date</div></td>
+                                <td width="5%">By</td>
+                                <td width="18%"><div style="padding:7px 0 7px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:18px;">@Model.Deliver.ReceivedOrthosisBy</div></td>
+                                <td width="11%">Condition:</td>
+                                <td width="14%">
+                                    <label class="radio-inline">@Html.RadioButtonFor(m => m.Deliver.Condition, "Good", new { @disabled = "disabled" })Good</label>
+                                    <label class="radio-inline">@Html.RadioButtonFor(m => m.Deliver.Condition, "Bad", new { @disabled = "disabled" })Bad </label>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div style="padding:5px 0 6px 0;">
+                        <table width="100%" border="0">
+                            <tr>
+                                <td width="24%">
+                                    @Html.CheckBox("IsFitAndInstructed", new { @class = "checkbox-inline", @disabled = "disabled" })
+                                    Fit & Instructed
+                                </td>
+                                <td width="7%">Date:</td>
+                                <td width="21%"><div style="padding:7px 0 7px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:18px;">@Model.Deliver.FitAndInstructed_Date</div></td>
+                                <td width="5%">By</td>
+                                <td width="18%"><div style="padding:7px 0 7px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:18px;">@Model.Deliver.FitAndInstructedBy</div></td>
+                                <td width="11%"></td>
+                                <td width="14%"></td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div style="padding:5px 0 6px 0;">
+                        <table width="100%" border="0">
+                            <tr>
+                                <td width="24%">
+                                    @Html.CheckBox("IsCompletePaperwork", new { @class = "checkbox-inline", @disabled = "disabled" })
+                                    Complete Paperwork
+                                </td>
+                                <td width="7%">Date:</td>
+                                <td width="21%"><div style="padding:7px 0 7px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:18px;">@Model.Deliver.CompletePaperwork_Date</div></td>
+                                <td width="5%">By</td>
+                                <td width="18%"><div style="padding:7px 0 7px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:18px;">@Model.Deliver.CompletePaperworkBy</div></td>
+                                <td width="11%"></td>
+                                <td width="14%"></td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+</body>
+</html>
+
+<script type="text/javascript">
+    $(function () {
+        $("#addRows").click(function () {
+            //counter = 2;
+            $("#dvDiagnosis").append("<div class='row'><div id='Div"
+                + counter + "' class='col-sm-4 col-md-5 form-group'>" +
+                "<input class='form-control Disease_nameForICD'  id='DMEDiognosis_" + counter + "__Diagnosis_Desc' name='DMEDiognosis[" + counter + "].Diagnosis_Desc' type='text'>" +
+                "</div><div id='Div1" + counter + "' class='col-sm-4 col-md-5 form-group'>" +
+                "<input class='form-control ICD_CodeForICD' id='DMEDiognosis_" + counter + "__ICD10Code' name='DMEDiognosis[" + counter + "].ICD10Code'  type='text'>" +
+                "</div><div id='Div2" + counter +
+                "' class='col-sm-4 col-md-2 form-group'> <button  class='addbutt' type='button' style='margin-top:0;' title='Remove New Diagnosis' onclick='removeRow("
+                + counter + ")'><i class='fa fa-remove' aria-hidden='true'></i></button><input type='hidden' id='DMEDiognosis_" + counter + "__DMEDiagnosis_Id' name='DMEDiognosis[" + counter + "].DMEDiagnosis_Id' value='' class='icdidForICD' /></div></div>")
+            BindOnFocusForICD();
+            counter++;
+        });
+    });
+
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#IsRegionC').attr("disabled", "disabled");
+    });
+</script>
+

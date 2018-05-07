@@ -1,0 +1,983 @@
+﻿@model DataLayer.Models.LocationPriority
+@using DataLayer.Models
+@using DataLayer
+@{
+    ViewBag.Title = "LocationPriority";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="bodyinner">
+    <div class="container">
+
+        <div class="report-form clearfix">
+            <h2 class="text-center">Location Priority</h2>
+            @using (Html.BeginForm("Edit", "LocationPriority", FormMethod.Post, new { name = "LocationPriority", id = "LocationPriority" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.Hidden("CreatedOn", DateTime.Now)
+                if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+
+                <div id="divlocationpriority" class="locationi">
+                    <div id="divLocationIsAllCheck" class="container">
+                        <div class="location">
+                            <div class="row">
+                                <div class="col-sm-5 form-group" style="float:left;">
+                                    @Html.Label("Location:")
+                                    @Html.DropDownListFor(m => m.location.Location_Id, (SelectList)ViewBag.Location, "Select", new { @class = "__LocationId form-control btn-lg" })
+                                </div>
+                                @*<div class="checkbox checkbox-primary" style="float:left;margin:40px; font-size:15pt">
+                                        <label class="checkbox-inline" style="height: 20px;">
+                                            <input id="chkAllLocation" name="chkAllLocation" type="checkbox">Select All Location
+                                        </label>
+                                    </div>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="div1Day">
+                    <div><h3>One Day Priority</h3></div>
+                    <div id="divOneDayPriority" class="divOneDayPriority col-sm-12 form-group"></div>
+                    <div class="subbutt">
+                        <input type="button" id="btnOneDayPriority" value="Next Two Days Priority" class="btn btn-primary pull-right btn-lg" />
+                    </div>
+                </div>
+
+                <div id="divTwoDayPriority" class="col-sm-12 form-group">
+                    <div><h3><strong>Two Day Priority</strong></h3></div>
+                   
+                    
+                    <div class="col-sm-4 ">
+                        <label class="" style="padding-right:8px;">Allow Consecutive Treatment Days?</label>
+                    </div>
+                    <div class="col-sm-6 ">
+                        <div class="inlineradio">
+                            <label class="control control--radio greenbuttradio1">
+                                <span>Yes</span>
+                                <input type="radio" name="optradio" id="TwoDayopt1" class="radioCare" value="true">
+                                <div class="control__indicator"></div>
+                            </label>
+
+                        </div>
+                        <div class="inlineradio">
+                            <label class="control control--radio redbuttradio1">
+                                <span>No</span>
+                                <input type="radio" name="optradio" id="TwoDayopt2" class="radioCare" value="false">
+                                <div class="control__indicator"></div>
+                            </label>
+
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom:10px;"></div>
+
+                    @*<label class="radio-inline"><input type="radio" name="optradio" id="TwoDayopt1" value="true">Yes</label>
+                    <label class="radio-inline"><input type="radio" name="optradio" id="TwoDayopt2" value="false">No</label>*@
+
+                    <div id="Consecutive_Mode" class="div2DaysOption col-sm-12 form-group"></div>
+
+                    <div id="Normal_Mode" class="col-sm-12 form-group"></div>
+
+                    <div class="subbutt">
+                        <input type="button" id="__btnOneDayPriority" value="Prev One Day Priority" class="btn btn-primary pull-left btn-lg" />
+                    </div>
+
+                    <div class="subbutt">
+                        <input type="button" id="btnTwoDayPriority" value="Next Three Days Priority" class="btn btn-primary pull-right btn-lg" />
+                    </div>
+
+                </div>
+
+                <div id="divThreeDayPriority" class="col-sm-12 form-group">
+                    <div><h3>Three Day Priority</h3></div>
+
+                    @*<label class="">Allow Consecutive Treatment Days?</label>
+                    <label class="radio-inline"><input type="radio" name="ThreeDay_optradio" id="ThreeDay_opt1" value="Consecutive">Yes</label>
+                    <label class="radio-inline"><input type="radio" name="ThreeDay_optradio" id="ThreeDay_opt2" value="Normal">No</label>*@
+                    <div class="col-sm-4 ">
+                        <label class="" style="padding-right:8px;">Allow Consecutive Treatment Days?</label>
+                    </div>
+                    <div class="col-sm-6 ">
+                        <div class="inlineradio">
+                            <label class="control control--radio greenbuttradio1">
+                                <span>Yes</span>
+                                <input type="radio" name="ThreeDay_optradio" id="ThreeDay_opt1" class="radioCare" value="Consecutive">
+                                <div class="control__indicator"></div>
+                            </label>
+
+                        </div>
+                        <div class="inlineradio">
+                            <label class="control control--radio redbuttradio1">
+                                <span>No</span>
+                                <input type="radio" name="ThreeDay_optradio" id="ThreeDay_opt2" class="radioCare" value="Normal">
+                                <div class="control__indicator"></div>
+                            </label>
+
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom:10px;"></div>
+                    <div id="ThreeDayConsecutive_Mode" class="div3DaysOption col-sm-12 form-group"></div>
+
+                    <div id="ThreeDayNormal_Mode" class="div3DaysOption col-sm-12 form-group"></div>
+
+                    <div class="subbutt">
+                        <input type="button" id="__btnTwoDayPriority" value="Prev Two Day Priority" class="btn btn-primary pull-left btn-lg" />
+                    </div>
+
+                    <div class="subbutt">
+                        <input type="button" id="__btnSave" value="Save" class="btn btn-primary pull-right btn-lg" />
+                    </div>
+
+
+                </div>
+
+
+                <div class="clearfix"></div>
+                <div>
+                    @Html.ActionLink("Back to list", "Index", new { id = "btnCreateLink" })
+                </div>
+
+            }
+        </div>
+
+        <div class="clearfix"></div>
+    </div>
+
+</section>
+
+<script type="text/javascript">
+
+    //Global array variable
+    //One Day
+    OnedayArray_1 = new Array(5);            // For Five WeekDays
+    OnedayArray_2 = new Array(6);           // For Six WeekDays
+    //Two Day
+    dayArray5 = new Array(5);               // For Five WeekDays
+    dayArray6 = new Array(6);               // For Six WeekDays
+    //Two Day
+    dayArray10 = new Array(10);             // For Ten Days Combination
+    dayArray15 = new Array(15);             // For Fifteen Days Combination
+    //Three Day
+    dayArray1 = new Array(1);
+    dayArray2 = new Array(2);
+
+    var nextSelectLocationVal = $("#location_Location_Id option:selected").next().val();
+    var selectedLocationVal = $("#location_Location_Id").val();
+
+    //------------------------------------------//
+    $(document).ready(function () {
+        //$("#div1Day").html();
+        $("#divOneDayPriority").hide();
+        $("#btnOneDayPriority").hide();
+
+        $("#divTwoDayPriority").hide();
+        $("#divThreeDayPriority").hide();
+        $("#__btnSave").hide();             //Save button hide
+        //Two Day
+        $("#Consecutive_Mode").hide();
+        $("#Normal_Mode").hide();
+        //Three Day
+        $("#ThreeDayConsecutive_Mode").hide();
+        $("#ThreeDayNormal_Mode").hide();
+
+        $('.OneDayAWeek').html("");
+        $('#div1DaysOption').show();
+
+        $("#divlocationpriority").removeClass('locationi1');
+        $("#divlocationpriority").addClass('locationi');
+
+        //--------------------------------------------//
+        //alert("$(#location_Location_Id).val() : " + $("#location_Location_Id").val());
+
+        $("#location_Location_Id").prop("disabled", true);          //Lock dropdown
+
+
+        $.ajax({
+            url: '@Url.Action("LoadDaysForLocationPriority", "LocationPriority")',
+            type: 'POST',
+            dataType: 'JSON',
+            data: { LocationId: $("#location_Location_Id").val(), opMode: "Edit" },
+            success: function (res) {
+                if (res.length == 0) {
+                    alertify.alert("Please Select Any Location.").setHeader('AdvancePT Says');
+                }
+                else if (res.length == 5) {
+
+                    $("#divOneDayPriority").show();
+                    $("#btnOneDayPriority").show();
+
+                    OnedayArray_1[0] = res[0];
+                    OnedayArray_1[1] = res[1];
+                    OnedayArray_1[2] = res[2];
+                    OnedayArray_1[3] = res[3];
+                    OnedayArray_1[4] = res[4];
+
+                    bindRows(OnedayArray_1, "");
+                }
+                else if (res.length == 6) {
+
+                    $("#divOneDayPriority").show();
+                    $("#btnOneDayPriority").show();
+
+                    OnedayArray_2[0] = res[0];
+                    OnedayArray_2[1] = res[1];
+                    OnedayArray_2[2] = res[2];
+                    OnedayArray_2[3] = res[3];
+                    OnedayArray_2[4] = res[4];
+                    OnedayArray_2[5] = res[5];
+
+                    bindRows(OnedayArray_2, "");
+                }
+            },
+            error: function (error) {
+                alert("Error: " + error);
+            },
+            statusCode: {
+                404: function () {
+                    alert("page not found");
+                }
+            }
+        });
+
+    });
+
+    $("#btnOneDayPriority").click(function () {
+
+        $('input[name="optradio"]').prop('checked', false);
+
+        $("#div1Day").hide();
+        $("#divOneDayPriority").hide();         // Hide divOneDayPriority
+        $("#divTwoDayPriority").show();         // Show divTwoDayPriority
+        $("#Consecutive_Mode").hide();
+        $("#Normal_Mode").hide();
+        $("#btnTwoDayPriority").hide();
+        $("#__btnOneDayPriority").hide();
+    });
+
+    //Two day Radio Button
+    //true=>Consecutive, false=>Normal
+    $('input:radio[name="optradio"]').change(function () {
+        $(".subbutt").show();
+
+
+        if ($("#chkAllLocation").is(':checked')) {                  // For All Location
+            selectedLocationVal = nextSelectLocationVal;
+        }
+        else {           
+            selectedLocationVal = $("#location_Location_Id").val();     // For Single Location
+        }
+
+        if (selectedLocationVal == 0) {
+            $(".subbutt").hide();
+        }
+
+        if ($(this).val() == 'true') {
+            $.ajax({
+                url: '@Url.Action("LoadDaysForLocationPriority", "LocationPriority")',
+                type: 'POST',
+                dataType: 'JSON',
+                data: { LocationId: selectedLocationVal, opMode: "Edit" },
+                success: function (res) {
+                    if (res.length == 5) {
+                        dayArray5[0] = res[0] + "," + '&nbsp;' + res[1];
+                        dayArray5[1] = res[1] + "," + '&nbsp;' + res[2];
+                        dayArray5[2] = res[2] + "," + '&nbsp;' + res[3];
+                        dayArray5[3] = res[3] + "," + '&nbsp;' + res[4];
+                        dayArray5[4] = res[4] + "," + '&nbsp;' + res[0];
+
+                        //__TwoDayNormalTable.length = 0;
+                        $("#Normal_Mode").empty();
+
+                        bindRows(dayArray5, "Consecutive_Mode");
+                    }
+                    else if (res.length == 6) {
+                        dayArray6[0] = res[0] + "," + '&nbsp;' + res[1];
+                        dayArray6[1] = res[1] + "," + '&nbsp;' + res[2];
+                        dayArray6[2] = res[2] + "," + '&nbsp;' + res[3];
+                        dayArray6[3] = res[3] + "," + '&nbsp;' + res[4];
+                        dayArray6[4] = res[4] + "," + '&nbsp;' + res[5];
+                        dayArray6[5] = res[5] + "," + '&nbsp;' + res[0];
+
+                        //__TwoDayNormalTable.length = 0;
+                        $("#Normal_Mode").empty();
+
+                        bindRows(dayArray6, "Consecutive_Mode");
+                    }
+                    localStorage.setItem("TwoDayTable", "Consecutive");         //For Consecutive Mode
+                    $("#Consecutive_Mode").show();
+                    $("#Normal_Mode").hide();
+                    $("#btnTwoDayPriority").show();
+                    $("#__btnOneDayPriority").show();
+                },
+                error: function (error) {
+                    alert("Error: " + error);
+                },
+                statusCode: {
+                    404: function () {
+                        alert("page not found");
+                    }
+                }
+
+            });
+
+        } else {                                            //For Normal Mode
+            $.ajax({
+                url: '@Url.Action("LoadDaysForLocationPriority", "LocationPriority")',
+                type: 'POST',
+                dataType: 'JSON',
+                data: { LocationId: selectedLocationVal, opMode: "Edit" },
+                success: function (res) {
+                    if (res.length == 5) {              // 10 Days Combination
+                        dayArray10[0] = res[0] + "," + '&nbsp;' + res[1];
+                        dayArray10[1] = res[0] + "," + '&nbsp;' + res[2];
+                        dayArray10[2] = res[0] + "," + '&nbsp;' + res[3];
+                        dayArray10[3] = res[0] + "," + '&nbsp;' + res[4];
+
+                        dayArray10[4] = res[1] + "," + '&nbsp;' + res[2];
+                        dayArray10[5] = res[1] + "," + '&nbsp;' + res[3];
+                        dayArray10[6] = res[1] + "," + '&nbsp;' + res[4];
+
+                        dayArray10[7] = res[2] + "," + '&nbsp;' + res[3];
+                        dayArray10[8] = res[2] + "," + '&nbsp;' + res[4];
+
+                        dayArray10[9] = res[3] + "," + '&nbsp;' + res[4];
+
+                        //__TwoDayConsecutiveTable.length = 0;
+                        $("#Consecutive_Mode").empty();
+
+                        bindRows(dayArray10, "Normal_Mode");
+                    }
+                    else if (res.length == 6) {         // 15 Days Combination
+                        dayArray15[0] = res[0] + "," + '&nbsp;' + res[1];
+                        dayArray15[1] = res[0] + "," + '&nbsp;' + res[2];
+                        dayArray15[2] = res[0] + "," + '&nbsp;' + res[3];
+                        dayArray15[3] = res[0] + "," + '&nbsp;' + res[4];
+                        dayArray15[4] = res[0] + "," + '&nbsp;' + res[5];
+
+                        dayArray15[5] = res[1] + "," + '&nbsp;' + res[2];
+                        dayArray15[6] = res[1] + "," + '&nbsp;' + res[3];
+                        dayArray15[7] = res[1] + "," + '&nbsp;' + res[4];
+                        dayArray15[8] = res[1] + "," + '&nbsp;' + res[5];
+
+                        dayArray15[9] = res[2] + "," + '&nbsp;' + res[3];
+                        dayArray15[10] = res[2] + "," + '&nbsp;' + res[4];
+                        dayArray15[11] = res[2] + "," + '&nbsp;' + res[5];
+
+                        dayArray15[12] = res[3] + "," + '&nbsp;' + res[4];
+                        dayArray15[13] = res[3] + "," + '&nbsp;' + res[5];
+
+                        dayArray15[14] = res[4] + "," + '&nbsp;' + res[5];
+
+                        //__TwoDayConsecutiveTable.length = 0;
+                        $("#Consecutive_Mode").empty();
+
+                        bindRows(dayArray15, "Normal_Mode");
+                    }
+                },
+                error: function (error) {
+                    alert("Error: " + error);
+                },
+                statusCode: {
+                    404: function () {
+                        alert("page not found");
+                    }
+                }
+            });
+            localStorage.setItem("TwoDayTable", "Normal");
+            $("#Normal_Mode").show();
+            $("#Consecutive_Mode").hide();
+            $("#btnTwoDayPriority").show();
+            $("#__btnOneDayPriority").show();
+        }
+    });
+
+    //Open One Day Div & Hide Two Day Div
+    $("#__btnOneDayPriority").click(function () {
+
+        //$(".subbutt").hide();
+
+        $("#div1Day").show();         // Show div1Day
+        $(".subbutt").show()
+        $("#divOneDayPriority").show();
+        $("#btnOneDayPriority").show();
+
+        //$("#location_Location_Id").val(0);
+        $('#chkAllLocation').prop('checked', false);
+
+        $("#divTwoDayPriority").hide();         // Hide divTwoDayPriority
+
+        __TwoDayNormalTable.length = 0;
+        $("#Normal_Mode").empty();
+
+        __TwoDayConsecutiveTable.length = 0;
+        $("#Consecutive_Mode").empty();
+
+        $('input[name="optradio"]').prop('checked', false);
+
+    });
+
+    //Open Three Day Div & Hide Two Day Div
+    $("#btnTwoDayPriority").click(function () {
+        $("#divTwoDayPriority").hide();
+        $("#divThreeDayPriority").show()
+        $("#__btnTwoDayPriority").hide();
+    });
+
+    //Three Day Radio Button
+    $('input:radio[name="ThreeDay_optradio"]').change(function () {
+
+        if ($("#chkAllLocation").is(':checked')) {
+            selectedLocationVal = nextSelectLocationVal;            // For All Location
+        }
+        else {
+            selectedLocationVal = $("#location_Location_Id").val();       // For Single Location
+        }
+
+        if (selectedLocationVal == 0) {
+            $(".subbutt").hide();
+        }
+
+
+        //if ($("#location_Location_Id").val() == 0) {
+        //    $(".subbutt").hide();
+        //}
+
+        if ($(this).val() == 'Consecutive') {                               //Consecutive Mode
+            $.ajax({
+                url: '@Url.Action("LoadDaysForLocationPriority", "LocationPriority")',
+                type: 'POST',
+                dataType: 'JSON',
+                data: { LocationId: selectedLocationVal, opMode: "Edit" },
+                success: function (res) {
+                    if (res.length == 5) {          // 5 Days
+                        dayArray1[0] = res[0] + "," + '&nbsp;' + res[1] + "," + '&nbsp;' + res[2];
+
+                        //__ThreeDayNormalTable.length = 0;
+                        $("#ThreeDayNormal_Mode").empty();
+
+                        bindRows(dayArray1, "ThreeDayConsecutive_Mode");
+                    }
+                    else if (res.length == 6) {     // 6 Days
+                        dayArray2[0] = res[0] + "," + '&nbsp;' + res[1] + "," + '&nbsp;' + res[2];
+                        dayArray2[1] = res[3] + "," + '&nbsp;' + res[4] + "," + '&nbsp;' + res[5];
+
+                        //__ThreeDayNormalTable.length = 0;
+                        $("#ThreeDayNormal_Mode").empty();
+
+                        bindRows(dayArray2, "ThreeDayConsecutive_Mode");
+                    }
+                },
+                error: function (error) {
+                    alert("Error: " + error);
+                },
+                statusCode: {
+                    404: function () {
+                        alert("page not found");
+                    }
+                }
+            });
+            localStorage.setItem("ThreeDayTable", "Consecutive");
+            $("#ThreeDayConsecutive_Mode").show();
+            $("#ThreeDayNormal_Mode").hide();
+            $("#__btnTwoDayPriority").show();
+            $("#__btnSave").show();                 //Show Save button
+        } else {
+            //Normal Mode
+            $.ajax({
+                url: '@Url.Action("LoadDaysForLocationPriority", "LocationPriority")',
+                type: 'POST',
+                dataType: 'JSON',
+                data: { LocationId: selectedLocationVal, opMode: "Edit" },
+                success: function (res) {
+                    if (res.length == 5) {          // 5 Days
+                        dayArray1[0] = res[0] + "," + '&nbsp;' + res[2] + "," + '&nbsp;' + res[4];
+
+                        //__ThreeDayConsecutiveTable.length = 0;
+                        $("#ThreeDayConsecutive_Mode").empty();
+
+                        bindRows(dayArray1, "ThreeDayNormal_Mode");
+                    }
+                    else if (res.length == 6) {     // 6 Days
+                        dayArray2[0] = res[0] + "," + '&nbsp;' + res[2] + "," + '&nbsp;' + res[4];
+                        dayArray2[1] = res[1] + "," + '&nbsp;' + res[3] + "," + '&nbsp;' + res[5];
+
+                        //__ThreeDayConsecutiveTable.length = 0;
+                        $("#ThreeDayConsecutive_Mode").empty();
+
+                        bindRows(dayArray2, "ThreeDayNormal_Mode");
+                    }
+                },
+                error: function (error) {
+                    alert("Error: " + error);
+                },
+                statusCode: {
+                    404: function () {
+                        alert("page not found");
+                    }
+                }
+            });
+            localStorage.setItem("ThreeDayTable", "Normal");
+            $("#ThreeDayNormal_Mode").show();
+            $("#ThreeDayConsecutive_Mode").hide();
+            $("#__btnTwoDayPriority").show();
+            $("#__btnSave").show();                 //Show Save button
+        }
+    });
+
+    //Back To Two Day Div
+    $("#__btnTwoDayPriority").click(function () {
+
+        $("#Consecutive_Mode").html("");
+        $("#Normal_Mode").html("");
+        $('input[name="optradio"]').prop('checked', false);
+        $(".subbutt").hide();
+
+        $("#divThreeDayPriority").hide();
+        $("#divTwoDayPriority").show();
+
+        //__ThreeDayNormalTable.length = 0;
+        $("#ThreeDayNormal_Mode").empty();
+
+        //__ThreeDayConsecutiveTable.length = 0;
+        $("#ThreeDayConsecutive_Mode").empty();
+
+        $('input[name="ThreeDay_optradio"]').prop('checked', false);
+    });
+
+</script>
+
+<script type="text/javascript">
+
+    function bindTwoDayNormalPriority(controlId) {
+        //alert('bindTwoDayNormalPriority');
+        //alert('priority dropdown  ===>  ' + controlId);
+        $('#' + controlId + '').append('<option value="1">1</option>');
+        $('#' + controlId + '').append('<option value="2">2</option>');
+        $('#' + controlId + '').append('<option value="3">3</option>');
+
+    }
+
+    function bindRows(dayArray, mode) {
+
+        if (dayArray.length == 5 && mode == "") {
+            // 5 working days ( one day table )
+            CreateStructure(dayArray, "#divOneDayPriority", "dr1_OneDayAWeek", "txt_OneDay_5_WorkingDays__", "dr_OneDay_5_WorkingDays__");
+        }
+        else if (dayArray.length == 6 && mode == "") {
+            // 6 working days ( one day table )
+            CreateStructure(dayArray, "#divOneDayPriority", "dr_OneDay_6_WorkingDays__", "txt_OneDay_6_WorkingDays__", "dr_OneDay_6_WorkingDays__");
+        } else if (dayArray.length == 5 && mode == "Consecutive_Mode") {
+            //two day consecutive ( 5 days )
+            CreateStructure(dayArray, "#Consecutive_Mode", "dr_consecutive_twoday_5_WorkingDays__", "txt_consecutive_twoday_5_WorkingDays__", "dr_consecutive_twoday_5_WorkingDays__");
+        }
+        else if (dayArray.length == 6 && mode == "Consecutive_Mode") {
+            //two day consecutive ( 6 days )
+            CreateStructure(dayArray, "#Consecutive_Mode", "dr_consecutive_twoday_6_WorkingDays__", "txt_consecutive_twoday_6_WorkingDays__", "dr_consecutive_twoday_6_WorkingDays__");
+        }
+        else if (dayArray.length == 10 && mode == "Normal_Mode") {
+            CreateStructure(dayArray, "#Normal_Mode", "dr_Normal_twoday_10_WorkingDays__", "txt_Normal_twoday_10_WorkingDays__", "dr_Normal_twoday_10_WorkingDays__");
+        }
+        else if (dayArray.length == 15 && mode == "Normal_Mode") {
+            CreateStructure(dayArray, "#Normal_Mode", "dr_Normal_twoday_15_WorkingDays__", "txt_Normal_twoday_15_WorkingDays__", "dr_Normal_twoday_15_WorkingDays__");
+        }
+        else if (dayArray.length == 1 && mode == "ThreeDayConsecutive_Mode") {
+            CreateStructure(dayArray, "#ThreeDayConsecutive_Mode", "dr_Consecutive_Three_5_WorkingDays__", "txt_Consecutive_Three_5_WorkingDays__", "dr_Consecutive_Three_5_WorkingDays__");
+        }
+        else if (dayArray.length == 2 && mode == "ThreeDayConsecutive_Mode") {
+            CreateStructure(dayArray, "#ThreeDayConsecutive_Mode", "dr_Consecutive_Three_6_WorkingDays__", "txt_Consecutive_Three_6_WorkingDays__", "dr_Consecutive_Three_6_WorkingDays__");
+        }
+        else if (dayArray.length == 1 && mode == "ThreeDayNormal_Mode") {
+            CreateStructure(dayArray, "#ThreeDayNormal_Mode", "dr_Normal_Three_5_WorkingDays__", "txt_Normal_Three_5_WorkingDays__", "dr_Normal_Three_5_WorkingDays__");
+        }
+        else if (dayArray.length == 2 && mode == "ThreeDayNormal_Mode") {
+            CreateStructure(dayArray, "#ThreeDayNormal_Mode", "dr_Normal_Three_6_WorkingDays__", "txt_Normal_Three_6_WorkingDays__", "dr_Normal_Three_6_WorkingDays__");
+        }
+    }
+
+    function CreateStructure(dayArray, divId, ClassName, txtId, drId) {
+
+        $(divId).html("");
+
+        for (var i = 0; i < dayArray.length; i++) {
+            $(divId).append("<div class='row' style='padding:0 0 12px 0;'><div class='row'><div id='Div__"
+       + i + "' class='col-sm-6'>" +
+       "<input type='text' class='form-control btn-lg' id='" + txtId + i + "' name='" + txtId + i + "' readonly='true' value=" + dayArray[i] + " />" +
+       "</div><div id='Div1__" + i + "' class='col-sm-6'>" +
+       "<select class='" + ClassName + " " + "box form-control btn-lg' id='" + drId + i + "' name='" + drId + i + "'></select>" +
+       "</div><div id='Div2__" + i + "</div></div></div>");
+
+            bindTwoDayNormalPriority(drId + i);              //Dropdown
+        }
+
+    }
+
+</script>
+
+<script type="text/javascript">
+    $("#__btnSave").click(function () {
+
+        $("#location_Location_Id").prop("disabled", false);         //Unlock dropdown
+
+        //For One Day Table
+        //-------------------
+        var __OneDayTable = [];
+        if (!jQuery.isEmptyObject(OnedayArray_1)) {                            //For Five Working days
+            for (var i = 0; i < OnedayArray_1.length; i++) {
+                var vIsControlExist = $('#dr_OneDay_5_WorkingDays__' + i).length;
+                if (vIsControlExist > 0) {
+                    var OneDayPriorityTableObj = {}
+                    OneDayPriorityTableObj['LocationId'] = $("#location_Location_Id").val();
+                    OneDayPriorityTableObj['DayName'] = $("#txt_OneDay_5_WorkingDays__" + i).val();
+                    OneDayPriorityTableObj['Priority'] = $("#dr_OneDay_5_WorkingDays__" + i).val();
+                    //OneDayPriorityTableObj['IsOffDay'] = $(this).find(".dr2_OneDayAWeek_OffDay").val();
+                    __OneDayTable.push(OneDayPriorityTableObj);
+                }
+            }
+        }
+        else if (!jQuery.isEmptyObject(OnedayArray_2)) {
+            for (var i = 0; i < OnedayArray_2.length; i++) {
+                var vIsControlExist = $('#dr_OneDay_6_WorkingDays__' + i).length;
+                if (vIsControlExist > 0) {
+                    var OneDayPriorityTableObj = {}
+                    OneDayPriorityTableObj['LocationId'] = $("#location_Location_Id").val();
+                    OneDayPriorityTableObj['DayName'] = $("#txt_OneDay_6_WorkingDays__" + i).val();
+                    OneDayPriorityTableObj['Priority'] = $("#dr_OneDay_6_WorkingDays__" + i).val();
+                    //OneDayPriorityTableObj['IsOffDay'] = $(this).find(".dr2_OneDayAWeek_OffDay").val();
+                    __OneDayTable.push(OneDayPriorityTableObj);
+                }
+            }
+        }
+        //------------------------------------------------
+        //For Two day Table
+        if (localStorage.getItem("TwoDayTable") != null) {
+            var mode = localStorage.getItem("TwoDayTable");
+            if (mode == "Consecutive") {                                //For Consecutive Mode
+                var __TwoDayConsecutiveTable = [];
+                if (!jQuery.isEmptyObject(dayArray5)) {                            //For Five Working days
+                    for (var i = 0; i < dayArray5.length; i++) {
+                        var vIsControlExist = $('#dr_consecutive_twoday_5_WorkingDays__' + i).length;
+                        if (vIsControlExist > 0) {
+                            var TwoDayConsecutivePriorityTableObj = {}
+                            TwoDayConsecutivePriorityTableObj['LocationId'] = $("#location_Location_Id").val();
+                            TwoDayConsecutivePriorityTableObj['DaysName'] = $('#txt_consecutive_twoday_5_WorkingDays__' + i).val();
+                            TwoDayConsecutivePriorityTableObj['Priority'] = $('#dr_consecutive_twoday_5_WorkingDays__' + i).val();
+                            TwoDayConsecutivePriorityTableObj['IsConsigutiveDays'] = true;
+                            __TwoDayConsecutiveTable.push(TwoDayConsecutivePriorityTableObj);
+                        }
+                    }
+                }
+                else if (!jQuery.isEmptyObject(dayArray6)) {                       //For Six Working days
+                    for (var i = 0; i < dayArray6.length; i++) {
+                        var vIsControlExist = $('#dr_consecutive_twoday_6_WorkingDays__' + i).length;
+                        if (vIsControlExist > 0) {
+                            var TwoDayConsecutivePriorityTableObj = {}
+                            TwoDayConsecutivePriorityTableObj['LocationId'] = $("#location_Location_Id").val();
+                            TwoDayConsecutivePriorityTableObj['DaysName'] = $('#txt_consecutive_twoday_6_WorkingDays__' + i).val();
+                            TwoDayConsecutivePriorityTableObj['Priority'] = $('#dr_consecutive_twoday_6_WorkingDays__' + i).val();
+                            TwoDayConsecutivePriorityTableObj['IsConsigutiveDays'] = true;
+                            __TwoDayConsecutiveTable.push(TwoDayConsecutivePriorityTableObj);
+                        }
+                    }
+                }
+            }
+            else if (mode == "Normal") {                                    // For Normal Mode
+                var __TwoDayNormalTable = [];
+
+                if (!jQuery.isEmptyObject(dayArray10)) {                // 10 Working Days
+                    for (var i = 0; i < dayArray10.length; i++) {
+                        var vIsControlExist = $('#dr_Normal_twoday_10_WorkingDays__' + i).length;
+                        if (vIsControlExist > 0) {
+                            var TwoDayNormalPriorityTableObj = {}
+                            TwoDayNormalPriorityTableObj['LocationId'] = $("#location_Location_Id").val();
+                            TwoDayNormalPriorityTableObj['DaysName'] = $('#txt_Normal_twoday_10_WorkingDays__' + i).val();
+                            TwoDayNormalPriorityTableObj['Priority'] = $('#dr_Normal_twoday_10_WorkingDays__' + i).val();
+                            TwoDayNormalPriorityTableObj['IsConsigutiveDays'] = false;
+                            __TwoDayNormalTable.push(TwoDayNormalPriorityTableObj);
+                        }
+                    }
+                }
+                else if (!jQuery.isEmptyObject(dayArray15)) {           // 15 Working Days
+                    for (var i = 0; i < dayArray15.length; i++) {
+                        var vIsControlExist = $('#dr_Normal_twoday_15_WorkingDays__' + i).length;
+                        if (vIsControlExist > 0) {
+                            var TwoDayNormalPriorityTableObj = {}
+                            TwoDayNormalPriorityTableObj['LocationId'] = $("#location_Location_Id").val();
+                            TwoDayNormalPriorityTableObj['DaysName'] = $('#txt_Normal_twoday_15_WorkingDays__' + i).val();
+                            TwoDayNormalPriorityTableObj['Priority'] = $('#dr_Normal_twoday_15_WorkingDays__' + i).val();
+                            TwoDayNormalPriorityTableObj['IsConsigutiveDays'] = false;
+                            __TwoDayNormalTable.push(TwoDayNormalPriorityTableObj);
+                        }
+                    }
+                }
+            }
+        }
+        //---------------------------------------
+        //For Three Day Priority Table
+        if (localStorage.getItem("ThreeDayTable") != null) {
+            var mode = localStorage.getItem("ThreeDayTable");                   //For Three Day Cosecutive
+            if (mode == "Consecutive") {
+                var __ThreeDayConsecutiveTable = [];
+                if (!jQuery.isEmptyObject(dayArray1)) {                // 5 Working Days
+
+                    for (var i = 0; i < dayArray1.length; i++) {
+                        var vIsControlExist = $('#dr_Consecutive_Three_5_WorkingDays__' + i).length;
+                        if (vIsControlExist > 0) {
+                            var ThreeDayConsecutivePriorityTableObj = {}
+                            ThreeDayConsecutivePriorityTableObj['LocationId'] = $("#location_Location_Id").val();
+                            ThreeDayConsecutivePriorityTableObj['DaysName'] = $('#txt_Consecutive_Three_5_WorkingDays__' + i).val();
+                            ThreeDayConsecutivePriorityTableObj['Priority'] = $('#dr_Consecutive_Three_5_WorkingDays__' + i).val();
+                            ThreeDayConsecutivePriorityTableObj['IsConsigutiveDays'] = true;
+                            __ThreeDayConsecutiveTable.push(ThreeDayConsecutivePriorityTableObj);
+                        }
+                    }
+                }
+                else if (!jQuery.isEmptyObject(dayArray2)) {
+
+                    for (var i = 0; i < dayArray2.length; i++) {
+                        var vIsControlExist = $('#dr_Consecutive_Three_6_WorkingDays__' + i).length;
+                        if (vIsControlExist > 0) {
+                            var ThreeDayConsecutivePriorityTableObj = {}
+                            ThreeDayConsecutivePriorityTableObj['LocationId'] = $("#location_Location_Id").val();
+                            ThreeDayConsecutivePriorityTableObj['DaysName'] = $('#txt_Consecutive_Three_6_WorkingDays__' + i).val();
+                            ThreeDayConsecutivePriorityTableObj['Priority'] = $('#dr_Consecutive_Three_6_WorkingDays__' + i).val();
+                            ThreeDayConsecutivePriorityTableObj['IsConsigutiveDays'] = true;
+                            __ThreeDayConsecutiveTable.push(ThreeDayConsecutivePriorityTableObj);
+                        }
+                    }
+                }
+            }
+            else if (mode == "Normal") {                                      //For Three Day Normal
+                var __ThreeDayNormalTable = [];
+                if (!jQuery.isEmptyObject(dayArray1)) {                // 5 Working Days
+
+                    for (var i = 0; i < dayArray1.length; i++) {
+                        var vIsControlExist = $('#dr_Normal_Three_5_WorkingDays__' + i).length;
+                        if (vIsControlExist > 0) {
+                            var ThreeDayNormalPriorityTableObj = {}
+                            ThreeDayNormalPriorityTableObj['LocationId'] = $("#location_Location_Id").val();
+                            ThreeDayNormalPriorityTableObj['DaysName'] = $('#txt_Normal_Three_5_WorkingDays__' + i).val();
+                            ThreeDayNormalPriorityTableObj['Priority'] = $('#dr_Normal_Three_5_WorkingDays__' + i).val();
+                            ThreeDayNormalPriorityTableObj['IsConsigutiveDays'] = false;
+                            __ThreeDayNormalTable.push(ThreeDayNormalPriorityTableObj);
+                        }
+                    }
+                }
+                else if (!jQuery.isEmptyObject(dayArray2)) {
+                    for (var i = 0; i < dayArray2.length; i++) {
+                        var vIsControlExist = $('#dr_Normal_Three_6_WorkingDays__' + i).length;
+                        if (vIsControlExist > 0) {
+                            var ThreeDayNormalPriorityTableObj = {}
+                            ThreeDayNormalPriorityTableObj['LocationId'] = $("#location_Location_Id").val();
+                            ThreeDayNormalPriorityTableObj['DaysName'] = $('#txt_Normal_Three_6_WorkingDays__' + i).val();
+                            ThreeDayNormalPriorityTableObj['Priority'] = $('#dr_Normal_Three_6_WorkingDays__' + i).val();
+                            ThreeDayNormalPriorityTableObj['IsConsigutiveDays'] = false;
+                            __ThreeDayNormalTable.push(ThreeDayNormalPriorityTableObj);
+                        }
+                    }
+                }
+            }
+        }
+
+        //----------------------------------------------
+        //Clear & Remove LocalStorage
+        localStorage.clear("TwoDayTable");
+        localStorage.removeItem("TwoDayTable");
+
+        localStorage.clear("ThreeDayTable");
+        localStorage.removeItem("ThreeDayTable");
+        //----------------------
+        var data = {};
+        var OneDay = {};
+        var TwoDay = {};
+        var ThreeDay = {};
+        var IsCkeckAllLocation = false;
+
+        data.OneDay = __OneDayTable;            //Set One Day Table
+
+        //alert("__TwoDayNormalTable  " + __TwoDayNormalTable);
+        //alert("__ThreeDayNormalTable  " + __ThreeDayNormalTable);
+
+        if (__TwoDayConsecutiveTable != null) {
+            data.TwoDay = __TwoDayConsecutiveTable;             //Set Two Day Consecutive Table
+        } else {
+            data.TwoDay = __TwoDayNormalTable;                  //Set Two Day Normal Table
+        }
+
+        if (__ThreeDayConsecutiveTable != null) {
+            data.ThreeDay = __ThreeDayConsecutiveTable;         //Set Three Day Consecutive Table
+        } else {
+            data.ThreeDay = __ThreeDayNormalTable;              //Set TThree Day Normal Table
+        }
+
+        //--------------------------------------------------------------------------------------------//
+
+
+
+        if ($('#chkAllLocation').prop('checked')) {
+            //alert("Is Checked:  ");
+            data.IsCkeckAllLocation = true;
+        }
+        else {
+            //alert("Not Checked: ");
+            data.IsCkeckAllLocation = false
+        }
+
+        //---------For Edit-------------//
+        data.Mode = "Edit";
+        data.LocationId = $("#location_Location_Id").val();
+
+        //------------------------------------------------------//
+
+        $.ajax({
+            url: '@Url.Action("Create", "LocationPriority")',
+            type: 'POST',
+            data: JSON.stringify(data),
+            cache: 'false',
+            contentType: 'application/json',
+            dataType: "json",
+            success: function (result) {
+                if (result != null) {
+                    window.location.href = '@Url.Action("Index", "LocationPriority")?msg=' + result;
+                }
+                else {
+                    window.location.href = '@Url.Action("Index", "LocationPriority")?msg=Error Occured!...';
+                }
+            },
+            error: function () {
+                return false;
+            }
+        });
+    });
+</script>
+
+<script type="text/javascript">
+
+    $("#location_Location_Id").change(function () {
+        $(".subbutt").show();
+
+        $.ajax({
+            url: '@Url.Action("CheckIsOffDay_InLocation", "LocationPriority")',
+            type: 'POST',
+            dataType: 'JSON',
+            data: { LocationId: $("#location_Location_Id").val() },
+            success: function (res) {
+                if (res.length == 0) {
+                    alertify.alert("Please Select Any Location.").setHeader('AdvancePT Says');
+                }
+                else if (res.length == 5) {
+
+                    $("#divOneDayPriority").show();
+                    $("#btnOneDayPriority").show();
+
+                    OnedayArray_1[0] = res[0];
+                    OnedayArray_1[1] = res[1];
+                    OnedayArray_1[2] = res[2];
+                    OnedayArray_1[3] = res[3];
+                    OnedayArray_1[4] = res[4];
+
+                    bindRows(OnedayArray_1, "");
+                }
+                else if (res.length == 6) {
+
+                    $("#divOneDayPriority").show();
+                    $("#btnOneDayPriority").show();
+
+                    OnedayArray_2[0] = res[0];
+                    OnedayArray_2[1] = res[1];
+                    OnedayArray_2[2] = res[2];
+                    OnedayArray_2[3] = res[3];
+                    OnedayArray_2[4] = res[4];
+                    OnedayArray_2[5] = res[5];
+
+                    bindRows(OnedayArray_2, "");
+                }
+            },
+            error: function (error) {
+                alert("Error: " + error);
+            },
+            statusCode: {
+                404: function () {
+                    alert("page not found");
+                }
+            }
+        });
+    });
+    //---------------------------------------------------//
+    //Get All Location on Check
+    $('#chkAllLocation').change(function () {
+        if ($("#chkAllLocation").is(':checked')) {
+            $('#chkAllLocation').prop('checked', true);
+            $("#location_Location_Id").prop("disabled", true);
+            $(".subbutt").show();
+            $("#divlocationpriority").removeClass('locationi');
+            $("#divlocationpriority").addClass('locationi1');
+
+            //--------------------------------------//
+            $.ajax({
+                url: '@Url.Action("CheckIsOffDay_InLocation", "LocationPriority")',
+                type: 'POST',
+                dataType: 'JSON',
+                data: { LocationId: $("#location_Location_Id option:selected").next().val() },
+                success: function (res) {
+                    if (res.length == 0) {
+                        alertify.alert("Please Select Any Location.").setHeader('AdvancePT Says');
+                    }
+                    else if (res.length == 5) {
+
+                        $("#divOneDayPriority").show();
+                        $("#btnOneDayPriority").show();
+
+                        OnedayArray_1[0] = res[0];
+                        OnedayArray_1[1] = res[1];
+                        OnedayArray_1[2] = res[2];
+                        OnedayArray_1[3] = res[3];
+                        OnedayArray_1[4] = res[4];
+
+                        bindRows(OnedayArray_1, "");
+                    }
+                    else if (res.length == 6) {
+
+                        $("#divOneDayPriority").show();
+                        $("#btnOneDayPriority").show();
+
+                        OnedayArray_2[0] = res[0];
+                        OnedayArray_2[1] = res[1];
+                        OnedayArray_2[2] = res[2];
+                        OnedayArray_2[3] = res[3];
+                        OnedayArray_2[4] = res[4];
+                        OnedayArray_2[5] = res[5];
+
+                        bindRows(OnedayArray_2, "");
+                    }
+                },
+                error: function (error) {
+                    alert("Error: " + error);
+                },
+                statusCode: {
+                    404: function () {
+                        alert("page not found");
+                    }
+                }
+            });
+        }
+        else {
+            $("#divlocationpriority").removeClass('locationi1');
+            $("#divlocationpriority").addClass('locationi');
+
+            $('#chkAllLocation').prop('checked', false);
+            //$("#location_Location_Id").attr("disabled", "false");
+            $("#location_Location_Id").prop("disabled", false);
+            $('#location_Location_Id').val(0);
+            $(".subbutt").hide();
+            $("#divOneDayPriority").html("");
+        }
+    });
+
+    //-----------------------------------------------------------//
+    $(".btnCreateLink").click(function () {
+        window.location.reload(true);           //Clear browser cache
+    });
+</script>

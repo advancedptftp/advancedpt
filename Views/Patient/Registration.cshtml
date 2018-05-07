@@ -1,0 +1,45 @@
+﻿@model DataLayer.Models.PatientProfile
+@{
+    ViewBag.Title = "MyProfile";
+    Layout = "~/Views/Shared/_PatientPortal.cshtml";
+}
+@*<link href="~/Content/style.css" rel="stylesheet" />*@
+
+
+@Html.Partial("~/Areas/Patient/Views/PatientRegistration/ViewPatientProfile.cshtml", Model)
+<script>
+    __progressbarcontainer = "progressbarcontainer";
+</script>
+<div id="progressbarcontainer">
+
+</div>
+@if(Model.PatientSignature == null)
+{ 
+<script>
+    $(document).ready(function () {
+        $('#__Welcomenote').modal();
+    });
+</script>
+}
+
+<div class="modal fade" id="__Welcomenote" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="custommodalbody">
+                <h3 style="padding:0;">Welcome to Advanced P.T.! </h3>
+
+                <div class="modal-body">
+                    <div>
+                        <div id="content">
+                           Our team is glad that you’ve entrusted us to help you.  Please take a few minutes to review the information our intake staff collected to verify its accuracy and make any corrections as needed.  You’ll also see some new questions.  This process will be your full registration and there will be no clipboard full of papers to complete when you arrive.  Feel free to call us with any questions if you get stuck at (352) 693-3378.
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+

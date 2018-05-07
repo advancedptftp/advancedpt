@@ -1,0 +1,286 @@
+﻿@using System.Data
+@{
+    ViewBag.Title = "ViewScheduleStatus";
+
+    DataTable dtupcommingschedule = new DataTable();
+
+    if (ViewBag.upcommingschedule != null)
+    {
+        dtupcommingschedule = (DataTable)ViewBag.upcommingschedule;
+    }
+    DataTable dtCompletedschedule = new DataTable();
+    if (ViewBag.Completedschedule != null)
+    {
+        dtCompletedschedule = (DataTable)ViewBag.Completedschedule;
+    }
+    DataTable dtNoShowSchedule = new DataTable();
+    if (ViewBag.NoShowSchedule != null)
+    {
+        dtNoShowSchedule = (DataTable)ViewBag.NoShowSchedule;
+    }
+
+}
+
+
+<div class="row  pad-top" style="padding-top: 98px;padding-bottom: 98px;">
+    <div class="col-md-12">
+        <div class="accordion-2 panel-group" id="accordion">
+            <div class="accordion-2 panel panel-default">
+                <div id="loadfirsttime" class="panel-heading active">
+                    <h4 class="panel-title">
+                        <a id="togglefirsttime" data-toggle="collapse" data-parent="#accordion" href="#collapse1" class="collapsed">
+                            Upcoming Appointment(s)
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapse1" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        @if (dtupcommingschedule != null && dtupcommingschedule.Rows.Count > 0)
+                        {
+                            <div id="searchPatient">
+
+                                <div class="SearchResultContainer1">
+
+
+                                    @for (int i = 0; i < dtupcommingschedule.Rows.Count; i++)
+                                    {
+                                        <div class="bluebox1">
+
+                                            <div class="number">@(i + 1) </div>
+                                            <p>
+                                                <strong>Appointment Date:</strong> @Convert.ToDateTime(dtupcommingschedule.Rows[i]["AppointmentDate"].ToString()).ToString("D")<br>
+                                                @dtupcommingschedule.Rows[i]["FromTime"].ToString().Substring(0, 5) - @dtupcommingschedule.Rows[i]["ToTime"].ToString().Substring(0, 5)
+                                            </p>
+                                            <p><strong>Clinician</strong>: @dtupcommingschedule.Rows[i]["EmployeeName"]</p>
+                                            @if (String.IsNullOrEmpty(dtupcommingschedule.Rows[i]["IsComprehensive"].ToString())) //== null && dtupcommingschedule.Rows[i]["IsComprehensive"].ToString() == "True")
+                                            {
+                                            <button type="button" class="orangebutt" id="btnReschedule" onclick="fnConfirmationForReschedule(@dtupcommingschedule.Rows[i]["Appointment_Id"].ToString())"><i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;Reschedule</button>
+                                            <button type="button" class="whitebutt" id="btnCancel" onclick="fnConfirmation(@dtupcommingschedule.Rows[i]["Appointment_Id"].ToString())"><i class="fa fa-close" aria-hidden="true"></i>&nbsp;Cancel</button>
+                                            }
+
+                                            <div style="clear:both;"></div>
+                                        </div>
+                                    }
+
+
+
+
+                                </div>
+
+
+                            </div>
+                        }
+                        @if (dtupcommingschedule != null && dtupcommingschedule.Rows.Count > 0)
+                        {
+                        }
+                        else
+                        {
+                            <div id="div_noRec" style="text-align: center; vertical-align: middle; line-height: 38px;"><label style='color:red'>Sorry! no records are found !!</label></div>
+
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a id="toggleanotherfirsttime" data-toggle="collapse" data-parent="#accordion" href="#collapse2" class="collapsed">
+                            Completed Appointment(s)
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapse2" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        @if (dtCompletedschedule != null && dtCompletedschedule.Rows.Count > 0)
+                        {
+                            <div id="searchPatientsdsd">
+
+                                <div class="SearchResultContainer1dssd">
+
+                                    @for (int i = 0; i < dtCompletedschedule.Rows.Count; i++)
+                                    {
+
+                                        <div class="bluebox1">
+                                            <div class="number">@(i + 1) </div>
+                                            <p>
+                                                <strong>Appointment Date:</strong> @Convert.ToDateTime(dtCompletedschedule.Rows[i]["AppointmentDate"].ToString()).ToString("D")<br>
+                                                @dtCompletedschedule.Rows[i]["FromTime"].ToString().Substring(0, 5) - @dtCompletedschedule.Rows[i]["ToTime"].ToString().Substring(0, 5)
+                                            </p>
+                                            <p><strong>Clinician</strong>: @dtCompletedschedule.Rows[i]["EmployeeName"]</p>
+
+
+                                            <div style="clear:both;"></div>
+                                        </div>
+                                    }
+
+
+
+
+
+
+                                </div>
+
+
+                            </div>
+                        }
+                        @if (dtCompletedschedule != null && dtCompletedschedule.Rows.Count > 0)
+                        {
+                        }
+                        else
+                        {
+                            <div id="div_noRecNew" style="text-align: center; vertical-align: middle; line-height: 38px;"><label style='color:red'>Sorry! no records are found !!</label></div>
+
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a id="toggleanother1firsttime" data-toggle="collapse" data-parent="#accordion" href="#collapse3" class="collapsed">
+                            Missed Appointment(s)
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapse3" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        @if (dtNoShowSchedule != null && dtNoShowSchedule.Rows.Count > 0)
+                        {
+                            <div id="searchPatientsdsdasas">
+
+                                <div class="SearchResultContainer1dssd">
+
+                                    @for (int i = 0; i < dtNoShowSchedule.Rows.Count; i++)
+                                    {
+                                        <div class="bluebox1">
+
+                                            <div class="number">@(i + 1) </div>
+                                            <p>
+                                                <strong>Appointment Date:</strong> @Convert.ToDateTime(dtNoShowSchedule.Rows[i]["AppointmentDate"].ToString()).ToString("D")<br>
+                                                @dtNoShowSchedule.Rows[i]["FromTime"].ToString().Substring(0, 5) - @dtNoShowSchedule.Rows[i]["ToTime"].ToString().Substring(0, 5)
+                                            </p>
+                                            <p><strong>Clinician</strong>: @dtNoShowSchedule.Rows[i]["EmployeeName"]</p>
+
+
+                                            <div style="clear:both;"></div>
+                                        </div>
+                                    }
+
+
+
+
+
+
+                                </div>
+
+
+                            </div>
+                        }
+                        @if (dtNoShowSchedule != null && dtNoShowSchedule.Rows.Count > 0)
+                        {
+                        }
+                        else
+                        {
+                            <div id="div_noRecNew" style="text-align: center; vertical-align: middle; line-height: 38px;"><label style='color:red'>Sorry! no records are found </label></div>
+
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix">
+                <br />
+            </div>
+            <div>
+                @Html.ActionLink("Back to List", "PatientCoordination", new { @controller = "PatientActivation", @area = "Patient" })
+            </div>
+            @*<div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse3" class="collapsed">
+                                Sed Diam Nonummy Euismod
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse3" class="panel-collapse collapse" s>
+                        <div class="panel-body">
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis egestas mauris ut vehicula. Cras viverra ac orci ac aliquam. Nulla eget condimentum mauris, eget tincidunt est.
+                            </p>
+                        </div>
+                    </div>
+                </div>*@
+        </div>
+    </div>
+
+
+
+
+</div>
+
+
+<script>
+
+    jQuery(document).ready(function () {
+        jQuery('.accordion-2 .panel-heading').on('click', function () {
+            //alert("rtrt");
+            jQuery('.accordion-2 .panel-heading ').removeClass('active');
+            jQuery(this).addClass('active');
+
+        });
+
+
+
+    });
+
+</script>
+<script>
+
+    jQuery(document).ready(function () {
+        //alert(11);
+        $("#loadfirsttime").addClass("onlyfirsttime");
+
+
+
+    });
+    $("#togglefirsttime").click(function () {
+        //alert(22);
+        $("#loadfirsttime").removeClass("onlyfirsttime");
+    });
+    $("#toggleanotherfirsttime").click(function () {
+        //alert(22);
+        $("#loadfirsttime").removeClass("onlyfirsttime");
+    });
+    $("#toggleanother1firsttime").click(function () {
+        //alert(22);
+        $("#loadfirsttime").removeClass("onlyfirsttime");
+    });
+
+</script>
+
+@*<style>
+        .panel > .panel-heading {
+            position: relative;
+            padding: 0;
+            background: #0c58a8;
+        }
+        .panel > .panel-heading h4 a{
+            padding:18px 15px; display:block; font-size:23px; font-weight:bold; color:#fff;
+        }
+            .panel-title > a.collapsed:after{
+            content: '+';
+            position: absolute;
+            right: 24px;
+        }
+
+        .panel-title > a:after {
+            content: '-';
+            position: absolute;
+            right: 24px;
+        }
+
+        #accordion .table thead th {
+            background: #a5a5a5;
+        }
+
+
+    </style>*@

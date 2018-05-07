@@ -1,0 +1,382 @@
+﻿@model DataLayer.Models.tblTNewEmpQuestionair
+
+@{
+    Layout = null;
+}
+@using DataLayer;
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>myadvancedpt.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="favicon.png">
+
+    <!-- Bootstrap core CSS -->
+
+
+</head>
+
+<body>
+
+
+    <div style="width:700px; margin:0 auto; padding:5px 0; font-family:verdana; font-size:13px; color:#333;">
+
+
+        <div style="padding:0 0 20px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="51%">
+                        <h2 style="padding:0; font-size:20px; margin:0;">
+                            New Employee Questionnaire<br>
+                            <span style="font-size:15px; font-weight:normal;">Heal At Home Healthcare</span>
+                        </h2>
+                    </td>
+                    <td width="49%"><div style="padding:10px; text-align:center; border:2px dashed #333; font-size:13px; font-weight:bold;">CONFIDENTIAL REPORT: SUBMIT ORIGINAL TO THE DIRECTOR OF NURSING WITHIN 24 HOURS OF INCIDENT. DO NOT SCAN OR COPY.</div></td>
+                </tr>
+            </table>
+
+        </div>
+
+        <div style="padding:0 0 5px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="31%" style="padding-right:10px;">
+                        <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.CreatedOn.GetExactValue()</div>
+                        Today's Date
+                    </td>
+                    <td width="38%" style="padding-right:10px;">
+                        <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.EmpFirstName</div>
+                        Employee First Name *
+                    </td>
+                    <td width="31%" style="padding-right:10px;" valign="top">
+                        <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.EmpLastName</div>
+                        Employee Last Name *
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <div style="padding:0 0 5px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="31%" style="padding-right:10px;">
+                        <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.PositionTitle</div>
+                        Position Title
+                    </td>
+
+                    <td width="31%" style="padding-right:10px;" valign="top">
+                        <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.Email</div>
+                        Email Address *
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <div style="padding:0 0 5px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="31%" style="padding-right:10px;" valign="top">
+
+                        <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.PositionDesc</div>
+                        Describe the essence of what you do in your position. As a (title), I...
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+
+        <div style="padding:0 0 5px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="31%" style="padding-right:10px;" valign="top">
+                        <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.PersonalInterestDesc</div>
+
+                        Outside of work my personal interests include...
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+
+
+        <div style="padding:0 0 5px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="31%" style="padding-right:10px;" valign="top">
+                        <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.IdentifiesMeOrBelieveInDesc</div>
+                        Something that I believe in or that identifies me would be...
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <div style="padding:0 0 5px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="31%" style="padding-right:10px;" valign="top">
+                        <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.MostLikingsInCompanyDesc</div>
+                        The things that I like most about working for APTCF are...
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+
+        <div style="padding:0 0 5px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="31%" style="padding-right:10px;" valign="top">
+                        <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.PatientCaringReasonsDesc</div>
+                        The reasons that I enjoy caring for patients are...
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <div style="padding:0 0 5px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="31%" style="padding-right:10px;" valign="top">
+                        <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.BecamePTReasonDesc</div>
+                        The reason I became a PT or chose to work in the PT field is...
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+
+
+        <div style="padding:0 0 5px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="31%" style="padding-right:10px;" valign="top">
+                        <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.PatientWorkingWithMeDesc</div>
+                        I believe patients enjoy working with me because...
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <div style="padding:0 0 5px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="31%" style="padding-right:10px;" valign="top">
+                        <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.PatientComingForTreatmentDesc</div>
+                        I believe patients enjoy coming for treatment at APTCF because...
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        @*<div style="padding-top:20px; line-height:23px;">
+            I have a profile picture that I prefer to use.<br>
+            <input type="checkbox" disabled="disabled">&nbsp;If yes, please email that picture to bethany@myadvancedpt.com
+        </div>*@
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<div class="container">
+    <div class="bodyleft">
+
+        @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+    </div>
+    <div class="bodyright">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="report-form clearfix">
+
+
+                <h2>New Employee Questionnaire</h2>
+
+
+
+                
+                <div class="clearfix"></div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-4 form-group">
+                        <label>Today's Date </label>
+                       
+                        @Html.TextBoxFor(model => model.CreatedOn, "{0:MM/dd/yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                        @Html.HiddenFor(model => model.EmpQuestionair_Id)
+                        @Html.HiddenFor(model => model.CreatedBy)
+
+                    </div>
+                    @if (ViewBag.Error != null)
+                    {
+                        @Html.Raw(ViewBag.Error)
+                    }
+                    <div class="col-sm-6 col-md-4 form-group">
+
+
+
+
+                        
+                        <label for="EmpFirstName" class="">Employee First Name *</label>
+                        @Html.TextBoxFor(model => model.EmpFirstName, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.EmpFirstName)
+
+                    </div>
+                    <div class="col-sm-6 col-md-4 form-group">
+                       
+                        <label for="EmpLastName" class="">Employee Last Name *</label>
+                        @Html.TextBoxFor(model => model.EmpLastName, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.EmpLastName)
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-4 form-group">
+                        
+                        <label for="PositionTitle" class="">Position Title </label>
+                        @Html.TextBoxFor(model => model.PositionTitle, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.PositionTitle)
+                    </div>
+                    <div class="col-sm-6 col-md-4 form-group">
+                       
+                        <label for="Email" class="">Email Address *</label>
+                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.Email)
+                    </div>
+                </div>
+
+
+
+
+                <hr>
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 form-group">
+
+
+                        <label for="PositionDesc" class="">Describe the essence of what you do in your position. As a (title), I...</label>
+                        @Html.TextAreaFor(model => model.PositionDesc, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.PositionDesc)
+                    </div>
+                    <div class="col-sm-12 col-md-6 form-group">
+
+                        <label for="PersonalInterestDesc" class="">Outside of work my personal interests include...</label>
+                        @Html.TextAreaFor(model => model.PersonalInterestDesc, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.PersonalInterestDesc)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 form-group">
+
+                        <label for="IdentifiesMeOrBelieveInDesc" class="">Something that I believe in or that identifies me would be...</label>
+                        @Html.TextAreaFor(model => model.IdentifiesMeOrBelieveInDesc, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.IdentifiesMeOrBelieveInDesc)
+                    </div>
+                    <div class="col-sm-12 col-md-6 form-group">
+                        <label for="MostLikingsInCompanyDesc" class="">The things that I like most about working for APTCF are...</label>
+                        @Html.TextAreaFor(model => model.MostLikingsInCompanyDesc, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.MostLikingsInCompanyDesc)
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 form-group">
+
+                        <label for="PatientCaringReasonsDesc" class="">The reasons that I enjoy caring for patients are... </label>
+                        @Html.TextAreaFor(model => model.PatientCaringReasonsDesc, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.PatientCaringReasonsDesc)
+
+                    </div>
+                    <div class="col-sm-12 col-md-6 form-group">
+
+                        <label for="BecamePTReasonDesc" class="">The reason I became a PT or chose to work in the PT field is...</label>
+                        @Html.TextAreaFor(model => model.BecamePTReasonDesc, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.BecamePTReasonDesc)
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 form-group">
+
+                        <label for="PatientWorkingWithMeDesc" class="">I believe patients enjoy working with me because...</label>
+                        @Html.TextAreaFor(model => model.PatientWorkingWithMeDesc, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.PatientWorkingWithMeDesc)
+
+                    </div>
+                    <div class="col-sm-12 col-md-6 form-group">
+                        <label for="PatientWorkingWithMeDesc" class="">I believe patients enjoy coming for treatment at APTCF because...</label>
+                        @Html.TextAreaFor(model => model.PatientComingForTreatmentDesc, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.PatientComingForTreatmentDesc)
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <b>
+                            <label for="HaveProfilePicture" class="">I have a profile picture that I prefer to use.</label>
+                        </b><br />
+                        <b>
+                            <label for="HaveProfilePicture" class="">If yes, please email that picture to bethany@myadvancedpt.com</label>
+                        </b><br />
+                        @Html.CheckBoxFor(model => model.HaveProfilePicture, new { @class = "checkbox", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.HaveProfilePicture)
+
+                    </div>
+
+                </div>
+                <hr>
+                <p>@Html.ActionLink("Back to List", "Index")</p>
+
+                <div class="subbutt">
+
+                    <button type="submit" class="btn btn-orange pull-right">Approved</button>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        }
+    </div>
+
+
+
+</div>
+
+
+}*@
+
+
+
+
+
+

@@ -1,0 +1,492 @@
+﻿@{
+    Layout = null;
+}
+
+
+<script src="~/Scripts/jquery.js"></script>
+<script src="~/Scripts/jquery-ui.js"></script>
+<script src="~/Scripts/moment.js"></script>
+<script src="~/Scripts/fullcalendar.js"></script>
+
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/fullcalendar.css" rel="stylesheet" />
+<link href="/Content/font-awesome.css" rel="stylesheet" />
+<link href="~/Content/style.css" rel="stylesheet" />
+<link href="~/Content/fonts.css" rel="stylesheet" />
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.1.0/bootstrap.min.js"></script>
+<link rel="stylesheet" href="~/Content/w3.css">
+<style>
+    .fc-slats > table {
+        height: 580px;
+    }
+       .form-control {
+        width: 120px;
+    }
+    .fc-time-grid .fc-content-skeleton {
+            top: -2px;
+    }
+</style>
+
+    <style > 
+        .loadingdivschedule {
+        display: block;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 9998;
+        background-color: rgba(0,0,0,.3);
+        -webkit-animation: fade 500ms;
+        -moz-animation: fade 500ms;
+        -o-animation: fade 500ms;
+        animation: fade 500ms;
+    }
+
+    .loadingcontainerschedule {
+        width: 100%;
+        text-align: center;
+        padding-top: 26%;
+    }
+
+    </style >
+
+
+
+
+@*<section class="bodyinner">
+    <div class="container">
+        @Html.Hidden("PatientID", (string)ViewBag.PatientID)
+        <div id="loading" class="loadingdiv" style="display:none;">
+            <div class="loadingcontainere">
+                <img src="~/Images/pageloader1.gif" width="200" height="200" />
+            </div>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="divSearchPatientButton">
+            <div class="col-sm-4">
+                @*<label id="txtPatientName">test</label>*@
+                @*<input type="text" id="txtPatientName" class="applitextfield1" />*@
+                @*<button class="btn btn-primary" onclick="fnShowPatientSearch();"><i class="fa fa-search" aria-hidden="true"></i> &nbsp; Search Patient</button>
+                </div>
+                <div class="col-sm-5 time_shedule_heade">
+                    <h3 style="color: #286090;">Appointment for <label id="lblPatient" style="color: #f58f22;">@ViewBag.PatientName</label></h3>
+                </div>
+                <div class="col-sm-4"></div>
+
+
+                <div class="clearfix"></div>
+            </div>
+
+            <div id='calendar' class="table_bg_white"></div>
+        </div>
+    </section>*@
+
+
+
+<div zclass="w3-main" id="main">
+    <div class="w3-teal" style="height:60px; background-color:#fff !important;">
+        @Html.Hidden("PatientID", (string)ViewBag.PatientID)
+        <div id="loading" class="loadingdiv" style="display:none;">
+            <div class="loadingcontainere">
+                <img src="~/Images/pageloader1.gif" width="200" height="200" />
+            </div>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="divSearchPatientButton">
+            <div class="col-sm-4">
+                <a class="pull-left" href="@Url.Action("Index", new { Controller="Patient", Area=""})"><img src="@Url.Content("~/Images/logo.png")" title="myadvancedpt.com" alt="" style="width:120px; height:55px;"></a>
+
+            </div>
+            <div class="col-sm-4 time_shedule_heade"> @*style="color: white;"*@
+                <h3 style="padding-top:7px;">Appointment for <label id="lblPatient" style="color: #000;">@ViewBag.PatientName</label></h3>
+            </div>
+            <div class="col-sm-4">
+                @*<label id="txtPatientName">test</label>*@
+                @*<input type="text" id="txtPatientName" class="applitextfield1" />*@
+                @if (ViewBag.PatientPortal == null)
+                {
+                    <button style="margin:7px;" class="btn btn-primary" onclick="fnShowPatientSearch();"><i class="fa fa-search" aria-hidden="true"></i> &nbsp; Search Patient</button>
+                }
+            </div>
+
+
+
+
+
+            <div class="clearfix"></div>
+        </div>
+    </div>
+
+    <div class="w3-container">
+        <div class="row">&nbsp;</div>
+        <div id='calendar' class="table_bg_white"></div>
+    </div>
+
+</div>
+
+<div class="clearfix"></div>
+
+<!-- Modal -->
+<div class="modal fade" id="_SearchPatient" role="dialog">
+    <div class="modal-dialog modal-lg" style="width:850px;">
+        <div class="modal-content">
+            <div class="modal-header" style="padding-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 id="headingSearchPatient" class="modal-title">Search Patient</h3>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div id="searchPatient">
+                        <div class="row SearchFilterContainer" id="SearchFilterContainer">
+                            <div class="col-sm-6 col-md-3">
+                                <div class=headrightcont>First Name</div>
+                                <input id="txtPatientFirstName" type="text" class="applitextfield2" name="name" value="" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class=headrightcont>Last Name</div>
+                                <input id="txtPatientLastName" type="text" class="applitextfield2" name="name" value="" />
+                            </div>
+
+                            <div class="col-sm-6 col-md-3">
+                                <div class="headrightcont">Phone</div>
+                                <input id="txtPatientPhone" type="text" class="applitextfield2 UsCellFormat" name="name" value="" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class=headrightcont>City</div>
+                                <input id="txtPatientCity" type="text" class="applitextfield2" name="name" value="" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class=headrightcont>State</div>
+                                <input id="txtPatientState" type="text" class="applitextfield2" name="name" value="" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="headrightcont">Zip Code</div>
+                                <input id="txtPatientZipCode" type="text" class="applitextfield2" name="name" value="" maxlength="5" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="headrightcont">&nbsp;</div>
+                                <button class="btn btn-success" onclick="fnSearchForPatient();">Search Patient</button>
+                            </div>
+                        </div>
+                        <div class="SearchResultContainer1">
+                            <table class="table table-bordered table-scroll" id="tblPatientList">
+                                <thead>
+                                    <tr>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Mob No</th>
+                                        <th>Home Phone</th>
+                                        <th>Address</th>
+                                    </tr>
+                                </thead>
+                                <tbody> </tbody>
+                            </table>
+
+                            <div id="div_noRecPatient" style="text-align: center; vertical-align: middle; line-height: 38px; display:none;"><label style='color:red'>There no records are found !!</label></div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer" style="padding:35px;">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="createEventModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+
+            <div class="modal-header" style="padding-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                <h3 id="modalTitle" class="modal-title">Create Appointment</h3>
+            </div>
+
+            <div id="modalBody" class="modal-body">
+                <form id="createAppointmentForm" class="form-horizontal">
+                    <div class="control-group shedule_popup">
+                        <h4>Appointment for <span id="PatientName"></span></h4>
+                       <table class="table table-bordered">
+                           <tr>
+                               <td><strong>Appointment Date:</strong></td>
+                               <td><span id="AppointmentDate"></span></td>
+                           </tr>
+                           <tr>
+                               <td>
+                                   <strong>Resource Type:</strong>
+                               </td>
+                               <td><span id="Resource_Type"></span></td>
+                           </tr>
+                           <tr>
+                               <td>
+                                   <strong>Employee:</strong>
+                               </td>
+                               <td><span id="Employee"></span></td>
+                           </tr>
+                           <tr>
+                               <td>
+                                   <strong>Appointment Type:</strong>
+                               </td>
+                               <td><span id="Appointment_Type"></span></td>
+                           </tr>
+                           <tr>
+                               <td>
+                                   <strong>Start Time:</strong>
+                               </td>
+                               <td><span id="startTime"></span></td>
+                           </tr>
+                           <tr>
+                               <td>
+                                   <strong>End Time:</strong>
+                               </td>
+                               <td><span id="endTime"></span></td>
+                           </tr>
+                       </table>
+                        
+</div>
+                    <input type="hidden" id="hdEventID" />
+                </form>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button id="btnConfirm" class="btn btn-primary">Confirm Appointment</button>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<div id="loadforscheduleapp" class="loadingdivschedule">
+    <div class="loadingcontainerschedule">
+        <img src="~/Images/pageloader1.gif" width="200" height="200" />
+    </div>
+</div>
+<script type="text/javascript">
+    var _startdate = '';
+    var _enddate = '';
+    $(document).ready(function () {
+        $('#loadforscheduleapp').hide();
+        var createFC = function () {
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'agendaWeek,agendaDay,listMonth'
+                },
+                minTime: "09:00:00",
+                maxTime: "18:00:00",
+                defaultView: "agendaWeek",
+                editable: false,
+                eventLimit: true,
+                slotDuration: '00:30:00',
+                events: [],
+                viewRender: function (view, element) {
+                    _startdate = view.start.format();
+                    _enddate = view.end.format();
+                    if ($("#PatientID").val() != "" && $("#PatientID").val() != "0")
+                    fnRenderEvent(view.start.format(), view.end.format(), $("#PatientID").val());
+                },
+                eventMouseover: function (calEvent, jsEvent) {
+                },
+                eventClick: function (event, jsEvent, view) {
+                    $('#createEventModal').modal();
+                    $.ajax({
+                        url: '@Url.Action("GetResourseDetail", "Calendar")' + "?EventID=" + event.id + "&Patient_Id=" + $("#PatientID").val(),
+                        type: 'GET',
+                        datatype: 'json',
+                        data: {},
+                        success: function (result) {
+                            $('#PatientName').html(result.PatientName);
+                            $('#AppointmentDate').html(moment(event.start).format('MM/DD/YYYY'));
+                            $('#Resource_Type').html(result.ResourceType);
+                            $('#Employee').html(result.EmployeeName);
+                            $('#Appointment_Type').html(result.Appointment_Type);
+                            $('#startTime').html(moment(event.start).format('MM/DD/YYYY hh:mm:ss A'));
+                            $('#endTime').html(moment(event.end).format('MM/DD/YYYY hh:mm:ss A'));
+                            $('#hdEventID').val(event.id);
+                            //alert($("#PatientID").val());
+                        },
+                        error: function (e) {
+                        }
+                    });
+                }
+            });
+        }
+        $('#calendar').fullCalendar('destroy');
+        createFC();
+    });
+    function fnRenderEvent(start, end, PatientID) {
+        $('#loading').show();
+        $.ajax({
+            url: '@Url.Action("GetFreeSlotsForPatient", "Calendar")' + "?start=" + start + "&end=" + end + "&PatientID=" + PatientID,
+            type: 'GET',
+            datatype: 'json',
+            data: {
+            },
+            success: function (result) {
+                //alert(result.id);
+                $('#loading').hide();
+                $('#calendar').fullCalendar('removeEvents');
+                $(result).each(function () {
+                    //alert(result.id);
+                    delete_null_properties(this, true);
+                    $('#calendar').fullCalendar('renderEvent', this);
+                })
+                //            $(".fc-event").popover({
+                //                html: true,
+                //                trigger: "hover",
+                //                placement: function (context, source) {
+                //                    var position = $(source).position();
+                //                    //alert(position.left);
+                //                    if (position.left > 515) {
+                //                        return "left";
+                //                    }
+
+                //                    if (position.left < 300) {
+                //                        return "right";
+                //                    }
+
+                //                    if (position.top < 110) {
+                //                        return "bottom";
+                //                    }
+
+                //                    return "top";
+                //                }
+                //,
+                //                content: function () {
+                //                    return "<div id='tstsde'>Loading....</div>";
+
+                //                }
+                //            });
+            },
+            error: function (e) {
+
+            }
+        });
+    }
+    function delete_null_properties(test, recurse) {
+
+        for (var i in test) {
+            if (test[i] === null) {
+                delete test[i];
+            } else if (recurse && typeof test[i] === 'object') {
+                delete_null_properties(test[i], recurse);
+            }
+            if (test[i] && Object.keys(test[i]).length === 0) {
+                delete test[i]
+            }
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    var RqstReschedule = '@ViewBag.Reschedule';
+    var AppoID='@ViewBag.AppointmentId';
+    $("#btnConfirm").click(function () {
+        $('#loadforscheduleapp').show();
+       // alert(RqstReschedule);
+        $.ajax({
+            url: '@Url.Action("CreatePatientScheduleAppointnment", "Calendar")' + "?EventID=" + $("#hdEventID").val() + "&PatientID=" + $("#PatientID").val() + "&startTime=" + $("#startTime").text() + "&endTime=" + $("#endTime").text() + "&AppointmentDate=" + $("#AppointmentDate").text() + "&RqstReschedule=" + RqstReschedule + "&AppoID="+AppoID,
+            type: "GET",
+            dataType: "JSON",
+            data: {},
+            success: function (msg) {
+                alert(msg.msg);
+                //alert(msg.returnrqst);
+                $('#createEventModal').modal('hide');
+                fnRenderEvent(_startdate, _enddate, $("#PatientID").val());
+                if (msg.returnrqst == "true") {
+                    var newUrl = '@Url.Action("Index","Patient")';
+                    window.location.href = newUrl;
+                }
+                $('#loadforscheduleapp').hide();
+            },
+            error: function (res) {
+                $('#loadforscheduleapp').hide();
+               // debugger;
+            }
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    function fnSearchForPatient() {
+        $.ajax({
+            url: '@Url.Action("SearchForPatient", new { Controller = "PatientActivation", area = "Patient" })',
+            type: 'POST',
+            data: {
+                FirstName: $('#txtPatientFirstName').val(),
+                LastName: $('#txtPatientLastName').val(),
+                Phone: $('#txtPatientPhone').val(),
+                City: $('#txtPatientCity').val(),
+                State: $('#txtPatientState').val(),
+                ZipCode: $('#txtPatientZipCode').val()
+            },
+            success: function (json) {
+                $("#tblPatientList tbody").html('');
+                for (var i = 0; i < json.length; i++) {
+                    var row = "<tr onclick='fnSelectPatientRow(this);'>" +
+                                       " <td>  " + json[i].First_Name + "</td>" +
+                                        "<td>" + json[i].Last_Name + "</td>" +
+                                        "<td>" + json[i].MobNo + " </td>" +
+                                        "<td>" + json[i].Phone2 + "</td>" +
+                                        "<td> <input type='hidden' name='' value='" + json[i].Patient_Id + "' class='patientID' /><input type='hidden' name='' value='" + json[i].Email + "' class='patientEmail' />" + json[i].Address + "</td>" +
+                                    "</tr>";
+                    $("#tblPatientList tbody").append(row);
+                }
+                if (json.length == 0) {
+                    $("#div_noRecPatient").show();
+                    $("#txtPatientName").val("");
+                    $("#Condition_PatientId").val("");
+                }
+
+            },
+            error: function (msg) {
+            }
+        });
+    }
+    function fnShowPatientSearch() {
+        $('#_SearchPatient').modal();
+
+        $('#txtPatientFirstName').val("");
+        $('#txtPatientLastName').val("");
+        $('#txtPatientPhone').val("");
+        $('#txtPatientCity').val("");
+        $('#txtPatientState').val("");
+        $('#txtPatientZipCode').val("");
+        //------------------------------------
+        $('#txtPatientFirstName').val($("#Patient_FirstName").val());
+        $('#txtPatientLastName').val($("#Patient_LastName").val());
+        $('#txtPatientPhone').val($("#txtMobNo").val());
+        $('#txtPatientCity').val($("#Patient_City").val());
+        $('#txtPatientState').val($("#Patient_State option:selected").text());
+        $('#txtPatientZipCode').val($("#Patient_ZipCode").val());
+        //---------------------------------------------------------------------------
+    }
+    //For Patient
+    function fnSelectPatientRow(obj) {
+        $("#tblPatientList tbody tr").removeClass('selectedRow');
+        $(obj).addClass('selectedRow');
+        $('#_SearchPatient').modal('hide');
+        $("#txtPatientName").val($($(obj).find('td')[0]).html() + " " + $($(obj).find('td')[1]).html());
+        $("#PatientID").val($($(obj).find('input')[0]).val());
+        $("#PatientUser_Email").val($($(obj).find('input')[1]).val());
+        $("#lblPatient").text($($(obj).find('td')[0]).html() + " " + $($(obj).find('td')[1]).html());    // Add Patient to label
+        if ($("#PatientID").val() != "" && $("#PatientID").val() != "0") {
+            fnRenderEvent(_startdate, _enddate, $("#PatientID").val());
+        }
+    }
+</script>

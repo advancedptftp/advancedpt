@@ -1,0 +1,481 @@
+﻿@model DataLayer.Models.DaliyTreatmentNote
+
+@{
+    ViewBag.Title = "Create";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    string str1 = string.Empty;
+    string str2 = string.Empty;
+}
+<style type="text/css">
+    .SymptomsWidth {
+        width: 330px;
+    }
+
+    #errmsg {
+        color: red;
+    }
+</style>
+
+<section class="bodyinner">
+    <div class="container">
+
+        <div class="report-form clearfix">
+            @using (Html.BeginForm("Create", "TreatmentNoteSubjective", FormMethod.Post, new { id = "TreatmentNoteSubjective", name = "TreatmentNoteSubjective" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(e => e.Patient_Id)
+                @Html.HiddenFor(e => e.PatientCondition_Id)
+                @Html.HiddenFor(e => e.PatientInsurance_Id)
+                @Html.HiddenFor(e => e.CIA_Objective_Id)
+                @Html.HiddenFor(e => e.Appointment_Id)
+                @Html.HiddenFor(e => e.Appointment_Date)
+                @Html.HiddenFor(e => e.IsCheckedIn)
+                @Html.HiddenFor(e => e.CheckedIn_Date)
+                @Html.HiddenFor(e => e.Appointment_Time)
+                @Html.HiddenFor(e => e.TotalNoOfVisits)
+                @Html.HiddenFor(e => e.NoOfVisitsCompleted)
+                @Html.HiddenFor(e => e.TotalNoOfAuthVisits)
+                @Html.HiddenFor(e => e.NoOfAuthVisitCompleted)
+                @Html.HiddenFor(e => e.PercentageAchieved)
+                @Html.HiddenFor(e => e.SymptomsExperiencedIds)
+                @Html.HiddenFor(e => e.ProblemImprovingIds)
+                @Html.HiddenFor(e => e.PatientDemonestratesIds)
+                @Html.HiddenFor(e => e.CreatedBy)
+                @Html.HiddenFor(e => e.CreatedOn)
+                @Html.HiddenFor(e => e.ModifiedBy)
+                @Html.HiddenFor(e => e.ModifiedOn)
+
+                if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+
+                <div class="topforn">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="lefttext">
+                                @{
+                if (ViewBag.PatientName != null)
+                {
+                    @ViewBag.PatientName
+                }
+                                }, DOB:
+                                @{
+                if (ViewBag.PatientDOB != null)
+                {
+                    @ViewBag.PatientDOB
+                }
+                                }
+                                <br />
+                                @*Tx Time : 8:00-8:40 PM<br />*@
+                                @*POC: 3/11, ends 02/12/18*@
+
+                                @{
+                string hyfen = "-";
+                string space = " ";
+                string st1 = "Tx Time :";
+
+                if (ViewBag.TreatmentFromTime != null && ViewBag.TreatmentToTime != null)
+                {
+                    @st1 @space @ViewBag.TreatmentFromTime @space @hyfen @space @ViewBag.TreatmentToTime
+                }
+                                }<br />
+
+                                POC:
+                                @{
+                string divideSign = "/";
+                string commaSign = ",";
+                string ends = "ends";
+
+                if (ViewBag.TotalNoofVisitRequired != null && ViewBag.CurrentVisitNo != null && ViewBag.TreatmentEndDate != null)
+                {
+                    @ViewBag.CurrentVisitNo @divideSign @ViewBag.TotalNoofVisitRequired @commaSign @space @ends @space @ViewBag.TreatmentEndDate
+                }
+                <br />
+                if (ViewBag.Date_Of_injury != null)
+                {
+                    string _Date_Of_injury = "Date Of injury : ";
+                    @_Date_Of_injury @ViewBag.Date_Of_injury;
+                }
+                else
+                {
+                    if (ViewBag.SurgeryDate != null)
+                    {
+                        string _SurgeryDate = "SurgeryDate : ";
+                        @_SurgeryDate @ViewBag.SurgeryDate;
+                    }
+                    else
+                    {
+                        if (ViewBag.DateonSet != null)
+                        {
+                            string _DateonSet = "Date onset : ";
+                            @_DateonSet @ViewBag.DateonSet;
+                        }
+                    }
+                }
+                <br />
+                @*if (ViewBag.FromWhenProblemExist != null)
+                {
+                    string _FromWhenProblemExist = "From When Problem Exist : ";
+                    @_FromWhenProblemExist @ViewBag.FromWhenProblemExist;
+                }*@
+                                }
+
+
+                            </div>
+                            <div class="righttext">
+                                @*Sumit Paul, DOB:01/14/74<br />
+                                    Tx Time : 8:00-8:40 PM*@
+                                @{
+                //string str3 = string.Empty;
+                //if (ViewBag.Disease_name != null)
+                //{
+                //    str3 = Convert.ToString(ViewBag.Disease_name);
+                //}
+                //if (ViewBag.BodyPart != null)
+                //{
+                //    str1 = Convert.ToString(ViewBag.BodyPart);
+                //    str2 = str1.First().ToString().ToUpper() + str1.Substring(1);
+                //}
+                
+                
+                string s1 = string.Empty;
+                int pos1 = 0;
+                string icdCode = string.Empty;
+                string disease = string.Empty;
+                string _desc = string.Empty;
+
+                if (ViewBag.IcdCodeWithDisease != null)
+                {
+
+                    foreach (var item in ViewBag.IcdCodeWithDisease)
+                    {
+                        s1 = Convert.ToString(item);
+                        pos1 = s1.IndexOf('_');
+                        icdCode = s1.Substring(0, pos1);
+                        string NewICDCode = icdCode.Insert(3, ".");
+                        disease = s1.Substring(pos1 + 1);
+                        _desc = NewICDCode + commaSign + space + @disease;
+                        <p>@_desc</p>
+                    }
+                }
+                                }
+
+                                @*@str3<br />*@
+                                Auth: 3/15, ends 03/31/18
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                    </div>
+
+                    <div class="botheadingsec">Daily Treatment Note <span>SUBJECTIVE</span></div>
+
+
+                </div>
+
+                <div id="divMain">
+
+                    <div id="div1">
+
+                        <div style="font-weight:bold; color:#000; font-size: 28px;">
+                            What % does patient feel they've achieved for their goal
+                            @Html.TextBoxFor(m => m.PatientPercentageGoal, new { @class = "applitextfield2", @style = "width:70px; padding-left:0px;", @onblur = "fn_CheckValidation();" })&nbsp; %
+                            <span id="errmsg" style="width:450px;"></span>
+                        </div>
+
+
+                        @*<div id="divSymptomsExperienced1">
+                                <div class="box inlinetext" style="color:#000; font-weight:bold;"> @Html.TextBoxFor(m => m.PatientPercentageGoal, new { @class = "form-control", style = "width:250px;" })
+                                 % </div>
+
+                                <div class="clearfix"></div>
+                            </div>*@
+
+                        <div id="divSymptomsExperienced2">
+                            <div style="padding-top:20px;">
+                                <h2>Symptoms experienced presently:</h2>
+                            </div>
+                            <div>
+                                <div class="radiosec SymptomsWidth">
+                                    @Html.RadioButtonFor(m => m.SymptomsExperienced, 1, new { @class = "radio-custom Symptoms", @id = "SymptomsExperienced1" })
+                                    <label for="SymptomsExperienced1" class="radio-custom-label">None</label>
+                                </div>
+                                <div class="radiosec SymptomsWidth">
+                                    @Html.RadioButtonFor(m => m.SymptomsExperienced, 2, new { @class = "radio-custom Symptoms", @id = "SymptomsExperienced2" })
+                                    <label for="SymptomsExperienced2" class="radio-custom-label">Mild</label>
+                                </div>
+                                <div class="radiosec SymptomsWidth">
+                                    @Html.RadioButtonFor(m => m.SymptomsExperienced, 3, new { @class = "radio-custom Symptoms", @id = "SymptomsExperienced3" })
+                                    <label for="SymptomsExperienced3" class="radio-custom-label">Moderate</label>
+                                </div>
+                                <div class="radiosec SymptomsWidth">
+                                    @Html.RadioButtonFor(m => m.SymptomsExperienced, 4, new { @class = "radio-custom Symptoms", @id = "SymptomsExperienced4" })
+                                    <label for="SymptomsExperienced4" class="radio-custom-label">Severe</label>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div id="divSymptomsExperienced3">
+                            <div style="padding-top:20px;">
+                                <h2>How is your <u>@ViewBag.ProblemName</u> improving?</h2>
+                            </div>
+                            <div>
+                                @{
+                string ProblemName = string.Empty;
+                if (ViewBag.ProblemName != null)
+                {
+                    ProblemName = Convert.ToString(ViewBag.ProblemName);
+                    if (ProblemName.ToLower() == "Pain".ToLower())
+                    {
+                        <div class="radiosec SymptomsWidth">
+                            @Html.RadioButtonFor(m => m.ProblemImproveLevel, 1, new { @class = "radio-custom ProblemName", @id = "ProblemImproveLevel1" })
+                            <label for="ProblemImproveLevel1" class="radio-custom-label">Better</label>
+                        </div>
+                                    <div class="radiosec SymptomsWidth">
+                                        @Html.RadioButtonFor(m => m.ProblemImproveLevel, 2, new { @class = "radio-custom ProblemName", @id = "ProblemImproveLevel2" })
+                                        <label for="ProblemImproveLevel2" class="radio-custom-label">Worse</label>
+                                    </div>
+                                    <div class="radiosec SymptomsWidth">
+                                        @Html.RadioButtonFor(m => m.ProblemImproveLevel, 3, new { @class = "radio-custom ProblemName", @id = "ProblemImproveLevel3" })
+                                        <label for="ProblemImproveLevel3" class="radio-custom-label">Same</label>
+                                    </div>
+                                    <div class="radiosec SymptomsWidth">
+                                        @Html.RadioButtonFor(m => m.ProblemImproveLevel, 4, new { @class = "radio-custom ProblemName", @id = "ProblemImproveLevel4" })
+                                        <label for="ProblemImproveLevel4" class="radio-custom-label">No Pain</label>
+                                    </div>
+                    }
+                    else
+                    {
+                        <div class="radiosec SymptomsWidth">
+                            @Html.RadioButtonFor(m => m.ProblemImproveLevel, 1, new { @class = "radio-custom ProblemName", @id = "ProblemImproveLevel1" })
+                            <label for="ProblemImproveLevel1" class="radio-custom-label">Better</label>
+                        </div>
+                                    <div class="radiosec SymptomsWidth">
+                                        @Html.RadioButtonFor(m => m.ProblemImproveLevel, 2, new { @class = "radio-custom ProblemName", @id = "ProblemImproveLevel2" })
+                                        <label for="ProblemImproveLevel2" class="radio-custom-label">Worse</label>
+                                    </div>
+                                    <div class="radiosec SymptomsWidth">
+                                        @Html.RadioButtonFor(m => m.ProblemImproveLevel, 3, new { @class = "radio-custom ProblemName", @id = "ProblemImproveLevel3" })
+                                        <label for="ProblemImproveLevel3" class="radio-custom-label">Same</label>
+                                    </div>
+                    }
+                }
+                                }
+
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div style="float:right">
+                            <input type="button" id="btnNext" name="btnNext__" class="btn btn-primary btn-lg" value="Next >>" />
+                        </div>
+                    </div>
+
+                    <div id="div2">
+                        <div id="divSymptomsExperienced2">
+                            <div style="padding-top:20px;">
+                                <h2>Patient demonstrates:</h2>
+                            </div>
+                            <div>
+                                @if (ViewBag.PatientDemonestrate != null)
+                                {
+                                    int j = 1;
+                                    foreach (var item in ViewBag.PatientDemonestrate)
+                                    {
+                                        <div class="radiosec">
+                                            <input id="chk@(item.Value)" class="checkbox-custom Class1 radioOpt" name="@item.Text" type="checkbox" value="@item.Value" checked="@item.Selected">
+                                            <label for="chk@(item.Value)" class="checkbox-custom-label">@item.Text</label>
+                                        </div>
+                                        j++;
+                                        if (j % 3 == 1)
+                                        {
+                                            <div class="clearfix"></div>
+                                        }
+                                    }
+                                }
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div style="float:left">
+                            <input type="button" class="btn btn-primary btn-lg" id="btnPrev" name=" btnprev__" value="<< Previous" />
+                        </div>
+                    </div>
+
+
+
+                    <div id="divDTNSaveSubjective" class="row" style="float:right">
+                        <input type="submit" id="btnSave" class="btn btn-orange btn-lg" value="Save & Next To Pre Treatment Measure" />
+                    </div>
+                </div>
+
+
+                <br /><br /><div class="row">
+                                <a href="@Url.Action("Index", "TreatmentNoteSubjective", new { Area = "DailyTreatmentNote" })">
+                                    <i>Back to List</i>
+                                </a>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Modal -->
+@*@Html.Partial("~/Views/Shared/_SearchPatientPartial.cshtml")*@
+@{Html.RenderPartial("~/Views/Shared/_SearchPatientPartial.cshtml");}
+
+<!-- End Modal -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#div1").show();
+        $("#div2").hide();
+        $("#divDTNSaveSubjective").hide();
+        $("#PatientPercentageGoal").focus();
+
+        //--- Accept Only Numeric Digits In "PatientPercentageGoal" TextBox ---//
+
+        $("#PatientPercentageGoal").keypress(function (e) {
+            //if the letter is not digit then display error and don't type anything
+            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                //display error message
+                //$("#errmsg").html("Digits Only").show().fadeOut("slow");
+                $("#errmsg").html("Digits Only").show().fadeOut(2000);
+                return false;
+            }
+        });
+        //--- End of Accept Only Numeric Digits In "PatientPercentageGoal" TextBox ---//
+    });
+
+    $("#btnNext").click(function () {
+        var v1, v2, v3;
+
+        //--- Check Validation For TextBox, RadioButtons ---//
+        if ($("#PatientPercentageGoal").val() == "") {
+            v1 = 0;
+        }
+
+        if ($('.Symptoms').filter(':checked').length > 0) {
+        }
+        else {
+            v2 = 0;
+        }
+
+        if ($('.ProblemName').filter(':checked').length > 0) {
+        }
+        else {
+            v3 = 0;
+        }
+
+        if (v1 == 0) {
+            $("#errmsg").html("Please enter the value.").show().fadeOut(2000);
+            $("#div1").show();
+            $("#div2").hide();
+            $("#divDTNSaveSubjective").hide();
+            $("#PatientPercentageGoal").focus();
+        }
+        else if (v2 == 0 || v3 == 0) {
+            alertify.alert("Please select any options").setHeader('AdvancePT Says');
+        }
+        else {
+            $("#div1").hide();
+            $("#div2").show();
+            $("#divDTNSaveSubjective").show();
+        }
+        //--- End of Check Validation For TextBox, RadioButtons ---//
+    });
+
+    $("#btnPrev").click(function () {
+        $("#div1").show();
+        $("#div2").hide();
+        $("#divDTNSaveSubjective").hide();
+    });
+
+
+    function fn_Submit(cnt) {
+        if (cnt == '@ViewBag.TotalSubjective') {
+            //alert("ViewBag Length: " + '@ViewBag.TotalSubjective');
+            //alert("Size: " + $('.chkAnsware__' + cnt + ':checked').size());
+            if ($('.chkAnsware__' + cnt + ':checked').size() == 0) {
+                alertify.alert("Please select any options as per the questions.").setHeader('AdvancePT Says');
+                return false;
+            }
+            else {
+                var Affect_Val = "";
+                $('.PatientDemonestrate:checked').each(function () {
+                    Affect_Val = Affect_Val + "," + $(this).val();
+                });
+
+                //alert(Affect_Val);
+                var indx2 = Affect_Val.indexOf(",");
+                var strlen2 = Affect_Val.length;
+                var str2 = Affect_Val.substring(indx2 + 1, strlen2);
+                alert(str2);
+                $("#Affect_Desc").val(str2);
+            }
+        }
+    }
+
+    function fn_CheckValidation() {
+        if ($("#PatientPercentageGoal").val() != null || $("#PatientPercentageGoal").val() != "" || $("#PatientPercentageGoal").val() != '') {
+            var PatientPercentageGoal_val = $("#PatientPercentageGoal").val();
+            if (PatientPercentageGoal_val.length > 3) {
+                alertify.alert("Percentage range should be 0 - 100").setHeader('AdvancePT Says');
+                $("#PatientPercentageGoal").val("");
+            }
+        }
+        //$("#PatientPercentageGoal").focus();
+    }
+
+
+
+    $('.radioOpt').click(function () {
+        var str1 = $(this).attr('name');
+        if (str1.toLowerCase() == "None of these".toLowerCase()) {
+            $(this).addClass("Noneofthese");
+            $(this).removeClass("radioOpt");
+
+            $('.radioOpt').attr('Checked', false);
+            $(".Noneofthese").attr("Checked", true);
+        }
+        else if (str1.toLowerCase() != "None of these".toLowerCase()) {
+            $(this).attr("Checked", true);
+            $(".Noneofthese").attr("Checked", false);
+        }
+    });
+
+
+    $("#btnSave").click(function () {
+        if ($('.Class1').filter(':checked').length > 0) {
+        }
+        else {
+            alertify.alert("Please select any one option(s).").setHeader('AdvancePT Says');
+            return false;
+        }
+
+        //------- Combine Patient Demonestrates Ids --------//
+        var PatientDemonestrates_Ids = "";
+        $('.Class1:checked').each(function () {
+            PatientDemonestrates_Ids = PatientDemonestrates_Ids + $(this).val()+"," ;
+        });
+
+        //alert("PatientDemonestrates_Ids : " + PatientDemonestrates_Ids);
+
+        $("#PatientDemonestratesIds").val(PatientDemonestrates_Ids);
+        $("#PatientInsurance_Id").val('@ViewBag.PatientInsurance_Id');
+        $("#CIA_Objective_Id").val('@ViewBag.Objective_Id');
+        $("#Appointment_Id").val('@ViewBag.Appointment_Id');
+        $("#Appointment_Date").val('@ViewBag.AppointmentDate');
+        $("#IsCheckedIn").val('@ViewBag.IsCheckedIn');
+        $("#CheckedIn_Date").val('@ViewBag.CheckedInDate');
+        $("#Appointment_Time").val('@ViewBag.AppointmentTime');
+        $("#PercentageAchieved").val($("#PatientPercentageGoal").val());
+        //$("#SymptomsExperiencedIds").val($("#SymptomsExperienced").val());
+        //$("#ProblemImprovingIds").val($("#ProblemImproveLevel").val());
+
+       
+    });
+
+
+</script>

@@ -1,0 +1,120 @@
+﻿@model DataLayer.Models.tblTBusinessCardOrder
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<section class="bodyinner">
+    <div class="container">
+        <div class="bodyleft">
+           
+            @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+        </div>
+        <div class="bodyright">
+
+            <div class="report-form clearfix">
+                <h2>Business Card Order Form</h2>
+@using (Html.BeginForm())
+                {
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true)
+    @Html.Hidden("CreatedOn", DateTime.Now)
+     if (ViewBag.Error != null)
+                {
+                     @Html.Raw(ViewBag.Error)
+                }
+
+               
+                <div class="clearfix"></div>
+
+                <div class="row">
+                    <div class="col-sm-6 col-md-6 form-group">
+                        @Html.Label("Employee First Name")
+                        @Html.TextBoxFor(model => model.EmpFirstName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.EmpFirstName)
+                    </div>
+                    <div class="col-sm-6 col-md-6 form-group">
+                        @Html.Label("Employee Last Name")
+                        @Html.TextBoxFor(model => model.EmpLastName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.EmpLastName)
+                    </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6 form-group">
+                            @Html.Label("Credential")
+                            @Html.DropDownList("Credentials", String.Empty)
+
+                        </div>
+                        <div class="col-sm-6 col-md-6 form-group">
+                            @Html.Label("Position ")
+                            @Html.DropDownList("PositionTitle", String.Empty)
+                           
+                        </div>
+
+                    </div>
+                   
+                <div class="row">
+                    <div class="col-sm-6 col-md-6 form-group">
+                        @Html.Label("Email")
+                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Email)
+                        
+                        
+                    </div>
+                    <div class="col-sm-6 col-md-6 form-group">
+                        <label for="date">Company You Work For </label>
+                        @Html.DropDownList("CompanyId", String.Empty)
+                        @Html.ValidationMessageFor(model => model.CompanyId)
+                    </div>
+                    </div>
+     <div class="row">
+                    <div class="col-sm-6 col-md-6 form-group">
+                        @Html.Label("Phone Number Extension  ")
+                        @Html.DropDownListFor(m => m.PhoneExt,  from DataLayer.BusinessPhExtansion state in Enum.GetValues(typeof(DataLayer.BusinessPhExtansion))
+                                                               select new SelectListItem() { Text = state.ToString().Replace("_", " "), Value = state.ToString() }, String.Empty)
+                        
+                    </div>
+                    <div class="col-sm-6 col-md-6 form-group">
+                        @Html.Label("Office To Be Shipped To   ")
+                       
+                        @Html.DropDownList("OfficeLocation", String.Empty)
+                        @Html.ValidationMessageFor(model => model.OfficeLocation)
+                    </div>
+
+                </div>
+
+
+                <div class="subbutt">
+                    <input type="submit" value="Create" class="btn btn-orange pull-right" />
+                   
+                    <div class="clearfix"></div>
+                </div>
+     <p>@Html.ActionLink("Back to List", "Index")</p>
+                }
+            </div>
+
+
+
+        </div>
+</div></section>
+<script>
+    $('#Credentials').addClass('form-control');
+</script>
+<script>
+    $('#CompanyId').addClass('form-control');
+</script>
+<script>
+    $('#OfficeLocation').addClass('form-control');
+</script>
+<script>
+    $('#PhoneExt').addClass('form-control');
+</script>
+<script>
+    $('#PositionTitle').addClass('form-control');
+</script>
+<script>
+    jQuery('.datepicker').datepicker();
+</script>
+
+

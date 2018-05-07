@@ -1,0 +1,99 @@
+﻿@model DataLayer.Models.tblMPatientInsuranceType
+
+@{
+    ViewBag.Title = "Create";
+}
+@if (ViewBag.Error != null)
+{
+    @Html.Raw(ViewBag.Error)
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Edit</title>
+</head>
+@*<center><h2 style="margin-top:20px;">Insurance Plan Edit</h2></center>*@
+<section class="bodyinner">
+    <div class="container">
+
+
+
+
+        <div class="report-form clearfix">
+            <h2 class="text-center">Insurance Plan</h2>
+            <br /><br />
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(m => m.PatientInsuranceType_ID)
+                @Html.HiddenFor(m => m.CreatedBy)
+                @Html.HiddenFor(m => m.CreatedOn)
+                <div class="row">
+                    <div class="col-sm-6 col-md-6 form-group">
+                        <h4><label><strong>Name</strong></label></h4>
+                        @Html.TextBoxFor(model => model.Plan, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Plan)
+                        @*<span id="span_Plan" style="color: #ff0000;font-size: 20px;"></span>*@
+                    </div>
+
+
+                    <div class="col-sm-6 col-md-6 form-group">
+                        <h4><label><strong>Description</strong></label></h4>
+                        @Html.DropDownList("Company")
+                        @Html.ValidationMessageFor(model => model.Description)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-6 form-group">
+                        <h4><label><strong>Appointment Type</strong></label></h4>
+                        @Html.DropDownList("AppointmentTypeId")
+                        @Html.ValidationMessageFor(model => model.AppointmentTypeId)
+                    </div>
+
+                    <div class="col-sm-6 col-md-6 form-group">
+                        <h4><label><strong>Is Active</strong></label></h4>
+                        @Html.CheckBoxFor(model => model.IsActive)
+                    </div>
+
+                </div>
+                <div class="subbutt">
+                    <input id="btnSave" type="submit" value="Save" class="btn btn-orange pull-right"  />
+
+                    <div class="clearfix"></div>
+                </div>
+
+
+
+                <p>@Html.ActionLink("Back to List", "Index")</p>
+            }
+
+            </div>
+
+
+            <div class="clearfix"></div>
+        </div>
+</section>
+
+</html>
+<script>
+    $("#Company").addClass('form-control')
+    $("#AppointmentTypeId").addClass('form-control')
+
+    //$("#btnSave").click(function () {
+    //    fnValidate();
+    //});
+
+    //function fnValidate() {
+    //    if ($("#Plan").val() != "") {
+    //        if ($("#Plan").val() != NaN) {
+    //            $("#span_Plan").text("Plan should not be only numbers");
+    //            return false;
+    //        }
+            
+    //    }
+
+    //}
+</script>

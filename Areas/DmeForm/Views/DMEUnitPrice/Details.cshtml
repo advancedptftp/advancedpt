@@ -1,0 +1,57 @@
+﻿@model DataLayer.Models.tblRDMEUnitPrice
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="bodyinner">
+    <div class="container">
+        <center><h2> DME Item Price</h2></center>
+        <div class="report-form clearfix">
+
+            @using (Html.BeginForm("Edit", "DMEUnitPrice", FormMethod.Post, new { name = "Create", id = "Create", enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+
+
+
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(m => m.UnitPrice_Id)
+                @Html.HiddenFor(m => m.CreatedBy)
+                @Html.HiddenFor(m => m.CreatedOn)
+                <div class="row">
+                    @*<div class="col-sm-6 col-md-6 form-group">
+
+
+                        @Html.Label("DME Form Code")
+                        @Html.TextBoxFor(model => model.DMEFormCode, new { @class = "form-control", disabled = "disabled" })
+
+                    </div>*@
+                    
+
+                    <div class="col-sm-6 col-md-6 form-group">
+                        @Html.Label("DME Item Name:")
+                        @Html.TextBoxFor(model => model.DMEFormName, new { @class = "form-control", disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-6 form-group">
+
+                        @Html.Label("Item Unit Price:")
+                        @Html.TextBoxFor(model => model.UnitPrice, new { @class = "form-control", disabled = "disabled" })
+
+                    </div>
+
+                </div>
+
+
+                <p>@Html.ActionLink("Back to List", "Index")</p>
+            }
+        </div>
+
+
+
+        <div class="clearfix"></div>
+    </div>
+</section>

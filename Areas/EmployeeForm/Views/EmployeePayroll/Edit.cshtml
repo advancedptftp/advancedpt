@@ -1,0 +1,298 @@
+﻿@model DataLayer.Models.tblTEmployeePayroll
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<section class="bodyinner">
+    <div class="container">
+        <div class="bodyleft">
+           
+            @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+        </div>
+        <div class="bodyright">
+
+            <div class="report-form clearfix">
+                <h2 class="text-center">Edit Employee Payroll</h2>
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(model => model.EmpPayroll_Id)
+                                   @Html.HiddenFor(model => model.ModifiedBy)
+                @Html.Hidden("ModifiedOn", DateTime.Now)
+                    @Html.HiddenFor(model => model.CreatedOn)
+                    @Html.HiddenFor(model => model.CreatedBy)
+                     if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+                    <div class="row">
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Office Locaton")
+                            @Html.DropDownList("office_locaton", String.Empty)
+                            @Html.ValidationMessageFor(model => model.office_locaton)
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Employee ID")
+                            @Html.TextBoxFor(model => model.EmpPayroll_Id, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.EmpPayroll_Id)
+
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Today Date")
+                            @Html.TextBoxFor(model => model.Today_date, new { @class = "form-control datepicker datepicker-bg", style = "width:100%;", @Value = DateTime.Now.ToString("MM/dd/yyyy"), @Readonly = true })
+                            @Html.ValidationMessageFor(model => model.Today_date)
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Employee First Name")
+                            @Html.TextBoxFor(model => model.Emp_firstname, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Emp_firstname)
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Employee Last Name")
+                            @Html.TextBoxFor(model => model.Emp_lastname, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Emp_lastname)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Payroll Start Date")
+                            @Html.TextBoxFor(model => model.Payroll_startdate, new { @class = "form-control datepicker datepicker-bg", placeholder = "mm/dd/yyyy", style = "width:100%;" })
+                            @Html.ValidationMessageFor(model => model.Payroll_startdate)
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Payroll End date")
+                            @Html.TextBoxFor(model => model.Payroll_Enddate, new { @class = "form-control datepicker datepicker-bg", placeholder = "mm/dd/yyyy", style = "width:100%;" })
+                            @Html.ValidationMessageFor(model => model.Payroll_Enddate)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Request for payment of Paid Time off(PTO) Hours")
+                            <br>
+                            <div style="display:inline-flex">
+                                @Html.CheckBoxFor(model => model.Request_paidtime, new { @class = "checkbox" })
+                                &nbsp;
+                                @Html.Label("YES")
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Request_paidtime)
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Hours Requested")
+                            @Html.TextBoxFor(model => model.Hours_Requested_Paidtime, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Hours_Requested_Paidtime)
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Request for payment of Pre-Approved OvertimePaid(OT) Hours")
+                            <br />
+                            <div style="display:inline-flex">
+                                @Html.CheckBoxFor(model => model.Request_PreApprovedovertime, new { @class = "checkbox" })
+                                &nbsp;
+                                @Html.Label("YES")
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Request_PreApprovedovertime)
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Hours_Requested")
+                            @Html.TextBoxFor(model => model.Hours_Requested_Overtime, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Hours_Requested_Overtime)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Request for payment of Pre-Approved Bonuses")
+                            <br />
+                            <div style="display:inline-flex">
+                                @Html.CheckBoxFor(model => model.Request_PreApprovedBonuses, new { @class = "checkbox" })
+                                &nbsp;
+                                @Html.Label("YES")
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Request_PreApprovedBonuses)
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Dolar Amount Requested")
+                            @Html.TextBoxFor(model => model.Dolar_amount_Requested, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Dolar_amount_Requested)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Request for payment of Pre-Approved Mileage")
+                            <br />
+                            <div style="display:inline-flex">
+                                @Html.CheckBoxFor(model => model.Request_PreApprovedMileage, new { @class = "checkbox" }) &nbsp;
+                                &nbsp;
+                                @Html.Label("YES")
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Request_PreApprovedMileage)
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Miles_Requested")
+                            @Html.TextBoxFor(model => model.Miles_Requested, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Miles_Requested)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Request for payment of Private Message Minutes")
+                            <br />
+                            <div style="display:inline-flex">
+                                @Html.CheckBoxFor(model => model.Private_message_minutes, new { @class = "checkbox" })
+                                &nbsp;
+                                @Html.Label("YES")
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Private_message_minutes)
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Minutes Requested")
+                            @Html.TextBoxFor(model => model.Minutes_Requested, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Minutes_Requested)
+                        </div>
+
+                    </div>
+
+                    <div class="subbutt">
+                        <input type="submit" value="Save" class="btn btn-orange pull-right" />
+
+
+                    </div>
+                    <p>@Html.ActionLink("Back to List", "Index")</p>
+                }
+
+            </div>
+
+
+
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</section>
+
+
+
+<script>
+    $('#office_locaton').addClass('form-control');
+</script>
+
+<script>
+
+
+
+    function paymentPaidTime() {
+        if ($('#Request_paidtime').is(":checked")) {
+
+            $('#Hours_Requested_Paidtime').removeAttr('readonly');
+
+        }
+        else {
+            $('#Hours_Requested_Paidtime').attr('readonly', 'readonly');
+            $('#Hours_Requested_Paidtime').val('');
+        }
+    }
+
+
+    $(document).ready(function () {
+        paymentPaidTime();
+        $("#Request_paidtime").change(function () {
+            paymentPaidTime();
+        })
+    });
+
+    function PreApprovedovertime() {
+        if ($('#Request_PreApprovedovertime').is(":checked")) {
+
+            $('#Hours_Requested_Overtime').removeAttr('readonly');
+
+        }
+        else {
+            $('#Hours_Requested_Overtime').attr('readonly', 'readonly');
+            $('#Hours_Requested_Overtime').val('');
+        }
+    }
+
+
+    $(document).ready(function () {
+        PreApprovedovertime();
+        $("#Request_PreApprovedovertime").change(function () {
+            PreApprovedovertime();
+        })
+    });
+
+
+    function PreApprovedBonuses() {
+        if ($('#Request_PreApprovedBonuses').is(":checked")) {
+
+            $('#Dolar_amount_Requested').removeAttr('readonly');
+
+        }
+        else {
+            $('#Dolar_amount_Requested').attr('readonly', 'readonly');
+            $('#Dolar_amount_Requested').val('');
+        }
+    }
+
+
+    $(document).ready(function () {
+        PreApprovedBonuses();
+        $("#Request_PreApprovedBonuses").change(function () {
+            PreApprovedBonuses();
+        })
+    });
+
+
+    function PreApprovedMileage() {
+        if ($('#Request_PreApprovedMileage').is(":checked")) {
+
+            $('#Miles_Requested').removeAttr('readonly');
+
+        }
+        else {
+            $('#Miles_Requested').attr('readonly', 'readonly');
+            $('#Miles_Requested').val('');
+        }
+    }
+
+
+    $(document).ready(function () {
+        PreApprovedMileage();
+        $("#Request_PreApprovedMileage").change(function () {
+            PreApprovedMileage();
+        })
+    });
+
+
+    function message_minutes() {
+        if ($('#Private_message_minutes').is(":checked")) {
+
+            $('#Minutes_Requested').removeAttr('readonly');
+
+        }
+        else {
+            $('#Minutes_Requested').attr('readonly', 'readonly');
+            $('#Minutes_Requested').val('');
+        }
+    }
+
+
+    $(document).ready(function () {
+        message_minutes();
+        $("#Private_message_minutes").change(function () {
+            message_minutes();
+        })
+    });
+</script>
+
+
+
+

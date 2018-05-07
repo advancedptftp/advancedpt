@@ -1,0 +1,667 @@
+﻿@using System.Data;
+@using DataLayer;
+@using DataLayer.Models;
+@{
+    Layout = null;
+    string newLine = " \n";
+    PatientInformation Patient = new PatientInformation();
+    Patient = (PatientInformation)ViewBag.Patient;
+    string strname = string.Empty;
+    string PatientDOB = string.Empty;
+    string ReferringPhysician = string.Empty;
+    string VisitNo = string.Empty;
+    string InitialExaminationDate = string.Empty;
+    string InjuryDate = string.Empty;
+    string ICDCode = string.Empty;
+    string DiseaseName = string.Empty;
+    string todaysDate = DateTime.Now.ToString();
+}
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>myadvancedpt.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="favicon.png">
+
+    <!-- Bootstrap core CSS -->
+
+
+</head>
+
+<body>
+
+
+    <div style="width:96%; margin:0 auto; padding:5px 2%; font-family:verdana; font-size:20px; line-height:27px; color:#333;">
+
+
+        <div style="padding:35px 0 0px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="38%">
+                        <div style="float:left">
+                            <strong style="font-size:22px; line-height:27px;">
+                                East Ocala - Advanced Physical Therapy of
+                                Central Florida
+                            </strong>
+
+                            <p>
+                                3845 SE Lake Weir Ave <br>
+                                Ocala, FL 34480-9153<br>
+                                Phone: (352)693-3378<br>
+                                Fax: (888)758-9645
+                            </p>
+                        </div>
+
+
+                    </td>
+                    <td width="28%">
+                        <div>
+                            <h2 style="text-align: center; margin-bottom: 6px; font-size: 27px; vertical-align:middle; ">
+                                Physical Therapy
+                            </h2>
+                            <div style="width:100%; vertical-align:top; text-align:center;">
+                                <h2 style="font-size:27px;">Initial Exam</h2>
+                            </div>
+                        </div>
+                    </td>
+                    <td width="36%">
+                        <div style="width:100%; float:right; vertical-align:top; text-align:right;">
+                            <span>
+                                @{
+                                    var imgurl5 = "";
+                                    if (ViewBag.AdvanceptLogo != null)
+                                    {
+                                        imgurl5 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.AdvanceptLogo);
+                                    }
+                                }
+                                <img src="@imgurl5" alt="Advanced PT" id="imgWitnessSignature" style="width:300px; " />
+                            </span>
+                        </div>
+
+
+                    </td>
+
+                </tr>
+            </table>
+
+        </div>
+
+        <div style="padding:3px 0 0px 0;">
+            <table border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td valign="top" width="93%">
+                            <strong style="font-size:17px; border-bottom:3px solid #99ccff; display:block;"></strong>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div style="padding:3px 0 5px 0;">
+            <table border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td valign="top" width="35%">
+                            <p style="margin:0 0 5px;">
+                                <strong>Patient Name:</strong>
+                                @{
+                                    if (Patient != null)
+                                    {
+                                        strname = Patient.PatientName.ToString();
+                                    }
+                                    else
+                                    {
+                                        strname = "";
+                                    }
+                                }
+                                @strname
+                            </p>
+                            <p style="margin:0 0 5px;">
+                                <strong>Date of Birth:</strong>
+                                @{
+                                    if (Patient != null)
+                                    {
+                                        PatientDOB = Patient.PatientDOB.ToString();
+                                    }
+                                    else
+                                    {
+                                        PatientDOB = "";
+                                    }
+                                }
+                                @PatientDOB
+                            </p>
+                            <p style="margin:0 0 5px; width:425px;">
+                                @*<strong>Date of Initial Examination:</strong>*@
+                                <strong>Date of Exam:</strong>
+                                 @{ if (Patient != null)
+                                 {
+                                     DateTime dt1 = Convert.ToDateTime(Patient.InitialExaminationDate.GetExactValue());
+                                     InitialExaminationDate = dt1.ToString("MM/dd/yyyy");
+                                 }
+                                 else
+                                 {
+                                     InitialExaminationDate = "";
+                                 } } @InitialExaminationDate
+                            </p>
+
+                            <p style="margin:0 0 5px;">
+                                @*<strong>Visit No.</strong>:@{if (Patient != null)
+                                    {
+                                        VisitNo = Patient.VisitNo.ToString();
+                                    }
+                                    else
+                                    {
+                                        VisitNo = "";
+                                    } } @VisitNo*@
+                            </p>
+                        </td>
+                        <td valign="top" width="65%" style="padding-left:150px;">
+                            <p style="margin:0 0 5px;">
+                                <strong>Injury/Onset/Change of Status Date:</strong> @{ if (Patient != null)
+                                 {
+                                     DateTime dt2 = Convert.ToDateTime(Patient.InjuryDate.GetExactValue());
+                                     InjuryDate = dt2.ToString("MM/dd/yyyy");
+                                 }
+                                 else
+                                 {
+                                     InjuryDate = "";
+                                 } } @InjuryDate
+                            </p>
+                            @*<p style="margin:0 0 5px;">
+                                    <strong>Diagnosis:</strong> ICD10: R42: Dizziness and giddiness, H81.11:
+                                    Benign paroxysmal vertigo, right ear
+                                </p>*@
+                            <p style="margin:0 0 5px;">
+                                <strong>Diagnosis:</strong>&nbsp;ICD-10:
+                                @{
+                                    string space = string.Empty;
+                                    string comma = string.Empty;
+                                    string colon = string.Empty;
+                                    string semiColon = string.Empty;
+                                    string Diagnosis = string.Empty;
+                                    space = " ";
+                                    comma = ",";
+                                    colon = ":";
+                                    semiColon = ";";
+
+
+                                    if (Patient != null)
+                                    {
+                                        foreach (KeyValuePair<string, string> diagnosis in Patient.DiseaseNameWithICDCode)
+                                        {
+                                            ICDCode = diagnosis.Key.ToString();
+                                            DiseaseName = diagnosis.Value.ToString();
+                                            string NewICDCode = ICDCode.Insert(3, ".");
+                                            //Print //
+
+                                            //@space @NewICDCode @colon @space @DiseaseName @comma.TrimEnd(',')
+                                            //@space @ICDCode @colon @space @DiseaseName @semiColon
+                                            Diagnosis = space + ICDCode + colon + space + DiseaseName + semiColon;
+                                            @Diagnosis
+                                        }
+                                    }
+}
+
+                            </p>
+                            <p style="margin:0 0 5px; width:420px;">
+                                <strong>Referring Physician(s):</strong>
+                                @{
+                                    if (Patient != null)
+                                    {
+                                        ReferringPhysician = Patient.ReferringPhysician.ToString();
+                                    }
+                                    else
+                                    {
+                                        ReferringPhysician = "";
+                                    }
+                                }
+                                @ReferringPhysician
+                            </p>
+
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+
+        @*Subjective Desc Part*@
+        <br />
+        <div style="padding:5px 0 5px 0;">
+            <table border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td valign="top" width="93%">
+                            <strong style="font-size:24px; background:#99ccff; display:block; padding:12px;">Subjective</strong>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+
+                            @{
+                                if (@ViewBag.CIAdetails[0] != null)
+                                {
+                                    @ViewBag.CIAdetails[0]
+                                }
+                            }
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        @*End of Subjective Part*@
+
+        @*Objective Desc Part*@
+        <br />
+        <div style="padding:5px 0 5px 0;">
+            <table border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td valign="top" width="93%">
+                            <strong style="font-size:24px; background:#99ccff; display:block; padding:12px;">Objective</strong>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            @{
+                                if (ViewBag.CIAdetails[1] != null)
+                                {
+                                    string[] objective = new string[] { };
+                                    string[] arr1 = new string[] { };
+                                    string obj1 = string.Empty;
+
+                                    DataTable dtObjective = new DataTable();
+                                    dtObjective.Columns.Add("BodyPart", typeof(string));
+                                    dtObjective.Columns.Add("Note", typeof(string));
+                                    dtObjective.Columns.Add("Percentage", typeof(string));
+                                    dtObjective.Columns.Add("ObjectiveOption", typeof(string));
+
+                                    obj1 = ViewBag.CIAdetails[1];
+                                    objective = obj1.Split('|');
+
+                                    foreach (var k1 in objective)
+                                    {
+                                        DataRow dr1 = dtObjective.NewRow();
+                                        arr1 = k1.Split('#');
+
+                                        dr1["BodyPart"] = arr1[0].ToString();
+                                        dr1["Note"] = arr1[1].ToString();
+                                        dr1["Percentage"] = arr1[2].ToString();
+                                        dr1["ObjectiveOption"] = arr1[3].ToString();
+
+                                        dtObjective.Rows.Add(dr1);
+
+                                    }
+                                    int k = 1;
+                                    foreach (DataRow r in dtObjective.Rows)
+                                    {
+                                        @*string bodypart = r["BodyPart"].ToString() + "\n";
+                                            @Html.Raw(bodypart.Replace("\n", "<br>"));*@
+                                        int j = 1;
+
+                                        foreach (DataRow r2 in dtObjective.Rows)
+                                        {
+                                            if (j == k)
+                                            {
+                                                //string note = k.ToString() + ". " + r2["Note"].ToString() + " in  " + r2["BodyPart"].ToString() + "  affected." + "\n";
+
+                                                string Percentage = Convert.ToString(r2["Percentage"]).Trim();
+                                                if (!string.IsNullOrEmpty(Percentage) && Percentage != "0")
+                                                {
+                                                    string per = r2["ObjectiveOption"].ToString() + " " + "impairment at " + r2["Percentage"].ToString() + "% of normal in the " + r2["BodyPart"].ToString().ToLower() + ". ";
+                                                    //string note = System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(r2["BodyPart"].ToString().ToLower()) + " " + r2["Note"].ToString() + "\n";
+                                                    string note = r2["Note"].ToString() + "\n";
+                                                    @Html.Raw(per.Replace("\n", "<br>"));
+                                @Html.Raw(note.Replace("\n", "<br>"));
+                                                    //@Html.Raw(Percentage.Replace("\n", "<br>"));
+                                                }
+                                                else if (string.IsNullOrEmpty(Percentage) || Percentage == "0")
+                                                {
+                                                    //string note = System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(r2["ObjectiveOption"].ToString() + " " + r2["BodyPart"].ToString().ToLower()) + " " + r2["Note"].ToString() + "\n";
+                                                    string note = System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(r2["ObjectiveOption"].ToString()) + ": " + r2["Note"].ToString() + ". " + "\n";
+                                                    @Html.Raw(note.Replace("\n", "<br>"));
+                                                }
+                                                k++;
+                                                @*<br />*@
+                                            }
+                                            j++;
+                                        }
+                                    }
+                                }
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            @{
+                //--- Print The Prior & Current Level of Affected Area(s) of Patient ---//
+                if (ViewBag.CIAdetails[3] != null && ViewBag.CIAdetails[4] != null && ViewBag.CIAdetails[5] != null)
+                {
+                    string CIAdetails3 = ViewBag.CIAdetails[3];
+                    string CIAdetails4 = ViewBag.CIAdetails[4];
+                    string CIAdetails5 = ViewBag.CIAdetails[5];
+
+                    string[] Prior = CIAdetails3.Split(',');
+                    string[] Current = CIAdetails4.Split(',');
+                    string[] Affect_Desc = CIAdetails5.Split(',');
+
+                    DataTable dt1 = new DataTable();
+                    dt1.Columns.Add("Affect_Desc", typeof(string));
+                    dt1.Columns.Add("PriorLevel", typeof(string));
+                    dt1.Columns.Add("CurrentLevel", typeof(string));
+
+                    foreach (string s1 in Affect_Desc)
+                    {
+                        DataRow dr = dt1.NewRow();
+                        int p1 = s1.IndexOf('_');
+                        string _str1 = s1.Substring(p1 + 1);
+                        dr["Affect_Desc"] = _str1.ToString();
+                        dt1.Rows.Add(dr);
+                    }
+
+                    int i = 0;
+                    foreach (string s2 in Current)
+                    {
+                        int p2 = s2.IndexOf('|');
+                        string _str2 = s2.Substring(p2 + 1);
+                        dt1.Rows[i]["CurrentLevel"] = _str2.ToString();
+                        i++;
+                    }
+
+                    i = 0;
+                    foreach (string s3 in Prior)
+                    {
+                        int p3 = s3.IndexOf('|');
+                        string _str3 = s3.Substring(p3 + 1);
+                        dt1.Rows[i]["PriorLevel"] = _str3.ToString();
+                        i++;
+                    }
+
+                    <div class="row"></div>
+                    <div id="tblAffectAreas" style="padding-top:10px;">
+                        <table class="table" style="width:650px;">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th align="left">Prior Level</th>
+                                    <th align="left">Current Level</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                    foreach (DataRow r1 in dt1.Rows)
+                    {
+                        <tr>
+                            <td>
+                                @r1["Affect_Desc"]
+                            </td>
+                            <td>
+                                @r1["PriorLevel"]
+                            </td>
+                            <td>
+                                @r1["CurrentLevel"]
+                            </td>
+                        </tr>
+                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+    //--- End of Print The Prior & Current Level of Affected Area(s) of Patient ---//
+            }
+        </div>
+
+        @*End of Objective Part*@
+
+        @*Assessment Part*@
+        <br />
+        <div style="padding:5px 0 5px 0;">
+            <table border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td valign="top" width="93%">
+                            <strong style="font-size:24px; background: #99ccff; display:block; padding:12px;">Assessment</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @{
+                                if (ViewBag.CIAdetails[2] != null)
+                                {
+                                    @ViewBag.CIAdetails[2];             //Print Assessment desc
+                                }
+
+                                @*//--- Print The Prior & Current Level of Affected Area(s) of Patient ---//
+                                if (ViewBag.CIAdetails[3] != null && ViewBag.CIAdetails[4] != null && ViewBag.CIAdetails[5] != null)
+                                {
+                                    string CIAdetails3 = ViewBag.CIAdetails[3];
+                                    string CIAdetails4 = ViewBag.CIAdetails[4];
+                                    string CIAdetails5 = ViewBag.CIAdetails[5];
+
+                                    string[] Prior = CIAdetails3.Split(',');
+                                    string[] Current = CIAdetails4.Split(',');
+                                    string[] Affect_Desc = CIAdetails5.Split(',');
+
+                                    DataTable dt1 = new DataTable();
+                                    dt1.Columns.Add("Affect_Desc", typeof(string));
+                                    dt1.Columns.Add("PriorLevel", typeof(string));
+                                    dt1.Columns.Add("CurrentLevel", typeof(string));
+
+                                    foreach (string s1 in Affect_Desc)
+                                    {
+                                        DataRow dr = dt1.NewRow();
+                                        int p1 = s1.IndexOf('_');
+                                        string _str1 = s1.Substring(p1 + 1);
+                                        dr["Affect_Desc"] = _str1.ToString();
+                                        dt1.Rows.Add(dr);
+                                    }
+
+                                    int i = 0;
+                                    foreach (string s2 in Current)
+                                    {
+                                        int p2 = s2.IndexOf('|');
+                                        string _str2 = s2.Substring(p2 + 1);
+                                        dt1.Rows[i]["CurrentLevel"] = _str2.ToString();
+                                        i++;
+                                    }
+
+                                    i = 0;
+                                    foreach (string s3 in Prior)
+                                    {
+                                        int p3 = s3.IndexOf('|');
+                                        string _str3 = s3.Substring(p3 + 1);
+                                        dt1.Rows[i]["PriorLevel"] = _str3.ToString();
+                                        i++;
+                                    }
+
+                                    <div class="row"></div>
+                                    <div id="tblAffectAreas" style="padding-top:10px;">
+                                        <table class="table" style="width:650px;">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th align="left">Prior Level</th>
+                                                    <th align="left">Current Level</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{
+                                    foreach (DataRow r1 in dt1.Rows)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @r1["Affect_Desc"]
+                                            </td>
+                                            <td>
+                                                @r1["PriorLevel"]
+                                            </td>
+                                            <td>
+                                                @r1["CurrentLevel"]
+                                            </td>
+                                        </tr>
+                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+    //--- End of Print The Prior & Current Level of Affected Area(s) of Patient ---//*@
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        @*End of Assessment*@
+
+
+        @*Plan Desc Part*@
+        <br />
+        <div style="padding:5px 0 5px 0;">
+            <table border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td valign="top" width="93%">
+                            <strong style="font-size:24px; background: #99ccff; display:block; padding:12px;">Plan</strong>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            @{
+                                if (ViewBag.CIAdetails[6] != null)
+                                {
+                                    @ViewBag.CIAdetails[6];             //Print Plan Desc
+                                }
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        @*End of Paln Part*@
+
+        <div style="padding:5px 0 0;">
+            <table width="100%" border="0">
+                <tbody>
+                    <tr>
+                        <td width="100%" valign="top">
+                            <div>
+                                Certification of Medical Necessity: It will be understood that the treatment plan mentioned above is certified medically necessary
+                                by the documenting therapist and referring physician mentioned in this report. Unless the physician indicates otherwise through
+                                written correspondence with our office, all further referrals will act as certification of medical necessity on the treatment plan
+                                indicated above.
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="100%" valign="top">
+                            <div style="width:50%; vertical-align:top; float:left;">
+                                Thank you for this referral. If you have questions regarding this
+                                plan of care, please contact me at <br /> (352)693-3378.
+                            </div>
+                            <div style="width:50%; vertical-align:top; float:right;">
+                                Please sign and return:
+                                <br />
+                                Fax#: (888)758-9645
+                            </div>
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td width="100%" valign="top">
+                            <div style="width:50%;vertical-align:top; float:left; border-bottom:20px; padding-top:55px;">
+                                @*style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px; "*@
+                                @{var imgurl6 = "";
+                                if (Patient.TherapistSignature != null)
+                                {
+                                    imgurl6 = "data:image/png;base64," + Convert.ToBase64String(Patient.TherapistSignature);
+                                }
+                                else
+                                {
+                                    imgurl6 = "";
+                                }
+                                }
+                                <img src="@imgurl6" alt="" id="imgWitnessSignature" style="width: 80%; height: 80px; " />
+                                <div style="vertical-align:top">
+                                    @*PT Name*@
+                                    @*Louis Lee, PT, DPT*@
+                                    @ViewBag.PTName
+                                    <div>
+                                        @*License #PT28173*@
+                                        License #@ViewBag.licenseNo
+                                        <div style="font-style:italic;">
+                                            Electronically Signed by @ViewBag.PTName<br> on <span id="time"> @todaysDate </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="width:50%; vertical-align:top; float:right;">
+                                I certify the need for these services furnished under this plan of
+                                treatment and while under my care. <br />
+                                @*<input type="checkbox" id="chkCertified" checked="checked" />*@
+                                <input type="checkbox" id="chkCertified" />
+                                I have no revisions to the plan of care.
+                                <br />
+                                <input type="checkbox" id="chkCertified" />
+                                @*Reviewed the plan of care as follows: <br /><br /><br /><br />*@
+                                Reviewed the plan of care; please change as follows: <br /><br /><br />
+                                <div style="padding:8px 0 8px 0;">
+                                    <div style="width: 500px;border-bottom: 1px solid black;position: absolute;"></div>
+                                </div>
+                                <br /><br /><br /><br />
+                                <div style="padding:8px 0 8px 0;">
+                                    <div style="width: 300px;border-bottom: 1px solid black;position: absolute;"></div>
+                                </div>
+                                <div style="vertical-align:top">
+                                    Physician Signature
+                                    <div>
+                                        @*S. A. Nadenik, MD*@
+                                        @{
+                                            if (Patient != null)
+                                            {
+                                                if (Patient.ReferringPhysician.ToString() != null)
+                                                {
+                                                    ReferringPhysician = Patient.ReferringPhysician.ToString();
+                                                }
+                                                else
+                                                {
+                                                    ReferringPhysician = "";
+                                                }
+                                            }
+                                            else
+                                            {
+                                                ReferringPhysician = "";
+                                            }
+                                        }
+                                        @ReferringPhysician   @*, MD*@
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

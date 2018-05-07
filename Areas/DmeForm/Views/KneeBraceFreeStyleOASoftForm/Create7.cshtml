@@ -1,0 +1,300 @@
+﻿@model DataLayer.Models.DMEOfficeStaffDeliverFreeStyle
+@using DataLayer;
+@{
+    ViewBag.Title = "Knee Brace Custom Order";
+}
+
+
+<section class="bodyinner">
+    @*@using (Html.BeginForm("Create", "KneeBraceCustomForm", FormMethod.Post, new { name = "Create", id = "Create" }))
+    {*@
+       
+    <div class="bodyleft">
+       
+
+        @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+    </div>
+        <div class="bodyright">
+
+            <div class="report-form clearfix">
+                <h2>FreeStyle OA Soft Knee Brace Order Form HCPCS Code: L1843</h2>
+                <div class="p_bot15"><strong>*MEDICARE PATIENTS: DO NOT PROCEED IF THEY HAVE BEEN ISSUED A ‘KNEE BRACE’ IN THE PAST 5 YEARS.</strong></div>
+
+                <hr>
+              @using (Html.BeginForm("Create7", "KneeBraceFreeStyleOASoftForm", FormMethod.Post, new { name = "Create", id = "Create" }))
+              { 
+                <div id="dvFirst">
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(e => e.Deliver.DMEForm_Id)
+                    @Html.Hidden("CreatedOn", DateTime.Now)
+                   
+
+                    @Html.HiddenFor(e => e.Deliver.DMEFormCode)
+                    @Html.HiddenFor(e => e.Deliver.CreatedOn)
+                    @if (ViewBag.Error != null)
+                    {
+                        @Html.Raw(ViewBag.Error)
+                    }
+
+
+                    <div id="dvDeliver" class="todo_inner">
+
+
+                        <div class="outerf">
+                            <div class="stepheading"><strong>7. Clinical & Office Staff </strong> <i>deliver</i></div>
+
+                            <div class="hiddenform">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12 form-group">
+                                        <label class="checkbox-inline">
+                                            
+                                            @Html.CheckBoxFor(e => e.Deliver.IsReceivedOrthosis, new { @class = "checkbox-inline" })
+                                            Received Orthosis</label>
+                                        <span id="IsReceivedOrthosis" class="validateMsg"></span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="p_left15 p_bot15">
+                                        <div class="row">
+                                            <div class="col-sm-1 p_top10">Date</div>
+                                            <div class="col-sm-3">
+                                                @Html.TextBoxFor(m => m.Deliver.ReceivedOrthosis_Date, new { @class = "form-control datepicker datepicker-bg", @placeholder = "MM/dd/YYYY", style = "width:100%;", @Value = @Model.Deliver.ReceivedOrthosis_Date.GetExactValue() })
+                                                <span id="ReceivedOrthosis_Date" class="validateMsg"></span>
+                                            </div>
+                                            <div class="col-sm-1 p_top10">By</div>
+                                            <div class="col-sm-3">@Html.TextBoxFor(m => m.Deliver.ReceivedOrthosisBy, new { @class = "form-control" })
+                                                <span id="ReceivedOrthosisBy" class="validateMsg"></span>
+                                            </div>
+                                            <div class="col-sm-4 p_top10">Condition: 
+                                                <label class="radio-inline">@Html.RadioButtonFor(m => m.Deliver.Condition, "Good")Good</label>
+                                                <label class="radio-inline">@Html.RadioButtonFor(m => m.Deliver.Condition, "Bad")Bad</label>
+
+                                                <span id="Condition" class="validateMsg"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @*<div class="row">
+                                    <div class="col-sm-12 col-md-12 form-group">
+                                        <label class="checkbox-inline">
+                                            
+                                            @Html.CheckBoxFor(e => e.Deliver.IsFitAndInstructed, new { @class = "checkbox-inline" })
+
+                                            Fit & Instructed</label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="p_left15 p_bot15">
+                                        <div class="row">
+                                            <div class="col-sm-1 p_top10">Date</div>
+                                            <div class="col-sm-3">
+                                            @Html.TextBoxFor(m => m.Deliver.FitAndInstructed_Date, new { @class = "form-control datepicker datepicker-bg", style = "width:100%;", @Readonly = true })
+                                            </div>
+                                            <div class="col-sm-1 p_top10">By</div>
+                                            <div class="col-sm-3">@Html.TextBoxFor(m => m.Deliver.FitAndInstructedBy, new { @class = "form-control" })</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12 form-group">
+                                        <label class="checkbox-inline">                                        
+                                            @Html.CheckBoxFor(e => e.Deliver.IsCompletePaperwork, new { @class = "checkbox-inline" })
+                                        Complete Paperwork</label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="p_left15 p_bot15">
+                                        <div class="row">
+                                            <div class="col-sm-1 p_top10">Date</div>
+                                            <div class="col-sm-3">
+                                                @Html.TextBoxFor(m => m.Deliver.CompletePaperwork_Date, new { @class = "form-control datepicker datepicker-bg", style = "width:100%;", @Readonly = true })
+                                            </div>
+                                            <div class="col-sm-1 p_top10">By</div>
+                                            <div class="col-sm-3">@Html.TextBoxFor(m => m.Deliver.CompletePaperworkBy, new { @class = "form-control" })</div>
+                                        </div>
+                                    </div>
+                                </div>*@
+
+                            </div>
+                            <div class="subbutt">
+                                @*<button type="button" class="btn btn-primary pull-left" onclick="GotoPaperwork()">Back</button>*@
+                                <button type="submit" onclick="return t1();" class="btn btn-orange pull-right">Submit</button>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+              }
+
+
+
+
+            </div>
+
+        </div>
+
+        <div class="clearfix"></div>
+        
+       
+      
+    @*}*@
+</section>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#Deliver_ReceivedOrthosis_Date').datepicker('setEndDate', new Date());
+        $("#Deliver_IsReceivedOrthosis").focus();
+        $("#IsReceivedOrthosis").hide();
+        $("#ReceivedOrthosis_Date").hide();
+        $("#ReceivedOrthosisBy").hide();
+        $("#Condition").hide();
+
+    });
+
+    function t1() {
+        var IsReceivedOrthosis = document.getElementById("Deliver_IsReceivedOrthosis");
+        var ReceivedOrthosis_Date = document.getElementById("Deliver_ReceivedOrthosis_Date");
+        var ReceivedOrthosisBy = document.getElementById("Deliver_ReceivedOrthosisBy");
+        var Condition = document.getElementById("Deliver_Condition");
+        var flag = true;
+        if (ReceivedOrthosisBy != undefined) {
+            if (!(ReceivedOrthosisBy.value == null || ReceivedOrthosisBy.value == "" || ReceivedOrthosisBy.value == '')) {
+                $("#ReceivedOrthosisBy").text("");
+            }
+        }
+        else {
+            //alert("PaperworkBy undefined");
+        }
+        if (!IsReceivedOrthosis.checked) {
+            $("#IsReceivedOrthosis").show();
+            $("#IsReceivedOrthosis").text("Please check the checkbox");
+            IsReceivedOrthosis.focus();
+            flag = false;
+        }
+        else {
+            $("#IsReceivedOrthosis").hide();
+        }
+
+
+        if (ReceivedOrthosis_Date.value == "" || ReceivedOrthosis_Date.value == null || ReceivedOrthosis_Date.value == '') {
+            $("#ReceivedOrthosis_Date").show();
+            $("#ReceivedOrthosis_Date").text("Please enter received orthosis date");
+            ReceivedOrthosis_Date.focus();
+            flag = false;
+        }
+        else {
+            $("#ReceivedOrthosis_Date").hide();
+            $("#ReceivedOrthosis_Date").text("");
+        }
+
+        if (ReceivedOrthosisBy.value == "" ||ReceivedOrthosisBy.value ==null||ReceivedOrthosisBy.value =='') {
+            $("#ReceivedOrthosisBy").show();
+            $("#ReceivedOrthosisBy").text("Please enter received orthosis person");
+            ReceivedOrthosisBy.focus();
+            flag = false;
+        }
+
+        if ($("input:radio:checked").length > 0) {
+            // go on with script
+            $("#Condition").text("");
+            $("#Condition").hide();
+        } else {
+            // NOTHING IS CHECKED
+            $("#Condition").show();
+            $("#Condition").text("Please select condition");
+            Condition.focus();
+            flag = false;
+        }
+        return flag;
+    }
+    
+
+</script>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#Model_No").hide();        
+        $("#PatientName").hide();
+        $("#DOB").hide();
+        $("#Prescription").hide();
+        $("#Therapist_Name").hide();
+        $("#Doctor_Name").hide();
+    });
+
+
+    function validateInputs() {
+
+        var Model_No = document.getElementById("KneeBraceFreeStyleOASoftForm_Model_No");
+
+        var PatientName = document.getElementById("KneeBraceFreeStyleOASoftForm_Patient_Name");
+        var DOB = document.getElementById("KneeBraceFreeStyleOASoftForm_DOB");
+        var Prescription = document.getElementById("Prescription_CompleteLOMN_Initial");
+        var Therapist_Name = document.getElementById("Prescription_Therapist_Name");
+        var Doctor = document.getElementById("Prescription_Doctor_Name");
+
+
+        if (Model_No.value == "") {
+            $("#Model_No").show();
+            $("#Model_No").text("Enter Above and Bellow Knee Size");
+            Model_No.focus();
+            return false;
+        }
+
+        if (PatientName.value == "") {
+            $("#PatientName").show();
+            $("#PatientName").text("Enter Patient Name");
+            PatientName.focus();
+            return false;
+        }
+        if (DOB.value == "") {
+            $("#DOB").show();
+            $("#DOB").text("Enter Patient Date of Bearth");
+            DOB.focus();
+            return false;
+        }
+        if (Prescription.value == "") {
+            $("#Prescription").show();
+            $("#Prescription").text("Enter Prescription");
+            Prescription.focus();
+            return false;
+        }
+        if ($("#Prescription_IsItemReqByTherapist").is(':checked')) {
+            if (Therapist_Name.value == "") {
+                $("#Therapist_Name").show();
+                $("#Therapist_Name").text("Enter Therapist Name");
+                Therapist_Name.focus();
+                return false;
+            }
+        }
+        else if ($("#Prescription_IsItemReqByDoctor").is(':checked')) {
+
+            if (Doctor.value == "") {
+
+                $("#Doctor_Name").show();
+                $("#Doctor_Name").text("Enter Doctor Name");
+                Doctor.focus();
+                return false;
+
+            }
+        }
+        if ((Therapist_Name.value == "") && (Doctor.value == "")) {
+            $("#Therapist_Name").show();
+            $("#Therapist_Name").text("Enter Therapist Name");
+            Therapist_Name.focus();
+            $("#Doctor_Name").show();
+            $("#Doctor_Name").text("Enter Doctor Name");
+            Doctor.focus();
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+</script>
+
+

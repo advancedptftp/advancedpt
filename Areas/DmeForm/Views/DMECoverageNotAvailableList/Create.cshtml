@@ -1,0 +1,111 @@
+﻿@model DataLayer.Models.tblRDMECoverage
+@using DataLayer;
+@{
+    ViewBag.Title = "Knee Brace Custom Order";
+    var MC = ViewBag.MC;
+}
+
+
+
+<section class="bodyinner">
+  
+    <div style="width:100%">
+
+
+
+        <div class="report-form clearfix">
+            @*<h2>BREG Custom Knee Brace Order Form (HCPCS Code: L1846)</h2>*@
+            <div class="row" id="pname">
+                <div class="col-sm-6">
+                    Patient Name: @Html.Label("patientname", (string)@ViewBag.patientname)
+                </div>
+                <div class="col-sm-4">
+                    DOB: @Html.Label("dob", (string)@ViewBag.dob)
+
+                </div>
+               
+            </div>
+            
+            <hr>
+            @using (Html.BeginForm("Create", "DMECoverageNotAvailableList", FormMethod.Post, new { name = "Create", id = "Create" }))
+            {
+                <div id="dvFirst">
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(e => e.DMEForm_Id)
+                   
+                    @*@Html.HiddenFor(e => e.Order.IsFaxLOMN)*@
+                    @if (ViewBag.Error != null)
+                    {
+                        @Html.Raw(ViewBag.Error)
+                    }
+
+                    <div id="dvMC">
+                        <div class="outerf">
+                            <div class="borderbox">
+                                <div class="hiddenform">
+                                    
+                                    <div>
+                                        
+                                      
+                                       
+                                        <div class="row form-group">
+                                            <div class="col-sm-4">
+                                                @*<h3>Insurance will pay for this device ?</h3>*@
+                                                <h3>Pay by patient for this device?</h3>
+                                            </div>
+                                            <div class="col-sm-2 radiosec">
+                                                @Html.RadioButtonFor(m => m.IsInsuranceCoverage, true, new { @class = "radio-custom", @id = "IsSimilarDeviceIssuedYes" })
+                                                <label for="IsSimilarDeviceIssuedYes" class="radio-custom-label">Yes</label>
+
+                                            </div>
+                                            <div class="col-sm-2 radiosec">
+                                                @Html.RadioButtonFor(m => m.IsInsuranceCoverage, false, new { @class = "radio-custom", @id = "IsSimilarDeviceIssuedNo" })
+                                                <label for="IsSimilarDeviceIssuedNo" class="radio-custom-label">No</label>
+                                            </div>
+                                            <div>
+                                                <span id="span_IsSimilarDeviceIssued" class="validateMsg"></span>
+                                            </div>
+                                        </div>
+
+                                       
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="subbutt">
+                                @*<button type="button" class="btn btn-primary pull-left" onclick="GotoPrescription()">Back</button>*@
+                                <button type="submit" class="btn btn-orange pull-right" onclick="return validateInputs()">Submit</button>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+
+
+
+
+
+                    </div>
+                    <hr>
+                </div>
+            }
+
+
+
+
+
+
+        </div>
+
+
+
+
+    </div>
+
+    <div class="clearfix"></div>
+
+
+
+
+    @*}*@
+</section>

@@ -1,0 +1,252 @@
+﻿@model PagedList.IPagedList<DataLayer.Models.tblTNewEmpQuestionair>
+@using PagedList.Mvc;
+@using DataLayer;
+@{
+    ViewBag.Title = "Index";
+    var IsApprover = ViewContext.Controller.IsApprover(5);
+}
+<style>
+    .searchsec {
+        width: 478px;
+    }
+</style>
+<center><h2 style="margin-top:20px;">New Employee Questionair List</h2></center>
+
+@*<p>
+        @Html.ActionLink("Create New", "Create")
+    </p>*@
+<section class="bodyinner2">
+    <div>
+        <p class="pull-right">
+            @Html.ActionLink("Create New Record", "Create", null, new { @class = "btn btn-primary" })
+        </p>
+        @using (Html.BeginForm("Index", "NewEmpQuestionair", FormMethod.Get))
+        {
+            <div class="searchsec">
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search by Employee First Name,Employee Last Name" })
+                <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                <div class="clearfix"></div>
+            </div>
+        }
+        <div class="clearfix"></div>
+    </div>
+
+    <div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>
+
+                            @Html.DisplayName("Submission Date")
+                        </th>
+                        <th>
+
+                            @Html.DisplayName("Employee First Name")
+                        </th>
+                        <th>
+
+                            @Html.DisplayName("Employee Last Name ")
+                        </th>
+                        <th>
+
+                            @Html.DisplayName("Approved By ")
+                        </th>
+                        <th>
+
+                            @Html.DisplayName("Approved On")
+                        </th>
+                        <th class="tdList_Edit"></th>
+                        <th class="tdList_Details"></th>
+                        <th class="tdList_PDF"></th>
+                        <th class="tdList_Approve"></th>
+                        @*<th>
+                        @Html.DisplayNameFor(model => model.PersonalInterestDesc)
+                    </th>*@
+                </thead>
+                @*<th>
+                @Html.DisplayNameFor(model => model.IdentifiesMeOrBelieveInDesc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MostLikingsInCompanyDesc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PatientCaringReasonsDesc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BecamePTReasonDesc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PatientWorkingWithMeDesc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PatientComingForTreatmentDesc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HaveProfilePicture)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApprovedOn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedOn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ModifiedOn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblMUser.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblMUser1.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblMUser2.UserName)
+            </th>
+            <th></th>*@
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.Label(@item.CreatedOn.Value.GetExactValue())
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EmpFirstName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EmpLastName)
+                        </td>
+                        @*<td>
+                        @Html.DisplayFor(modelItem => item.PositionTitle)
+                    </td>*@
+                        @*<td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>*@
+                        @*<td>
+                        @Html.DisplayFor(modelItem => item.PositionDesc)
+                    </td>*@
+                        @*<td>
+                        @Html.DisplayFor(modelItem => item.PersonalInterestDesc)
+                    </td>*@
+                        @*<td>
+                        @Html.DisplayFor(modelItem => item.IdentifiesMeOrBelieveInDesc)
+                    </td>*@
+                        @*<td>
+                        @Html.DisplayFor(modelItem => item.MostLikingsInCompanyDesc)
+                    </td>*@
+                        @*<td>
+                        @Html.DisplayFor(modelItem => item.PatientCaringReasonsDesc)
+                    </td>*@
+                        @*<td>
+                        @Html.DisplayFor(modelItem => item.BecamePTReasonDesc)
+                    </td>*@
+                        @*<td>
+                        @Html.DisplayFor(modelItem => item.PatientWorkingWithMeDesc)
+                    </td>*@
+                        @*<td>
+                        @Html.DisplayFor(modelItem => item.PatientComingForTreatmentDesc)
+                    </td>*@
+                        @*<td>
+                        @Html.DisplayFor(modelItem => item.HaveProfilePicture)
+                    </td>*@
+                        <td>
+                            @if (item.ApprovedBy != null)
+                            {
+                                @item.tblMUser.Name
+                            }
+
+                        </td>
+                        <td>
+                            @if (item.ApprovedOn != null)
+                            {
+                                @item.ApprovedOn.Value.GetExactValue()
+                            }
+                        </td>
+
+
+                        @*<td>
+                        @Html.DisplayFor(modelItem => item.tblMUser.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tblMUser1.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tblMUser2.UserName)
+                    </td>*@
+                        @*<td>
+                                @Html.ActionLink("Edit", "Edit", new { id = item.EmpQuestionair_Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.EmpQuestionair_Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.EmpQuestionair_Id })
+                            </td>*@
+                        <td class="tdList_Edit">
+                            @if (item.ApprovedBy == null)
+                            {
+                                <a href="@Url.Action("Edit", "NewEmpQuestionair", new { id = item.EmpQuestionair_Id })">
+                                    <i class="fa fa-edit" aria-hidden="true"></i>
+                                </a>
+                            }
+                        </td>
+                        <td class="tdList_Details">
+
+                            <a href="@Url.Action("Details", "NewEmpQuestionair", new { id = item.EmpQuestionair_Id })">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                        <td class="tdList_PDF">
+                            <a href="javascript:void(0);" onclick="fnShowDetail(@item.EmpQuestionair_Id);">
+                                <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                        <td class="tdList_Approve">
+                            @if (item.ApprovedBy == null && IsApprover)
+                            {
+                                @Html.ActionLink("Approve", "Approve", new { id = item.EmpQuestionair_Id }, new { @class = "btn btn-success" })
+                            }
+
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+        <div>
+            <br />
+            @using (Html.BeginForm("Index", "NewEmpQuestionair", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+            {
+                @Html.DropDownList("PageSize")
+            }
+            @{
+                bool? direction = ViewBag.SortDirection;
+                if (direction == null) { direction = false; }
+            }
+            <div class="pull-left" style=" padding:10px;">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                      new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction }))
+        </div>
+    </div>
+</section>
+
+
+<script>
+    function fnShowDetail(EmpQuestionair_Id) {
+        var url = "@Url.Action("NewEmpQuestionair", "NewEmpQuestionair", new { Area = "EmployeeForm" })" + "?id=" + EmpQuestionair_Id;
+        popupwindow(url, 'NewEmpQuestionair', 1000, 800);
+        //fnShowPopupForDetail(url);
+    }
+</script>
+
+<script>
+    $("#PageSize").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+</script>

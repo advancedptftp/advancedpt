@@ -1,0 +1,159 @@
+﻿@model PagedList.IPagedList<DataLayer.Models.tblRDMEUnitPrice>
+@using PagedList.Mvc;
+@using DataLayer;
+@{
+    ViewBag.Title = "Index";
+    var currentuserid = ViewContext.Controller.CurrentUserID();
+    var lStatus = ViewContext.Controller.DmePermittedStatusList(9);
+}
+
+<center><h2 style="margin-top:20px;">DME Item Price List</h2></center>
+<section class="bodyinner2">
+    <div>
+        <p class="pull-right">
+            @Html.ActionLink("Create New Record", "Create", null, new { @class = "btn btn-primary" })
+        </p>
+        @using (Html.BeginForm("Index", "DMEUnitPrice", FormMethod.Get))
+        {
+
+            <div class="searchsec">
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search here ..." })
+
+                <button><i class="fa fa-search" aria-hidden="true"></i></button>
+
+                <div class="clearfix"></div>
+            </div>
+        }
+        <div class="clearfix"></div>
+    </div>
+
+    <div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            @{ var classname = "botharrow";}
+                            @if ((ViewBag.CurrentSort == "DmeFromCode" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                            {
+                                classname = "bottarrow";
+                            }
+                            else if ((ViewBag.CurrentSort == "DmeFromCode" && ViewBag.SortDirection == false))
+                            {
+                                classname = "toparrow";
+                            }
+                            @Html.ActionLink("HPSC Code", "Index", new { sortOrder = "DmeFromCode", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname })
+                            @*@Html.DisplayName("Dme From Code")*@
+                        </th>
+                        <th>
+                            @*@{ var classname1 = "DmeFromName";}
+                            @if ((ViewBag.CurrentSort == "DmeFromName" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                            {
+                                classname1 = "bottarrow";
+                            }
+                            else if ((ViewBag.CurrentSort == "DmeFromName" && ViewBag.SortDirection == false))
+                            {
+                                classname1 = "toparrow";
+                            }
+                            @Html.ActionLink("Dme From Name", "Index", new { sortOrder = "DmeFromName", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname1 })*@
+                            @Html.DisplayName("Item Name")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Item Unit Price")
+                        </th>
+
+                        <th>
+                            @Html.DisplayName("Created On")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Modified On")
+                        </th>
+                        <th>
+
+                        </th>
+                        <th>
+
+                        </th>
+                    </tr>
+
+                </thead>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DMEFormCode)
+                        </td>
+
+                        <td>
+                           
+                            @Html.DisplayFor(modelItem => item.DMEFormName)
+                           
+                        </td>
+
+                        <td>
+                           
+                                @Html.DisplayFor(modelItem => item.UnitPrice)
+                           
+                        </td>
+                        <td>
+                          
+                            @item.CreatedOn.GetExactValue()
+                            @*@Html.DisplayFor(modelItem => item.CreatedOn.GetExactValue())*@
+                           
+                        </td>
+                        <td>
+                            @item.ModifiedOn.GetExactValue()
+                              @*@Html.DisplayFor(modelItem => item.ModifiedOn.GetExactValue())*@
+                        </td>
+
+                        <td>
+                            
+                                <a href="@Url.Action("Edit", "DMEUnitPrice", new { id = item.UnitPrice_Id })">
+                                    <i class="fa fa-edit" aria-hidden="true"></i>
+                                </a>
+                            
+                        </td>
+                       
+                        <td>
+                            <a href="@Url.Action("Details", "DMEUnitPrice", new { id = item.UnitPrice_Id })">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+
+            </table>
+
+        </div>
+        <div>
+            <br />
+            @using (Html.BeginForm("Index", "DMEUnitPrice", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+            {
+                @Html.DropDownList("PageSize")
+            }
+            @{
+                bool? direction = ViewBag.SortDirection;
+                if (direction == null) { direction = false; }
+            }
+            <div class="pull-left" style=" padding:10px;">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                      new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction }))
+        </div>
+    </div>
+
+</section>
+
+
+<script>
+    $("#PageSize").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+</script>

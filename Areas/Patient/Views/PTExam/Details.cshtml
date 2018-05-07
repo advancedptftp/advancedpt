@@ -1,0 +1,499 @@
+﻿@model DataLayer.Models.PatientPTExam
+@using DataLayer;
+@{
+    ViewBag.Title = "Details";
+}
+<script src="~/Scripts/jquery.radios-to-slider.js"></script>
+<link href="~/Content/radios-to-slider.css" rel="stylesheet" />
+<section class="bodyinner">
+    <div class="container">
+        @using (Html.BeginForm())
+        {
+            @*<div class="bodyleft">
+
+                    @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+                </div>
+                <div class="bodyright">*@
+
+            <div class="body">
+                <div class="report-form clearfix">
+                    <h2>Pre-Examination Questionnaire:</h2>
+
+
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(model => model.PatientPTExam_Id)
+                    @Html.HiddenFor(model => model.PatientConditionId)
+
+                    @if (ViewBag.Error != null)
+                    {
+                        @Html.Raw(ViewBag.Error)
+                    }
+
+                    <div class="clearfix"></div>
+
+
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6 form-group">
+                            @Html.Label("First Name")
+                            @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(model => model.FirstName)
+                        </div>
+                        <div class="col-sm-6 col-md-6 form-group">
+                            @Html.Label("Last Name")
+                            @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(model => model.LastName)
+                        </div>
+                    </div>
+                    <div class="row">
+                        @*<div class="col-sm-6 col-md-6 form-group">
+                            @Html.Label("Working Now")
+                            <div class="headrightcont">
+                                <label class="radio-inline">@Html.RadioButtonFor(m => m.IsWorkingNow, "1")Yes</label>
+                            </div>
+                            <div class="headrightcont">
+                                <label class="radio-inline">@Html.RadioButtonFor(m => m.IsWorkingNow, "2")No</label>
+                            </div>
+
+                        </div>*@
+
+                        @if (Model.IsWorkingNow == 1)
+                        {
+                            <div class="col-sm-6 col-md-6 form-group">
+
+
+                                @Html.Label("Temporary Off Reason")
+                                <div class="headrightcont">
+                                    <label class="radio-inline">@Html.RadioButtonFor(m => m.TemporaryOffReason, "1")Temporary off duty due to injury</label>
+
+                                </div>
+                                <div class="headrightcont">
+                                    <label class="radio-inline">@Html.RadioButtonFor(m => m.TemporaryOffReason, "2")On light duty</label>
+
+                                </div>
+                                <div class="headrightcont">
+                                    <label class="radio-inline">@Html.RadioButtonFor(m => m.TemporaryOffReason, "3")Working regular duty</label>
+
+                                </div>
+                                <div style="clear:both;"></div>
+
+                            </div>
+                        }
+                    </div>
+                    <div class="row">
+
+                        <div class="col-sm-6 col-md-6 form-group">
+                            @Html.Label("Where Is The Problem")
+                            @Html.TextAreaFor(model => model.WhereIsTheProblem, new { @class = "form-control", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(model => model.WhereIsTheProblem)
+                        </div>
+                        <div class="col-sm-6 col-md-6 form-group">
+                            @Html.Label("Cause Of Problem")
+                            @Html.TextAreaFor(model => model.CauseOfProblem, new { @class = "form-control", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(model => model.CauseOfProblem)
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-sm-6 col-md-6 form-group">
+                            @Html.Label("Current Condition")
+                            <div class="headrightcont">
+                                <label class="radio-inline">@Html.RadioButtonFor(m => m.CurrentCondition, "1")Getting worse</label>
+                            </div>
+                            <div class="headrightcont">
+                                <label class="radio-inline">@Html.RadioButtonFor(m => m.CurrentCondition, "2")Getting Better, or</label>
+                            </div>
+                            <div class="headrightcont">
+                                <label class="radio-inline">@Html.RadioButtonFor(m => m.CurrentCondition, "3")Staying the same</label>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.CurrentCondition)
+                        </div>
+                        <div class="col-sm-6 col-md-6 form-group">
+                            @Html.Label("Have You Ever Had This Before")
+                            <div class="headrightcont">
+                                <label class="radio-inline">@Html.RadioButtonFor(m => m.HaveYouEverHadThisBefore, "1")Yes</label>
+                            </div>
+                            <div class="headrightcont">
+                                <label class="radio-inline">@Html.RadioButtonFor(m => m.HaveYouEverHadThisBefore, "2")No</label>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.HaveYouEverHadThisBefore)
+
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-sm-6 col-md-6 form-group">
+                            @Html.Label("Is Your Pain Constant")
+                            <div class="headrightcont">
+                                <label class="radio-inline">@Html.RadioButtonFor(m => m.IsYourPainConstant, "1")Yes</label>
+                            </div>
+                            <div class="headrightcont">
+                                <label class="radio-inline">@Html.RadioButtonFor(m => m.IsYourPainConstant, "2")No</label>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.IsYourPainConstant)
+                        </div>
+                        <div class="col-sm-6 col-md-6 form-group">
+                            @Html.Label("Worst Pain Level In Past Few Days")
+                            <div id="radios">
+
+                                @*if (Model.WorstPainLevelInPastFewDays != null && Model.WorstPainLevelInPastFewDays == 0)
+                                    {*@
+
+                                <div class="headrightcont">
+                                    @{var WorstPainvalue0 = "";
+                                    if (Model.WorstPainLevelInPastFewDays == 0) { WorstPainvalue0 = "checked"; } }
+                                    @Html.RadioButtonFor(m => m.WorstPainLevelInPastFewDays, "0", new { @id = "WorstPainLevelInPastFewDays0", WorstPainvalue0 })
+                                    <label for="WorstPainLevelInPastFewDays0" class="radio-inline">0</label>
+                                </div>
+                                @*}
+                                    if (Model.WorstPainLevelInPastFewDays != null && Model.WorstPainLevelInPastFewDays == 1)
+                                    {*@
+                                <div class="headrightcont">
+                                    @{var WorstPainvalue1 = ""; if (Model.WorstPainLevelInPastFewDays == 1) { WorstPainvalue1 = "checked"; } }
+                                    @Html.RadioButtonFor(m => m.WorstPainLevelInPastFewDays, "1", new { @id = "WorstPainLevelInPastFewDays1", WorstPainvalue1 })
+                                    <label for="WorstPainLevelInPastFewDays1" class="radio-inline">1</label>
+
+                                    @*@Html.RadioButtonFor(m => m.WorstPainLevelInPastFewDays, (Model.WorstPainLevelInPastFewDays == 0) ? "checked" : string.Empty, new { @id = "WorstPainLevelInPastFewDays1" })*@
+                                    @*<label for="WorstPainLevelInPastFewDays1" class="radio-inline">1</label>*@
+                                    @*@Html.RadioButtonFor(m => m.WorstPainLevelInPastFewDays, "1", new { @id = "WorstPainLevelInPastFewDays1" })
+                                        <label for="WorstPainLevelInPastFewDays1" class="radio-inline">1</label>*@
+
+                                </div>
+                                @*  *@}
+                                <div class="headrightcont">
+
+                                    @{var WorstPainvalue2 = ""; if (Model.WorstPainLevelInPastFewDays == 2) { WorstPainvalue2 = "checked"; } }
+                                    @Html.RadioButtonFor(m => m.WorstPainLevelInPastFewDays, "2", new { @id = "WorstPainLevelInPastFewDays2", WorstPainvalue2 })
+                                    @*@Html.RadioButtonFor(m => m.WorstPainLevelInPastFewDays, "2", new { @id = "WorstPainLevelInPastFewDays2", @checked = true })*@
+                                    <label for="WorstPainLevelInPastFewDays2" class="radio-inline">2</label>
+
+                                </div>
+                                <div class="headrightcont">
+                                    @{var WorstPainvalue3 = ""; if (Model.WorstPainLevelInPastFewDays == 3) { WorstPainvalue3 = "checked"; } }
+                                    @Html.RadioButtonFor(m => m.WorstPainLevelInPastFewDays, "3", new { @id = "WorstPainLevelInPastFewDays3", WorstPainvalue3 })
+                                    <label for="WorstPainLevelInPastFewDays3" class="radio-inline">3</label>
+
+                                </div>
+                                <div class="headrightcont">
+                                    @{var WorstPainvalue4 = ""; if (Model.WorstPainLevelInPastFewDays == 4) { WorstPainvalue4 = "checked"; } }
+                                    @Html.RadioButtonFor(m => m.WorstPainLevelInPastFewDays, "4", new { @id = "WorstPainLevelInPastFewDays4", WorstPainvalue4 })
+                                    <label for="WorstPainLevelInPastFewDays4" class="radio-inline">4</label>
+
+                                </div>
+                                <div class="headrightcont">
+                                    @{var WorstPainvalue5 = ""; if (Model.WorstPainLevelInPastFewDays == 5) { WorstPainvalue5 = "checked"; } }
+                                    @Html.RadioButtonFor(m => m.WorstPainLevelInPastFewDays, "5", new { @id = "WorstPainLevelInPastFewDays5", WorstPainvalue5 })
+                                    <label for="WorstPainLevelInPastFewDays5" class="radio-inline">5</label>
+
+                                </div>
+                                <div class="headrightcont">
+                                    @{var WorstPainvalue6 = ""; if (Model.WorstPainLevelInPastFewDays == 6) { WorstPainvalue6 = "checked"; } }
+                                    @Html.RadioButtonFor(m => m.WorstPainLevelInPastFewDays, "6", new { @id = "WorstPainLevelInPastFewDays6", WorstPainvalue6 })
+                                    <label for="WorstPainLevelInPastFewDays6" class="radio-inline">6</label>
+
+                                </div>
+                                <div class="headrightcont">
+                                    @{var WorstPainvalue7 = ""; if (Model.WorstPainLevelInPastFewDays == 7) { WorstPainvalue7 = "checked"; } }
+                                    @Html.RadioButtonFor(m => m.WorstPainLevelInPastFewDays, "7", new { @id = "WorstPainLevelInPastFewDays7", WorstPainvalue7 })
+                                    <label for="WorstPainLevelInPastFewDays7" class="radio-inline">7</label>
+
+                                </div>
+                                <div class="headrightcont">
+                                    @{var WorstPainvalue8 = ""; if (Model.WorstPainLevelInPastFewDays == 8) { WorstPainvalue8 = "checked"; } }
+                                    @Html.RadioButtonFor(m => m.WorstPainLevelInPastFewDays, "8", new { @id = "WorstPainLevelInPastFewDays8", WorstPainvalue8 })
+                                    <label for="WorstPainLevelInPastFewDays8" class="radio-inline">8</label>
+
+                                </div>
+                                <div class="headrightcont">
+                                    @{var WorstPainvalue9 = ""; if (Model.WorstPainLevelInPastFewDays == 9) { WorstPainvalue9 = "checked"; } }
+                                    @Html.RadioButtonFor(m => m.WorstPainLevelInPastFewDays, "9", new { @id = "WorstPainLevelInPastFewDays9", WorstPainvalue9 })
+                                    <label for="WorstPainLevelInPastFewDays9" class="radio-inline">9</label>
+
+                                </div>
+                                <div class="headrightcont">
+                                    @{var WorstPainvalue10 = ""; if (Model.WorstPainLevelInPastFewDays == 10) { WorstPainvalue9 = "checked"; } }
+                                    @Html.RadioButtonFor(m => m.WorstPainLevelInPastFewDays, "10", new { @id = "WorstPainLevelInPastFewDays10", WorstPainvalue10 })
+                                    <label for="WorstPainLevelInPastFewDays10" class="radio-inline">10</label>
+
+                                </div>
+                                // }
+                            </div>
+                            <div style="clear:both;"></div>
+                            @Html.ValidationMessageFor(model => model.WorstPainLevelInPastFewDays)
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6 form-group">
+                            @Html.Label("Is Taking Medication")
+                            <div class="headrightcont">
+                                <label class="radio-inline">@Html.RadioButtonFor(m => m.IsTakingMedication, "1")Yes</label>
+                            </div>
+                            <div class="headrightcont">
+                                <label class="radio-inline">@Html.RadioButtonFor(m => m.IsTakingMedication, "2")No</label>
+                            </div>
+                            <div style="clear:both;"></div>
+                            @Html.ValidationMessageFor(model => model.IsTakingMedication)
+                        </div>
+                        <div class="col-sm-6 col-md-6 form-group">
+                            @Html.Label("Is Every Day Activity Effected")
+                            <div class="headrightcont">
+                                <label class="radio-inline">@Html.RadioButtonFor(m => m.IsEveryDayActivityEffected, "1")Yes</label>
+                            </div>
+                            <div class="headrightcont">
+                                <label class="radio-inline">@Html.RadioButtonFor(m => m.IsEveryDayActivityEffected, "2")No</label>
+                            </div>
+                            <div style="clear:both;"></div>
+                            @Html.ValidationMessageFor(model => model.IsEveryDayActivityEffected)
+                        </div>
+                    </div>
+                    <div class="row">
+                        @if (Model.IsTakingMedication == 1)
+                        {
+                            if (Model.MedicationName != null)
+                            {
+                                <div class="col-sm-6 col-md-6 form-group">
+
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Medications</th>
+                                                <th>Dosages</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                int k = 1;
+                                foreach (var j in Model.ListofPatientMedication)
+                                {
+                                    <tr>
+                                        <td>@k</td>
+                                        <td>@j.MedicationName</td>
+                                        <td>@j.Dosage</td>
+                                    </tr>
+                                    k++;
+                                }
+                                            }
+
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            }
+                        }
+                        @if (Model.IsEveryDayActivityEffected == 1)
+                        {
+                            <div class="col-sm-6 col-md-6 form-group">
+
+                                @Html.Label("Most Effected EveryDay Activity")
+                                <div class=headrightcont>
+                                    @Html.DropDownList("MostEffectedEveryDayActivity")
+                                </div>
+                                @Html.ValidationMessageFor(model => model.MostEffectedEveryDayActivity)
+                            </div>
+                        }
+                       
+                            <div class="col-sm-6 col-md-6 form-group">
+                                @Html.Label("Is Had Surgeries")
+                                <div class="headrightcont">
+                                    <label class="radio-inline">@Html.RadioButtonFor(m => m.IsHadSurgeries, "1")Yes</label>
+                                </div>
+                                <div class="headrightcont">
+                                    <label class="radio-inline">@Html.RadioButtonFor(m => m.IsHadSurgeries, "2")No</label>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.IsHadSurgeries)
+
+                            </div>
+                      
+                       @if (Model.IsHadSurgeries == 1)
+                        {
+                        <div class="col-sm-6 col-md-6 form-group">
+
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>List all Surgery type</th>
+                                        <th>Date of Surgery</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                        int y = 1;
+                        foreach (var j in Model.SurgeryType)
+                        {
+                            <tr>
+                                <td>@y</td>
+                                <td>@j.SurgeryName</td>
+                                <td>@j.SurgeryDate.GetExactValue()</td>
+                            </tr>
+                            y++;
+                        }
+                                    }
+
+                                </tbody>
+                            </table>
+
+
+
+                        </div>
+                       }
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6 form-group">
+                            @Html.Label("Have you had any medical Condition?")
+                            <div class="headrightcont">
+                                <label class="radio-inline">@Html.RadioButtonFor(m => m.IsHadMedicalCondition, "1")Yes</label>
+                            </div>
+                            <div class="headrightcont">
+                                <label class="radio-inline">@Html.RadioButtonFor(m => m.IsHadMedicalCondition, "2")No</label>
+                            </div>
+
+                        </div>
+
+                        @if (Model.IsHadMedicalCondition == 1)
+                        {
+                            if (Model.ListofMedicalCondition != null)
+                        {
+                            <div class="col-sm-6 col-md-6 form-group">
+
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>List all medical conditions you have (or were told you have):</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                            int s = 1;
+                            foreach (var j in Model.ListofMedicalCondition)
+                            {
+                                <tr>
+                                    <td>@s</td>
+                                    <td>@j.MedicalConditionName</td>
+                                    <td>@j.MedicalConditionDate.GetExactValue()</td>
+                                </tr>
+                                s++;
+                            }
+                                        }
+
+                                    </tbody>
+                                </table>
+
+
+
+                            </div>
+                        }
+
+                        }
+
+                    </div>
+
+                    @*Patient Medication*@
+
+                    <div class="col-sm-6 col-md-6 form-group">
+                        @Html.Label("Patient Signature")
+                         @{var imgurl = Url.Content("~/Images/nosignature.png");
+                        if (Model.PatientSignature != null)
+                        {
+                            imgurl = "data:image/png;base64," + Convert.ToBase64String(Model.PatientSignature);
+                        }
+                        }
+                        <img src="@imgurl" alt="Alternate Text" id="imgPatientSign" width="400" height="200" />
+                    </div>
+
+                    @*End of Patient Medication*@
+
+                    @*<p>@Html.ActionLink("Back to List", "Index")</p>*@
+                </div>
+            </div>
+        }
+    </div>
+</section>
+<script>
+    $('#MostEffectedEveryDayActivity').addClass('applitextfield2');
+</script>
+
+@*<div class="stars">
+        <div class="radioouter">
+            <input type="radio" id="rate-5" name="rating-1">
+            <label for="rate-5">5</label>
+        </div>
+        <div class="radioouter">
+            <input type="radio" id="rate-4" name="rating-1">
+            <label for="rate-4">4</label></div>
+        <div class="radioouter">
+            <input type="radio" id="rate-3" name="rating-1">
+            <label for="rate-3">3</label></div>
+        <div class="radioouter">
+            <input type="radio" id="rate-2" name="rating-1">
+            <label for="rate-2">2</label></div>
+        <div class="radioouter">
+            <input type="radio" id="rate-1" name="rating-1">
+            <label for="rate-1">1</label>
+            </div>
+        <div class="clearfix"></div>
+        </div>
+    <style>
+        .radioouter {position:relative; padding:0 8px 0 0; float:left; width:30px; height:30px;}
+        .stars {
+      display:block;
+
+      width: 100%;
+    }
+    .stars input[type=radio]:checked ~ label:after {
+      background: blue;
+    }
+    .stars input[type=radio] {
+      display: none;
+    }
+    .stars input[type=radio]:first-child + label {
+      padding-right: 0;
+    }
+    .stars:hover input[type=radio]:checked ~ label:after,
+    .stars label:after {
+      background: green;
+    }
+    .stars label {
+      box-sizing: border-box;
+
+
+      width:30px; height:30px;
+
+      cursor: pointer;
+    }
+    .stars label:after {
+      display: block;
+      content: "";
+      height:30px;
+      width: 100%;
+      float: right;
+      transition: all 0.25s;
+      background: green;
+    }
+    .stars label:hover:after,
+    .stars label:hover ~ label:after {
+      background: gold !important;
+    }
+
+    </style>*@
+
+<script>
+
+    $('input[name="WorstPainLevelInPastFewDays"]:checked');
+    var radios = $("#radios").radiosToSlider({ isDisable: true });
+
+</script>
+@*<script type="text/javascript">
+
+    $(document).ready(function () {
+        if ($('input[name="TemporaryOffReason"]:checked'))
+        {
+            $("#dvid_1").hide();
+        }
+
+    });
+    </script>*@

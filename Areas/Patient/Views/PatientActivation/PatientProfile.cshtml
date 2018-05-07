@@ -1,0 +1,2104 @@
+﻿@{
+    ViewBag.Title = "Patient Profile";
+}
+<style>
+    .loadingdivschedule {
+        display: block;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 9998;
+        background-color: rgba(0,0,0,.3);
+        -webkit-animation: fade 500ms;
+        -moz-animation: fade 500ms;
+        -o-animation: fade 500ms;
+        animation: fade 500ms;
+    }
+
+    .loadingcontainerschedule {
+        width: 100%;
+        text-align: center;
+        padding-top: 26%;
+    }
+
+    .innertabb {
+        padding: 25px;
+        background: #f9f9f9;
+    }
+
+    .profiletab .nav-tabs > li.active > a {
+        border-radius: 0;
+        background: #f38e25;
+        color: #fff;
+    }
+
+    .profiletab .nav-tabs > li > a:hover {
+        background: #f38e25;
+        color: #2267b0;
+        border-radius: 0;
+        color: #fff;
+    }
+
+    .innerpart {
+        border: 2px solid #ccc;
+        margin-bottom: 35px;
+    }
+
+    .innerheadingse {
+        background: #161e2c;
+        color: #fff;
+        font-size: 21px;
+        font-weight: bold;
+        padding: 10px;
+    }
+
+    ul.leftlist {
+        padding: 0 0 0 0;
+    }
+
+        ul.leftlist li {
+            margin: 0 0 3px 0;
+        }
+
+            ul.leftlist li a {
+                padding: 11px 16px;
+                background: #0c58a8;
+                color: #fff;
+                display: block;
+            }
+
+            ul.leftlist li:hover a, ul.leftlist li.active a {
+                padding: 11px 16px;
+                background: #f38e25;
+                color: #fff;
+                display: block;
+            }
+
+    .formrigted {
+        padding: 15px;
+        background: #fff;
+    }
+</style>
+<style>
+    .uploadimage-dragndrop {
+        border: 2px dashed #DDD;
+        margin: 20px 0;
+        padding: 50px 20px;
+        text-align: center;
+        color: #DDD;
+    }
+
+    .uploadimage-text {
+        font-size: 32px;
+        margin-bottom: 20px;
+    }
+
+    .uploadimage-input {
+        margin: 20px 0;
+    }
+
+    .uploadimage-upload {
+        background: #EEE;
+        margin: 4px 0;
+    }
+
+    .uploadimage-uploadcompleted {
+        background: #d1f4ac;
+    }
+
+    .uploadimage-fileinfo {
+        padding: 5px;
+        font-size: 11px;
+        position: relative;
+    }
+
+    .uploadimage-progresspct {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+    }
+
+    .uploadimage-progress {
+        background: #999;
+    }
+
+    .uploadimage-progressbar {
+        background: maroon;
+        height: 2px;
+    }
+
+    .uploadimage-totalprogress {
+        background: #999;
+    }
+
+    .uploadimage-totalprogressbar {
+        background: #107EC2;
+        height: 6px;
+    }
+</style>
+<div id="loadforscheduleapp" class="loadingdivschedule">
+    <div class="loadingcontainerschedule">
+        <img src="~/Images/pageloader1.gif" width="200" height="200" />
+    </div>
+</div>
+<h2 style="padding-bottom:15px;">Patient Profile</h2>
+<div class="clearfix line"></div>
+<div class="profiletab">
+    <ul class="nav nav-tabs" role="tablist" id="lstTab">
+        <li role="presentation" class="active" id="li_0"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Profile</a></li>
+        @*<li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Docs</a></li>
+            <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Authorization</a></li>
+            <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Insurance</a></li>*@
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="home">
+            <div class="innertabb">
+                <div id="div_personalInfoAdvance">
+
+                    <div class="clearfix lineadvance"></div>
+                    <div id="div_personalInfo">
+
+
+
+                        <div class="clearfix"></div>
+
+
+                        <div class="row">
+                            <div class="col-sm-6 col-md-3 form-group">
+                                <label>Last Name</label><span style="color:red;">*</span>
+                                <input class="form-control" id="LastName" name="LastName" value="" type="text" required>
+                                <p><div id="dvErrL" style="color:red;"></div></p>
+                            </div>
+                            <div class="col-sm-6 col-md-3 form-group">
+                                <label for="date">First Name</label><span style="color:red;">*</span>
+                                <input class="form-control" id="FirstName" name="FirstName" value="" type="text" required>
+                                <p><div id="dvErrF" style="color:red;"></div></p>
+                            </div>
+
+                            <div class="col-sm-6 col-md-4 form-group">
+                                <label>Email Address </label>
+                                <input class="form-control" id="Email" name="Email" value="" type="text">
+                            </div>
+                            <div class="col-sm-6 col-md-2 form-group">
+                                <label for="date">Date of Birth</label>
+                                <input class="form-control" id="DOB" name="DOB" type="date">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 col-md-3 form-group">
+
+                                <div class="headrightcont">Address1</div>
+                                <div>
+                                    <input class="form-control" id="AddressLine1" name="AddressLine1" value="" type="text">
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-3 form-group">
+                                <div class="headrightcont">Address2</div>
+                                <input class="form-control" id="AddressLine2" name="AddressLine2" value="" type="text">
+                            </div>
+                            <div class="col-sm-6 col-md-2 form-group">
+                                <div class="headrightcont">City</div>
+                                <input class="form-control" id="City" name="City" value="" type="text">
+                            </div>
+                            <div class="col-sm-12 col-md-2 form-group">
+                                <div class="headrightcont">State</div>
+                                <select id="State" name="State" class="form-control">
+                                    <option value="1">Alabama </option>
+                                    <option value="2">Alaska&nbsp;</option>
+                                    <option value="3">Arizona&nbsp;</option>
+                                    <option value="4">Arkansas&nbsp;</option>
+                                    <option value="5">California&nbsp;</option>
+                                    <option value="6">Colorado&nbsp;</option>
+                                    <option value="7">Connecticut&nbsp;</option>
+                                    <option value="8">Delaware&nbsp;</option>
+                                    <option value="9">Florida&nbsp;</option>
+                                    <option value="10">Georgia&nbsp;</option>
+                                    <option value="11">Hawaii&nbsp;</option>
+                                    <option value="12">Idaho&nbsp;</option>
+                                    <option value="13">Illinois</option>
+                                    <option value="14">Indiana&nbsp;</option>
+                                    <option value="15">Iowa&nbsp;</option>
+                                    <option value="16">Kansas&nbsp;</option>
+                                    <option value="17">Kentucky&nbsp;</option>
+                                    <option value="18">Louisiana&nbsp;</option>
+                                    <option value="19">Maine&nbsp;</option>
+                                    <option value="20">Maryland&nbsp;</option>
+                                    <option value="21">Massachusetts&nbsp;</option>
+                                    <option value="22">Michigan&nbsp;</option>
+                                    <option value="23">Minnesota&nbsp;</option>
+                                    <option value="24">Mississippi&nbsp;</option>
+                                    <option value="25">Missouri&nbsp;</option>
+                                    <option value="26">Montana</option>
+                                    <option value="27">Nebraska&nbsp;</option>
+                                    <option value="28">Nevada&nbsp;</option>
+                                    <option value="29">New Hampshire&nbsp;</option>
+                                    <option value="30">New Jersey&nbsp;</option>
+                                    <option value="31">New Mexico&nbsp;</option>
+                                    <option value="32">New York&nbsp;</option>
+                                    <option value="33">North Carolina&nbsp;</option>
+                                    <option value="34">North Dakota&nbsp;</option>
+                                    <option value="35">Ohio&nbsp;</option>
+                                    <option value="36">Oklahoma&nbsp;</option>
+                                    <option value="37">Oregon&nbsp;</option>
+                                    <option value="38">Pennsylvania</option>
+                                    <option value="39">Rhode Island&nbsp;</option>
+                                    <option value="40">South Carolina&nbsp;</option>
+                                    <option value="41">South Dakota&nbsp;</option>
+                                    <option value="42">Tennessee&nbsp;</option>
+                                    <option value="43">Texas&nbsp;</option>
+                                    <option value="44">Utah&nbsp;</option>
+                                    <option value="45">Vermont&nbsp;</option>
+                                    <option value="46">Virginia&nbsp;</option>
+                                    <option value="47">Washington&nbsp;</option>
+                                    <option value="48">West Virginia&nbsp;</option>
+                                    <option value="49">Wisconsin&nbsp;</option>
+                                    <option value="50">Wyoming</option>
+                                </select>
+
+                            </div>
+                            <div class="col-sm-12 col-md-2 form-group">
+                                <div class="headrightcont">ZIP</div><br>
+                                <input class="form-control" id="ZipCode" maxlength="10" name="ZipCode" value="" type="text">
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 col-md-3 form-group">
+                                <div class="headrightcont">Home Phone</div>
+                                <div>
+                                    <input class="form-control UsCellFormat" id="Phone2" name="Phone2" value="" type="text">
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-3 form-group">
+                                <div class="headrightcont">Cellular</div>
+                                <input class="form-control UsCellFormat" id="MobNo" name="MobNo" type="text">
+                            </div>
+                            <div class="col-sm-6 col-md-3 form-group">
+                                <div class="headrightcont">Work Phone</div>
+                                <input class="form-control UsCellFormat" id="Phone3" name="Phone3" type="text">
+                            </div>
+                            <div class="col-sm-12 col-md-3 form-group">
+                                <div class="headrightcont">Occupation</div>
+                                <input class="form-control" id="Occupation" name="Occupation" type="text">
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-3">&nbsp;</div>
+                                <div class="col-sm-3">&nbsp;</div>
+                                <div class="col-sm-3">&nbsp;</div>
+                                <div class="col-sm-3"><input type="button" value="Save Profile" id="btnProfile" class="btn btn-primary" /></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix line"></div>
+
+                    <div class="row">
+                        <div class="col-sm-12 col-md-7 form-group">
+
+                            <div class="table-responsive">
+                                <div id="dvCaseMstr"></div>
+                            </div>
+
+
+                        </div>
+                        <div id="user1">
+                            <div class="col-sm-12 col-md-5 form-group">
+                                <label>New Case</label>
+
+                                <input class="form-control " id="txtNewCase" name="txtNewCase" type="text">
+                                <p><div id="dvErrNewCase" style="color:red;"></div></p>
+                                <input type="button" value="ADD" id="btnAddCase" class="btn btn-primary" />
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div role="tabpanel" class="tab-pane" id="profile">
+            <div class="innertabb">
+                <div id="div_personalInfoAdvance">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <ul class="leftlist">
+                                <li class="active" id="docs"><a href="#" id="documents">eDocs</a></li>
+                                <li id="auth"><a href="#" id="authorization">Authorization</a></li>
+                                <li id="ins"><a href="#" id="insurance">Insurance</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-9 formrigted" id="user2">
+                            <div class="documents">
+                                <div style="padding:20px;">
+                                    <div class="form-group">
+                                        @using (Html.BeginForm("Upload", "PatientActivation", FormMethod.Post, new { enctype = "multipart/form-data", id = "frmUpload" }))
+{
+    <div class="row fileupload-buttonbar">
+        <div class="col-sm-3">Document<span style="color:red;">*</span></div>
+        <div class="col-sm-3">
+            <a href="#" id="lnkDoc" name="lnkDoc" target="_blank"></a>
+            <p><div id="dvErrDoc" style="color:red;"></div></p>
+            <span class="btn btn-success fileinput-button">
+                <i class="glyphicon glyphicon-plus"></i>
+                <span>Upload file...</span>
+                <input type="file" id="flDoc" name="flDoc">
+            </span>
+            <p><div id="dvUpload" style="color:red; font-size:small;"></div></p>
+            <span class="fileupload-process"></span>
+        </div>
+        
+        @*<div class="col-lg-5 fileupload-progress fade">
+            <!-- The global progress bar -->
+            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+            </div>
+            <!-- The extended global progress state -->
+            <div class="progress-extended">&nbsp;</div>
+        </div>*@
+    </div>
+            @*<div class="col-lg-5 fileupload-progress fade">
+            <!-- The global progress bar -->
+            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+            </div>
+            <!-- The extended global progress state -->
+            <div class="progress-extended">&nbsp;</div>
+        </div>*@
+    
+    <!-- The table listing the files available for upload/download -->
+    <table role="presentation" class="table table-striped"><tbody class="files"></tbody></table>
+                                            <input type="hidden" id="hdnPID" name="hdnPID" value="@ViewBag.patientid">
+                                            <input type="hidden" id="hdnDocID" name="hdnDocID" value="">
+                                            <input type="hidden" id="hdnAuthID" name="hdnAuthID" value="">
+                                            <input type="hidden" id="hdnCaseID" name="hdnCaseID" value="">
+                                            <input type="hidden" id="hdnCompID" name="hdnCompID" value="">
+                                        }                                        
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-3">Document Type<span style="color:red;">*</span></div>
+                                            <div class="col-sm-3"><select class="form-control" id="ddlType" name="ddlType"><option value="C">Assigned plan of care</option><option value="A">Authorization</option><option value="P">Prescription</option><option selected value="O">Other</option></select></div>
+                                            <p><div id="dvErrDocType" style="color:red;"></div></p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-3">Name of Document<span style="color:red;">*</span></div>
+                                            <div class="col-sm-5"><input class="form-control" type="text" id="txtDocName" name="txtDocName"></div>
+                                            <p><div id="dvErrDocName" style="color:red;"></div></p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-3">Date of Receipt</div>
+                                            <div class="col-sm-3"><input class="form-control" type="date" id="dtReceipt" name="dtReceipt"></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-3">Assigned Case</div>
+                                            <div class="col-sm-3"><select class="form-control" id="ddlCase" name="ddlCase"><option value="1" selected>BALANCE</option></select></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-3">Signed Document</div>
+                                            <div class="col-sm-3"><input type="checkbox" id="chkSign" name="chkSign" style="zoom:3;"></div>
+                                        </div>
+                                    </div>
+                                    <div id="dvOpt" style="display:none;">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-3">Start Date :</div>
+                                                <div class="col-sm-3"><input class="form-control" type="date" id="dtStart" name="dtStart"></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-3">End Date :</div>
+                                                <div class="col-sm-3"><input class="form-control" type="date" id="dtEnd" name="dtEnd"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-3">No. of Visits :</div>
+                                                <div class="col-sm-3"><input class="form-control" type="number" id="txtVisit" name="txtVisit" value="0"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-3">Frequency :</div>
+                                                <div class="col-sm-3"><input class="form-control" type="number" id="txtFreq" name="txtFreq" value="0"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-3">Duration :</div>
+                                                <div class="col-sm-3"><input class="form-control" type="number" id="txtDura" name="txtDura" value="0"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-3">Alert Days Prior :</div>
+                                                <div class="col-sm-3"><input class="form-control" type="number" id="txtDaysP" name="txtDaysP" value="0"></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-3">Alert Visit Prior :</div>
+                                                <div class="col-sm-3"><input class="form-control" type="number" id="txtVisitP" name="txtVisitP" value="0"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-3">&nbsp;</div>
+                                            <div class="col-sm-3"><input type="button" value="Save Document" id="btnDoc" class="btn btn-primary"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h3>External Patient Documents</h3>
+                                <div class="innerpart">
+                                    <div class="table-responsive">
+                                        <div id="dvResult">Loading....</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="authorization" style="display:none;">
+                                <div style="padding:20px;">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-3">Insurance :<span style="color:red;">*</span></div>
+                                            <div class="col-sm-9"><div id="dvInsurance"></div></div>
+                                            <p><div id="dvErrIns" style="color:red;"></div></p>
+                                            @*<div class="col-sm-3">Subscriber ID</div>
+                                                <div class="col-sm-3"><input class="form-control" type="text" id="txtSID" name="txtSID"></div>*@
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-3">Authorization # :<span style="color:red;">*</span></div>
+                                            <div class="col-sm-3"><input class="form-control" type="text" id="txtAuthNo" name="txtAuthNo"></div>
+                                            <p><div id="dvErrAuthNo" style="color:red;"></div></p>
+                                            <div class="col-sm-3">Auth Visits :<span style="color:red;">*</span></div>
+                                            <div class="col-sm-3"><input class="form-control" type="number" id="txtAVisit" name="txtAVisit" value="0"></div>
+                                            <p><div id="dvErrVisit" style="color:red;"></div></p>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-3">Effective Start :</div>
+                                            <div class="col-sm-3"><input class="form-control" type="date" id="txtAEStart" name="txtAEStart"></div>
+                                            <div class="col-sm-3">Effective End:</div>
+                                            <div class="col-sm-3"><input class="form-control" type="date" id="txtAEEnd" name="txtAEEnd"></div>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-3">Phone Type :</div>
+                                            <div class="col-sm-3"><select class="form-control" id="txtAPType" name="txtAPType"><option>Home</option><option>Work</option><option selected>Mobile</option></select></div>
+                                            <div class="col-sm-3">Phone Number :</div>
+                                            <div class="col-sm-3"><input class="form-control" type="text" id="txtAPhone" name="txtAPhone"></div>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-3">Additional Info</div>
+                                            <div class="col-sm-9"><input class="form-control" type="text" id="txtAInfo" name="txtAInfo"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-3">&nbsp;</div>
+                                            <div class="col-sm-9">
+                                                <input type="button" value="Save Case" class="btn btn-primary" style="float:right;" id="btnCase">
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="innerpart">
+
+                                    <div class="table-responsive">
+                                        <div id="dvCaseResult">Loading....</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="insurance" style="display:none;">
+
+                                <div class="clearfix lineadvance"></div>
+                                <div id="div_personalInfo">
+
+                                    <div class="clearfix"></div>
+                                    <div class="row">
+                                        <div class="col-sm-6 col-md-9 form-group">
+                                            <label>Company Name<span style="color:red;">*</span></label>
+                                            <div id="dvCompany"></div>
+                                            <p><div id="dvErrCompName" style="color:red;"></div></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6 col-md-9 form-group">
+                                            <label for="date">Company Address<span style="color:red;">*</span></label>
+                                            <textarea class="form-control" id="txtInsAddr" name="txtInsAddr" rows="10" cols="20" readonly="readonly"></textarea>
+                                            <p><div id="dvErrCompAddr" style="color:red;"></div></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-3 form-group">
+                                            <div class="headrightcont">Effective Date<span style="color:red;">*</span></div>
+                                            <input class="form-control " id="dtInsurance" name="dtInsurance" type="date">
+                                            <p><div id="dvErrCompDate" style="color:red;"></div></p>
+                                        </div>
+                                        <div class="col-sm-6 col-md-3 form-group">
+                                            <div class="headrightcont">CoPay (<span style="color:red;">$</span>)</div>
+                                            <input class="form-control " id="numCoPay" name="numCoPay" type="number" value="0" max="100" min="0">
+                                        </div>
+                                        <div class="col-sm-6 col-md-3 form-group">
+                                            <div class="headrightcont">CoInsurance (<span style="color:red;">%</span>)</div>
+                                            <input class="form-control " id="numCoInsurance" name="numCoInsurance" type="number" value="0" max="100" min="0">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6 col-md-3 form-group">
+                                            <div class="headrightcont">Deductible (<span style="color:red;">$</span>)</div>
+                                            <input class="form-control " id="numDeduct" name="numDeduct" type="number" value="0" max="100" min="0">
+                                        </div>
+                                        <div class="col-sm-6 col-md-9 form-group">
+                                            <div class="col-sm-3">Authorization Required?</div>
+                                            <div class="col-sm-3"><input type="checkbox" id="chkAuth" name="chkAuth" style="zoom:3;" checked></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-3">&nbsp;</div>
+                                            <div class="col-sm-3">&nbsp;</div>
+                                            <div class="col-sm-3"><input type="button" value="Save Insurance" id="btnInsurance" class="btn btn-primary"></div>
+                                            <div class="col-sm-3">&nbsp;</div>
+                                        </div>
+                                    </div>
+                                    <div class="innerpart">
+                                        <div class="table-responsive">
+                                            <div id="dvInsResult">Loading....</div>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix line"></div>
+                                    <h3>Authorization Documents</h3>
+                                    <div class="innerpart">
+                                        <div class="table-responsive">
+                                            <div id="dvRAuthDoc">Loading....</div>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix line"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        //$('#loadforscheduleapp').hide();
+        LoadProfile();
+    });
+
+    function LoadUserScreen() {
+        if ($('#hdnPID').val() == "") {            
+            $('.useredit*').remove();
+            $('.userdel*').remove();
+            $('.userdeldoc*').remove();
+            $('.userdelcase*').remove();
+            $('.userdelins*').remove();
+            $('#user1').hide();
+            $('#user2 :input').prop('disabled', true);
+            $('#btnInsurance').hide();
+            $('#btnCase').hide();
+            $('#btnDoc').hide();
+            $('#lnkDoc').text('');
+            $('#lnkDoc').prop('href', '#');
+        }
+    }
+
+    function LoadProfile() {
+        $.ajax({
+            type: 'POST',
+            url: "@Url.Action("PopulateProfileData", "PatientActivation")",
+            data: { patientid: $('#hdnPID').val() },
+            success: function (data) {
+                if (data.success == 1) {
+                    $('#FirstName').val(data.FirstName);
+                    $('#LastName').val(data.LastName);
+
+                    var today = new Date(data.DOB);
+                    var dd = today.getDate();
+                    var mm = today.getMonth() + 1;
+                    var yyyy = today.getFullYear();
+                    if (dd < 10) { dd = '0' + dd } if (mm < 10) { mm = '0' + mm } today = yyyy + '-' + mm + '-' + dd;
+                    $('#DOB').val(today);
+
+                    $('#AddressLine1').val(data.AddressLine1);
+                    $('#AddressLine2').val(data.AddressLine2);
+                    $('#City').val(data.City);
+                    $('#State').val(data.State);
+                    $('#ZipCode').val(data.ZipCode);
+                    $('#Phone2').val(data.Phone2);
+                    $('#Phone3').val(data.Phone3);
+                    $('#Occupation').val(data.Occupation);
+                    $('#MobNo').val(data.MobNo);
+                    $('#Email').val(data.Email);
+                    $('#dvCaseMstr').html(data.CaseMstr);
+                    $('#loadforscheduleapp').hide();
+                    LoadUserScreen();
+                }
+                else {
+                    alert(data.message);
+                    $('#loadforscheduleapp').hide();
+                }
+            }
+        });
+    }
+
+    function GenerateCaseTab(caseid, casename) {
+        $('#hdnCaseID').val(caseid);
+        var rows = $('#lstTab li').length;
+        if (rows > 1) {
+            $('#li_1').remove();
+        }
+        $('#lstTab').append('<li role="presentation" id="li_1"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">' + casename + '</a></li>');
+        LoadUserScreen();
+    }
+
+    $(document).on('click', '#li_1', function () {
+        $('.documents').show();
+        $('.authorization').hide();
+        $('.insurance').hide();
+
+        $('#docs').addClass('active');
+        $('#auth').removeClass('active');
+        $('#ins').removeClass('active');
+
+        if ($('#ddlType').val() == "P") {
+            $('#dvOpt').show();
+        }
+        else {
+            $('#dvOpt').hide();
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: "@Url.Action("PopulateEDOCData", "PatientActivation")",
+            data: { patientid: $('#hdnPID').val(), caseid: $('#hdnCaseID').val() },
+            success: function (data) {
+                if (data.success == 1) {
+
+                    $('#dvResult').html(data.Doc);
+
+                    var today1 = new Date();
+                    var dd1 = today1.getDate();
+                    var mm1 = today1.getMonth() + 1;
+                    var yyyy1 = today1.getFullYear();
+                    if (dd1 < 10) { dd1 = '0' + dd1 } if (mm1 < 10) { mm1 = '0' + mm1 } today1 = yyyy1 + '-' + mm1 + '-' + dd1;
+                    $('#dtStart').val(today1);
+
+                    var today11 = new Date();
+                    var dd11 = today11.getDate();
+                    var mm11 = today11.getMonth() + 1;
+                    var yyyy11 = today11.getFullYear();
+                    if (dd11 < 10) { dd11 = '0' + dd11 } if (mm11 < 10) { mm11 = '0' + mm11 } today11 = yyyy11 + '-' + mm11 + '-' + dd11;
+                    $('#dtEnd').val(today11);
+
+                    var today = new Date();
+                    var dd = today.getDate();
+                    var mm = today.getMonth() + 1;
+                    var yyyy = today.getFullYear();
+                    if (dd < 10) { dd = '0' + dd } if (mm < 10) { mm = '0' + mm } today = yyyy + '-' + mm + '-' + dd;
+                    $('#dtReceipt').val(today);
+
+                    LoadUserScreen();
+                }
+                else {
+                    alert(data.message);
+                }
+            }
+        });
+    });
+
+    $(document).on('click', '#btnProfile', function () {
+        $('#loadforscheduleapp').show();
+        $("#dvErrF").text('');
+        $("#dvErrL").text('');
+        if ($('#FirstName').val() == "") {
+            $("#dvErrF").text('Please enter your first name');
+            $('#loadforscheduleapp').hide();
+            return;
+        }
+        if ($('#LastName').val() == "") {
+            $("#dvErrL").text('Please enter your last name');
+            $('#loadforscheduleapp').hide();
+            return;
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: "@Url.Action("UpdateProfileData", "PatientActivation")",
+            data: { patientid: $('#hdnPID').val(), firstname: $('#FirstName').val(), lastname: $('#LastName').val(), email: $('#Email').val(), dob: $('#DOB').val(), addr1: $('#AddressLine1').val(), addr2: $('#AddressLine2').val(), city: $('#City').val(), state: $('#State').val(), zip: $('#ZipCode').val(), phone2: $('#Phone2').val(), phone3: $('#Phone3').val(), mobno: $('#MobNo').val(), occupation: $('#Occupation').val() },
+            success: function (data) {
+                if (data.success == 1) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "@Url.Action("PopulateProfileData", "PatientActivation")",
+                        data: { patientid: $('#hdnPID').val() },
+                        success: function (data) {
+                            if (data.success == 1) {
+                                $('#FirstName').val(data.FirstName);
+                                $('#LastName').val(data.LastName);
+
+                                var today = new Date(data.DOB);
+                                var dd = today.getDate();
+                                var mm = today.getMonth() + 1;
+                                var yyyy = today.getFullYear();
+                                if (dd < 10) { dd = '0' + dd } if (mm < 10) { mm = '0' + mm } today = yyyy + '-' + mm + '-' + dd;
+                                $('#DOB').val(today);
+
+                                $('#AddressLine1').val(data.AddressLine1);
+                                $('#AddressLine2').val(data.AddressLine2);
+                                $('#City').val(data.City);
+                                $('#State').val(data.State);
+                                $('#ZipCode').val(data.ZipCode);
+                                $('#Phone2').val(data.Phone2);
+                                $('#Phone3').val(data.Phone3);
+                                $('#Occupation').val(data.Occupation);
+                                $('#MobNo').val(data.MobNo);
+                                $('#Email').val(data.Email);
+                                $('#dvResult').html(data.Doc);
+                                $('#dvCaseResult').html(data.Case);
+                                $('#dvInsurance').html(data.Ins);
+                                $('#dvIns1').html(data.Ins);
+                                $('#dvInsResult').html(data.Insure);
+                                $('#dvOpt').hide();
+                                $('#loadforscheduleapp').hide();
+                            }
+                            else {
+                                alert(data.message);
+                                $('#loadforscheduleapp').hide();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    });
+
+    $(document).on('click', '#btnAddCase', function () {
+
+        $('#loadforscheduleapp').show();
+
+        $("#dvErrNewCase").text('');
+
+        if ($('#txtNewCase').val() == "") {
+            $("#dvErrNewCase").text('Please enter case name');
+            $('#loadforscheduleapp').hide();
+            return;
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: "@Url.Action("AddCaseRecord", "PatientActivation")",
+            data: {
+                patientid: $('#hdnPID').val(), CaseName: $('#txtNewCase').val()
+            },
+            success: function (data) {
+                if (data.success == 1) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "@Url.Action("PopulateProfileData", "PatientActivation")",
+                        data: { patientid: $('#hdnPID').val() },
+                        success: function (data) {
+                            if (data.success == 1) {
+                                $('#FirstName').val(data.FirstName);
+                                $('#LastName').val(data.LastName);
+
+                                var today = new Date(data.DOB);
+                                var dd = today.getDate();
+                                var mm = today.getMonth() + 1;
+                                var yyyy = today.getFullYear();
+                                if (dd < 10) { dd = '0' + dd } if (mm < 10) { mm = '0' + mm } today = yyyy + '-' + mm + '-' + dd;
+                                $('#DOB').val(today);
+
+                                $('#AddressLine1').val(data.AddressLine1);
+                                $('#AddressLine2').val(data.AddressLine2);
+                                $('#City').val(data.City);
+                                $('#State').val(data.State);
+                                $('#ZipCode').val(data.ZipCode);
+                                $('#Phone2').val(data.Phone2);
+                                $('#Phone3').val(data.Phone3);
+                                $('#Occupation').val(data.Occupation);
+                                $('#MobNo').val(data.MobNo);
+                                $('#Email').val(data.Email);
+                                $('#dvCaseMstr').html(data.CaseMstr);
+                                $('#loadforscheduleapp').hide();
+                                $('#txtNewCase').val('');
+                            }
+                            else {
+                                $("#dvErrNewCase").text(data.message);
+                                $('#loadforscheduleapp').hide();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    });
+
+    $(document).on('click', '#btnUpdateCase', function () {
+
+        $('#loadforscheduleapp').show();
+
+        if ($('#txtCaseName' + $('#hdnCaseID').val()).val() == "") {
+            alert('Please enter case name');
+            $('#loadforscheduleapp').hide();
+            return;
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: "@Url.Action("UpdateCaseRecord", "PatientActivation")",
+            data: {
+                caseid: $('#hdnCaseID').val(), CaseName: $('#txtCaseName' + $('#hdnCaseID').val()).val()
+            },
+            success: function (data) {
+                if (data.success == 1) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "@Url.Action("PopulateProfileData", "PatientActivation")",
+                        data: { patientid: $('#hdnPID').val() },
+                        success: function (data) {
+                            if (data.success == 1) {
+                                $('#FirstName').val(data.FirstName);
+                                $('#LastName').val(data.LastName);
+
+                                var today = new Date(data.DOB);
+                                var dd = today.getDate();
+                                var mm = today.getMonth() + 1;
+                                var yyyy = today.getFullYear();
+                                if (dd < 10) { dd = '0' + dd } if (mm < 10) { mm = '0' + mm } today = yyyy + '-' + mm + '-' + dd;
+                                $('#DOB').val(today);
+
+                                $('#AddressLine1').val(data.AddressLine1);
+                                $('#AddressLine2').val(data.AddressLine2);
+                                $('#City').val(data.City);
+                                $('#State').val(data.State);
+                                $('#ZipCode').val(data.ZipCode);
+                                $('#Phone2').val(data.Phone2);
+                                $('#Phone3').val(data.Phone3);
+                                $('#Occupation').val(data.Occupation);
+                                $('#MobNo').val(data.MobNo);
+                                $('#Email').val(data.Email);
+                                $('#dvCaseMstr').html(data.CaseMstr);
+                                $('#loadforscheduleapp').hide();
+                                $('#txtNewCase').val('');
+                            }
+                            else {
+                                alert(data.message);
+                                $('#loadforscheduleapp').hide();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    });
+
+    function DeleteCaseRecord(caseid) {
+        $('#hdnCaseID').val(caseid);
+        var rows = $('#lstTab li').length;
+        if (rows > 1) {
+            $('#li_1').remove();
+        }
+        $('#loadforscheduleapp').show();
+        $.ajax({
+            type: 'POST',
+            url: "@Url.Action("DeleteCaseRecord", "PatientActivation")",
+            data: { caseid: caseid },
+            success: function (data) {
+                if (data.success == 1) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "@Url.Action("PopulateProfileData", "PatientActivation")",
+                        data: { patientid: $('#hdnPID').val() },
+                        success: function (data) {
+                            if (data.success == 1) {
+                                $('#FirstName').val(data.FirstName);
+                                $('#LastName').val(data.LastName);
+
+                                var today = new Date(data.DOB);
+                                var dd = today.getDate();
+                                var mm = today.getMonth() + 1;
+                                var yyyy = today.getFullYear();
+                                if (dd < 10) { dd = '0' + dd } if (mm < 10) { mm = '0' + mm } today = yyyy + '-' + mm + '-' + dd;
+                                $('#DOB').val(today);
+
+                                $('#AddressLine1').val(data.AddressLine1);
+                                $('#AddressLine2').val(data.AddressLine2);
+                                $('#City').val(data.City);
+                                $('#State').val(data.State);
+                                $('#ZipCode').val(data.ZipCode);
+                                $('#Phone2').val(data.Phone2);
+                                $('#Phone3').val(data.Phone3);
+                                $('#Occupation').val(data.Occupation);
+                                $('#MobNo').val(data.MobNo);
+                                $('#Email').val(data.Email);
+                                $('#dvCaseMstr').html(data.CaseMstr);
+                                $('#loadforscheduleapp').hide();
+                                $('#txtNewCase').val('');
+                            }
+                            else {
+                                alert(data.message);
+                                $('#loadforscheduleapp').hide();
+                            }
+                        }
+                    });
+                }
+                else {
+                    alert(data.message);
+                    $('#loadforscheduleapp').hide();
+                }
+            }
+        });
+    }
+
+    function ViewCaseRecord(rowid, caseid) {
+        $('#hdnCaseID').val(caseid);
+        var rows1 = $('#lstTab li').length;
+        if (rows1 > 1) {
+            $('#li_1').remove();
+        }
+        var rows = $('#tblCase tbody tr').length;
+
+        for (var i = 1; i <= rows; i++) {
+            $('#dvCaseLinkName' + i).show();
+            $('#dvCaseBtnName' + i).hide();
+        }
+        $('#dvCaseLinkName' + rowid).hide();
+        $('#dvCaseBtnName' + rowid).show();
+    }
+
+    $(document).on('click', '#documents', function () {
+        $('.documents').show();
+        $('.authorization').hide();
+        $('.insurance').hide();
+
+        $('#docs').addClass('active');
+        $('#auth').removeClass('active');
+        $('#ins').removeClass('active');
+
+        if ($('#ddlType').val() == "P") {
+            $('#dvOpt').show();
+        }
+        else {
+            $('#dvOpt').hide();
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: "@Url.Action("PopulateEDOCData", "PatientActivation")",
+            data: { patientid: $('#hdnPID').val(), caseid: $('#hdnCaseID').val() },
+            success: function (data) {
+                if (data.success == 1) {
+
+                    $('#dvResult').html(data.Doc);
+
+                    var today1 = new Date();
+                    var dd1 = today1.getDate();
+                    var mm1 = today1.getMonth() + 1;
+                    var yyyy1 = today1.getFullYear();
+                    if (dd1 < 10) { dd1 = '0' + dd1 } if (mm1 < 10) { mm1 = '0' + mm1 } today1 = yyyy1 + '-' + mm1 + '-' + dd1;
+                    $('#dtStart').val(today1);
+
+                    var today11 = new Date();
+                    var dd11 = today11.getDate();
+                    var mm11 = today11.getMonth() + 1;
+                    var yyyy11 = today11.getFullYear();
+                    if (dd11 < 10) { dd11 = '0' + dd11 } if (mm11 < 10) { mm11 = '0' + mm11 } today11 = yyyy11 + '-' + mm11 + '-' + dd11;
+                    $('#dtEnd').val(today11);
+
+                    var today = new Date();
+                    var dd = today.getDate();
+                    var mm = today.getMonth() + 1;
+                    var yyyy = today.getFullYear();
+                    if (dd < 10) { dd = '0' + dd } if (mm < 10) { mm = '0' + mm } today = yyyy + '-' + mm + '-' + dd;
+                    $('#dtReceipt').val(today);
+                    LoadUserScreen();
+                }
+                else {
+                    alert(data.message);
+                }
+            }
+        });
+    });
+
+    $(document).on('click', '#authorization', function () {
+        $('.documents').hide();
+        $('.authorization').show();
+        $('.insurance').hide();
+        $('#docs').removeClass('active');
+        $('#auth').addClass('active');
+        $('#ins').removeClass('active');
+
+        $.ajax({
+            type: 'POST',
+            url: "@Url.Action("PopulateCASEData", "PatientActivation")",
+            data: { patientid: $('#hdnPID').val(), caseid: $('#hdnCaseID').val() },
+            success: function (data) {
+                if (data.success == 1) {
+
+                    $('#dvCaseResult').html(data.Case);
+                    $('#dvInsurance').html(data.Ins);
+
+                    var today1 = new Date();
+                    var dd1 = today1.getDate();
+                    var mm1 = today1.getMonth() + 1;
+                    var yyyy1 = today1.getFullYear();
+                    if (dd1 < 10) { dd1 = '0' + dd1 } if (mm1 < 10) { mm1 = '0' + mm1 } today1 = yyyy1 + '-' + mm1 + '-' + dd1;
+                    $('#txtAEStart').val(today1);
+
+                    var today11 = new Date();
+                    var dd11 = today11.getDate();
+                    var mm11 = today11.getMonth() + 1;
+                    var yyyy11 = today11.getFullYear();
+                    if (dd11 < 10) { dd11 = '0' + dd11 } if (mm11 < 10) { mm11 = '0' + mm11 } today11 = yyyy11 + '-' + mm11 + '-' + dd11;
+                    $('#txtAEEnd').val(today11);
+
+                    LoadUserScreen();
+                }
+                else {
+                    alert(data.message);
+                }
+            }
+        });
+    });
+
+    $(document).on('click', '#insurance', function () {
+        $('.documents').hide();
+        $('.authorization').hide();
+        $('.insurance').show();
+        $('#docs').removeClass('active');
+        $('#auth').removeClass('active');
+        $('#ins').addClass('active');
+
+        $.ajax({
+            type: 'POST',
+            url: "@Url.Action("PopulateCOMPData", "PatientActivation")",
+            data: { patientid: $('#hdnPID').val(), caseid: $('#hdnCaseID').val() },
+            success: function (data) {
+                if (data.success == 1) {
+
+                    $('#dvInsResult').html(data.Comp);
+                    $('#dvCompany').html(data.Ins);
+
+                    $.ajax({
+                        type: 'POST',
+                        url: "@Url.Action("PopulateADOCData", "PatientActivation")",
+                        data: { patientid: $('#hdnPID').val(), caseid: $('#hdnCaseID').val() },
+                        success: function (data) {
+                            if (data.success == 1) {
+
+                                $('#dvRAuthDoc').html(data.Doc);
+
+                                LoadUserScreen();
+                            }
+                            else {
+                                alert(data.message);
+                            }
+                        }
+                    });
+                }
+                else {
+                    alert(data.message);
+                }
+            }
+        });
+    });    
+</script>
+<script>
+    function ViewDocData(docid) {
+        $('#hdnDocID').val(docid);
+        $('#loadforscheduleapp').show();
+        $.ajax({
+            type: 'POST',
+            url: "@Url.Action("ViewDocData", "PatientActivation")",
+            data: { docid: docid },
+            success: function (data) {
+                if (data.success == 1) {
+                    $('#ddlType').val(data.DocumentType);
+                    if ($('#ddlType').val() == "P") {
+                        $('#dvOpt').show();
+                    }
+                    else {
+                        $('#dvOpt').hide();
+                    }
+                    $('#txtDocName').val(data.DocumentName);
+
+                    var today = new Date(data.ReceiptDate);
+                    var dd = today.getDate();
+                    var mm = today.getMonth() + 1;
+                    var yyyy = today.getFullYear();
+                    if (dd < 10) { dd = '0' + dd } if (mm < 10) { mm = '0' + mm } today = yyyy + '-' + mm + '-' + dd;
+                    $('#dtReceipt').val(today);
+
+                    $('#ddlCase').val(data.AssignedCase);
+
+                    if (data.SignedDocument == "Y")
+                        $('#chkSign').prop('checked', true);
+                    else if (data.SignedDocument == "N")
+                        $('#chkSign').prop('checked', false);
+                    else
+                        $('#chkSign').prop('checked', false);
+
+                    var today1 = new Date(data.StartDate);
+                    var dd1 = today1.getDate();
+                    var mm1 = today1.getMonth() + 1;
+                    var yyyy1 = today1.getFullYear();
+                    if (dd1 < 10) { dd1 = '0' + dd1 } if (mm1 < 10) { mm1 = '0' + mm1 } today1 = yyyy1 + '-' + mm1 + '-' + dd1;
+                    $('#dtStart').val(today1);
+
+                    var today11 = new Date(data.EndDate);
+                    var dd11 = today11.getDate();
+                    var mm11 = today11.getMonth() + 1;
+                    var yyyy11 = today11.getFullYear();
+                    if (dd11 < 10) { dd11 = '0' + dd11 } if (mm11 < 10) { mm11 = '0' + mm11 } today11 = yyyy11 + '-' + mm11 + '-' + dd11;
+                    $('#dtEnd').val(today11);
+
+                    $('#txtVisit').val(data.Visits);
+                    $('#txtFreq').val(data.Frequency);
+                    $('#txtDura').val(data.Duration);
+                    $('#txtDaysP').val(data.DaysPrior);
+                    $('#txtVisitP').val(data.VisitPrior);
+                    $('#lnkDoc').text(data.DocumentName);
+                    $('#lnkDoc').prop('href', '@Url.Content("~/Documents/")' + data.DocumentName);
+                    $('#flDoc').prop('disabled', true);
+                    $('#loadforscheduleapp').hide();
+                }
+                else {
+                    alert(data.message);
+                    $('#loadforscheduleapp').hide();
+                }
+            }
+        });
+    }
+
+    function DeleteDocData(docid) {
+        $('#hdnDocID').val(docid);
+        $('#loadforscheduleapp').show();
+        $.ajax({
+            type: 'POST',
+            url: "@Url.Action("DeleteDocData", "PatientActivation")",
+            data: { docid: docid },
+            success: function (data) {
+                if (data.success == 1) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "@Url.Action("PopulateEDOCData", "PatientActivation")",
+                        data: { patientid: $('#hdnPID').val(), caseid: $('#hdnCaseID').val() },
+                        success: function (data) {
+                            if (data.success == 1) {
+
+                                $('#dvResult').html(data.Doc);
+
+                                $('#loadforscheduleapp').hide();
+
+                                $('#ddlType').val('O');
+                                $('#txtDocName').val('');
+
+                                var today = new Date();
+                                var dd = today.getDate();
+                                var mm = today.getMonth() + 1;
+                                var yyyy = today.getFullYear();
+                                if (dd < 10) { dd = '0' + dd } if (mm < 10) { mm = '0' + mm } today = yyyy + '-' + mm + '-' + dd;
+                                $('#dtReceipt').val(today);
+
+                                $('#dvOpt').hide();
+
+                                $('#lnkDoc').text('');
+                                $('#lnkDoc').prop('href', '#');
+                                $('#hdnDocID').val('');
+                            }
+                            else {
+                                alert(data.message);
+                                $('#loadforscheduleapp').hide();
+                            }
+                        }
+                    });
+                }
+                else {
+                    alert(data.message);
+                    $('#loadforscheduleapp').hide();
+                }
+            }
+        });
+    }
+
+    $(document).on('click', '#btnDoc', function () {
+
+        $('#loadforscheduleapp').show();
+
+        $("#dvErrDoc").text('');
+        $("#dvErrDocType").text('');
+        $("#dvErrDocName").text('');
+
+        if ($('#ddlType').val() == "") {
+            $("#dvErrDocType").text('Please select document type');
+            $('#loadforscheduleapp').hide();
+            return;
+        }
+        if ($('#txtDocName').val() == "") {
+            $("#dvErrDocName").text('Please enter document name');
+            $('#loadforscheduleapp').hide();
+            return;
+        }
+        var sign = 'N';
+        if ($('#chkSign').is(":checked"))
+            sign = 'Y';
+        else
+            sign = 'N';
+
+        /////////////////FILENAME////////////////////////////
+        //var filename = $('#txtDocName').val().split('\\').pop();
+        //var extname = filename.split('.').pop();
+        //if (extname == '')
+        //    filename = filename + '.txt'
+        //else
+        //    filename = filename + '.' + extname;
+
+        //var ispid = filename.split('.')[0];
+        //var onlyname = ispid.split('_').pop();
+        //if (onlyname != '')
+        //    filename = ispid.split('_')[0] + '.' + filename.split('.').pop();
+        ///////////////////FILENAME////////////////////////////
+        //var fName = ispid.split('_')[0] + '_' + $('#hdnPID').val() + '_' + (new Date()).getMilliseconds() + '.' + filename.split('.').pop();
+        //$('#txtDocName').val(fName);
+        
+        
+        if ($('#hdnDocID').val() == '') {
+            $.ajax({
+                type: 'POST',
+                url: "@Url.Action("AddDocData", "PatientActivation")",
+                data: {
+                    patientid: $('#hdnPID').val(), caseid: $('#hdnCaseID').val(), DocumentType: $('#ddlType').val(), DocumentName: $('#txtDocName').val(),
+                    ReceiptDate: $('#dtReceipt').val(), AssignedCase: $('#ddlCase').val(), SignedDocument: sign, StartDate: $('#dtStart').val(),
+                    EndDate: $('#dtEnd').val(), Visits: $('#txtVisit').val(), Frequency: $('#txtFreq').val(), Duration: $('#txtDura').val(),
+                    DaysPrior: $('#txtDaysP').val(), VisitPrior: $('#txtVisitP').val()
+                },
+                success: function (data) {
+                    if (data.success == 1) {
+                        $.ajax({
+                            type: 'POST',
+                            url: "@Url.Action("PopulateEDOCData", "PatientActivation")",
+                            data: { patientid: $('#hdnPID').val(), caseid: $('#hdnCaseID').val() },
+                            success: function (data) {
+                                if (data.success == 1) {
+                                    $('#dvResult').html(data.Doc);
+
+                                    $('#loadforscheduleapp').hide();
+
+                                    $('#ddlType').val('O');
+                                    $('#txtDocName').val('');
+
+                                    var today = new Date();
+                                    var dd = today.getDate();
+                                    var mm = today.getMonth() + 1;
+                                    var yyyy = today.getFullYear();
+                                    if (dd < 10) { dd = '0' + dd } if (mm < 10) { mm = '0' + mm } today = yyyy + '-' + mm + '-' + dd;
+                                    $('#dtReceipt').val(today);
+
+                                    $('#dvOpt').hide();
+
+                                    $('#lnkDoc').text('');
+                                    $('#lnkDoc').prop('href', '#');
+                                    $('#hdnDocID').val('');
+                                    $('#flDoc').prop('disabled', false);
+                                    $('#dvUpload').text('');
+                                }
+                                else {
+                                    alert(data.message);
+                                    $('#loadforscheduleapp').hide();
+                                }
+                            }
+                        });
+                    } else {
+                        alert(data.message);
+                        $('#loadforscheduleapp').hide();
+                    }
+                }
+            });
+        }
+        else {
+            $.ajax({
+                type: 'POST',
+                url: "@Url.Action("UpdateDocData", "PatientActivation")",
+                data: {
+                    docid: $('#hdnDocID').val(), patientid: $('#hdnPID').val(), DocumentType: $('#ddlType').val(), DocumentName: $('#txtDocName').val(),
+                    ReceiptDate: $('#dtReceipt').val(), AssignedCase: $('#ddlCase').val(), SignedDocument: sign, StartDate: $('#dtStart').val(),
+                    EndDate: $('#dtEnd').val(), Visits: $('#txtVisit').val(), Frequency: $('#txtFreq').val(), Duration: $('#txtDura').val(),
+                    DaysPrior: $('#txtDaysP').val(), VisitPrior: $('#txtVisitP').val()
+                },
+                success: function (data) {
+                    if (data.success == 1) {
+                        $.ajax({
+                            type: 'POST',
+                            url: "@Url.Action("PopulateEDOCData", "PatientActivation")",
+                            data: { patientid: $('#hdnPID').val(), caseid: $('#hdnCaseID').val() },
+                            success: function (data) {
+                                if (data.success == 1) {
+
+                                    $('#dvResult').html(data.Doc);
+
+                                    $('#loadforscheduleapp').hide();
+
+                                    $('#ddlType').val('O');
+                                    $('#txtDocName').val('');
+
+                                    var today = new Date();
+                                    var dd = today.getDate();
+                                    var mm = today.getMonth() + 1;
+                                    var yyyy = today.getFullYear();
+                                    if (dd < 10) { dd = '0' + dd } if (mm < 10) { mm = '0' + mm } today = yyyy + '-' + mm + '-' + dd;
+                                    $('#dtReceipt').val(today);
+
+                                    $('#dvOpt').hide();
+
+                                    $('#lnkDoc').text('');
+                                    $('#lnkDoc').prop('href', '#');
+                                    $('#hdnDocID').val('');
+                                    $('#flDoc').prop('disabled', false);
+                                    $('#dvUpload').text('');
+                                }
+                                else {
+                                    alert(data.message);
+                                    $('#loadforscheduleapp').hide();
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    });
+
+    $(document).on('change', '#ddlType', function () {
+        if ($('#ddlType').val() == "P") {
+            $('#dvOpt').show();
+        }
+        else {
+            $('#dvOpt').hide();
+        }
+    });
+
+    
+    $(document).on('click', '#btnCase', function () {
+
+        $('#loadforscheduleapp').show();
+
+        $("#dvErrAuthNo").text('');
+        $("#dvErrIns").text('');
+        $("#dvErrVisit").text('');
+
+        if ($('#ddlIns').val() == "") {
+            $("#dvErrIns").text('Please select insurance data');
+            $('#loadforscheduleapp').hide();
+            return;
+        }
+        if ($('#txtAuthNo').val() == "") {
+            $("#dvErrAuthNo").text('Please enter authorize number');
+            $('#loadforscheduleapp').hide();
+            return;
+        }
+        if ($('#txtAVisit').val() == "0") {
+            $("#dvErrVisit").text('Please enter authorize visits');
+            $('#loadforscheduleapp').hide();
+            return;
+        }
+
+        if ($('#hdnAuthID').val() == '') {
+            $.ajax({
+                type: 'POST',
+                url: "@Url.Action("AddCaseData", "PatientActivation")",
+                data: {
+                    patientid: $('#hdnPID').val(), caseid: $('#hdnCaseID').val(), insid: $('#ddlIns').val(), AuthNo: $('#txtAuthNo').val(),
+                    AuthVisit: $('#txtAVisit').val(), StartDate: $('#txtAEStart').val(),
+                    EndDate: $('#txtAEEnd').val(), PhoneType: $('#txtAPType').val(), PhoneNum: $('#txtAPhone').val(), AddlInfo: $('#txtAInfo').val()
+                },
+                success: function (data) {
+                    if (data.success == 1) {
+                        $.ajax({
+                            type: 'POST',
+                            url: "@Url.Action("PopulateCASEData", "PatientActivation")",
+                            data: { patientid: $('#hdnPID').val(), caseid: $('#hdnCaseID').val() },
+                            success: function (data) {
+                                if (data.success == 1) {
+
+                                    $('#dvCaseResult').html(data.Case);
+                                    $('#dvInsurance').html(data.Ins);
+
+                                    $('#loadforscheduleapp').hide();
+
+                                    $('#ddlIns').val('');
+                                    $('#txtAuthNo').val('');
+                                    $('#txtAVisit').val('0');
+
+                                    var today1 = new Date();
+                                    var dd1 = today1.getDate();
+                                    var mm1 = today1.getMonth() + 1;
+                                    var yyyy1 = today1.getFullYear();
+                                    if (dd1 < 10) { dd1 = '0' + dd1 } if (mm1 < 10) { mm1 = '0' + mm1 } today1 = yyyy1 + '-' + mm1 + '-' + dd1;
+                                    $('#txtAEStart').val(today1);
+
+                                    var today11 = new Date();
+                                    var dd11 = today11.getDate();
+                                    var mm11 = today11.getMonth() + 1;
+                                    var yyyy11 = today11.getFullYear();
+                                    if (dd11 < 10) { dd11 = '0' + dd11 } if (mm11 < 10) { mm11 = '0' + mm11 } today11 = yyyy11 + '-' + mm11 + '-' + dd11;
+                                    $('#txtAEEnd').val(today11);
+
+                                    $('#txtAPType').val('');
+                                    $('#txtAPhone').val('');
+                                    $('#txtAInfo').val('');
+                                    $('#hdnAuthID').val('');
+                                }
+                                else {
+                                    alert(data.message);
+                                    $('#loadforscheduleapp').hide();
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        else {
+            $.ajax({
+                type: 'POST',
+                url: "@Url.Action("UpdateCaseData", "PatientActivation")",
+                data: {
+                    authid: $('#hdnAuthID').val(), patientid: $('#hdnPID').val(), AuthNo: $('#txtAuthNo').val(),
+                    AuthVisit: $('#txtAVisit').val(), StartDate: $('#txtAEStart').val(),
+                    EndDate: $('#txtAEEnd').val(), PhoneType: $('#txtAPType').val(), PhoneNum: $('#txtAPhone').val(), AddlInfo: $('#txtAInfo').val()
+                },
+                success: function (data) {
+                    if (data.success == 1) {
+                        $.ajax({
+                            type: 'POST',
+                            url: "@Url.Action("PopulateCASEData", "PatientActivation")",
+                            data: { patientid: $('#hdnPID').val(), caseid: $('#hdnCaseID').val() },
+                            success: function (data) {
+                                if (data.success == 1) {
+
+                                    $('#dvCaseResult').html(data.Case);
+                                    $('#dvInsurance').html(data.Ins);
+
+                                    $('#loadforscheduleapp').hide();
+
+                                    $('#ddlIns').val('');
+                                    $('#txtAuthNo').val('');
+                                    $('#txtAVisit').val('0');
+
+                                    var today1 = new Date();
+                                    var dd1 = today1.getDate();
+                                    var mm1 = today1.getMonth() + 1;
+                                    var yyyy1 = today1.getFullYear();
+                                    if (dd1 < 10) { dd1 = '0' + dd1 } if (mm1 < 10) { mm1 = '0' + mm1 } today1 = yyyy1 + '-' + mm1 + '-' + dd1;
+                                    $('#txtAEStart').val(today1);
+
+                                    var today11 = new Date();
+                                    var dd11 = today11.getDate();
+                                    var mm11 = today11.getMonth() + 1;
+                                    var yyyy11 = today11.getFullYear();
+                                    if (dd11 < 10) { dd11 = '0' + dd11 } if (mm11 < 10) { mm11 = '0' + mm11 } today11 = yyyy11 + '-' + mm11 + '-' + dd11;
+                                    $('#txtAEEnd').val(today11);
+
+                                    $('#txtAPType').val('');
+                                    $('#txtAPhone').val('');
+                                    $('#txtAInfo').val('');
+                                    $('#hdnAuthID').val('');
+                                }
+                                else {
+                                    alert(data.message);
+                                    $('#loadforscheduleapp').hide();
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    });
+
+    function ViewCaseData(authid) {
+        $('#hdnAuthID').val(authid);
+        $('#loadforscheduleapp').show();
+        $.ajax({
+            type: 'POST',
+            url: "@Url.Action("ViewCaseData", "PatientActivation")",
+            data: { authid: authid },
+            success: function (data) {
+                if (data.success == 1) {
+                    $('#ddlIns').val(data.INSID);
+                    $('#txtAuthNo').val(data.AuthNo);
+                    $('#txtAVisit').val(data.AuthVisit);
+
+                    var today1 = new Date(data.StartDate);
+                    var dd1 = today1.getDate();
+                    var mm1 = today1.getMonth() + 1;
+                    var yyyy1 = today1.getFullYear();
+                    if (dd1 < 10) { dd1 = '0' + dd1 } if (mm1 < 10) { mm1 = '0' + mm1 } today1 = yyyy1 + '-' + mm1 + '-' + dd1;
+                    $('#txtAEStart').val(today1);
+
+                    var today11 = new Date(data.EndDate);
+                    var dd11 = today11.getDate();
+                    var mm11 = today11.getMonth() + 1;
+                    var yyyy11 = today11.getFullYear();
+                    if (dd11 < 10) { dd11 = '0' + dd11 } if (mm11 < 10) { mm11 = '0' + mm11 } today11 = yyyy11 + '-' + mm11 + '-' + dd11;
+                    $('#txtAEEnd').val(today11);
+
+                    $('#txtAPType').val(data.PhoneType);
+                    $('#txtAPhone').val(data.PhoneNum);
+                    $('#txtAInfo').val(data.AddlInfo);
+                    $('#loadforscheduleapp').hide();
+                }
+                else {
+                    alert(data.message);
+                    $('#loadforscheduleapp').hide();
+                }
+            }
+        });
+    }
+
+    function DeleteCaseData(authid) {
+        $('#hdnAuthID').val(authid);
+        $('#loadforscheduleapp').show();
+        $.ajax({
+            type: 'POST',
+            url: "@Url.Action("DeleteCaseData", "PatientActivation")",
+            data: { authid: authid },
+            success: function (data) {
+                if (data.success == 1) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "@Url.Action("PopulateCASEData", "PatientActivation")",
+                        data: { patientid: $('#hdnPID').val(), caseid: $('#hdnCaseID').val() },
+                        success: function (data) {
+                            if (data.success == 1) {
+
+                                $('#dvCaseResult').html(data.Case);
+                                $('#dvInsurance').html(data.Ins);
+
+                                $('#loadforscheduleapp').hide();
+
+                                $('#ddlIns').val('');
+                                $('#txtAuthNo').val('');
+                                $('#txtAVisit').val('0');
+
+                                var today1 = new Date();
+                                var dd1 = today1.getDate();
+                                var mm1 = today1.getMonth() + 1;
+                                var yyyy1 = today1.getFullYear();
+                                if (dd1 < 10) { dd1 = '0' + dd1 } if (mm1 < 10) { mm1 = '0' + mm1 } today1 = yyyy1 + '-' + mm1 + '-' + dd1;
+                                $('#txtAEStart').val(today1);
+
+                                var today11 = new Date();
+                                var dd11 = today11.getDate();
+                                var mm11 = today11.getMonth() + 1;
+                                var yyyy11 = today11.getFullYear();
+                                if (dd11 < 10) { dd11 = '0' + dd11 } if (mm11 < 10) { mm11 = '0' + mm11 } today11 = yyyy11 + '-' + mm11 + '-' + dd11;
+                                $('#txtAEEnd').val(today11);
+
+                                $('#txtAPType').val('');
+                                $('#txtAPhone').val('');
+                                $('#txtAInfo').val('');
+                                $('#hdnAuthID').val('');
+                            }
+                            else {
+                                alert(data.message);
+                                $('#loadforscheduleapp').hide();
+                            }
+                        }
+                    });
+                }
+                else {
+                    alert(data.message);
+                    $('#loadforscheduleapp').hide();
+                }
+            }
+        });
+    }
+
+    $(document).on('click', '#btnInsurance', function () {
+
+        $('#loadforscheduleapp').show();
+
+        $("#dvErrCompName").text('');
+        $("#dvErrCompAddr").text('');
+        $("#dvErrCompDate").text('');
+
+        if ($('#ddlComp').val() == "") {
+            $("#dvErrCompName").text('Please select company name');
+            $('#loadforscheduleapp').hide();
+            return;
+        }
+        if ($('#txtInsAddr').val() == "") {
+            $("#dvErrCompAddr").text('Please enter company address');
+            $('#loadforscheduleapp').hide();
+            return;
+        }
+        if ($('#dtInsurance').val() == "") {
+            $("#dvErrCompDate").text('Please select effective date');
+            $('#loadforscheduleapp').hide();
+            return;
+        }
+
+        var IsAuth = 'Y';
+
+        if ($('#chkAuth').prop('checked') == true) {
+            IsAuth = 'Y';
+        }
+        else {
+            IsAuth = 'N';
+        }
+
+        if ($('#hdnCompID').val() == '') {
+            $.ajax({
+                type: 'POST',
+                url: "@Url.Action("AddInsuranceData", "PatientActivation")",
+                data: {
+                    patientid: $('#hdnPID').val(), caseid: $('#hdnCaseID').val(), Comp_Name: $('#ddlComp option:selected').text(), Effective_Date: $('#dtInsurance').val(),
+                    Comp_Address: $('#txtInsAddr').val(), CoPay: $('#numCoPay').val(),
+                    CoInsurance: $('#numCoInsurance').val(), Deductible: $('#numDeduct').val(), Authorized: IsAuth
+                },
+                success: function (data) {
+                    if (data.success == 1) {
+                        $.ajax({
+                            type: 'POST',
+                            url: "@Url.Action("PopulateCOMPData", "PatientActivation")",
+                            data: { patientid: $('#hdnPID').val(), caseid: $('#hdnCaseID').val() },
+                            success: function (data) {
+                                if (data.success == 1) {
+
+                                    $('#dvInsResult').html(data.Comp);
+                                    $('#dvCompany').html(data.Ins);
+
+                                    $('#loadforscheduleapp').hide();
+
+                                    $('#ddlComp').val('');
+                                    $('#txtInsAddr').val('');
+                                    $('#numCoPay').val('0');
+                                    $('#numCoInsurance').val('0');
+                                    $('#numDeduct').val('0');
+
+                                    $('#chkAuth').prop('checked', true);
+                                    $('#auth').show();
+
+                                    var today1 = new Date();
+                                    var dd1 = today1.getDate();
+                                    var mm1 = today1.getMonth() + 1;
+                                    var yyyy1 = today1.getFullYear();
+                                    if (dd1 < 10) { dd1 = '0' + dd1 } if (mm1 < 10) { mm1 = '0' + mm1 } today1 = yyyy1 + '-' + mm1 + '-' + dd1;
+                                    $('#dtInsurance').val(today1);
+
+                                    $('#hdnCompID').val('');
+
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: "@Url.Action("PopulateADOCData", "PatientActivation")",
+                                        data: { patientid: $('#hdnPID').val(), caseid: $('#hdnCaseID').val() },
+                                    success: function (data) {
+                                        if (data.success == 1) {
+
+                                            $('#dvRAuthDoc').html(data.Doc);
+                                        }
+                                        else {
+                                            alert(data.message);
+                                        }
+                                    }
+                                });
+                                }
+                                else {
+                                    alert(data.message);
+                                    $('#loadforscheduleapp').hide();
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        else {
+            $.ajax({
+                type: 'POST',
+                url: "@Url.Action("UpdateInsuranceData", "PatientActivation")",
+                data: {
+                    compid: $('#hdnCompID').val(), patientid: $('#hdnPID').val(), Comp_Name: $('#ddlComp option:selected').text(), Effective_Date: $('#dtInsurance').val(),
+                    Comp_Address: $('#txtInsAddr').val(), CoPay: $('#numCoPay').val(),
+                    CoInsurance: $('#numCoInsurance').val(), Deductible: $('#numDeduct').val(), Authorized: IsAuth
+                },
+                success: function (data) {
+                    if (data.success == 1) {
+                        $.ajax({
+                            type: 'POST',
+                            url: "@Url.Action("PopulateCOMPData", "PatientActivation")",
+                            data: { patientid: $('#hdnPID').val(), caseid: $('#hdnCaseID').val() },
+                            success: function (data) {
+                                if (data.success == 1) {
+
+                                    $('#dvInsResult').html(data.Comp);
+                                    $('#dvCompany').html(data.Ins);
+
+                                    $('#loadforscheduleapp').hide();
+
+                                    $('#ddlComp').val('');
+                                    $('#txtInsAddr').val('');
+                                    $('#numCoPay').val('0');
+                                    $('#numCoInsurance').val('0');
+
+                                    $('#numDeduct').val('0');
+
+                                    $('#chkAuth').prop('checked', true);
+                                    $('#auth').show();
+
+                                    var today1 = new Date();
+                                    var dd1 = today1.getDate();
+                                    var mm1 = today1.getMonth() + 1;
+                                    var yyyy1 = today1.getFullYear();
+                                    if (dd1 < 10) { dd1 = '0' + dd1 } if (mm1 < 10) { mm1 = '0' + mm1 } today1 = yyyy1 + '-' + mm1 + '-' + dd1;
+                                    $('#dtInsurance').val(today1);
+
+                                    $('#hdnCompID').val('');
+
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: "@Url.Action("PopulateADOCData", "PatientActivation")",
+                                        data: { patientid: $('#hdnPID').val(), caseid: $('#hdnCaseID').val() },
+                                    success: function (data) {
+                                        if (data.success == 1) {
+
+                                            $('#dvRAuthDoc').html(data.Doc);
+                                        }
+                                        else {
+                                            alert(data.message);
+                                        }
+                                    }
+                                });
+                                }
+                                else {
+                                    alert(data.message);
+                                    $('#loadforscheduleapp').hide();
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    });
+
+    function DeleteInsuranceData(compid) {
+        $('#hdnCompID').val(compid);
+        $('#loadforscheduleapp').show();
+        $.ajax({
+            type: 'POST',
+            url: "@Url.Action("DeleteInsuranceData", "PatientActivation")",
+            data: { compid: compid },
+            success: function (data) {
+                if (data.success == 1) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "@Url.Action("PopulateCOMPData", "PatientActivation")",
+                        data: { patientid: $('#hdnPID').val(), caseid: $('#hdnCaseID').val() },
+                        success: function (data) {
+                            if (data.success == 1) {
+
+                                $('#dvInsResult').html(data.Comp);
+                                $('#dvCompany').html(data.Ins);
+
+                                $('#loadforscheduleapp').hide();
+
+                                $('#ddlComp').val('');
+                                $('#txtInsAddr').val('');
+                                $('#numCoPay').val('0');
+                                $('#numCoInsurance').val('0');
+
+                                var today1 = new Date();
+                                var dd1 = today1.getDate();
+                                var mm1 = today1.getMonth() + 1;
+                                var yyyy1 = today1.getFullYear();
+                                if (dd1 < 10) { dd1 = '0' + dd1 } if (mm1 < 10) { mm1 = '0' + mm1 } today1 = yyyy1 + '-' + mm1 + '-' + dd1;
+                                $('#dtInsurance').val(today1);
+
+                                $('#hdnCompID').val('');
+
+                                $.ajax({
+                                    type: 'POST',
+                                    url: "@Url.Action("PopulateADOCData", "PatientActivation")",
+                                    data: { patientid: $('#hdnPID').val(), caseid: $('#hdnCaseID').val() },
+                                success: function (data) {
+                                    if (data.success == 1) {
+
+                                        $('#dvRAuthDoc').html(data.Doc);
+                                    }
+                                    else {
+                                        alert(data.message);
+                                    }
+                                }
+                            });
+                            }
+                            else {
+                                alert(data.message);
+                                $('#loadforscheduleapp').hide();
+                            }
+                        }
+                    });
+                }
+                else {
+                    alert(data.message);
+                    $('#loadforscheduleapp').hide();
+                }
+            }
+        });
+    }
+
+    function ViewInsuranceData(compid) {
+        $('#hdnCompID').val(compid);
+        $('#loadforscheduleapp').show();
+        $.ajax({
+            type: 'POST',
+            url: "@Url.Action("ViewInsuranceData", "PatientActivation")",
+            data: { compid: compid },
+            success: function (data) {
+                if (data.success == 1) {
+                    $("#ddlComp option").each(function () {
+                        if ($(this).text() == data.Comp_Name) {
+                            $(this).attr('selected', 'selected');
+                        }
+                    });
+                    $('#txtInsAddr').val(data.Comp_Address);
+                    $('#numCoPay').val(data.CoPay);
+                    $('#numCoInsurance').val(data.CoInsurance);
+                    $('#numDeduct').val(data.Deductible);
+
+                    if (data.Authorized == 'Y') {
+                        $('#chkAuth').prop('checked', true);
+                        $('#auth').show();
+                    }
+                    else {
+                        $('#chkAuth').prop('checked', false);
+                        $('#auth').hide();
+                    }
+
+                    var today1 = new Date(data.Effective_Date);
+                    var dd1 = today1.getDate();
+                    var mm1 = today1.getMonth() + 1;
+                    var yyyy1 = today1.getFullYear();
+                    if (dd1 < 10) { dd1 = '0' + dd1 } if (mm1 < 10) { mm1 = '0' + mm1 } today1 = yyyy1 + '-' + mm1 + '-' + dd1;
+                    $('#dtInsurance').val(today1);
+
+                    $('#loadforscheduleapp').hide();
+                }
+                else {
+                    alert(data.message);
+                    $('#loadforscheduleapp').hide();
+                }
+            }
+        });
+    }
+
+    $(document).on('click', '#chkAuth', function () {
+        if ($('#chkAuth').prop('checked') == true) {
+            $('#auth').show();
+        }
+        else {
+            $('#auth').hide();
+        }
+    });
+
+    $(document).on('change', '#ddlComp', function () {
+        $.ajax({
+            type: 'POST',
+            url: "@Url.Action("PopulateADDRData", "PatientActivation")",
+            data: { ins_id: $('#ddlComp').val() },
+            success: function (data) {
+                if (data.success == 1) {
+
+                    $('#txtInsAddr').html(data.Addr);
+                }
+                else {
+                    alert(data.message);
+                }
+            }
+        });
+    });
+</script>
+<script>
+    //$(document).on('change', '#flDoc', function () {
+    //    $('#frmUpload').addClass('fileupload-processing');
+    //    var filename = $(this).val().split('\\').pop();
+    //    $('#txtDocName').val(filename);
+    //});
+
+    //$(document).on('click', '#btnStart', function () {
+    //    $('#frmUpload').removeClass();
+    //    $('#flDoc').prop('disabled', true);
+    //});
+
+    //$(document).on('click', '#btnDelete', function () {
+    //    $('#flDoc').prop('disabled', false);
+    //});
+
+    //var $form = null;
+    //$(function () {
+
+    //    $form = $('#frmUpload').fileupload({
+    //        dataType: 'json'
+    //    });        
+    //});  
+
+    $('#flDoc').on('change', function () {
+        var data = new FormData();
+
+        var files = $("#flDoc").get(0).files;
+        /////////////////FILENAME////////////////////////////
+        var filename = $('#flDoc').val().split('\\').pop();
+        var extname = filename.split('.').pop();
+        if (extname == '')
+            filename = filename + '.txt'
+        else
+            filename = filename + '.' + extname;
+
+        var ispid = filename.split('.')[0];
+        var onlyname = ispid.split('_').pop();
+        if (onlyname != '')
+            filename = ispid.split('_')[0] + '.' + filename.split('.').pop();
+        /////////////////FILENAME////////////////////////////
+
+        var fName = ispid.split('_')[0] + '_' + $('#hdnPID').val() + '_' + (new Date()).getMilliseconds() + '.' + filename.split('.').pop();
+        $('#txtDocName').val(fName);
+        // Add the uploaded image content to the form data collection
+        if (files.length > 0) {
+            data.append("UploadedImage", files[0]);
+            data.append("FileName", fName);
+        }
+
+        // Make Ajax request with the contentType = false, and procesDate = false
+        var ajaxRequest = $.ajax({
+            type: "POST",
+            url: "@Url.Action("UploadFile", "PatientActivation")",
+            contentType: false,
+            processData: false,
+            data: data,
+            success: function (e) {
+                //alert("File Uploaded");
+                $('#dvUpload').text("File uploaded successfully. Please save the document.");
+                $('#flDoc').prop('disabled', true);
+            },
+            error: function (e) {
+                $('#dvUpload').text("File upload unsuccessful. Please try again.");
+            }
+        });
+
+        ajaxRequest.done(function (xhr, textStatus) {
+            // Do other operation
+        });
+    });
+</script>
+
+<script id="template-upload" type="text/x-tmpl">
+    {% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-upload fade">
+        <td>
+            <span class="preview"></span>
+        </td>
+        <td>
+            <p class="name">{%=file.name%}</p>
+            <strong class="error text-danger"></strong>
+        </td>
+        <td>
+            <p class="size">Processing...</p>
+            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-bar progress-bar-success" style="width:0%;"></div></div>
+        </td>
+        <td>
+            {% if (!i && !o.options.autoUpload) { %}
+            <button class="btn btn-primary start" disabled>
+                <i class="glyphicon glyphicon-upload"></i>
+                <span id="btnStart">Start</span>
+            </button>
+            {% } %}
+            {% if (!i) { %}
+            <button class="btn btn-warning cancel">
+                <i class="glyphicon glyphicon-ban-circle"></i>
+                <span>Cancel</span>
+            </button>
+            {% } %}
+        </td>
+    </tr>
+    {% } %}
+</script>
+<!-- The template to display files available for download -->
+<script id="template-download" type="text/x-tmpl">    
+    {% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-download fade">
+        <td>
+            <span class="preview">
+                {% if (file.thumbnailUrl) { %}
+                <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" data-gallery><img src="{%=file.thumbnailUrl%}"></a>
+                {% } %}
+            </span>
+        </td>
+        <td>
+            <p class="name">
+                {% if (file.url) { %}
+                <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl?'data-gallery':''%}>{%=file.name%}</a>
+                {% } else { %}
+                <span>{%=file.name%}</span>
+                {% } %}
+            </p>
+            {% if (file.error) { %}
+            <div><span class="label label-danger">Error</span> {%=file.error%}</div>
+            {% } %}
+        </td>
+        <td>
+            <span class="size">{%=o.formatFileSize(file.size)%}</span>
+        </td>
+        <td>
+            {% if (file.deleteUrl) { %}
+            <button class="btn btn-danger delete" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}" {% if (file.deletewithcredentials) { %} data-xhr-fields='{"withCredentials":true}' {% } %}>
+                <i class="glyphicon glyphicon-trash"></i>
+                <span id="btnDelete">Delete</span>
+            </button>
+            {% } else { %}
+            <button class="btn btn-warning cancel">
+                <i class="glyphicon glyphicon-ban-circle"></i>
+                <span>Cancel</span>
+            </button>
+            {% } %}
+        </td>
+    </tr>
+    {% } %}
+</script>

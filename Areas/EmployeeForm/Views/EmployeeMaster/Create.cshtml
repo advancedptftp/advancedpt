@@ -1,0 +1,448 @@
+﻿@model DataLayer.Models.tblMEmployee
+@using DataLayer;
+@{
+    ViewBag.Title = "Create";
+}
+@if (ViewBag.Error != null)
+{
+    @Html.Raw(ViewBag.Error)
+}
+
+
+
+<section class="bodyinner">
+    <div class="container">
+        @*<div class="bodyleft">
+
+                @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+            </div>*@
+        @*<div class="bodyright">*@
+
+        <div class="report-form clearfix">
+            <h2 class="text-center">Create Employee</h2>
+            <br /><br />
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.Hidden("CreatedOn", DateTime.Now)
+                if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        @Html.Label("Select User Type")
+
+                       
+
+
+                        <div class="headrightcont">
+                            <label class="control control--radio greenbuttradio1" style="float: left;margin-right: 10px;">
+                                <span>Old User</span>
+                                @Html.RadioButton("UserType", "0")
+                                <div class="control__indicator"></div>
+                            </label>
+                       
+                            <label class="control control--radio greenbuttradio1" style="float: left;margin-right: 10px;">
+                                <span>New User</span>
+                                @Html.RadioButton("UserType", "1")
+                                <div class="control__indicator"></div>
+                            </label>
+                            <div style="clear:both;"></div>
+                            </div>
+                            @*<label class="radio-inline">@Html.RadioButton("UserType", "0")&nbsp;Old User</label>
+
+            <label class="radio-inline">@Html.RadioButton("UserType", "1")&nbsp;New User</label>*@
+
+
+                            <div style="clear:both;"></div>
+                        <span id="span_UserTypeError" style="color: #ff0000;font-size: 20px;"></span>
+                            @*@Html.ValidationMessageFor(model => model.User)*@
+                        </div>
+                    <div class="col-sm-6 form-group" style="padding-top:38px;">
+
+                        <div id="div_Newuser" style="display:none">
+
+                            <div class="col-sm-6 form-group">
+                                @Html.Label("User Name")
+                                @Html.TextBoxFor(model => model.tblMUser.UserName, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.tblMUser.UserName)
+                                @*<span id="span_NewUserNameError" style="color: #ff0000;font-size: 20px;"></span>*@
+                            </div>
+                            <div class="col-sm-6 form-group">
+
+                                @Html.Label("Password")
+                                @Html.TextBoxFor(model => model.tblMUser.Password, new { @class = "form-control", @type = "password" })
+                                @Html.ValidationMessageFor(model => model.tblMUser.Password)
+                                @*<span id="span_NewUserPasswordError" style="color: #ff0000;font-size: 20px;"></span>*@
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                @Html.Label("Name")
+                                @Html.TextBoxFor(model => model.tblMUser.Name, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.tblMUser.Name)
+
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                @Html.LabelFor(model => model.tblMUser.Email, new { })
+                                @Html.TextBoxFor(model => model.tblMUser.Email, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.tblMUser.Email)
+                                <span id="span_NewUserEmailError" style="color: #ff0000;font-size: 20px;"></span>
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                @Html.Label("Mobile Number")
+                                @Html.TextBoxFor(model => model.tblMUser.MobNo, new { @class = "form-control UsCellFormat", pattern = @"\d{3}[\-]\d{3}[\-]\d{4}" })
+                                @Html.ValidationMessageFor(model => model.tblMUser.MobNo)
+
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                @Html.LabelFor(model => model.tblMUser.UserRole, "User Role", new { })
+                                @Html.DropDownListFor(m => m.tblMUser.UserRole, (SelectList)ViewBag.UserRole)
+                                @Html.ValidationMessageFor(model => model.tblMUser.UserRole)
+
+                            </div>
+
+                        </div>
+                        <div id="div_Olduser" style="display:none">
+                            @Html.DropDownList("User", (SelectList)ViewBag.User, new { @class = "form-control" })
+                            <span id="span_OldUserError" style="color: #ff0000;font-size: 20px;"></span>
+                        </div>
+
+                        <div style="clear:both;"></div>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6 col-md-4 form-group">
+                        @Html.Label("Last Name")
+                        @Html.TextBoxFor(model => model.Last_Name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Last_Name)
+
+                    </div>
+                    <div class="col-sm-6 col-md-4  form-group">
+                        @Html.Label("First Name")
+                        @Html.TextBoxFor(model => model.First_Name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.First_Name)
+                    </div>
+
+
+                    <div class="col-sm-6 col-md-4  form-group">
+                        @Html.Label("Nick Name")
+                        @Html.TextBoxFor(model => model.Nick_Name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Nick_Name)
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        @Html.Label("Marital Status")
+
+                           <div class="headrightcont">
+                               <label class="control control--radio greenbuttradio1" style="float: left;margin-right: 10px;">
+                                   <span>Single</span>
+                                   @Html.RadioButtonFor(m => m.Marital_Status, "0")
+                                   <div class="control__indicator"></div>
+                               </label>
+                           @* <label class="radio-inline">@Html.RadioButtonFor(m => m.Marital_Status, "0")&nbsp;Single</label>*@
+                        
+                               <label class="control control--radio greenbuttradio1" style="float: left;margin-right: 10px;">
+                                   <span>Married</span>
+                                   @Html.RadioButtonFor(m => m.Marital_Status, "1")
+                                   <div class="control__indicator"></div>
+                               </label>
+                            @*<label class="radio-inline">@Html.RadioButtonFor(m => m.Marital_Status, "1")&nbsp;Married</label>*@
+                               <div style="clear:both;"></div>
+                            </div>
+
+                        <div style="clear:both;"></div>
+                        @Html.ValidationMessageFor(model => model.Marital_Status)
+                    </div>
+
+                    <div class="col-sm-6 form-group">
+                        @Html.Label("Select Gender")
+
+                        <div class="headrightcont">
+                            <label class="control control--radio greenbuttradio1" style="float: left;margin-right: 10px;">
+                                <span>Male</span>
+                                @Html.RadioButtonFor(m => m.Gender, "M")
+                                <div class="control__indicator"></div>
+                            </label>
+
+
+                            @*<label class="radio-inline">@Html.RadioButtonFor(m => m.Gender, "M")&nbsp;Male</label>*@
+                       
+                            <label class="control control--radio greenbuttradio1" style="float: left;margin-right: 10px;">
+                                <span>Female</span>
+                                @Html.RadioButtonFor(m => m.Gender, "F")
+                                <div class="control__indicator"></div>
+                            </label>
+                            <div style="clear:both;"></div>
+                            @*<label class="radio-inline">@Html.RadioButtonFor(m => m.Gender, "F")&nbsp;Female</label>*@
+                        </div>
+                        <div style="clear:both;"></div>
+                        @Html.ValidationMessageFor(model => model.Gender)
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        @Html.Label("Department")
+                        @Html.TextBoxFor(model => model.Department, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Department)
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        @Html.Label("Job Title")
+                        @Html.TextBoxFor(model => model.Job_Title, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Job_Title)
+
+                    </div>
+
+                </div>
+                <div class="row">
+
+                    <div class="col-sm-6 form-group">
+                        @Html.Label("Employee Type")
+                        @*@Html.DropDownListFor(m => m.DoctorType, from DataLayer.DoctorType state in Enum.GetValues(typeof(DataLayer.DoctorType))
+                            select new SelectListItem() { Text = state.ToString(), Value = ((int)state).ToString() }, string.Empty, new { @class = "form-control" })*@
+
+                        @Html.DropDownListFor(m => m.Emp_Type, from DataLayer.EmployeeType state in Enum.GetValues(typeof(DataLayer.EmployeeType))
+                                                                   select new SelectListItem() { Text = state.ToCustomString(), Value = ((int)state).ToString() }, new { @class = "form-control" })
+                        @*@Html.TextBoxFor(model => model.DoctorType, new { @class = "form-control" })*@
+                        @Html.ValidationMessageFor(model => model.Emp_Type)
+                        <span id="span_EmpTypeError" style="color: #ff0000;font-size: 20px;"></span>
+                              </div>
+                    <div class="col-sm-6 form-group">
+                        @Html.Label("Location")
+
+                        @Html.DropDownListFor(e => e.Location, (SelectList)ViewBag.Location, new { @class = "form-control" })
+
+                        @*@Html.TextBoxFor(model => model.Location, new { @class = "form-control" })*@
+                        @Html.ValidationMessageFor(model => model.Location)
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-sm-6 form-group">
+                        @Html.Label("Phone1")
+                        @Html.TextBoxFor(model => model.Phone2, new { @class = "form-control UsCellFormat" })
+                        @Html.ValidationMessageFor(model => model.Phone2)
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        @Html.Label("Phone2")
+                        @Html.TextBoxFor(model => model.Phone3, new { @class = "form-control UsCellFormat" })
+                        @Html.ValidationMessageFor(model => model.Phone3)
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-sm-6 form-group">
+                        @Html.Label("Address Line1")
+                        @Html.TextBoxFor(model => model.Address1, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Address1)
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        @Html.Label("Address Line2")
+                        @Html.TextBoxFor(model => model.Address2, new { @class = "form-control" })
+                        @*@Html.ValidationMessageFor(model => model.Address2)*@
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        @Html.Label("State")
+                        @*@Html.TextBoxFor(model => model.State, new { @class = "form-control" })*@
+                        @*@Html.DropDownListFor(e => e.KneeBraceFusionLigamentForm.FusionKneeBraceSize_Id, (IEnumerable<SelectListItem>)ViewBag.FusionKneeBraceSize_Id, new { @class = "form-control", disabled = "disabled" })*@
+                        @Html.DropDownListFor(e => e.State, (SelectList)ViewBag.StateName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.State)
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        @Html.Label("City")
+                        @Html.TextBoxFor(model => model.City, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.City)
+                    </div>
+
+                </div>
+                <div class="row">
+
+                    <div class="col-sm-6 form-group">
+                        @Html.Label("Zip Code")
+                        @Html.TextBoxFor(model => model.ZipCode, new { @class = "form-control zipcode", @maxlength = "5" })
+                        @Html.ValidationMessageFor(model => model.ZipCode)
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        @Html.Label("License No")
+                        @Html.TextBoxFor(model => model.Licenseno, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Licenseno)
+                    </div>
+
+                </div>
+
+                <div class="subbutt">
+                    <input type="submit" value="Create Employee" class="btn btn-orange pull-right" id="btnCreateEmp"/>
+
+                </div>
+                <p>@Html.ActionLink("Back to List", "Index")</p>
+            }
+        </div>
+
+        @*</div>*@
+        <div class="clearfix"></div>
+    </div>
+</section>
+
+@*<div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>*@
+
+<script>
+
+    $('input:radio[name=UserType]').on('change', function () {
+        $("#span_UserTypeError").text(" ");
+
+        if ($('input:radio[name=UserType]:checked').val() == '1') {
+          
+            $("#User").val("0");
+            // alert(12);
+            $("#div_Newuser").show();
+            $("#div_Olduser").hide();
+
+           
+        }
+
+        else if ($('input:radio[name=UserType]:checked').val() == '0') {
+            // alert(11);
+            $("#div_Olduser").show();
+            $("#div_Newuser").hide();
+        }
+        else {
+            $("#div_Olduser").hide();
+            $("#div_Newuser").hide();
+        }
+
+    });
+    $('#tblMUser_UserRole').addClass('form-control');
+</script>
+
+<script>
+    $("#User").on("change", function () {
+            $.ajax({
+               
+                //url: '/EmployeeMaster/GetUserdetails?User_Id=' + $(this).attr("value"),
+                //type: 'GET',
+                //data: "",
+                //contentType: 'application/json; charset=utf-8',
+            
+                type: "POST",
+                url: '@Url.Action("GetUserdetails", "EmployeeMaster")',
+                datatype: "Json",
+                data: { User_Id: $('#User').val() },
+               
+                success: function (data) {
+                    
+                    $('#First_Name').val(data.firstname);
+                    $('#Last_Name').val(data.Lastname);
+                    $('#Department').val("Clinic");
+                    $('#Job_Title').val(data.JobTitle);
+                }
+
+            });
+       
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $("#tblMUser_Name").keypress(function (e) {
+            var key = e.keyCode;
+            if (key >= 48 && key <= 57) {
+                e.preventDefault();
+            }
+        });
+
+        $("#Last_Name").keypress(function (e) {
+            var key = e.keyCode;
+            if (key >= 48 && key <= 57) {
+                e.preventDefault();
+            }
+        });
+
+        $("#First_Name").keypress(function (e) {
+            var key = e.keyCode;
+            if (key >= 48 && key <= 57) {
+                e.preventDefault();
+            }
+        });
+
+        $("#Nick_Name").keypress(function (e) {
+            var key = e.keyCode;
+            if (key >= 48 && key <= 57) {
+                e.preventDefault();
+            }
+        });
+
+        
+        
+    });
+    $("#btnCreateEmp").click(function () {
+       // alert($("input[name='UserType']:checked").val());
+        
+        if ($("input[name='UserType']:checked").val() == undefined) {
+            $("#span_UserTypeError").text("Select user type");
+
+            return false;
+            
+           
+        }
+        {
+            $("#span_UserTypeError").text(" ");
+        }
+
+        if ($("input[name='UserType']:checked").val() == 0) {
+            
+
+            if ($("#User option:selected").val() == 0) {
+                $("#span_OldUserError").text("Select Employee Type");
+                $('#User').css('background-color', 'rgba(239, 21, 21, 0.06)');
+                return false;
+            }
+            else {
+                $("#span_OldUserError").text(" ");
+                $('#User').css('background-color', 'e5e8ed');
+
+            }
+
+        }
+        if ($("#Emp_Type option:selected").val() == 0) {
+            $("#span_EmpTypeError").text("Select Employee Type");
+            $('#Emp_Type').css('background-color', 'rgba(239, 21, 21, 0.06)');
+            return false;
+        }
+        else {
+            $("#span_EmpTypeError").text(" ");
+            $('#Emp_Type').css('background-color', 'e5e8ed');
+
+        }
+
+    });
+    $("#Emp_Type").change(function () {
+       // alert("onchange");
+        //alert($('#Emp_Type').val());
+        if ($('#Emp_Type').val() > 0) {
+            $('#span_EmpTypeError').text(" ");
+            $('#Emp_Type').css('background-color', 'e5e8ed');
+        }
+        
+    });
+    $("#User").change(function () {
+        //alert("onchange");
+        //alert($('#Emp_Type').val());
+        if ($('#User').val() > 0) {
+            $('#span_OldUserError').text(" ");
+            $('#User').css('background-color', 'e5e8ed');
+        }
+
+    });
+</script>

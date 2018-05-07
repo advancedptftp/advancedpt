@@ -1,0 +1,91 @@
+﻿@model DataLayer.Models.tblTCIAInterimNotification
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="bodyinner">
+    <div class="container">
+
+        <div class="bodyright" style="width:100%">
+
+            <div class="report-form clearfix">
+
+
+
+
+                @using (Html.BeginForm("Edit", "InterimNotificationSetting", FormMethod.Post, new { name = "Create", id = "Create", enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <center><h1>Practice setting</h1></center>
+                    @*<center><h1>Edit</h1></center>*@
+                    @Html.HiddenFor(m=>m.InterimNotification_Id)
+
+                    @Html.ValidationSummary(true)
+                    <div class="row">
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4 form-group">
+                            @Html.Label("Location")
+                            @Html.DropDownList("Location", "--Select Location--")
+
+                        </div>
+                        <div class="col-sm-4 col-md-4 form-group">
+
+
+                            @Html.Label("Total Number of Day")
+                            @Html.TextBoxFor(model => model.DaysNotification, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.DaysNotification)
+                        </div>
+
+
+                        <div class="col-sm-4 col-md-4 form-group">
+
+                            @Html.Label("Total Number of Visit ")
+                            @Html.TextBoxFor(model => model.VisitNotification, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.VisitNotification)
+                        </div>
+                    </div>
+                  <div class="row">
+                        
+                        <div class="col-sm-4 col-md-4 form-group">
+
+
+                            @Html.Label("Alert Prior Days")
+                            @Html.TextBoxFor(model => model.AlertPriorDay, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.AlertPriorDay)
+                        </div>
+
+
+                        <div class="col-sm-4 col-md-4 form-group">
+
+                            @Html.Label("Alert Prior Visit ")
+                            @Html.TextBoxFor(model => model.AlertPriorVisit, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.AlertPriorVisit)
+                        </div>
+                    </div>
+
+                    <div class="subbutt">
+                        <input type="submit" value="Save" class="btn btn-orange pull-right" />
+
+                        <div class="clearfix"></div>
+                    </div>
+
+
+
+                    <p>@Html.ActionLink("Back to List", "Index")</p>
+                }
+            </div>
+
+
+
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</section>
+
+<script>
+    $('#Location').addClass('form-control');
+</script>

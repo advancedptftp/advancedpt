@@ -1,0 +1,61 @@
+﻿@model DataLayer.Models.tblTPatientResponseReferral
+@using DataLayer;
+@{
+    ViewBag.Title = "Patient Response Referral Create";
+}
+@if (ViewBag.Error != null)
+{
+    @Html.Raw(ViewBag.Error)
+}
+<section class="bodyinner">
+    <div class="bodyleft">
+
+        @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+    </div>
+    <div class="bodyright">
+        @using (Html.BeginForm("PatientResponseReferralCreate", "PatientActivation", FormMethod.Post))
+        {
+            <div class="report-form clearfix">
+                @if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+
+                @Html.HiddenFor(e => e.Doctor_Id)
+                @Html.HiddenFor(e => e.PatientId)
+                @Html.HiddenFor(e => e.PatientResponseReferral_Id)
+                @Html.HiddenFor(e => e.Reply)
+                @Html.HiddenFor(e => e.Note)
+                @Html.HiddenFor(e => e.PatientConditionID)
+                @Html.HiddenFor(e => e.IsScheduled)
+                @Html.HiddenFor(e => e.CreatedBy)
+                @Html.HiddenFor(e => e.CreatedOn)
+                @Html.HiddenFor(e => e.ModifiedBy)
+                @Html.HiddenFor(e => e.ModifiedOn)
+
+                <div class="row">
+                    <div class="col-sm-6 col-md-6 form-group">
+                        <label>Faxed On:</label>
+                        @Html.TextBoxFor(m => m.FaxedOn, new { @class = "form-control datepicker datepicker-bg DenyAdvanceDateSelection", style = "width:100%;", @Readonly = true })
+                        @Html.ValidationMessageFor(m => m.FaxedOn)
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6 col-md-6 form-group">
+                        <label for="date">Staff Description:</label>
+                        @Html.TextAreaFor(m => m.StaffDesc, new { @class = "form-control", @id = "StaffDesc" })
+                        @Html.ValidationMessageFor(m => m.StaffDesc)
+                    </div>
+
+                </div>
+
+                <div class="subbutt">
+                    <input type="submit" id="btnSubmit" class="btn btn-orange pull-right" value="Submit" />
+                    <div class="clearfix"></div>
+                </div>
+
+            </div>
+        }
+    </div>
+</section>

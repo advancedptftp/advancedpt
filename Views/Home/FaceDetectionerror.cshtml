@@ -1,0 +1,48 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="http://karmickproduction.com/designer/advanced/html/favicon.png">
+    <link href="~/Content/style1.css" rel="stylesheet" />
+    <link href="~/fonts/fonts.css" rel="stylesheet" />
+    @*<meta name="viewport" content="width=device-width" />*@
+    <title>FaceDetectionerror</title>
+</head>
+<body>
+
+    <div class="logo"><img src="~/Images/logo.png" alt="" /></div>
+    <div class="maintext">
+        Your Face is not recognized
+        <span>Are you a new patient ?</span>
+    </div>
+
+    <a href="#" class="yesbutt" onclick="fnyes()">YES</a>
+    <a href="#" class="nobutt" onclick="fnNo()">NO</a>
+
+
+
+</body>
+</html>
+<script>
+    var loc = new URL(location.href); //get the current location
+    //alert(loc);
+    var dir = new URL("..", loc); //get the current directory
+    //alert(dir);
+    function fnyes() {
+       
+  
+
+        window.location.href = dir + "Home/FaceDetectionSuccess";
+        // window.location.href = "/ptotslp/P_PatientActivation/Create";
+    }
+    function fnNo() {
+        window.location.href = dir + "Home/FaceDetection";
+        // window.location.href = "/ptotslp/P_PatientActivation/Create";
+    }
+</script>

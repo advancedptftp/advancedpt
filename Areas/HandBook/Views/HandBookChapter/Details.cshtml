@@ -1,0 +1,156 @@
+﻿@model DataLayer.Models.tblMHandBookChapter
+
+@{
+    ViewBag.Title = "Details";
+}
+<section class="bodyinner">
+    <div class="container">
+        <div class="bodyleft">
+
+            @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+        </div>
+        <div class="bodyright">
+
+            <div class="report-form clearfix">
+                <h2 class="text-center">Hand Book Chapter</h2>
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    
+                    @Html.HiddenFor(model => model.CreatedOn)
+                    @Html.HiddenFor(model => model.CreatedBy)
+                    if (ViewBag.Error != null)
+                    {
+                        @Html.Raw(ViewBag.Error)
+                    }
+                    <div class="row">
+                        
+                   
+                    <div class="row">
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Chapter Number")
+                            @Html.TextBoxFor(model => model.ChapterNo, new { @class = "form-control", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(model => model.ChapterNo)
+
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Chapter Name")
+                            @Html.TextBoxFor(model => model.ChapterName, new { @class = "form-control ", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(model => model.ChapterName)
+                        </div>
+                    </div>
+                        <div class="row">
+                            <div class="col-sm-6 form-group">
+                                @Html.Label("Created By")
+                                @Html.TextBoxFor(model => model.CreatedBy, new { @class = "form-control", @readonly = "readonly" })
+                                @Html.ValidationMessageFor(model => model.CreatedBy)
+
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                @Html.Label("Created On")
+                                @Html.TextBoxFor(model => model.CreatedOn, new { @class = "form-control ", @readonly = "readonly" })
+                                @Html.ValidationMessageFor(model => model.CreatedOn)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 form-group">
+                                @Html.Label("Modified By")
+                                @Html.TextBoxFor(model => model.ModifiedBy, new { @class = "form-control", @readonly = "readonly" })
+                                @Html.ValidationMessageFor(model => model.ModifiedBy)
+
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                @Html.Label("Modified On")
+                                @Html.TextBoxFor(model => model.ModifiedOn, new { @class = "form-control ", @readonly = "readonly" })
+                                @Html.ValidationMessageFor(model => model.ModifiedOn)
+                            </div>
+                        </div>
+
+                    </div>
+
+                    @*<div class="subbutt">
+                            <input type="submit" value="Approve" class="btn btn-orange pull-right" id="btnapprov" />
+
+
+                        </div>*@
+                    <p>@Html.ActionLink("Back to List", "Index")</p>
+                }
+
+            </div>
+
+
+
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+@*<h2>Details</h2>
+
+<div>
+    <h4>tblMHandBookChapter</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ChapterNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ChapterNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ChapterName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ChapterName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMUser.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMUser.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMUser1.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMUser1.UserName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Chapter_Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>*@

@@ -1,0 +1,78 @@
+﻿@model DataLayer.Models.tblMPatientInsuranceType
+
+@{
+    ViewBag.Title = "Create";
+}
+@if (ViewBag.Error != null)
+{
+    @Html.Raw(ViewBag.Error)
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+@*<center><h2 style="margin-top:20px;">Insurance Details</h2></center>*@
+<section class="bodyinner">
+    <div class="container">
+
+
+
+        <div class="report-form clearfix">
+            <h2 class="text-center">Insurance Plan</h2>
+            <br /><br />
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(m => m.PatientInsuranceType_ID)
+                @*<h3>Insurance Type</h3>*@
+
+                <div class="row">
+                    <div class="col-sm-6 col-md-6 form-group">
+                        <h4><label><strong>Name</strong></label></h4>
+                        @Html.TextBoxFor(model => model.Plan, new { @class = "applitextfield2", @readonly = true })
+                        @Html.ValidationMessageFor(model => model.Plan)
+                    </div>
+
+
+                    <div class="col-sm-6 col-md-6 form-group">
+                        <h4><label><strong>Description</strong></label></h4>
+
+                        @Html.DropDownList("Company")
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-6 form-group">
+                        <h4><label><strong>Appointment Type</strong></label></h4>
+                        @Html.DropDownList("AppointmentTypeId")
+                        @Html.ValidationMessageFor(model => model.AppointmentTypeId)
+                    </div>
+
+                    <div class="col-sm-6 col-md-6 form-group">
+                        <h4><label><strong>Is Active</strong></label></h4>
+
+                        @Html.CheckBoxFor(model => model.IsActive, new { @disabled = "disabled" })
+                    </div>
+
+                </div>
+
+                <p>@Html.ActionLink("Back to List", "Index")</p>
+            }
+            </div>
+
+
+
+            <div class="clearfix"></div>
+        </div>
+</section>
+</html>
+<script>
+    $("#Company").addClass('applitextfield2')
+    $('#Company').attr("disabled", true);
+    $("#AppointmentTypeId").addClass('applitextfield2')
+    $('#AppointmentTypeId').attr("disabled", true);
+
+</script>

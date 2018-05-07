@@ -1,0 +1,853 @@
+﻿@model DataLayer.Models.CIAInterim
+@using System.Data
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    DataTable dt2 = new DataTable();
+    string str1 = string.Empty;
+    string str2 = string.Empty;
+    string[] Complain_Desc = new string[] { };
+    string ComplainDesc = (string)ViewData["Complain_Desc"];
+    Complain_Desc = ComplainDesc.Split(',');
+
+    //if (ViewBag.ObjectiveOption != null)
+    //{
+    //    dt1 = (DataTable)ViewBag.ObjectiveOption;
+    //}
+    if (ViewBag.Affect_Desc != null)
+    {
+        dt2 = (DataTable)ViewBag.Affect_Desc;
+    }
+    string AssessmentReptDesc = string.Empty;
+
+}
+<script>
+    var Affetcs_of, chkName, totalNoDiv;
+    var c1 = 1;
+    var c3 = 1;
+    var Affect_With_Answare = "";
+    var OptionRange = "";
+    var OptionRangelist = "";
+    var splitOptionRangelist = "";
+    var splitOptionRange = "";
+    var optionafect = "";
+    var PatientAffetcs_oflength = "";
+</script>
+
+<style>
+    .selectedRow {
+        background-color: rgba(249, 159, 62, 0.65);
+        color: white;
+    }
+</style>
+<style type="text/css">
+    .table-fixed thead {
+        width: 97%;
+    }
+
+    .table-fixed tbody {
+        height: 230px;
+        overflow-y: auto;
+        width: 100%;
+    }
+
+    .table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
+        display: block;
+    }
+
+        .table-fixed tbody td, .table-fixed thead > tr > th {
+            float: left;
+            border-bottom-width: 0;
+        }
+</style>
+<style>
+    .loadingdivschedule {
+        display: block;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 9998;
+        background-color: rgba(0,0,0,.3);
+        -webkit-animation: fade 500ms;
+        -moz-animation: fade 500ms;
+        -o-animation: fade 500ms;
+        animation: fade 500ms;
+    }
+
+    .loadingcontainerschedule {
+        width: 100%;
+        text-align: center;
+        padding-top: 26%;
+    }
+</style>
+
+<section class="bodyinner">
+    <div class="container">
+
+        <div class="report-form clearfix">
+            <h1 class="text-center"><strong>Interim Assessment</strong> </h1>
+            @using (Html.BeginForm("Create_Assessment", "InterimAssessment", FormMethod.Post, new { id = "Create", name = "Create" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(e => e.CreatedBy)
+                @Html.HiddenFor(e => e.CreatedOn)
+                @Html.HiddenFor(e => e.ModifiedBy)
+                @Html.HiddenFor(e => e.ModifiedOn)
+                @Html.HiddenFor(e => e.Assessment_Id)
+                @Html.HiddenFor(e => e.AssessmentReptDesc)
+                @Html.HiddenFor(e => e.Patient_Id)
+                @Html.HiddenFor(e => e.Subjective_Id)
+                @Html.HiddenFor(e => e.Objective_Id)
+                @Html.HiddenFor(e => e.SubjectiveAffect_Id_with_PercentageAssist_list_Current)
+
+
+                if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+
+                @*<div class="topforn">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table width="100%" border="0">
+                                <tr>
+                                    <td width="22%"><h3><strong>Assessment</strong></h3></td>
+                                    <td width="78%"></td>
+                                </tr>
+                            </table>
+
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table width="100%" border="0">
+                                <tr>
+                                    <td width="20%"><h4><strong>Patient Name:</strong></h4></td>
+                                    <td width="35%">
+                                        @Html.TextBoxFor(m => m.PatientName, new { @class = "form-control", @readonly = true, @style = "font-size:24px;" })
+
+
+                                    </td>
+                                    <td width="45%"><div class="col-sm-1 form-group" style="padding-top:25px;"></div></td>
+                                </tr>
+                            </table>
+
+                        </div>
+
+                    </div>
+                </div>*@
+                
+                   <div class="topforn">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="lefttext">
+                        @{
+        if (ViewBag.PatientName != null)
+        {
+            @ViewBag.PatientName
+        }
+                        }, DOB:
+                        @{
+        if (ViewBag.PatientDOB != null)
+        {
+            @ViewBag.PatientDOB
+        }
+                        }
+                        <br />
+                        @*Tx Time : 8:00-8:40 PM<br />*@
+                        @*POC: 3/11, ends 02/12/18*@
+
+                        @{
+        string hyfen = "-";
+        string space = " ";
+        string st1 = "Tx Time :";
+
+        if (ViewBag.TreatmentFromTime != null && ViewBag.TreatmentToTime != null)
+        {
+            @st1 @space @ViewBag.TreatmentFromTime @space @hyfen @space @ViewBag.TreatmentToTime
+        }
+                        }<br />
+
+                        POC:
+                        @{
+        string divideSign = "/";
+        string commaSign = ",";
+        string ends = "ends";
+
+        if (ViewBag.TotalNoofVisitRequired != null && ViewBag.CurrentVisitNo != null && ViewBag.TreatmentEndDate != null)
+        {
+            @ViewBag.CurrentVisitNo @divideSign @ViewBag.TotalNoofVisitRequired @commaSign @space @ends @space @ViewBag.TreatmentEndDate
+        }
+        <br />
+        if (ViewBag.Date_Of_injury != null)
+        {
+            string _Date_Of_injury = "Date Of injury : ";
+            @_Date_Of_injury @ViewBag.Date_Of_injury;
+        }
+        else
+        {
+            if (ViewBag.SurgeryDate != null)
+            {
+                string _SurgeryDate = "SurgeryDate : ";
+                @_SurgeryDate @ViewBag.SurgeryDate;
+            }
+            else
+            {
+                if (ViewBag.DateonSet != null)
+                {
+                    string _DateonSet = "Date on Set : ";
+                    @_DateonSet @ViewBag.DateonSet;
+                }
+            }
+        }
+        <br />
+        @*if (ViewBag.FromWhenProblemExist != null)
+        {
+            string _FromWhenProblemExist = "From When Problem Exist : ";
+            @_FromWhenProblemExist @ViewBag.FromWhenProblemExist;
+        }*@
+                        }
+
+
+                    </div>
+                    <div class="righttext">
+                        @*Sumit Paul, DOB:01/14/74<br />
+                            Tx Time : 8:00-8:40 PM*@
+                        @{
+           string str3 = string.Empty;
+        if (ViewBag.Disease_names != null)
+        {
+            string disease = ViewBag.Disease_names;
+            string[] diseasesplit = disease.Split(':');
+            for (var i = 0; i < diseasesplit.Count(); i++)
+                    {
+                <div>
+                    @diseasesplit[i]
+                        </div>
+                             <div class="clearfix"></div>
+             }
+           
+        }
+                        }
+                        @*@str2 <br />*@
+                        @*@str3*@
+                        Auth: 3/15, ends 03/31/18
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+            </div>
+
+            @*<div class="botheadingsec">Daily Treatment Note <span>OBJECTIVE</span></div>*@
+
+
+        </div>
+                <div id="dvid_1">
+                    <script type="text/javascript">
+                        //SS
+
+                        $("#PatientName").keypress(function (e) {
+
+                            var code = (e.keyCode ? e.keyCode : e.which);
+                            if (code === 13) {
+                                var patientName = $('#PatientName').val();
+                                if (patientName != "") {
+                                    $('#txtPatientFirstName').val(patientName);
+                                    fnSearchForPatient();
+                                }
+                                $("#btnTo").click();
+                                return false;
+                            }
+                        });
+                        //SS
+
+
+                        function fn_CreateDivWithOptionsCurrent() {
+
+                            chkName = chkName.substr(1);
+                            var AffetcsOfName = new Array();
+
+                            AffetcsOfName = chkName.split(",");
+                            $("#dvid_1").html('');
+
+                            totalNoDiv = AffetcsOfName.length;
+                            // alert(AffetcsOfName);
+                            $.each(AffetcsOfName, function (index, value) {
+                                //alert("index: " + index + " : " + "Value: " + value);
+
+                                var vDynamicHtmlContent = "<div id='div1_" + index + "' class='div_AffetcsOfNameCurrent'>";
+                                vDynamicHtmlContent += "<input id='chk1_" + index + "' type='checkbox' value='" + index + "' class='checkbox-custom chk1_AffetcsOfName' checked='Selected' disabled style='display: none;' />";
+                                vDynamicHtmlContent += "<label for='chk1_" + index + "' class='checkbox-custom-label lblAffetcsOfName' style='display: none;'>" + value + "</label>";
+                                vDynamicHtmlContent += "<div class='clearfix'></div>";
+                                vDynamicHtmlContent += "<h2 class='chk1_AffetcsOfName'>Currently the patient is able to <u>" + value.toLowerCase() + "</u> with: </h2>";
+                                vDynamicHtmlContent += "<div>";
+                                var j = 1;
+                                for (var i = 0; i < 100; i += 10) {
+                                    var ControlId = "";
+                                    ControlId = ControlId + index + "_" + i;
+                                    vDynamicHtmlContent += "<div class='radiosec'>";
+                                    vDynamicHtmlContent += "<input type='radio' name='radioChildCurrent_" + index + "' class = 'radio-custom PerformIndipendentWithAssistCurrent_" + index + "' value='" + ControlId + "'   id = '" + index + "_" + i + "' />";
+                                    //vDynamicHtmlContent += '<input type="radio" name="radioChild_' + index + '" class="radio-custom PerformIndipendentWithAssist_' + index + '"  id = "' + index + "_" + i + '" onclick="AffectOfWithAnsware(\'' + index + "_" + i + '\')" />';
+
+                                    vDynamicHtmlContent += "<label for='" + index + "_" + i + "' id='lbl" + index + "_" + i + "'class='radio-custom-label'>" + i + "% Assist</label>";
+                                    vDynamicHtmlContent += "</div>";
+                                    j++;
+                                    if (j % 3 == 1) {
+                                        vDynamicHtmlContent += "<div class='clearfix'></div>";
+                                    }
+                                }
+                                vDynamicHtmlContent += "<div class='clearfix'></div>";
+                                vDynamicHtmlContent += "<div style='float:left'>";
+                                if (index > 0) {
+                                    vDynamicHtmlContent += "<input type='button' class='btn btn-primary btn-lg' value='<< Previous' onclick='fn_MovePreviousCurrent(" + totalNoDiv + "," + index + "," + i + ")' />";
+                                }
+                                else {
+
+                                }
+                                vDynamicHtmlContent += "</div>";
+                                vDynamicHtmlContent += "<div style='float:right'>";
+                                vDynamicHtmlContent += "<input type='button' id='btnNext" + index + "' class='btn btn-primary btn-lg' value='Next >>' onclick='fn_MoveNextCurrent(" + totalNoDiv + "," + index + ")' />";
+                                vDynamicHtmlContent += "</div>";
+                                vDynamicHtmlContent += "</div>";
+                                vDynamicHtmlContent += "</div>";
+                                vDynamicHtmlContent += "<div class='clearfix'></div>"
+
+                                $('#dvid_1').append(vDynamicHtmlContent);
+
+
+
+                            })
+
+                            //------------ Hide All Divs Within Same Class Except First One -------------------//
+                            //alert(" Hide All Divs Within Same Class Except First One " + $('.div_AffetcsOfName').length);
+                            //debugger;
+                            if ('@ViewBag.PercentageWithAffectvalueLength' > 1) {
+                                //alert($('.div_AffetcsOfName').length);
+                                for (var i = 1; i <= '@ViewBag.PercentageWithAffectvalueLength'; i++) {
+                                    $("#div1_" + i).hide();
+                                }
+                            }
+                            var _WithAffect = '@ViewBag.PercentageWithAffect';
+                            var _PercentageWithAffect1 = _WithAffect.split(',');
+                            var _PercentageWithAffect2 = _PercentageWithAffect1.length;
+                            if (_PercentageWithAffect2 == totalNoDiv) {
+
+                                if ('@ViewBag.PercentageWithAffect' != null) {
+
+                                    if ('@ViewBag.PercentageWithAffectvalueLength' == totalNoDiv) {
+                                        if (Affetcs_of == '@ViewBag.PercentageWithAffectvalue') {
+                                            var equal = "";
+                                            var selected4 = '@ViewBag.PercentageWithAffect'
+                                            equal = "equal";
+                                            //alert(equal);
+                                            var chkRadio = selected4.split(',');
+                                            var chkRadioLength = chkRadio.length;
+                                            for (var i = 0; i < chkRadioLength; i++) {
+                                                // alert(chkRadio[i]);
+                                                var arr1 = chkRadio[i].split('|');
+                                                // alert(arr1);
+                                                for (var j = 0; j < 17; j++) {
+                                                    // alert("arr1[0] = " + arr1[0] + "  " + "arr1[1] = " + arr1[1]);
+                                                    if (arr1[0] == j) {
+                                                        $("#" + i + "_" + arr1[1]).prop("checked", "checked");
+                                                        break;
+                                                    }
+
+                                                }
+
+                                                $("#SubjectiveAffect_Id_with_PercentageAssist_list_Current").val('@ViewBag.withaffect');
+                                            }
+                                        }
+
+                                    }
+
+                                }
+
+                            }
+
+                        }
+                    </script>
+                </div>
+                <div id="dvid_2" class="fieldpar" style="background: #f8f8f8;">
+
+                    <div class="inlinetext fontlarge" style="line-height: 54px;">
+                        Patient presents with impaired
+                        @{
+                AssessmentReptDesc += "Patient presents with impaired ";
+                //AssessmentReptDesc += @ViewBag.Complain_Desc;
+                        }
+                        @{
+                int cnt = 1;
+                int count = Complain_Desc.Count();
+                        }
+                        @foreach (var item in Complain_Desc)
+                        {
+                            if (cnt == count)
+                            {
+                                AssessmentReptDesc += @item.ToString() + " ";
+                                <span id="@item.ToString()" class="newfield valid txt ObjectiveOption">@item.ToString()</span>
+                            }
+                            else
+                            {
+                                AssessmentReptDesc += @item.ToString() + ", ";
+                                <span id="@item.ToString()" class="newfield valid txt ObjectiveOption">@item.ToString(),</span>
+                            }
+                            cnt++;
+                        }
+
+
+                        all of which adversely affect patient ability to perform
+
+
+                        @if (dt2 != null & dt2.Rows.Count > 0)
+                        {
+                            AssessmentReptDesc += "all of which adversely affect patient ability to perform ";
+                            int j = 1;
+
+                            foreach (DataRow dr2 in dt2.Rows)
+                            {
+                                if (j < dt2.Rows.Count)
+                                {
+                                    AssessmentReptDesc += dr2["Affect_Desc"].ToString() + ", ".TrimEnd(',');
+                                    <span id="@dr2["Affect_Desc"].ToString()" class="newfield valid txt ObjectiveOption">@dr2["Affect_Desc"].ToString(),</span>
+                                }
+                                else if (j >= dt2.Rows.Count)
+                                {
+                                    AssessmentReptDesc += dr2["Affect_Desc"].ToString() + " ";
+                                    <span id="@dr2["Affect_Desc"].ToString()" class="newfield valid txt ObjectiveOption">@dr2["Affect_Desc"].ToString()</span>
+
+                                }
+                                j++;
+                            }
+                            AssessmentReptDesc += "patient will benefit from skilled physical therapy treatment ";
+                            AssessmentReptDesc += ViewBag.NoOfVisitsPerWeekNeeded;
+                            AssessmentReptDesc += " time(s) per week for ";
+                            AssessmentReptDesc += ViewBag.NoOfWeeksToAchieveGoal;
+                            AssessmentReptDesc += " in order to address above - noted deficits and to return patient to ";
+                            AssessmentReptDesc += "prior level of function.";
+                        }
+
+
+                        patient will benefit from skilled physical therapy treatment @ViewBag.NoOfVisitsPerWeekNeeded time(s) per week for @ViewBag.NoOfWeeksToAchieveGoal week(s) in
+                        order to address above noted deficits and to return patient to
+
+                        @*@{
+                            if (ViewBag.PerformIndipendentWithAssist != null)
+                            {
+                                AssessmentReptDesc += ViewBag.PerformIndipendentWithAssist + " ";
+                                AssessmentReptDesc += "prior level of function.";
+                                <span class="newfield">@ViewBag.PerformIndipendentWithAssist</span>
+                            }
+                            else
+                            {
+                                AssessmentReptDesc += "prior level of function.";
+                            }
+                                    }*@
+                        prior level of function.
+                    </div>
+
+                    <div style="float:left">
+                        @*<input type="button" id="btnPrev4" class="btn btn-primary btn-lg" value="Previous" onclick="fnShowDiv2()" />*@
+                        <input type="button" id="btnPrev4" class="btn btn-primary btn-lg" value="<< Previous" onclick="fnShowParentChildDiv4()" />
+
+                    </div>
+                    <div style="float:right">
+                        <input type="submit" id="btnSave" class="btn btn-orange btn-lg" value="Save" />
+                    </div>
+
+                    @*<div style="float:left">
+                            <input type="button" id="btnBackToObjective" class="btn btn-orange btn-lg" value="<< Back To Objective" />
+                        </div>*@
+
+                    <div class="clearfix"></div>
+
+                    <div class="row" style="padding-top:20px;">
+                        @*@Html.ActionLink("Back to list", "Index", new { id = "btnCreateLink" })*@
+                        <a href="@Url.Action("Index", "InterimAssessment")" style="padding-left:15px;"><span class="btn btn-primary btn-lg">Back to list</span> </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Modal -->
+@*@Html.Partial("~/Views/Shared/_SearchPatientPartial.cshtml")*@
+@{Html.RenderPartial("~/Views/Shared/_SearchPatientPartial.cshtml");}
+
+<!-- End Modal -->
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        if ('@ViewBag.PatientName' != null) {
+            $("#PatientName").val('@ViewBag.PatientName');
+        }
+        fnShowDiv4();
+    });
+
+    $("#btnSave").click(function () {
+
+        //------Check Patient TextBox Is Empty Or Not-------//
+        if ($("#PatientName").val().length == 0) {
+            alertify.alert("Please enter the patient name").setHeader('AdvancePT Says');
+            return false;
+        }
+        else {
+            $("#AssessmentReptDesc").val('@AssessmentReptDesc');
+        }
+    });
+
+    $("#btnReset").click(function () {
+        $("#tblPatientList tbody").html('');            // Clear the table body
+    });
+
+
+    function fnShowDiv1() {
+
+        var allChecked = true;
+        var validated = false;
+
+        //alert("totalNoDiv: " + totalNoDiv);
+        if (totalNoDiv > 1) {
+            var divCount = totalNoDiv - 1;
+            $("#div1_" + divCount).show();
+
+        } else {
+
+            if ($('.PatientComplains_of').filter(':checked').length > 0) {
+                $("#dvid_1").show();
+                $("#dvid_2").hide();
+
+            } else {
+                alertify.alert("Please select any options").setHeader('AdvancePT Says');
+                //return false;
+            }
+        }
+    }
+    function fnShowDiv4() {
+        //SelectedOPtionsForInterim();
+        //alert(PatientAffetcs_oflength);
+        var patientaffect = '@ViewBag.affectid';
+        if (patientaffect.length > 1)
+        {
+            var patientaffectsplit = patientaffect.split(',');
+            PatientAffetcs_oflength = patientaffectsplit.length;
+        }
+        else {
+            PatientAffetcs_oflength = patientaffect.length;
+        }
+
+        if (PatientAffetcs_oflength > 0) {
+            //---- Get Selected CheckBox text ----//
+            //Affetcs_of = "";
+            //chkName = "";
+            //$('.PatientAffetcs_of:checked').each(function () {
+            //    Affetcs_of = Affetcs_of + "," + $(this).val();
+            //    chkName = chkName + "," + $(this).attr("name");
+            //    //alert(Affetcs_of);
+            //});
+
+            Affetcs_of = '@ViewBag.affectid';
+            chkName = '@ViewBag.PlanTreatmentname';
+            //$('.PatientAffetcs_of:checked').each(function () {
+            //    Affetcs_of = Affetcs_of + "," + $(this).val();
+            //    chkName = chkName + "," + $(this).attr("name");
+            //});
+
+
+            fn_CreateDivWithOptionsCurrent();
+            //alert(Affetcs_of);
+
+            //alert(chkName);
+            $("#AffectsIds").val(Affetcs_of);
+            $("#dvid_1").show();
+            $("#dvid_2").hide();
+
+        } else {
+            alertify.alert("Please select any options").setHeader('AdvancePT Says');
+            //return false;
+        }
+
+    }
+
+
+    function fnShowParentChildDiv4() {
+        //alert('ok');
+        // $("#dvid_5").hide();
+        $("#dvid_2").hide();
+        $("#dvid_1").show();
+        var num = $('.div_AffetcsOfName').length;
+        if (num > 1) {
+            //alert($('.div_AffetcsOfName').length);
+            for (var i = 0; i <= num; i++) {
+                $("#div1_" + i).hide();
+            }
+        }
+        //fnShowParentChildDiv3();
+        // $("#dvid_4").show();
+        var num = '@ViewBag.PercentageWithAffectvalueLength';
+        c3 = num;
+        for (var i = '@ViewBag.PercentageWithAffectvalueLength'; i <= '@ViewBag.PercentageWithAffectvalueLength'; i--) {
+            //alert(i);
+            $("#div1_" + i).show();
+            if (i == (num - 1)) {
+                break;
+            }
+        }
+    }
+
+    function fnShowDivPrevCurrent() {
+        if ($('.GradualOrSudden').filter(':checked').length > 0) {
+            // if($('input:radio:checked').length > 0){
+            $("#dvid_1").show();
+            $("#dvid_2").hide();
+
+        } else {
+            //alert("in else part");
+            alertify.alert("Please select any option").setHeader('AdvancePT Says');
+            return false;
+        }
+    }
+
+
+    function fn_MovePreviousCurrent(totalNoDiv, index, i) {
+       // alert($('.chk1_AffetcsOfName').filter(':checked').length);
+       // alert(totalNoDiv);
+        if ($('.chk1_AffetcsOfName').filter(':checked').length == 1) {
+            c3 = 1;
+            $("#dvid_1").show();
+            $("#dvid_2").hide();
+
+        } else if (totalNoDiv > 1) {
+            for (var j = 0; j <= index; j++) {
+                if (index == j) {
+                    $("#div1_" + j).hide();
+                    j--;
+                    if (j < 0) {
+                        // alert(totalNoDiv);
+                        //totalNoDiv = 0;
+                        //alert(totalNoDiv);
+                        $("#dvid_1").show();
+                        $("#dvid_2").hide();
+
+                        c3 = 1;
+                    }
+                    else {
+                        //totalNoDiv = j;
+                        //totalNoDiv = totalNoDiv - 1;
+                        //alert(totalNoDiv);
+                        $("#div1_" + j).show();
+                        c3 = j + 1;
+
+                    }
+                    break;
+                }
+            }
+
+        }
+        else {
+            alertify.alert("Please select any options").setHeader('AdvancePT Says');
+            //return false;
+        }
+    }
+
+
+    function fn_MoveNextCurrent(totalNoDiv, index) {
+        //------------- Open Next Div Within Same Class ( Move Next Div ) ---------------//
+
+        //alert("totalNoDiv:" + totalNoDiv + "----" + "index ( Div No ): " + index);
+        // alert($('.PerformIndipendentWithAssist_' + index).filter(':checked').val());
+        if (($('.PerformIndipendentWithAssistCurrent_' + index).filter(':checked').length > 0)) {
+            AffectOfWithAnswareCurrent($('.PerformIndipendentWithAssistCurrent_' + index).filter(':checked').val());
+
+            if (($('.PerformIndipendentWithAssistCurrent_' + index).filter(':checked').length > 0)) {
+                //alert($('.PerformIndipendentWithAssist_' + index).filter(':checked').length);
+                if (totalNoDiv > 1) {
+                    for (var i = 0; i < totalNoDiv; i++) {
+                        // alert(index);
+                        // alert(i);
+                        if (index == i) {
+                            i++;
+                            $("#div1_" + i).show();
+                            if (c3 == totalNoDiv) {
+                                $("#dvid_1").hide();
+                                $("#dvid_2").show();
+
+                            }
+                            c3++;
+                            i--;
+                            $("#div1_" + i).hide();
+                        }
+                    }
+                }
+                else if (totalNoDiv == 1) {
+                    $("#dvid_1").hide();
+                    $("#dvid_2").show();
+
+                }
+            }
+        }
+
+        else {
+            alertify.alert("Please select any options").setHeader('AdvancePT Says');
+            //return false;
+        }
+
+
+    }
+
+
+    function AffectOfWithAnswareCurrent(index) {
+        //alert($('#lbl' + index).text());
+        var OptionRangelist1 = "";
+        var affectsNo = index.charAt(0);
+        var orange = OptionRangelist.split(",");
+        var affectNolength = Affetcs_of.length;
+        var orangelength = orange.length;
+        if (affectsNo == orangelength) {
+            OptionRange = $('#lbl' + index).text();
+            OptionRangelist = OptionRangelist + "," + $('#lbl' + index).text();
+        }
+        else {
+
+
+            //for (k = 0; k <= affectsNo; k++) {
+            //OptionRange = $('#lbl' + index).text();
+            //splitOptionRangelist = OptionRangelist.split(",");
+            if (affectsNo == 0) {
+
+                OptionRangelist1 = "," + $('#lbl' + index).text();
+                OptionRangelist = OptionRangelist1;
+            }
+            if (affectsNo == 1) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + $('#lbl' + index).text();
+                // OptionRangelist = OptionRangelist2;
+            }
+            if (affectsNo == 2) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist3;
+            }
+            if (affectsNo == 3) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist4;
+            }
+            if (affectsNo == 4) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist5;
+            }
+            if (affectsNo == 5) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist1;
+            }
+            if (affectsNo == 6) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist7;
+            }
+            if (affectsNo == 7) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + "," + splitOptionRangelist[7] + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist8;
+            }
+            if (affectsNo == 8) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + "," + splitOptionRangelist[7] + splitOptionRangelist[8] + $('#lbl' + index).text();
+                // OptionRangelist = OptionRangelist9;
+            }
+            if (affectsNo == 9) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + "," + splitOptionRangelist[7] + "," + splitOptionRangelist[8] + "," + splitOptionRangelist[9] + "," + $('#lbl' + index).text();
+                // OptionRangelist = OptionRangelist10;
+            }
+            if (affectsNo == 10) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + "," + splitOptionRangelist[7] + "," + splitOptionRangelist[8] + "," + splitOptionRangelist[9] + "," + splitOptionRangelist[10] + "," + $('#lbl' + index).text();
+                // OptionRangelist = OptionRangelist11;
+            }
+            if (affectsNo == 11) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + "," + splitOptionRangelist[7] + "," + splitOptionRangelist[8] + "," + splitOptionRangelist[9] + "," + splitOptionRangelist[10] + "," + splitOptionRangelist[11] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist12;
+            }
+            if (affectsNo == 12) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + "," + splitOptionRangelist[7] + "," + splitOptionRangelist[8] + "," + splitOptionRangelist[9] + "," + splitOptionRangelist[10] + "," + splitOptionRangelist[11] + "," + splitOptionRangelist[12] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist13;
+            }
+            if (affectsNo == 13) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + splitOptionRangelist[7] + "," + splitOptionRangelist[8] + "," + splitOptionRangelist[9] + "," + splitOptionRangelist[10] + "," + splitOptionRangelist[11] + "," + splitOptionRangelist[12] + "," + splitOptionRangelist[13] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist14;
+            }
+            if (affectsNo == 14) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + "," + splitOptionRangelist[7] + "," + splitOptionRangelist[8] + "," + splitOptionRangelist[9] + "," + splitOptionRangelist[10] + "," + splitOptionRangelist[11] + "," + splitOptionRangelist[12] + "," + splitOptionRangelist[13] + "," + splitOptionRangelist[14] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist15;
+            }
+
+            else if (affectsNo == 15) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + "," + splitOptionRangelist[7] + "," + splitOptionRangelist[8] + "," + splitOptionRangelist[9] + "," + splitOptionRangelist[10] + "," + splitOptionRangelist[11] + "," + splitOptionRangelist[12] + "," + splitOptionRangelist[13] + "," + splitOptionRangelist[14] + "," + splitOptionRangelist[15] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist16;
+            }
+            else if (affectsNo == 16) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + "," + splitOptionRangelist[7] + "," + splitOptionRangelist[8] + "," + splitOptionRangelist[9] + "," + splitOptionRangelist[10] + "," + splitOptionRangelist[11] + "," + splitOptionRangelist[12] + "," + splitOptionRangelist[13] + "," + splitOptionRangelist[14] + "," + splitOptionRangelist[15] + "," + splitOptionRangelist[16] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist17;
+            }
+        }
+
+        //}
+
+
+        // alert(OptionRangelist);
+        //alert(optionafect);
+        //alert(Affetcs_of);
+        Affetcs_ofs = '@ViewBag.affectid';
+        Affetcs_of_list = Affetcs_ofs.split(",");
+
+        var Options = OptionRangelist.substr(1);
+        Options = Options.split(",");
+
+        var Affect_With_Answare_array = new Array();
+        for (var c2 = 0; c2 < Affetcs_of_list.length; c2++) {
+            Affect_With_Answare_array[c2] = Affetcs_of_list[c2] + "|" + Options[c2];
+        }
+
+        // alert(Affect_With_Answare_array);
+        $("#AssessmentReptDesc").val('@AssessmentReptDesc');
+        $("#SubjectiveAffect_Id_with_PercentageAssist_list_Current").val(Affect_With_Answare_array);
+       //alert($("#SubjectiveAffect_Id_with_PercentageAssist_list").val());
+        //alert($("#SubjectiveAffect_Id_with_PercentageAssist_list_Current").val());
+        //alert("affectsNo: " + affectsNo + " --- OptionRange: " + OptionRange);
+        //Affect_With_Answare = Affect_With_Answare + affectsNo + "_" + OptionRange + ",";
+        // alert("Affect_With_Answare: " + Affect_With_Answare);
+    }
+</script>
+<style type="text/css">
+    .backToListButton {
+        font: bold 11px Arial;
+        text-decoration: none;
+        background-color: #EEEEEE;
+        color: #333333;
+        padding: 2px 6px 2px 6px;
+        border-top: 1px solid #CCCCCC;
+        border-right: 1px solid #333333;
+        border-bottom: 1px solid #333333;
+        border-left: 1px solid #CCCCCC;
+        width: 120px;
+        height: 50px;
+    }
+</style>

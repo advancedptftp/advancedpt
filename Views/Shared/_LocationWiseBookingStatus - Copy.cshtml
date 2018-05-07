@@ -1,0 +1,70 @@
+﻿@model DataLayer.Models.tblMPatSchdScheduleSetting
+
+@*<script src="~/Scripts/Speedometer/jquery-1.4.min.js"></script>*@
+@*<script src="~/Scripts/Speedometer/excanvas-modified.js"></script>
+<script src="~/Scripts/Speedometer/jquery.jqcanvas-modified.js"></script>
+<script src="~/Scripts/Speedometer/jquery.speedometer.js"></script>*@
+
+
+
+     
+@*<div class="clearfix"></div>*@
+    <div class="col-sm-12 col-md-12 form-group" style="margin-top:20px;">
+
+        <div class="col-sm-3 form-group">
+          
+            <div id="test" style="width:80px; height:70px;"></div>
+
+        </div>
+        <div class="col-sm-2 form-group">
+            @*@Html.Label("From Date:")*@
+            <input type="text" id="txtFromDate" name="txtFromDate" class="form-control datepicker" placeholder="MM/DD/yyyy" />
+        </div>
+        <div class="col-sm-2 form-group">
+            @*@Html.Label("To date:")*@
+            <input type="text" id="txtToDate" name="txtToDate" class="form-control datepicker" placeholder="MM/DD/yyyy" />
+        </div>
+        <div class="col-sm-3 form-group">
+            @*@Html.Label("Location")
+            @Html.DropDownListFor(e => e.LocationId, (SelectList)ViewBag.Location,"Select Location", new { @class = "form-control" })*@
+        </div>
+    </div>
+
+
+
+    @*<div class="clearfix"></div>*@
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#test').speedometer();
+    });
+
+    $("#LocationId").change(function () {
+      
+        fnGetLocationWiseBooking();
+    });
+
+
+    function fnGetLocationWiseBooking() {
+        // alert('hi');
+        $.ajax({
+            url: '@Url.Action("GetLocationWiseBooking", "ScheduleSettings")',
+            type: "GET",
+            dataType: "Json",
+            data: { LocationId: $('#LocationId').val(), txtFromDate: $('#txtFromDate').val(), txtToDate: $('#txtToDate').val() },
+            success: function (data) {
+                $('#test').speedometer({ percentage: data || 0 });
+            },
+            error: function (error) {
+                alert("Error: " + error);
+            },
+            statusCode: {
+                404: function () {
+                    alert("page not found");
+                }
+            }
+        });
+    }
+
+
+</script>

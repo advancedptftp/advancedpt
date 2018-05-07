@@ -1,0 +1,201 @@
+﻿@model DataLayer.Models.tblMTemplateType
+
+@{
+    ViewBag.Title = "Index";
+}
+@if (ViewBag.Error != null)
+{
+    @Html.Raw(ViewBag.Error)
+}
+@*@{
+    
+    var _VarContent = Model.TemplateContent;
+}*@
+<h2 class="text-center">Template Content update</h2>
+<section class="bodyinner">
+    <div class="container">
+        @*<div class="bodyleft">
+
+
+            @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+        </div>*@
+       
+
+            <div class="report-form clearfix">
+
+
+
+
+                @using (Html.BeginForm("Index", "EmailTemplate", FormMethod.Post, new { name = "Index", id = "Index", enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(e => e.TemplateType_Id)
+                    @Html.HiddenFor(e => e.TemplateContent)
+                    @Html.HiddenFor(e => e.TemplateType)
+                    @Html.HiddenFor(e => e.SystemName)
+                    @Html.HiddenFor(e => e.TemplateFields)
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6 form-group">
+                            <div class="col-sm-6 form-group">
+                                @Html.Label("Template Type")
+                                @Html.DropDownList("TemplateFieldsId")
+                            </div>
+
+                           
+                           
+                        </div>
+
+
+                       
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 form-group">
+
+                            @Html.Label("Template Fields")
+                            <div id="templatefields"></div>
+                        </div>
+
+                        @*<div class="col-sm-6 col-md-6 form-group">
+
+                            @Html.Label("Page No")
+                            @Html.TextBoxFor(model => model.PageNo, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.PageNo)
+                        </div>*@
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12">
+                            @Html.Label("Template Content", new { @class = "" })
+                        </div>
+                        <div class="col-sm-12 col-md-12 form-group">
+
+                            <div class="form-group">
+
+
+                               
+                                <div id="editor">
+                                    @Html.Raw(Model.TemplateContent)
+                                </div>
+
+                            </div>
+                            @Html.Hidden("CreatedOn", DateTime.Now)
+                        </div>
+                    </div>
+                    <div class="subbutt">
+                        <input type="submit" value="Create" class="btn btn-orange pull-right" />
+
+                        <div class="clearfix"></div>
+                    </div>
+                     <a href="@Url.Action("Index", "TemplateTypeFields")">
+                         Back to List
+                                </a>
+                  @*<p>@Html.ActionLink("Back to List", "Index")</p>*@
+                }
+            </div>
+
+
+
+     
+        <div class="clearfix"></div>
+    </div>
+</section>
+
+<script src="@Url.Content("~/Scripts/ckeditor/ckeditor.js")"></script>
+<script src="@Url.Content("~/Scripts/ckeditor/sample.js")"></script>
+<link rel="stylesheet" href="@Url.Content("~/Content/ckeditor/samples.css")">
+<link rel="stylesheet" href="@Url.Content("~/Content/ckeditor/neo.css")">
+<style>
+    fieldset.scheduler-border {
+        border: 1px groove #ddd !important;
+        padding: 0 1.4em 1.4em 1.4em !important;
+        margin: 0 0 1.5em 0 !important;
+        -webkit-box-shadow: 0px 0px 0px 0px #000;
+        box-shadow: 0px 0px 0px 0px #000;
+    }
+
+    legend.scheduler-border {
+        width: inherit; /* Or auto */
+        padding: 0 10px; /* To give a bit of padding on the left and right */
+        border-bottom: none;
+    }
+</style>
+<script>
+    ////////////////for htmleditor(CK editor)
+    initSample('editor');
+
+    $("#Index").submit(function () {
+        $("#editor").html(CKEDITOR.instances["editor"].getData());
+        $("#TemplateContent").val($("#editor").html());
+        //alert(TemplateContent);
+        @*$.ajax({
+            url: '@Url.Action("Create", "HandBook")',
+            type: 'GET',
+            data: {
+
+                PageContent: $("#PageContent").val().trim()
+
+            },
+            cache: 'false',
+            success: function (result) {
+                if (result == "True") {
+                    //alert(result);
+                    return false;
+                }
+                else {
+                    //alert(result);
+                    return false;
+                }
+            },
+            error: function () {
+                //alert("Error");
+                //alert(result);
+                return false;
+            }
+        });*@
+        });
+</script>
+
+<script>
+    $('#TemplateFieldsId').addClass('form-control');
+    $('#TemplateFieldsId').attr("disabled", true);
+    $('#Section').addClass('form-control');
+</script>
+<script>
+    $(document).ready(function () {
+        @*var TContent = '@_VarContent';
+        alert(TContent);
+        if (TContent != null) {
+            $("#editor").html(TContent);
+        }*@
+
+        var _VarFields = $("#TemplateFieldsId option:selected").val();
+       // alert(_VarFields);
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetTemplateFieldsByTypeId", "EmailTemplate")',
+            //datatype: "Json",
+            data: { TemplateFieldsId: _VarFields },
+            success: function (data) {
+                $("#templatefields").html(data);
+                //alert(data);
+                //$.each(data, function (index, value) {
+                //    $('#Section').append('<option value="' + value.Section_Id + '">' + value.SectionName + '</option>');
+                //});
+            },
+            error: function (data) {
+                //alert("Error:");
+                //$.each(data, function (index, value) {
+                //    $('#Section').append('<option value="' + value.Section_Id + '">' + value.SectionName + '</option>');
+                //});
+            }
+        });
+
+        //$('#TemplateFieldsId').change(function () {
+        //    //alert($('#TemplateFieldsId').val());
+            
+        //});
+    });
+   
+
+</script>
+

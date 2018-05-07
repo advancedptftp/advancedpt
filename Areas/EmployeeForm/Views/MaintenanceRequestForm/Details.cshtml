@@ -1,0 +1,114 @@
+﻿@model DataLayer.Models.tblTMaintenanceRequestForm
+
+@{
+    ViewBag.Title = "Approved";
+}
+
+<section class="bodyinner">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div class="bodyleft">
+            @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+        </div>
+
+        <div class="bodyright">
+
+
+            <div class="report-form clearfix">
+                <h2>Maintenance Request Form</h2>
+                <hr />
+                @Html.HiddenFor(m => m.CreatedBy)
+                @Html.HiddenFor(m => m.CreatedOn)
+                @Html.HiddenFor(m => m.RequestForm_Id)
+
+                @if (ViewBag.Error != null)
+                {
+                    <script>
+                        alertify.error('@ViewBag.Error');
+                    </script>
+                    <span style="color:red">@ViewBag.Error</span>
+                }
+
+                <div class="row">
+
+                    <div class="col-sm-6 col-md-4 form-group">
+                        <label for="date">Today’s Date:&nbsp;&nbsp;</label>
+                        @Html.TextBoxFor(m => m.TodaysDate, new { @class = "form-control", style = "width:100%;", @Value = DateTime.Now.ToString("MM/dd/yyyy"), @readonly = true })
+                    </div>
+
+                    <div class="col-sm-6 col-md-6 form-group">
+                        <label>Office Location&nbsp;&nbsp;</label>
+                        @Html.DropDownList("OfficeLocation")
+                        @*@Html.LabelFor(m => m.OfficeLocation, new { @class = "form-control" })*@
+                        @Html.ValidationMessageFor(model => model.OfficeLocation)
+                    </div>
+
+
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6 col-md-6 form-group">
+                        <label>Employee First Name </label>
+                        @Html.TextBoxFor(m => m.EmpFirstName, new { @class = "form-control", @readonly = true })
+                    </div>
+                    <div class="col-sm-6 col-md-6 form-group">
+                        <label for="date">Employee Last Name </label>
+                        @Html.TextBoxFor(m => m.EmpLastName, new { @class = "form-control", @readonly = true })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6 col-md-6 form-group">
+                        @Html.Label("Priority")
+                        @Html.DropDownListFor(m => m.Priority, from DataLayer.MaintenancePriority state in Enum.GetValues(typeof(DataLayer.MaintenancePriority))
+                                                               select new SelectListItem() { Text = state.ToString(), Value = ((int)state).ToString() })
+
+
+                    </div>
+                </div>
+
+                <hr />
+                <div class="row">
+
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <label>Describe item requiring repair or maintenence below: </label>
+                        @*<input name="date" type="text" class="form-control datepicker datepicker-bg" placeholder="mm/dd/yyyy" style="width:100%;">*@
+                        @Html.TextAreaFor(m => m.DescItemRequired, new { @class = "form-control", style = "width:100%;", @readonly = true })
+                    </div>
+
+                </div>
+
+                @*<div class="subbutt">
+
+                    <button type="submit" class="btn btn-orange pull-right" id="btnApprove">Approve</button>
+                </div>*@
+                <div>
+                    @Html.ActionLink("Back to List", "Index")
+                </div>
+            </div>
+
+
+
+
+        </div>
+        <div class="clearfix"></div>
+
+    }
+</section>
+<script>
+    jQuery('.datepicker').datepicker();
+</script>
+<script>
+    $('#OfficeLocation').addClass('form-control');
+    $("#OfficeLocation").attr("disabled", "disabled");
+    $('#Priority').addClass('form-control');
+    $("#Priority").attr("disabled", "disabled");
+
+</script>
+<script>
+    $("#btnApprove").click(function () {
+        $("#OfficeLocation").prop("disabled", false);
+        $("#Priority").prop("disabled", false);
+    });
+</script>

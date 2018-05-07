@@ -1,0 +1,105 @@
+﻿@model DataLayer.Models.tblTPatSchdAppointment
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>tblTPatSchdAppointment</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AppointmentDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AppointmentDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FromTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FromTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ToTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ToTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ResourceID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ResourceID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AppointmentType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AppointmentType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMPatient.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMPatient.FirstName)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

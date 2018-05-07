@@ -1,0 +1,931 @@
+﻿@model DataLayer.Models.LumbosacralOrthosisForm
+@using DataLayer;
+@{
+    ViewBag.Title = "Knee Brace Custom Order";
+}
+
+<section class="bodyinner">
+    @*@using (Html.BeginForm("Create", "KneeBraceCustomForm", FormMethod.Post, new { name = "Create", id = "Create" }))
+        {*@
+
+    <div class="bodyleft">
+
+
+        @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+    </div>
+    <div class="bodyright">
+
+        <div class="report-form clearfix">
+            <h2>Lumbosacral Orthosis Order Form: In Stock HCPCS Code: L0637</h2>
+            @*<div class="p_bot15"><strong>*MEDICARE PATIENTS: DO NOT PROCEED IF THEY HAVE BEEN ISSUED A ‘KNEE BRACE’ IN THE PAST 5 YEARS.</strong></div>*@
+
+            <hr>
+            @using (Html.BeginForm("Create1", "LumbosacralOrthosisForm", FormMethod.Post, new { name = "Create2", id = "Create2" }))
+                {
+                <div id="dvFirst">
+                    @Html.AntiForgeryToken()
+
+                    @*@Html.HiddenFor(e => e.Prescription.DMEForm_Id)
+                    
+                    @Html.Hidden("HCPCSCode", "L0637")
+                    @Html.HiddenFor(e => e.Prescription.DMEFormCode)
+                    @Html.HiddenFor(e => e.Prescription.CreatedOn)*@
+
+
+
+                    @Html.HiddenFor(e => e.Prescription.DMEForm_Id)
+                    @*@Html.Hidden("CreatedOn", DateTime.Now)*@
+                    @Html.Hidden("HCPCSCode", "L0637")
+                    @Html.HiddenFor(e => e.Prescription.DMEFormCode)
+                    @Html.HiddenFor(e => e.Prescription.CreatedOn)
+                    @Html.HiddenFor(e => e.LumbosacralOrthosisOrder.LumbosacralOrthosisForm_Id)
+                    @Html.HiddenFor(e => e.Prescription.DMEClinicalStaffPrescription_Id)
+                    @Html.HiddenFor(e => e.LumbosacralOrthosisOrder.CreatedOn)
+                    @Html.HiddenFor(e => e.LumbosacralOrthosisOrder.CreatedBy)
+                    @Html.HiddenFor(e => e.PurchaseOrderItemDetail.PO_Item_Code)
+                    @Html.HiddenFor(e => e.LumbosacralOrthosisOrder.HCPCSCode)
+                    @Html.HiddenFor(e => e.LumbosacralOrthosisOrder.Patient_Id)
+                    @Html.Hidden("Lumbo Sacral Support with Side Panels")
+                    @if (ViewBag.Error != null)
+                    {
+                    @Html.Raw(ViewBag.Error)
+                    }
+
+                    <div id="dvPrescription" class="todo_inner">
+                        <div id="dvFirst">
+
+                            <h3>LSO Description:</h3>
+                            <div class="row p_bot20">
+
+                                <div class="col-sm-12">
+                                    <div class="rightgray">
+                                        <ul>
+                                            <li><strong>Prefabricated Base with Comfortable Pendulum Abdominal Design (6 Sizes Available).</strong></li>
+                                            <li><strong>Rigid Anterior, Posterior and Lateral Panels.</strong></li>
+                                            <li><strong>Posterior Frame Extends from T9 to S5 to PROTECT Joints, Discs and Muscle during Flexion and Extension.</strong></li>
+                                            <li><strong>Lateral Panels Produce Pressure in the Abdominal Cavity to UNLOAD Joints and Discs.</strong></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <img src="~/Images/pic4.jpg" alt="KneeBraceFreeStyleOASoft image 1" />
+                                    
+                                </div>
+
+                                <div class="col-sm-5">
+                                    <div class="rightgray">
+                                        <h4>L0637 Code Includes the Following:</h4>
+                                        <ul>
+                                            <li>Orthosis</li>
+                                            <li>All Straps, Closures and Padding</li>
+                                            <li>Fitting & Adjustment</li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-4">
+
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-striped">
+
+                                            <tbody>
+                                                <tr>
+                                                    <th>Product Name</th>
+                                                    <th>LSO</th>
+                                                </tr>
+                                                <tr>
+                                                    <th>Product Number</th>
+                                                    <th>453-LSO</th>
+                                                </tr>
+                                                <tr>
+                                                    <th>Manufacturer</th>
+                                                    <th>RCAI</th>
+                                                </tr>
+                                                <tr>
+                                                    <th>Product Number</th>
+                                                    <th>453-LSO</th>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <hr>
+
+                            <h3>LSO Fitting</h3>
+                            <div class="row">
+                                <div class="col-md-7 col-sm-12">
+
+
+                                    <div class="table-responsive">
+                                        <table id="LSOFitting" class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Size</th>
+                                                    <th>Hip Circumference</th>
+                                                    <th>Model #</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                <tr>
+                                                    <th>Small</th>
+                                                    <th>33 - 38 inches</th>
+                                                    <th>453-LSO-S</th>
+
+                                                </tr>
+                                                <tr>
+                                                    <th>Medium</th>
+                                                    <th>39 - 43 inches</th>
+                                                    <th>453-LSO-M</th>
+
+                                                </tr>
+                                                <tr>
+                                                    <th>Large</th>
+                                                    <th>44 - 48 inches</th>
+                                                    <th>453-LSO-L</th>
+
+                                                </tr>
+                                                <tr>
+                                                    <th>XLarge</th>
+                                                    <th>49 - 53 inches</th>
+                                                    <th>453-LSO-XL</th>
+
+                                                </tr>
+                                                <tr>
+                                                    <th>XXLarge</th>
+                                                    <th>54 - 58 inches</th>
+                                                    <th>453-LSO-XXL</th>
+
+                                                </tr>
+                                                <tr>
+                                                    <th>XXXLarge</th>
+                                                    <th>59 - 62 inches</th>
+                                                    <th>453-LSO-XXXL</th>
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+
+
+                                </div>
+                                <div class="col-md-5 col-sm-12">
+
+                                    <div class="borderbox">
+                                        <div class="abovetext">
+                                            <div class="pull-left">Hip Circ : @Html.TextBoxFor(model => model.LumbosacralOrthosisOrder.LSOFitting_HipCirc, new { onblur = "fn_SetModelNo();" }) in</div>
+                                            @Html.ValidationMessageFor(model => model.LumbosacralOrthosisOrder.LSOFitting_HipCirc)
+
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="row p_bot15">
+                                            <div class="col-sm-2 p_top10">Size </div>
+                                            <div class="col-sm-5">
+                                                @Html.DropDownListFor(e => e.LumbosacralOrthosisOrder.LSOFittingSize_Id, (IEnumerable<SelectListItem>)ViewBag.LSOFittingSize_Id, new { @class = "form-control", @disabled = "disabled" })
+                                                @Html.ValidationMessageFor(model => model.LumbosacralOrthosisOrder.LumbosacralOrthosisForm_Id)
+                                            </div>
+                                        </div>
+                                        <div class="row p_bot15">
+                                            <div class="col-sm-2 p_top10">Model </div>
+                                            <div class="col-sm-8">
+                                                @Html.TextBoxFor(model => model.LumbosacralOrthosisOrder.Model_No, new { @class = "form-control" })</div>
+
+                                                @Html.ValidationMessageFor(model => model.LumbosacralOrthosisOrder.Model_No)
+                                            <span id="Model_No" class="validateMsg"></span>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                    </div>
+                                </div>   
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-4 col-md-4 form-group">
+                                    <label>Patient Name</label>
+                                    @Html.TextBoxFor(m => m.LumbosacralOrthosisOrder.Patient_Name, new { @class = "form-control" })
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.LumbosacralOrthosisOrder.Patient_Name)
+                                    <span id="PatientName" class="validateMsg"></span>
+                                </div>
+                                <div class="col-sm-4 col-md-4 form-group">
+                                    <label for="date">DOB</label>
+                                    @Html.TextBoxFor(m => m.LumbosacralOrthosisOrder.DOB, new { @class = "form-control datepicker datepicker-bg CustomDateFormat CustomDateFormat", style = "width:100%;", @Value = @Model.LumbosacralOrthosisOrder.DOB.GetExactValue() })
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.LumbosacralOrthosisOrder.DOB)
+                                    <span id="DOB" class="validateMsg"></span>
+                                </div>
+                                <div class="col-sm-2 form-group" style="padding-top:25px;">
+                                    <!-- Trigger the modal with a button -->
+                                    <button type="button" id="btnTo" class="btn btn-info btn-lg PatientEmailSearchModal" data-toggle="modal" data-id="To" data-target="#PatientEmailSearchModal">Search Patient</button>
+                                </div>
+                            </div>
+                            <hr>
+
+                           
+                        </div>
+
+
+                        <div class="outerf">
+                            <div class="stepheading"><strong>1. Clinical Staff </strong> <i>prescription</i></div>
+                            <div class="hiddenform">
+                                <div class="row">
+                                    <div class="col-sm-4 col-md-5 form-group">
+                                        Diagnosis
+                                    </div>
+                                    <div class="col-sm-4 col-md-5 form-group">
+                                        ICD-10 Code
+                                    </div>
+                                    <div class="col-sm-4 col-md-2 form-group">
+
+                                    </div>
+                                </div>
+                                <div id="dvDiagnosis">
+                                    <script>
+                                        var counter = 0;
+                                    </script>
+                                    @for (int i = 0; i < Model.DMEDiognosis.Count; i++)
+                                    {
+                                    <div class="row">
+                                        <div class="col-sm-4 col-md-5 form-group">
+                                            @Html.TextBoxFor(e => e.DMEDiognosis[i].Diagnosis_Desc, new { @class = "form-control Disease_nameForICD" })
+                                            <span id="Diagnosis_Desc" class="validateMsg"></span>
+                                        </div>
+                                        <div class="col-sm-4 col-md-5 form-group">
+                                            @Html.TextBoxFor(e => e.DMEDiognosis[i].ICD10Code, new { @class = "form-control ICD_CodeForICD" })
+                                            <span id="ICD10Code" class="validateMsg"></span>
+                                        </div>
+                                        <div class="col-sm-4 col-md-2 form-group">
+                                            <button id="addRows" class="addbutt" type="button" style="margin-top:0;" title="Add New Diagnosis"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                            @Html.HiddenFor(e => e.DMEDiognosis[i].DMEDiagnosis_Id, new { @class = "icdidForICD" })
+                                        </div>
+                                    </div>
+                                    <script>
+                                        counter += 1;
+                                    </script>
+                                    }
+
+                                </div>
+                                <div class="p_bot15">
+                                    <button type="button" class="btn btn-primary pull-left" onclick="OpenDialog()">Search ICD-10</button>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div>
+                                    <div class="row form-group">
+                                        <div class="col-sm-12"></div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6 form-group">
+                                        <label class="checkbox-inline"><input name="optradio" type="checkbox">Item Requested By</label>
+                                        <div class="p_left15">
+                                            <label class="checkbox-inline">
+                                                @Html.CheckBoxFor(e => e.Prescription.IsItemReqByTherapist, new { @class = "checkone1", onchange = "fnEnableDisableTextbox(this,'Prescription_Therapist_Name');" })
+                                                Therapist
+                                            </label>
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-12 form-group p_top10">
+                                                    @Html.TextBoxFor(e => e.Prescription.Therapist_Name, new { @class = "form-control enabledisable" })
+                                                    <span id="Therapist_Name" class="validateMsg"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+
+                                    <div class="p_left15">
+                                        <label class="checkbox-inline">
+                                            @Html.CheckBoxFor(e => e.Prescription.IsItemReqByPatient, new { @class = "checkone1", onchange = "fnEnableDisableTextbox(this,'');" })
+                                            Patient
+                                        </label>
+
+                                    </div>
+                                    <div class="p_left15">
+                                        <label class="checkbox-inline">
+                                            @Html.CheckBoxFor(e => e.Prescription.IsItemReqByDoctor, new { @class = "checkone1", onchange = "fnEnableDisableTextbox(this,'Prescription_Doctor_Name');" })
+                                            Doctor
+                                        </label>
+
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-6 form-group p_top10">
+                                                @Html.TextBoxFor(e => e.Prescription.Doctor_Name, new { @class = "form-control enabledisable" })
+                                                <span id="Doctor_Name" class="validateMsg"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6 form-group">
+                                        <label class="checkbox-inline">
+                                            @Html.CheckBoxFor(e => e.Prescription.IsCompleteLOMN, new { @class = "" })
+                                            Complete <b>Letter of Medical Necessity</b>
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6 form-group">
+                                        <div class="col-sm-1 p_top10">Int</div>
+                                        <div class="col-sm-5">
+                                            @Html.TextBoxFor(e => e.Prescription.CompleteLOMN_Initial, new { @class = "form-control" })
+                                          
+                                            <span id="Prescription" class="validateMsg"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12 form-group">
+                                        <label class="checkbox-inline">
+                                            @Html.CheckBoxFor(e => e.Prescription.IsGiveFormAndLOMN, new { @class = "" })
+                                            Give FORM &amp; LETTER of Med.Nec. to Office Staff
+                                        </label>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="subbutt">
+                                @*<button type="button" class="btn btn-primary pull-left" onclick="GotoFirstPanel()">Back</button>*@
+                                <input type="submit" onclick="return validateInputs()" id="btnSubmit" class="btn btn-orange pull-right" value="Submit" />
+                                <div class="clearfix"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+              }
+
+        </div>
+
+    </div>
+
+    <div class="clearfix"></div>
+    <div id="Dialog-Box" class="ICDSearch">
+        @Html.Partial("_ICDSearch")
+    </div>
+
+
+    @*}*@
+</section>
+
+<div class="modal fade" id="PatientEmailSearchModal" role="dialog">
+    <div class="modal-dialog modal-lg" style="width:950px;">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="padding-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Search Patient Name</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div id="searchPatient">
+                        <div class="row SearchFilterContainer" id="SearchFilterContainer">
+                            <div class="col-sm-6 col-md-3">
+                                <div class=headrightcont>First Name</div>
+                                <input id="txtPatientFirstName" type="text" class="applitextfield2" name="Fname" value="" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class=headrightcont>Last Name</div>
+                                <input id="txtPatientLastName" type="text" class="applitextfield2" name="Lname" value="" />
+                            </div>
+
+                            <div class="col-sm-6 col-md-3">
+                                <div class="headrightcont">SSN</div>
+                                <input id="txtPatientSSN" type="text" class="applitextfield2" name="SSN" value="" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="headrightcont">Phone</div>
+                                <input id="txtPatientPhone" type="text" class="applitextfield2 UsCellFormat" name="Phone" value="" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class=headrightcont>City</div>
+                                <input id="txtPatientCity" type="text" class="applitextfield2" name="City" value="" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class=headrightcont>State</div>
+                                <input id="txtPatientState" type="text" class="applitextfield2" name="State" value="" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="headrightcont">Zip Code</div>
+                                <input id="txtPatientZipCode" type="text" class="applitextfield2" name="ZipCode" value="" maxlength="5" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="headrightcont">&nbsp;</div>
+                                <button class="btn btn-success fnSearchForPatient1" onclick="fnSearchForPatient();">Search</button>
+                            </div>
+                        </div>
+                        <div class="SearchResultContainer1">
+                            <table class="table table-bordered table-scroll" id="tblPatientList">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>DOB</th>
+                                        <th>Email</th>
+                                        @*<th>Mob No</th>
+                                            <th>Home Phone</th>
+                                            <th>Address</th>*@
+                                    </tr>
+                                </thead>
+                                <tbody> </tbody>
+                            </table>
+
+                            <div id="div_noRecPatient" style="text-align: center; vertical-align: middle; line-height: 38px; display:none;"><label style='color:red'>There no records are found !!</label></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="hdToCC" value="" />
+                <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).on("click", ".PatientEmailSearchModal", function () {
+        var myBookId = $(this).data('id');
+        $("#btnTo").val(myBookId);
+    });
+    $(document).ready(function () {
+        $("#LumbosacralOrthosisOrder_LSOFitting_HipCirc").focus();
+    });
+</script>
+<script type="text/javascript">
+    var k1 = "";
+    var ccto = "";
+
+    function fnSearchForPatient() {
+        $.ajax({
+            url: '@Url.Action("SearchForPatient", "LumbosacralOrthosisForm")',
+            type: "GET",
+            dataType:"JSON",
+            data: {
+                FirstName: $('#txtPatientFirstName').val(),
+                LastName: $('#txtPatientLastName').val(),
+                SSN: $('#txtPatientSSN').val(),
+                Email: $('#txtPatientEmail').val(),
+                Phone: $('#txtPatientPhone').val(),
+                City: $('#txtPatientCity').val(),
+                State: $('#txtPatientState').val(),
+                ZipCode: $('#txtPatientZipCode').val()
+            },
+            success: function (json) {
+                var count = 1;
+                $("#tblPatientList tbody").html('');
+                for (var i = 0; i < json.length; i++) {
+                    var __date = json[i].DOB;
+                    //alert('DOB:' + __date);
+                    var dateString = __date.substr(6);
+                    var currentTime = new Date(parseInt(dateString));
+                    var month;
+                    if (currentTime.getMonth() < 10)
+                    {
+                        month = currentTime.getMonth() + 1;
+                        month = '0' + month.toString();
+                    }
+
+                    else
+                        month = currentTime.getMonth() + 1;
+                    var day;
+                    if (currentTime.getDate() < 10)
+                    {
+
+                        day = currentTime.getDate();
+                        day = '0' + day.toString();
+                    }
+                    else
+                    {
+                        day = currentTime.getDate();
+                    }
+
+                    var year = currentTime.getFullYear();
+                    var date = month + "-" + day + "-" + year;
+                    //alert(date);
+                    var row = "<tr onclick='fnSelectPatientRow(this);'>" +
+                                        "<td>" + count + "</td>" +
+                                       "<td>" + json[i].First_Name + "</td>" +
+                                        "<td>" + json[i].Last_Name + "</td>" +
+                                        "<td>" + date + "</td>" +
+                                         "<td>" + json[i].Email + "</td>" +
+                                        //"<td>" + json[i].MobNo + " </td>" +
+                                        //"<td>" + json[i].Email + "</td>" +
+                                        //"<td>" + json[i].MobNo + " </td>" +
+                                        //"<td>" + json[i].Phone2 + "</td>" +
+                                        "<td> <input type='hidden' name='' value='" + json[i].Patient_Id + "' class='patientID' /><input type='hidden' name='' value='" + json[i].Email + "' class='patientEmail' />" + json[i].Address + "</td>" +
+                                        "<input type='hidden' name='" + "hdn__" + count + "' id='" + "hdn__" + count + "' value='" + date + "' class='patientID' />" +
+                                    "</tr>";
+                    $("#tblPatientList tbody").append(row);
+                    count = count + 1;
+                }
+                if (json.length == 0) {
+                    $("#div_noRecPatient").show();
+                    $("#LumbosacralOrthosisOrder_Patient_Name").val("");
+                    $("#Condition_PatientId").val("");
+                }
+            },
+            error: function (msg) {
+            },
+        });
+    }
+
+    function fnShowPatientSearch() {
+        $('#_SearchPatient').modal();
+
+        $('#txtPatientFirstName').val("");
+        $('#txtPatientLastName').val("");
+        //$('#txtPatientFirstDOB').val("");
+        $('#txtPatientLastSSN').val("");
+        $('#txtPatientPhone').val("");
+        $('#txtPatientCity').val("");
+        $('#txtPatientState').val("");
+        $('#txtPatientZipCode').val("");
+    }
+    //For Patient
+    function fnSelectPatientRow(obj) {
+        //alert(obj);
+        $("#tblPatientList tbody tr").removeClass('selectedRow');
+        $(obj).addClass('selectedRow');
+        $('#PatientEmailSearchModal').modal('hide');
+        $("#LumbosacralOrthosisOrder_Patient_Name").val($($(obj).find('td')[1]).html() + " " + $($(obj).find('td')[2]).html());
+        //$("#KneeBraceCustomForm_DOB").val($($(obj).find('td')[3]).html());
+        //$("#KneeBraceCustomForm_DOB").val($($(obj).find('input')[3]).val());
+        $("#LumbosacralOrthosisOrder_DOB").val($($(obj).find('td')[3]).html());
+        $("#LumbosacralOrthosisOrder_Patient_Id").val($($(obj).find('input')[0]).val());
+        //$("#PatientUser_Email").val($($(obj).find('input')[1]).val());
+
+        //if ($("#hdToCC").val() == "To") {
+        //    k1 = k1 + ";" + $($(obj).find('input')[1]).val();
+        //    $("#EmailTo").val(k1.substr(1));
+
+        //}
+        //else if ($("#hdToCC").val() == "CC") {
+        //    ccto = ccto + ";" + $($(obj).find('input')[1]).val();
+        //    $("#EmailCC").val(ccto.substr(1));
+
+        //}
+    }
+
+
+
+</script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#LumbosacralOrthosisOrder_DOB').datepicker('setEndDate', new Date());
+
+        $("#Model_No").hide();
+        $("#PatientName").hide();
+        $("#DOB").hide();
+        $("#Prescription").hide();
+        $("#Therapist_Name").hide();
+        $("#Doctor_Name").hide();
+        $("#Diagnosis_Desc").hide();
+        $("#ICD10Code").hide();
+    });
+
+
+    function validateInputs() {
+
+        var flag = true;
+        var Model_No = document.getElementById("LumbosacralOrthosisOrder_Model_No");
+        var PatientName = document.getElementById("LumbosacralOrthosisOrder_Patient_Name");
+        var DOB = document.getElementById("LumbosacralOrthosisOrder_DOB");
+        var Prescription = document.getElementById("Prescription_CompleteLOMN_Initial");
+        var Therapist_Name = document.getElementById("Prescription_Therapist_Name");
+        var Doctor = document.getElementById("Prescription_Doctor_Name");
+        var Diagnosis_Desc = document.getElementById("DMEDiognosis_0__Diagnosis_Desc");
+        var ICD10Code = document.getElementById("DMEDiognosis_0__ICD10Code");
+
+        if (Model_No.value == "" || Model_No.value == null || Model_No.value == "") {
+            $("#Model_No").show();
+            $("#Model_No").text("Enter Above and Bellow Knee Size");
+            Model_No.focus();
+            flag = false;
+        }
+        else {
+            $("#Model_No").hide();
+            $("#Model_No").text("");
+        }
+
+        if (PatientName.value == "" ||PatientName.value ==''||PatientName.value ==null) {
+            $("#PatientName").show();
+            $("#PatientName").text("Enter Patient Name");
+            PatientName.focus();
+            flag = false;
+        }
+        else {
+            $("#PatientName").hide();
+            $("#PatientName").text("");
+
+        }
+        if (DOB.value == "" ||DOB.value == '' ||DOB.value == null) {
+            $("#DOB").show();
+            $("#DOB").text("Enter Patient Date of Bearth");
+            DOB.focus();
+            return false;
+        }
+        else{
+            $("#DOB").show();
+            $("#DOB").text("");
+        }
+        if ((Math.abs(new Date().getFullYear() - new Date(DOB.value).getFullYear())) < 10) {
+            $("#DOB").show();
+            $("#DOB").text("Patient's age should be 10 years or more!!");
+            DOB.focus();
+            flag = false;
+        }
+        else {
+            $("#DOB").hide();
+        }
+
+
+        if (Diagnosis_Desc.value != undefined) {
+            if (Diagnosis_Desc.value == null || Diagnosis_Desc.value == "" || Diagnosis_Desc.value == '') {
+                $("#Diagnosis_Desc").show();
+                $("#Diagnosis_Desc").text("Enter Diagnosis_Desc");
+                Diagnosis_Desc.focus();
+                flag = false;
+            }
+            else {
+                $("#Diagnosis_Desc").hide();
+                $("#Diagnosis_Desc").text("");
+            }
+        }
+
+        if (ICD10Code.value != undefined) {
+            if (ICD10Code.value == null || ICD10Code.value == "" || ICD10Code.value == '') {
+                $("#ICD10Code").show();
+                $("#ICD10Code").text("Enter ICD10 Code");
+                ICD10Code.focus();
+                flag = false;
+            }
+            else {
+                $("#ICD10Code").hide();
+                $("#ICD10Code").text("");
+            }
+        }
+
+        if (Prescription.value == "" || Prescription.value == null || Prescription.value == '') {
+            $("#Prescription").show();
+            $("#Prescription").text("Enter Prescription");
+            Prescription.focus();
+            flag = false;
+        }
+        else {
+            $("#Prescription").hide();
+            $("#Prescription").text("");
+        }
+
+
+        if ($("#Prescription_IsItemReqByTherapist").is(':checked')) {
+            if (Therapist_Name.value == "") {
+                $("#Therapist_Name").show();
+                $("#Therapist_Name").text("Enter Therapist Name");
+                Therapist_Name.focus();
+                flag = false;
+            }
+        }
+        else if ($("#Prescription_IsItemReqByDoctor").is(':checked')) {
+
+            if (Doctor.value == "") {
+
+                $("#Doctor_Name").show();
+                $("#Doctor_Name").text("Enter Doctor Name");
+                Doctor.focus();
+                flag = false;
+
+            }
+        }
+        if ($("#Prescription_IsItemReqByPatient").is(':checked')) {
+            if ((Doctor.value == "") && (Therapist_Name.value == "")) {
+                return true;
+            }
+        }
+        else if ((Therapist_Name.value == "") && (Doctor.value == "")) {
+            $("#Therapist_Name").show();
+            $("#Therapist_Name").text("Enter Therapist Name");
+            Therapist_Name.focus();
+            $("#Doctor_Name").show();
+            $("#Doctor_Name").text("Enter Doctor Name");
+            Doctor.focus();
+            flag = false;
+        }
+        //else {
+        //    return true;
+        //}
+        return flag;
+    }
+
+
+</script>
+
+
+
+<script type="text/javascript">
+
+
+
+    $(function () {
+        $("#addRows").click(function () {
+            //counter = 2;
+            $("#dvDiagnosis").append("<div class='row'><div id='Div"
+                + counter + "' class='col-sm-4 col-md-5 form-group'>" +
+                "<input class='form-control Disease_nameForICD'  id='DMEDiognosis_" + counter + "__Diagnosis_Desc' name='DMEDiognosis[" + counter + "].Diagnosis_Desc' type='text'>" +
+                "</div><div id='Div1" + counter + "' class='col-sm-4 col-md-5 form-group'>" +
+                "<input class='form-control ICD_CodeForICD' id='DMEDiognosis_" + counter + "__ICD10Code' name='DMEDiognosis[" + counter + "].ICD10Code'  type='text'>" +
+                "</div><div id='Div2" + counter +
+                "' class='col-sm-4 col-md-2 form-group'> <button  class='addbutt' type='button' style='margin-top:0;' title='Remove New Diagnosis' onclick='removeRow("
+                + counter + ")'><i class='fa fa-remove' aria-hidden='true'></i></button><input type='hidden' id='DMEDiognosis_" + counter + "__DMEDiagnosis_Id' name='DMEDiognosis[" + counter + "].DMEDiagnosis_Id' value='' class='icdidForICD' /></div></div>")
+            BindOnFocusForICD();
+            counter++;
+        });
+    });
+
+    function removeRow(cnt) {
+        $("#Div" + cnt).remove();
+        $("#Div1" + cnt).remove();
+        $("#Div2" + cnt).remove();
+        counter--;
+    }
+    $('#Dialog-Box').dialog({
+        autoOpen: false,
+        height: 500,
+        width: 700,
+        modal: true
+    });
+
+    function OpenDialog() {
+
+        var name = $('#Name').val();
+        var address = $('#Address').val();
+        $('#Dialog-Name').val(name);
+        $('#Dialog-Address').val(address);
+        $('#Dialog-Box').dialog("open");
+    }
+
+
+    function SearchICD10() {
+
+        // $('#Dialog-Box').dialog("close");
+
+        @*$.ajax({
+            url: '@Url.Action("ActionName", "ControllerName")',
+            type: 'POST',
+            data: {
+                code: $('#Dialog-Name').val()
+
+            },
+            success: function (msg) {
+            },
+            error: function (msg) {
+            }
+        });*@
+
+
+        }
+
+
+
+    //var formData = $('#Create').serializeObject();
+    //$.extend(formData, { 'count': counter }); //Send Additional data
+
+
+
+    function fnEnableDisableTextbox(obj, textbox) {
+        $('.enabledisable').attr("disabled", "disabled");
+        $('.enabledisable').val('');
+        if ($(obj).is(":checked")) {
+            $('#' + textbox).removeAttr("disabled");
+            $('.checkone1').not(obj).attr("checked", false);
+        }
+    }
+
+    function closeDiv() {
+        $('#Dialog-Box').dialog("close");
+    }
+</script>
+<script type="text/javascript">
+    var _rightleft;
+    //function fnchooseFreestyle(m) {
+    //    _rightleft = m;
+    //    SetModelNo();
+    //}
+    function fn_SetModelNo() {
+
+        var above = "";
+        var below = "";
+        var x = "";
+        hip_cir = $('#LumbosacralOrthosisOrder_LSOFitting_HipCirc').val();
+       
+        //if (_rightleft != undefined) {
+        if ((hip_cir != null) && (hip_cir != "")  && (above != " ")) {
+            //alert($('#KneeBraceFreeStyleOASoftForm_Fitting_Above').val() + " " + $('#KneeBraceFreeStyleOASoftForm_Fitting_Below').val());
+            $("#LSOFitting tbody tr").css("color", "");
+            //X=1 (Small)
+            if (hip_cir >= 33 && hip_cir <= 38) {
+                x = 1;
+                var model = "";
+                model = '453-LSO-S';
+                //alert(_rightleft);
+                //alert(model);
+                $('#LumbosacralOrthosisOrder_Model_No').val(model);
+                $('#LumbosacralOrthosisOrder_LSOFittingSize_Id').val(x).attr("selected", "selected");
+                $($("#LSOFitting tbody tr")[0]).css("color", "#f58f22");
+
+            }
+                //X=2 (Medium)
+            else if (hip_cir >= 39 && hip_cir <= 43) {
+                x = 2;
+                var model = "";
+                model = '453-LSO-M';
+                //alert(model);
+                $('#LumbosacralOrthosisOrder_Model_No').val(model);
+                $('#LumbosacralOrthosisOrder_LSOFittingSize_Id').val(x).attr("selected", "selected");
+                $($("#LSOFitting tbody tr")[1]).css("color", "#f58f22");
+            }
+                //X=3 (Large)
+            else if (hip_cir >= 44 && hip_cir <= 48) {
+                x = 3;
+                var model = "";
+                model = '453-LSO-L';
+                //alert(model);
+                $('#LumbosacralOrthosisOrder_Model_No').val(model);
+                $('#LumbosacralOrthosisOrder_LSOFittingSize_Id').val(x).attr("selected", "selected");
+                $($("#LSOFitting tbody tr")[2]).css("color", "#f58f22");
+            }
+                //X=4 (X-Large)
+            else if (hip_cir >= 49 && hip_cir <= 53) {
+                x = 4;
+                var model = "";
+                model = '453-LSO-XL';
+                //alert(model);
+                $('#LumbosacralOrthosisOrder_Model_No').val(model);
+                $('#LumbosacralOrthosisOrder_LSOFittingSize_Id').val(x).attr("selected", "selected");
+                $($("#LSOFitting tbody tr")[3]).css("color", "#f58f22");
+            }
+                //X=5 (XXLarge)
+            else if (hip_cir >= 54 && hip_cir <= 58) {
+                x = 5;
+                var model = "";
+                model = '453-LSO-XXL';
+                //alert(model);
+                $('#LumbosacralOrthosisOrder_Model_No').val(model);
+                $('#LumbosacralOrthosisOrder_LSOFittingSize_Id').val(x).attr("selected", "selected");
+                $($("#LSOFitting tbody tr")[4]).css("color", "#f58f22");
+            }
+                //X=6 (XXXLarge)
+            else if (hip_cir >= 59 && hip_cir <= 62) {
+                x = 6;
+                var model = "";
+                model = '453-LSO-XXXL';
+                //alert(model);
+                $('#LumbosacralOrthosisOrder_Model_No').val(model);
+                $('#LumbosacralOrthosisOrder_LSOFittingSize_Id').val(x).attr("selected", "selected");
+                $($("#LSOFitting tbody tr")[5]).css("color", "#f58f22");
+            }
+            else {
+                alert("Range Violated!...");
+                $('#LumbosacralOrthosisOrder_Model_No').val('');
+            }
+        }
+        else {
+            alert("Input Correctly.");
+        }
+    }
+    //}
+    function fnEnableDisableTextbox(obj, textbox) {
+        $('.enabledisable').attr("disabled", "disabled");
+        $('.enabledisable').val('');
+        if ($(obj).is(":checked")) {
+            $('#' + textbox).removeAttr("disabled");
+            $('.checkone1').not(obj).attr("checked", false);
+        }
+    }
+
+    $('#btnSubmit').click(function () {
+        $('#LumbosacralOrthosisOrder_LSOFittingSize_Id').removeAttr('disabled');
+    });
+
+</script>

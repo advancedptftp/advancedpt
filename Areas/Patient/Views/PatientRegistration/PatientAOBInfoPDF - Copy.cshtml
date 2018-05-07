@@ -1,0 +1,565 @@
+﻿@model DataLayer.Models.PatientAOBInfo
+@using DataLayer;
+@{
+    ViewBag.Title = "PatientAOBInfoPDF";
+}
+
+<body>
+
+
+    <div style="width:90%; margin-left:50px; padding:40px 0; font-family:verdana; font-size:30px; color:#333;">
+
+
+        <div style="padding:0 0 17px 0; border-bottom:3px solid #666;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="38%">
+                        <h2 style="padding:0; font-size:50px; margin:0; text-align:center; color:#d2232b;">Assignment of my Benefits</h2>
+                        <div style="text-align: center; padding: 12px 0 0 0; font-weight: bold; color: #d2232b; font-size: 20px; ">IMPORTANT: All information must be completed or we will NOT be able to do the courtesy of dealing directly with your insurance.</div>
+                    </td>
+
+                </tr>
+            </table>
+
+        </div>
+
+        <div style="padding: 15px 0 20px 0; text-align: center; font-size: 25px; margin-top: 40px; margin-bottom: 20px;"><strong>1. Benefit Info</strong></div>
+
+        <div style="padding: 3px 0 0px 0;">
+            <table border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td valign="top" width="93%" style="font-size:20px;">
+                            What is your deductible amount? $<span style="width:60px; margin:10px 10px 0px 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:0px; ">
+                                @Html.DisplayFor(m => m.MyDeductible, new { @class = "applitextfield1" })
+                            </span> and coinsurance %  <span style="width:50px; margin:0 10px 0 0; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:0px; ">
+                                @Html.DisplayFor(m => m.MyCoInsurance, new { @class = "applitextfield1" })
+
+                            </span> (for the services you are seeking)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-bottom:15px;"></td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+
+        </div>
+        <div style="padding:3px 0 10px 0;">
+            <table border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td valign="top" width="93%" style="font-size: 20px;">
+                            Are there any maximums?<span style="padding-left:20px;">
+                                <label class="radio-inline">
+                                    @Html.RadioButtonFor(m => m.number_of_visits, Convert.ToInt16(YesNo.Yes).ToString()) Yes &nbsp;&nbsp;&nbsp;&nbsp;@Html.RadioButtonFor(m => m.number_of_visits, Convert.ToInt16(YesNo.No).ToString()) No
+                                </label>
+                            </span>
+                            <div style="padding-top:8px; font-style:italic; font-size:20px;">If you don’t know this information, call the “800” number on your insurance card. The front desk person may be able assist you.</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div style="padding: 15px 0 20px 0; text-align: center; font-size: 25px; margin-top: 40px; margin-bottom:20px;"><strong>2. Policy Info</strong></div>
+        <div style="padding:3px 0 20px 0;">
+            <table border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td valign="top" width="93%" style="font-size: 20px;">
+                            Patient Name<span style="width:400px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:7px; ">
+                                @Html.DisplayFor(m => m.FirstName, new { @class = "applitextfield1", id = "FirstName" })
+                                @Html.DisplayFor(m => m.LastName, new { @class = "applitextfield1", id = "LastName" })
+                            </span>ID <span style="width:150px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:7px; ">
+
+                                @Html.DisplayFor(m => m.Social_Security, new { @class = "applitextfield1", id = "Social_Security" })
+                            </span> DOB
+                            <span style="width: 150px; margin: 0 10px 0 10px; display: inline-block; border-bottom: 1px solid #ccc; border-left: none; border-right: none; border-top: none; padding-bottom: 7px;">
+                                @Model.DOB.GetExactValue()
+
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div style="padding:3px 0 25px 0;">
+            <table border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td valign="top" width="93%" style="font-size:20px;">
+                            Insurance Policy 1 Name/Number/Group # (if applicable)
+                            <div style=" width:450px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:10px; padding-top:10px; ">
+                                &nbsp;
+                                @Html.DisplayFor(m => m.Name, new { @class = "applitextfield1", id = "Name" })/
+                                @Html.DisplayFor(m => m.PolicyNumber, new { @class = "applitextfield1", id = "PolicyNumber" })/
+                                @Html.DisplayFor(m => m.GroupNumber, new { @class = "applitextfield1", id = "GroupNumber" })
+                            </div>
+                            @*<div style="width:100%; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:10px; padding-top:10px; ">&nbsp;</div>*@
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div style="padding:3px 0 10px 0; margin-bottom:15px; margin-top:40px;">
+            <table border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td valign="top" width="93%" style="font-size:20px;">
+                            <strong style="font-size:25px; margin-bottom:6px;">**IS PATIENT INSURED THROUGH SOMEONE ELSE’S POLICY?</strong><br>
+                            Give their info here: (otherwise, skip this portion)
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div style="padding:3px 0 20px 0;">
+            <table border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td valign="top" width="93%" style="font-size: 20px;">
+                            Policyholder Name<span style="width:300px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:7px; ">
+                                @Html.DisplayFor(m => m.HolderName, new { @class = "applitextfield1", id = "HolderName" })
+                            </span>
+
+                            Date of Birth
+                            @*@Html.TextBoxFor(m => m.HolderDOB, new { @style = "width:100%;width:150px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:7px;", @Value = Model.HolderDOB.GetExactValue(), @id = "HolderDOB" })*@
+
+                            <span style="width: 150px; margin: 0 10px 0 10px; display: inline-block; border-bottom: 1px solid #ccc; border-left: none; border-right: none; border-top: none; padding-bottom: 7px;">
+                                @Model.HolderDOB.GetExactValue()
+                            </span>
+
+
+
+
+                            SSN <span style="width:150px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:7px; padding-top:6px; ">
+                                &nbsp;
+                                @Html.DisplayFor(m => m.Social_Security, new { @class = "applitextfield1" })
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div style="padding:3px 0 10px 0;">
+            <table border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td valign="top" width="93%" style="font-size: 20px;">
+                            Address (if different than Patient)
+                            <div style="width:700px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:10px; padding-top:10px; ">
+                                @Html.DisplayFor(m => m.PolicyHolderAddress, new { @class = "applitextfield1", @style = "height:111px;" })
+
+                            </div>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div style="padding:3px 0 20px 0;">
+            <table border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td valign="top" width="93%" style="font-size: 20px;">
+                            <span style="padding-right: 15px;">Relationship to Patient: </span>@*<span style="width:40px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:7px; "></span>Spouse <span style="width:40px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:7px; "></span>Parent <span style="width:40px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:7px; "></span>Other*@
+                            <label class="radio-inline">
+                                @Html.RadioButtonFor(m => m.PatientRelationship, Convert.ToInt16(PatientRelationship.Spouse).ToString()) Spouse
+                            </label>
+                            <label class="radio-inline">@Html.RadioButtonFor(m => m.PatientRelationship, Convert.ToInt16(PatientRelationship.Parent).ToString()) Parent</label>
+                            <label class="radio-inline">
+                                @Html.RadioButtonFor(m => m.PatientRelationship, Convert.ToInt16(PatientRelationship.Other).ToString()) Other
+                            </label>
+                            @if (Model.PatientRelationship == 3)
+                            {
+                                <span style="width:190px; margin:0 0 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:7px; padding-top:6px; ">
+                                    @Html.DisplayFor(m => m.PatientRelationshipIfOther, new { @class = "applitextfield1" })
+                                </span>
+                            }
+
+                        </td>
+                    </tr>
+                    @*<tr><td>@Html.DisplayFor(m => m.PatientRelationshipIfOther, new { @class = "applitextfield1" })</td></tr>*@
+                </tbody>
+            </table>
+
+        </div>
+
+        <div style="padding:3px 0 20px 0;">
+            <table border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td valign="top" width="93%" style="font-size:20px;">
+                            Employer<span style="width:236px; margin:0 30px 0px 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:0px; ">
+
+                                @Html.DisplayFor(m => m.Employer, new { @class = "applitextfield1" })
+                            </span>Ph#<span style="width:278px; margin:0 10px 0px 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:0px; ">
+
+                                @Html.DisplayFor(m => m.EmployerPhone, new { @class = "applitextfield1 UsCellFormat" })
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-top:20px; font-size:20px;">
+                            Claim # <span style="width:242px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:0px; ">
+                                @Html.DisplayFor(m => m.EmployerClaimNo, new { @class = "applitextfield1" })
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div style="padding:3px 0 30px 0;">
+            <table border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td valign="top" width="93%" style="font-size: 20px;">
+                            Employer Address
+                            <div style="width:100%; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:10px; padding-top:10px; ">
+                                @Html.DisplayFor(m => m.EmployerAddressLine1, new { @class = "applitextfield1" }),
+                                @Html.DisplayFor(m => m.EmployerAddressLine2, new { @class = "applitextfield1" }),
+                                @Html.DisplayFor(m => m.EmployerCity, new { @class = "applitextfield1" }),
+                                @Html.DisplayFor(m => m.EmployerStateName, new { @class = "applitextfield1" }),
+                                @*@Html.DropDownList("EmployerState")*@
+                                @Html.DisplayFor(m => m.EmployerZipCode, new { @class = "applitextfield1" })
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+
+        <div style="padding:3px 0 25px 0;">
+            <table border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td valign="top" width="93%" style="font-size: 20px;">
+                            Insurance Policy 2 Name/Number/Group # (if applicable)
+                            <div style="width:100%; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:10px; padding-top:10px; ">
+                                &nbsp;
+                                @Html.DisplayFor(m => m.Name2, new { @class = "applitextfield1" })/
+                                @Html.DisplayFor(m => m.PolicyNumber2, new { @class = "applitextfield1" })/
+                                @Html.DisplayFor(m => m.GroupNumber2, new { @class = "applitextfield1" })
+                            </div>
+                            @*<div style="width:100%; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:10px; padding-top:10px; ">&nbsp;</div>*@
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        @*<div style="padding:3px 0 10px 0;">
+                <table border="0" width="100%">
+                    <tbody>
+                        <tr>
+                            <td valign="top" width="93%">
+                                <strong style="font-size:17px;">**IS PATIENT INSURED THROUGH SOMEONE ELSE’S POLICY?</strong><br>
+                                Give their info here: (otherwise, skip this portion)
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div style="padding:3px 0 10px 0;">
+                <table border="0" width="100%">
+                    <tbody>
+                        <tr>
+                            <td valign="top" width="93%">Policyholder Name<span style="width:150px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:7px; "></span>Date of Birth <span style="width:150px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:7px; "></span> SSN <span style="width:150px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:7px; padding-top:6px; ">&nbsp;</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div style="padding:3px 0 10px 0;">
+                <table border="0" width="100%">
+                    <tbody>
+                        <tr>
+                            <td valign="top" width="93%">
+                                Address (if different than Patient)
+                                <div style="width:100%; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:10px; padding-top:10px; "></div>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div style="padding:3px 0 10px 0;">
+                <table border="0" width="100%">
+                    <tbody>
+                        <tr>
+                            <td valign="top" width="93%">Relationship to Patient: <span style="width:40px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:7px; "></span>Spouse <span style="width:40px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:7px; "></span>Parent <span style="width:40px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:7px; "></span>Other  </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div style="padding:3px 0 10px 0;">
+                <table border="0" width="100%">
+                    <tbody>
+                        <tr>
+                            <td valign="top" width="93%">Employer<span style="width:189px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:7px; "></span>Ph#<span style="width:150px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:7px; "></span> Claim # <span style="width:150px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:7px; "></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div style="padding:3px 0 30px 0;">
+                <table border="0" width="100%">
+                    <tbody>
+                        <tr>
+                            <td valign="top" width="93%">
+                                Employer Address
+                                <div style="width:100%; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:10px; padding-top:10px; "></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>*@
+        <div style="height:500px;"></div>
+        <div style="padding:10px 0 30px 0;">
+            <table border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td valign="top" width="66%" style="line-height:21px;padding-top:30px; font-size:20px;">
+                            I hereby instruct and direct <span style="width:185px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:7px; ">
+                                @Html.DisplayFor(m => m.InsuranceCompanyName, new { @class = "applitextfield1" })
+                            </span> insurance company to
+                            pay by check made out to the “Healthcare Provider” to the right and mailed
+                            to the address on the right (not mine). If my/this current policy prohibits direct
+                            payment to doctor/therapist, I hereby also instruct and direct you to make out
+                            the check to me and mail it to the above address for the professional or medical
+                            expense benefits allowable, and otherwise payable to me under my current in-
+                            surance policy as payment toward the total charges for the professional services
+                            rendered.
+
+
+                        </td>
+                        <td valign="top" width="34%" style="padding-top:40px; font-size:20px;" >
+                            <div style="padding:12px; border:2px solid #000; text-align:center;">
+                                <div style="padding:0 0 10px 0;"><strong>Healthcare Provider info:</strong></div>
+
+                                <div style="padding:0 0 10px 0;">
+                                    Advanced Physical Therapy of Central Florida<br>
+
+                                    303 SE 17th Street, #209-229<br>
+
+                                    Ocala, Florida 34471
+                                </div>
+                                <strong>PH: (352) 693-3378</strong>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+
+        <div style="padding:3px 0 5px 0; color:#F00; font-size:25px; text-align:center;">
+            <table border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td valign="top" width="93%" style="text-align:center; font-size:25px;"><strong>This is the direct Assignment of my rights and benefits under this policy.</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div style="padding:3px 0 10px 0;">
+            <table border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td valign="top" width="93%" style="font-size:20px">
+                            This payment will not exceed my indebtedness to the above-mentioned assignee, and I have agreed to pay, in a current manner, any
+                            balance of said professional service charges over and above this insurance payment.<br>
+                            <div style="padding-top:8px;"><strong>(Check each box and sign at the bottom)</strong></div>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div style="padding:3px 0 10px 0;">
+            <table border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td valign="top" width="93%" style="font-size:20px">
+                            @Html.CheckBoxFor(m => m.IsPhotocopyValid, new { @class = "checkbox-inline" })&nbsp;A photocopy of this Assignment shall be considered as effective and valid as the original.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div style="padding:3px 0 10px 0;">
+            <table border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td valign="top" width="93%" style="font-size:20px">
+                            @Html.CheckBoxFor(m => m.IsAuthorizeForReleaseMedical, new { @class = "checkbox-inline" })&nbsp;I authorize the release of any medical or other information pertinent to my case to any insurance company , adjuster, oe attorney involved in this case for the purpose of processing claims and securing payment of benefits.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div style="padding:3px 0 10px 0;">
+            <table border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td valign="top" width="93%" style="font-size:20px">
+                            @Html.CheckBoxFor(m => m.IsAuthorizeForUseTheSignature, new { @class = "checkbox-inline" })&nbsp;I authorize the use of this signature on all insurance submissions.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div style="padding:3px 0 10px 0;">
+            <table border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td valign="top" width="93%" style="font-size:20px">
+                            @Html.CheckBoxFor(m => m.IsAuthorizeForChecks, new { @class = "checkbox-inline" })&nbsp;I authorize the “Healthcare Provider” named above to deposit checks made in my name.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div style="padding:3px 0 10px 0;">
+            <table border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td valign="top" width="93%" style="font-size:20px">
+                            @Html.CheckBoxFor(m => m.IsAuthorizeForInitiateComplaint, new { @class = "checkbox-inline" })&nbsp;I authorize the “Healthcare Provider” named above to initiate a complaint to the Insurance Commissioner for any
+                            reason on my behalf.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div style="padding:3px 0 10px 0;">
+            <table border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td valign="top" width="93%" style="font-size:20px">
+                            @Html.CheckBoxFor(m => m.IsAuthorizeForFinancialResponsible, new { @class = "checkbox-inline" })&nbsp;I understand that i am financially responsible for all the charges whether or not paid by insurance.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        @*<div style="padding:15px 0 10px 0;">
+                <table border="0" width="100%">
+                    <tbody>
+                        <tr>
+                            <td valign="top" width="93%">Dated this<span style="width:189px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:7px; "></span>day of<span style="width:150px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:7px; "></span> 20 <span style="width:70px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:7px; "></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>*@
+
+        <div style="padding:2px 0 10px 0;">
+            <table border="0" width="100%" cellpadding="5">
+                <tbody>
+                    <tr>
+                        <td valign="top" width="31%" style="font-size:20px">
+                            <div style="width:93%; margin:0 0 0 0; display:inline-block; border-left:none; border-right:none; border-top:none; padding-bottom:7px; ">
+
+                                @{var imgurl2 = "";
+                                if (Model.SignOfPolicyholder != null)
+                                {
+                                    imgurl2 = "data:image/png;base64," + Convert.ToBase64String(Model.SignOfPolicyholder);
+                                }
+                                }
+                                <img src="@imgurl2" alt="Alternate Text" id="imgPolicyholderSign" style="width: 200px; height: 120px;" />
+
+                            </div>
+                            Signature of Policyholder
+                        </td>
+                        <td valign="top" width="29%" style="font-size:20px">
+                            <div style="width:93%; margin:0 0 0 0; display:inline-block; border-left:none; border-right:none; border-top:none; padding-bottom:7px; ">
+                                @{var imgurl3 = "";
+                                if (Model.WitnessSignature != null)
+                                {
+                                    imgurl3 = "data:image/png;base64," + Convert.ToBase64String(Model.WitnessSignature);
+                                }
+                                }
+                                <img src="@imgurl3" alt="Alternate Text" id="imgWitnessSignature" style="width: 200px; height: 120px; " />
+
+                            </div>Witness
+                        </td>
+                        <td valign="top" width="40%" style="font-size:20px">
+                            <div style="width:93%; margin:0 0 0 0; display:inline-block; border-left:none; border-right:none; border-top:none; padding-bottom:7px; ">
+                                @{var imgurl4 = "";
+                                if (Model.ClaimantSignature != null)
+                                {
+                                    imgurl4 = "data:image/png;base64," + Convert.ToBase64String(Model.ClaimantSignature);
+                                }
+                                }
+                                <img src="@imgurl4" alt="Alternate Text" id="imgClaimantSignature" style="width: 200px; height: 120px;" />
+
+                            </div>Signature of Claimant, if other than Policyholder
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" width="31%" style="padding-top:40px;font-size:20px;">
+                            <div style="width:93%; margin:0 0 0 0; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:7px; ">
+                                @Html.DisplayFor(m => m.PolicyholderSignatureDate, new { @class = "applitextfield1 ", @style = "width: 400px;", @readonly = "true" })
+
+                            </div>
+                            Date
+                        </td>
+                        <td valign="top" width="29%" style="padding-top:40px; font-size:20px;">
+                            <div style="width:93%; margin:0 0 0 0; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:7px; ">
+                                @Html.DisplayFor(m => m.WitnessSignatureDate, new { @class = "applitextfield1 ", @style = "width: 400px;", @readonly = "true" })
+
+                            </div>Date
+                        </td>
+                        <td valign="top" width="40%" style="padding-top:40px; font-size:20px;">
+                            <div style="width:93%; margin:0 0 0 0; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:7px; ">
+                                @Html.DisplayFor(m => m.ClaimantSignatureDate, new { @class = "applitextfield1 ", @style = "width: 400px;", @readonly = "true" })
+
+                            </div>Date
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+</body>

@@ -1,0 +1,143 @@
+﻿@model DataLayer.Models.tblTHolidayLocation
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<center><h2 style="margin-top:20px;">Holiday Schedule</h2></center>
+<section class="bodyinner">
+    <div class="container">
+
+        <div class="report-form clearfix">
+
+
+            @using (Html.BeginForm("Create", "Holidaylocation", FormMethod.Post, new { name = "Create", id = "Create", enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.Hidden("CreatedOn", DateTime.Now)
+
+                if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+
+                @Html.ValidationSummary(true)
+
+                <div class="row">
+                    <div class="col-sm-6 col-md-6 form-group">
+
+
+                        @Html.Label("Location")
+                        @Html.DropDownList("LocationId", String.Empty)
+                    </div>
+
+                    <div class="col-sm-6 col-md-6 form-group">
+                        <label class="checkbox-inline"><input name="AllLocation" id="AllLocation" type="checkbox" >Allow All Location</label>
+
+                    </div>
+                    @*<div class="col-sm-6 col-md-6 form-group">
+
+                        @Html.Label("Holiday Name")
+                        @Html.TextBoxFor(model => model.HolidayName, new { @class = "form-control" })
+
+                    </div>*@
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-6 form-group">
+
+                        @Html.Label("Holiday Description")
+                        @Html.TextBoxFor(model => model.HolidayDesc, new { @class = "form-control" })
+
+                    </div>
+
+                    <div class="col-sm-6 col-md-6 form-group">
+
+                        @Html.Label("Holiday Date")
+                        @Html.TextBoxFor(model => model.HolidayDate, new { @class = "form-control datepicker datepicker-bg" })
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-6 form-group">
+                        <label>Holiday Type</label>
+                        @Html.HiddenFor(e => e.IsPartial, new { @id = "IsPartialValue", @name = "IsPartial" })
+                        <div class="control-group">
+                            <label class="radio-inline">
+                                <input type="radio" name="HoliDayType" id="HoliDayType" value="false" checked="checked" />
+                                <span>Closed All Day</span>
+                            </label>
+
+
+                            <label class="radio-inline"> &nbsp;&nbsp;&nbsp;&nbsp;
+                                <input type="radio" name="HoliDayType" id="HoliDayType" value="true" />
+                                <span>Limited Hours</span>
+                            </label>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="PersiaHideShow">
+                    <div class="col-sm-6 col-md-6 form-group">
+
+                        @Html.Label("From Time")
+                        @Html.TextBoxFor(model => model.FromTime, new { @class = "form-control clockpicker CustomTimeFormat", @id = "IsPersiaFromTime" })
+
+                    </div>
+                    <div class="col-sm-6 col-md-6 form-group">
+                        @Html.Label("To Time")
+                        @Html.TextBoxFor(model => model.ToTime, new { @class = "form-control clockpicker CustomTimeFormat", @id = "IsPersiaToTime" })
+
+                    </div>
+                </div>
+                <div class="subbutt">
+                    <input type="submit" value="Create" class="btn btn-orange pull-right" />
+
+                    <div class="clearfix"></div>
+                </div>
+
+
+
+                <p>@Html.ActionLink("Back to List", "Index")</p>
+            }
+        </div>
+
+
+
+
+        <div class="clearfix"></div>
+    </div>
+</section>
+
+<script>
+    $('#LocationId').addClass('form-control');
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#AllLocation").val("False");
+        $("#PersiaHideShow").hide();
+        $("input[name=HoliDayType]:radio").change(function () {
+            var IsPartialVal = $("input:radio[name='HoliDayType']:checked").val();
+            $("#IsPartialValue").val(IsPartialVal);
+            if (IsPartialVal == "true") {
+                $("#PersiaHideShow").show();
+            }
+            else {
+                $("#PersiaHideShow").hide();
+                $("#IsPersiaFromTime").val(null);
+                $("#IsPersiaToTime").val(null);
+            }
+        });
+        $('#AllLocation').change(function () {
+            if ($(this).is(':checked')) {
+                $("#LocationId").attr('disabled', 'disabled');
+                $("#AllLocation").val("True");
+                $("#LocationId").val(null);
+            }
+            else {
+                $("#AllLocation").val("False");
+                $("#LocationId").prop("disabled", false);
+            }
+        });
+    });
+</script>

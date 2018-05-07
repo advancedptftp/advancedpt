@@ -1,0 +1,438 @@
+﻿@model DataLayer.Models.CIA
+@using System.Data
+@{
+    //ViewBag.Title = "PatientCurrentLevelofAffectedAreas";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    var Affetcs_of, chkName, totalNoDiv;
+    var c1 = 1;
+    var c3 = 1;
+    var Affect_With_Answare = "";
+    var OptionRange = "";
+    var OptionRangelist = "";
+    var splitOptionRangelist = "";
+    var splitOptionRange = "";
+    var optionafect = "";
+    var PatientAffetcs_oflength = "";
+</script>
+
+<div class="report-form clearfix">
+    <h2 class="text-center">Comprehensive Initial Assessment</h2>
+    @using (Html.BeginForm("PatientCurrentLevelofAffectedAreas", "Assessment", FormMethod.Post, new { id = "CurrentAssessmentLevel", name = "CurrentAssessmentLevel" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(e => e.CreatedBy)
+        @Html.HiddenFor(e => e.CreatedOn)
+        @Html.HiddenFor(e => e.ModifiedBy)
+        @Html.HiddenFor(e => e.ModifiedOn)
+        @Html.HiddenFor(e => e.Patient_Id)
+        @Html.HiddenFor(e => e.PatientCondition_Id)
+        @Html.HiddenFor(e => e.SubjectiveAffect_Id_with_PercentageAssist_list_Current)
+
+
+        if (ViewBag.Error != null)
+        {
+            @Html.Raw(ViewBag.Error)
+        }
+
+        <div class="topforn">
+            <div class="row">
+                <div class="col-sm-12">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="22%"><h3><strong>Assessment</strong></h3></td>
+                            <td width="78%"></td>
+                        </tr>
+                    </table>
+
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="20%"><h4><strong>Patient Name:</strong></h4></td>
+                            <td width="35%">
+                                @Html.TextBoxFor(m => m.PatientName, new { @class = "form-control", @readonly = true, @style = "font-size:24px;" })
+                            </td>
+                            <td width="45%"><div class="col-sm-1 form-group" style="padding-top:25px;"></div></td>
+                        </tr>
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+
+        //1)Current to onset of symptoms, patient was able to perform _____________ with
+        <div id="dvid_1">
+            <script type="text/javascript">
+
+
+    function fn_CreateDivWithOptionsCurrent() {
+
+        //chkName = chkName.substr(1);
+        var AffetcsOfName = new Array();
+
+        //alert("Chk Name = " + chkName);
+        AffetcsOfName = chkName.split(",");
+        $("#dvid_1").html('');
+
+        totalNoDiv = '@ViewBag.PercentageWithAffectvalueLength';
+        //alert("Total No Div = " + totalNoDiv);
+        //alert(AffetcsOfName);
+        $.each(AffetcsOfName, function (index, value) {
+            //alert("index: " + index + " : " + "Value: " + value);
+
+            var vDynamicHtmlContent = "<div id='div1_" + index + "' class='div_AffetcsOfNameCurrent'>";
+            vDynamicHtmlContent += "<input id='chk1_" + index + "' type='checkbox' value='" + index + "' class='checkbox-custom chk1_AffetcsOfName' checked='Selected' disabled style='display: none;' />";
+            vDynamicHtmlContent += "<label for='chk1_" + index + "' class='checkbox-custom-label lblAffetcsOfName' style='display: none;'>" + value + "</label>";
+            vDynamicHtmlContent += "<div class='clearfix'></div>";
+            vDynamicHtmlContent += "<h2 class='chk1_AffetcsOfName'>Currently the patient is able to <u>" + value.toLowerCase() + "</u> with: </h2>";
+            vDynamicHtmlContent += "<div>";
+            var j = 1;
+            for (var i = 0; i < 100; i += 10) {
+                var ControlId = "";
+                ControlId = ControlId + index + "_" + i;
+                vDynamicHtmlContent += "<div class='radiosec'>";
+                vDynamicHtmlContent += "<input type='radio' name='radioChildCurrent_" + index + "' class = 'radio-custom PerformIndipendentWithAssistCurrent_" + index + "' value='" + ControlId + "'   id = '" + index + "_" + i + "' />";
+                //vDynamicHtmlContent += '<input type="radio" name="radioChild_' + index + '" class="radio-custom PerformIndipendentWithAssist_' + index + '"  id = "' + index + "_" + i + '" onclick="AffectOfWithAnsware(\'' + index + "_" + i + '\')" />';
+
+                vDynamicHtmlContent += "<label for='" + index + "_" + i + "' id='lbl" + index + "_" + i + "'class='radio-custom-label'>" + i + "% Assist</label>";
+                vDynamicHtmlContent += "</div>";
+                j++;
+                if (j % 3 == 1) {
+                    vDynamicHtmlContent += "<div class='clearfix'></div>";
+                }
+            }
+            vDynamicHtmlContent += "<div class='clearfix'></div>";
+            vDynamicHtmlContent += "<div style='float:left'>";
+            if (index > 0) {
+                vDynamicHtmlContent += "<input type='button' class='btn btn-primary btn-lg' value='<< Previous' onclick='fn_MovePreviousCurrent(" + totalNoDiv + "," + index + "," + i + ")' />";
+            }
+            vDynamicHtmlContent += "</div>";
+            vDynamicHtmlContent += "<div style='float:right'>";
+            vDynamicHtmlContent += "<input type='button' id='btnNext" + index + "' class='btn btn-primary btn-lg' value='Next >>' onclick='fn_MoveNextCurrent(" + totalNoDiv + "," + index + ")' />";
+            vDynamicHtmlContent += "</div>";
+            vDynamicHtmlContent += "</div>";
+            vDynamicHtmlContent += "</div>";
+            vDynamicHtmlContent += "<div class='clearfix'></div>"
+
+            $('#dvid_1').append(vDynamicHtmlContent);
+
+        })
+
+        //------------ Hide All Divs Within Same Class Except First One -------------------//
+        if ('@ViewBag.PercentageWithAffectvalueLength' > 1) {
+            //alert($('.div_AffetcsOfName').length);
+            for (var i = 1; i <= '@ViewBag.PercentageWithAffectvalueLength'; i++) {
+                $("#div1_" + i).hide();
+            }
+        }
+
+
+        var _WithAffect = '@ViewBag.PercentageWithAffect';
+        var _PercentageWithAffect1 = _WithAffect.split(',');
+        var _PercentageWithAffect2 = _PercentageWithAffect1.length;
+
+        if ('@ViewBag.PercentageWithAffect' != null) {
+
+            if ('@ViewBag.PercentageWithAffectvalueLength' == '@ViewBag.PercentageWithAffectvalueLength') {
+                if (Affetcs_of == '@ViewBag.PercentageWithAffectvalue') {
+                    var equal = "";
+                    var selected3 = '@ViewBag.PercentageWithAffect'
+                    equal = "equal";
+                    //alert(equal);
+                    var chkRadio = selected3.split(',');
+                    var chkRadioLength = chkRadio.length;
+                    for (var i = 0; i < chkRadioLength; i++) {
+                        // alert(chkRadio[i]);
+                        var arr1 = chkRadio[i].split('|');
+                        // alert(arr1);
+                        for (var j = 0; j < 17; j++) {
+                            // alert("arr1[0] = " + arr1[0] + "  " + "arr1[1] = " + arr1[1]);
+                            if (arr1[0] == j) {
+                                $("#" + i + "_" + arr1[1]).prop("checked", "checked");
+                                break;
+                            }
+
+                        }
+
+                        $("#SubjectiveAffect_Id_with_PercentageAssist_list").val('@ViewBag.withaffect');
+                    }
+                }
+
+            }
+
+        }
+    }
+</script>
+        </div>
+
+    <div class="clearfix"></div>
+
+    <div class="row" style="padding-top:10px;">
+        <a href="@Url.Action("Index", "Subjective")" style="padding-left:15px;"><span class="btn btn-primary btn-lg">Back to list</span> </a>
+    </div>
+
+    }
+</div>
+<!-- Modal -->
+@*@Html.Partial("~/Views/Shared/_SearchPatientPartial.cshtml")*@
+@{Html.RenderPartial("~/Views/Shared/_SearchPatientPartial.cshtml");}
+
+<!-- End Modal -->
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        if ('@ViewBag.PatientName' != null) {
+            $("#PatientName").val('@ViewBag.PatientName');
+        }
+
+        fnShowDiv1();
+    });
+
+    function fnShowDiv1() {
+
+        //alert('@ViewBag.AffectsCount');
+        //alert('@ViewBag.PercentageWithAffectvalueLength');
+
+        if ('@ViewBag.AffectsCount' != null && '@ViewBag.AffectsCount' != '') {
+            PatientAffetcs_oflength = '@ViewBag.AffectsCount';
+        }
+        else {
+            PatientAffetcs_oflength = '@ViewBag.PercentageWithAffectvalueLength';
+        }
+
+
+        if (PatientAffetcs_oflength > 0) {
+
+            Affetcs_of = "";
+            chkName = "";
+
+            Affetcs_of = '@ViewBag.PercentageWithAffectvalue';
+            chkName = '@ViewBag.Affect_Desc';
+
+            fn_CreateDivWithOptionsCurrent();
+
+            $("#AffectsIds").val(Affetcs_of);
+            $("#dvid_1").show();
+
+
+        } else {
+            alertify.alert("Please select any options").setHeader('AdvancePT Says');
+            //return false;
+        }
+    }
+
+    function fn_MoveNextCurrent(totalNoDiv, index) {
+        //------------- Open Next Div Within Same Class ( Move Next Div ) ---------------//
+
+        AffectOfWithAnswareCurrent($('.PerformIndipendentWithAssistCurrent_' + index).filter(':checked').val());
+
+        if (($('.PerformIndipendentWithAssistCurrent_' + index).filter(':checked').length > 0)) {
+            //alert($('.PerformIndipendentWithAssist_' + index).filter(':checked').length);
+            if (totalNoDiv > 1) {
+                for (var i = 0; i < totalNoDiv; i++) {
+                    if (index == i) {
+                        i++;
+                        $("#div1_" + i).show();
+                        if (c3 == totalNoDiv) {
+                            $("#dvid_1").hide();
+                            //alert($("#SubjectiveAffect_Id_with_PercentageAssist_list_Current").val());
+                            //window.location.href = "@Url.Action("Create", "Assessment", new { Area = "ComprehensiveInitialAssessment" })" + "?SubjectiveAffect_Id_with_PercentageAssist_list_Current=" +window.btoa($("#SubjectiveAffect_Id_with_PercentageAssist_list_Current").val());
+                            window.location.href = "@Url.Action("Create", "Assessment", new { Area = "ComprehensiveInitialAssessment" })" + "?SubjectiveAffect_Id_with_PercentageAssist_list_Current=" + $("#SubjectiveAffect_Id_with_PercentageAssist_list_Current").val();
+                            break;
+                        }
+
+                        c3++;
+                        i--;
+                        $("#div1_" + i).hide();
+                    }
+                }
+            }
+            else if (totalNoDiv == 1) {
+                $("#dvid_1").show();
+                //alert($("#SubjectiveAffect_Id_with_PercentageAssist_list_Current").val());
+                //window.location.href = "@Url.Action("Create", "Assessment", new { Area = "ComprehensiveInitialAssessment" })" + "?SubjectiveAffect_Id_with_PercentageAssist_list_Current=" +window.btoa($("#SubjectiveAffect_Id_with_PercentageAssist_list_Current").val());
+                window.location.href = "@Url.Action("Create", "Assessment", new { Area = "ComprehensiveInitialAssessment" })" + "?SubjectiveAffect_Id_with_PercentageAssist_list_Current=" + $("#SubjectiveAffect_Id_with_PercentageAssist_list_Current").val();
+            }
+        }
+        else {
+            alertify.alert("Please select any options").setHeader('AdvancePT Says');
+            //return false;
+        }
+
+
+    }
+
+    function AffectOfWithAnswareCurrent(index) {
+        //alert($('#lbl' + index).text());
+
+        var OptionRangelist1 = "";
+        var affectsNo = index.charAt(0);
+        var orange = OptionRangelist.split(",");
+        var affectNolength = Affetcs_of.length;
+
+        //alert(Affetcs_of.length);
+
+        var orangelength = orange.length;
+
+        if (affectsNo == orangelength) {
+            OptionRange = $('#lbl' + index).text();
+            OptionRangelist = OptionRangelist + "," + $('#lbl' + index).text();
+        }
+        else {
+
+            if (affectsNo == 0) {
+
+                OptionRangelist1 = "," + $('#lbl' + index).text();
+                OptionRangelist = OptionRangelist1;
+            }
+            if (affectsNo == 1) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + $('#lbl' + index).text();
+                // OptionRangelist = OptionRangelist2;
+            }
+            if (affectsNo == 2) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist3;
+            }
+            if (affectsNo == 3) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist4;
+            }
+            if (affectsNo == 4) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist5;
+            }
+            if (affectsNo == 5) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist1;
+            }
+            if (affectsNo == 6) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist7;
+            }
+            if (affectsNo == 7) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + "," + splitOptionRangelist[7] + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist8;
+            }
+            if (affectsNo == 8) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + "," + splitOptionRangelist[7] + splitOptionRangelist[8] + $('#lbl' + index).text();
+                // OptionRangelist = OptionRangelist9;
+            }
+            if (affectsNo == 9) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + "," + splitOptionRangelist[7] + "," + splitOptionRangelist[8] + "," + splitOptionRangelist[9] + "," + $('#lbl' + index).text();
+                // OptionRangelist = OptionRangelist10;
+            }
+            if (affectsNo == 10) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + "," + splitOptionRangelist[7] + "," + splitOptionRangelist[8] + "," + splitOptionRangelist[9] + "," + splitOptionRangelist[10] + "," + $('#lbl' + index).text();
+                // OptionRangelist = OptionRangelist11;
+            }
+            if (affectsNo == 11) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + "," + splitOptionRangelist[7] + "," + splitOptionRangelist[8] + "," + splitOptionRangelist[9] + "," + splitOptionRangelist[10] + "," + splitOptionRangelist[11] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist12;
+            }
+            if (affectsNo == 12) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + "," + splitOptionRangelist[7] + "," + splitOptionRangelist[8] + "," + splitOptionRangelist[9] + "," + splitOptionRangelist[10] + "," + splitOptionRangelist[11] + "," + splitOptionRangelist[12] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist13;
+            }
+            if (affectsNo == 13) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + splitOptionRangelist[7] + "," + splitOptionRangelist[8] + "," + splitOptionRangelist[9] + "," + splitOptionRangelist[10] + "," + splitOptionRangelist[11] + "," + splitOptionRangelist[12] + "," + splitOptionRangelist[13] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist14;
+            }
+            if (affectsNo == 14) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + "," + splitOptionRangelist[7] + "," + splitOptionRangelist[8] + "," + splitOptionRangelist[9] + "," + splitOptionRangelist[10] + "," + splitOptionRangelist[11] + "," + splitOptionRangelist[12] + "," + splitOptionRangelist[13] + "," + splitOptionRangelist[14] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist15;
+            }
+
+            else if (affectsNo == 15) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + "," + splitOptionRangelist[7] + "," + splitOptionRangelist[8] + "," + splitOptionRangelist[9] + "," + splitOptionRangelist[10] + "," + splitOptionRangelist[11] + "," + splitOptionRangelist[12] + "," + splitOptionRangelist[13] + "," + splitOptionRangelist[14] + "," + splitOptionRangelist[15] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist16;
+            }
+            else if (affectsNo == 16) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + "," + splitOptionRangelist[7] + "," + splitOptionRangelist[8] + "," + splitOptionRangelist[9] + "," + splitOptionRangelist[10] + "," + splitOptionRangelist[11] + "," + splitOptionRangelist[12] + "," + splitOptionRangelist[13] + "," + splitOptionRangelist[14] + "," + splitOptionRangelist[15] + "," + splitOptionRangelist[16] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist17;
+            }
+        }
+
+        //var Affetcs_of_list = Affetcs_of.split(",");
+        var Affetcs_of_list = '@ViewBag.SubjectiveAffect_Id'.split(",");
+
+        var Options = OptionRangelist.substr(1);
+        Options = Options.split(",");
+        //alert("Options = " + Options);
+
+        var Affect_With_Answare_array_Current = new Array();
+        for (var c2 = 0; c2 < Affetcs_of_list.length; c2++) {
+            Affect_With_Answare_array_Current[c2] = Affetcs_of_list[c2] + "|" + Options[c2];
+        }
+
+        $("#SubjectiveAffect_Id_with_PercentageAssist_list_Current").val(Affect_With_Answare_array_Current);
+        //alert($("#SubjectiveAffect_Id_with_PercentageAssist_list_Current").val());
+    }
+
+
+    function fn_MovePreviousCurrent(totalNoDiv, index, i) {
+        // alert($('.chk1_AffetcsOfName').filter(':checked').length);
+        // alert(totalNoDiv);
+        if ($('.chk1_AffetcsOfName').filter(':checked').length == 1) {
+            c3 = 1;
+            $("#dvid_1").show();
+            $("#dvid_2").hide();
+
+        } else if (totalNoDiv > 1) {
+            for (var j = 0; j <= index; j++) {
+                if (index == j) {
+                    $("#div1_" + j).hide();
+                    j--;
+                    if (j < 0) {
+                        // alert(totalNoDiv);
+                        //totalNoDiv = 0;
+                        //alert(totalNoDiv);
+                        $("#dvid_1").show();
+                        $("#dvid_2").hide();
+
+                        c3 = 1;
+                    }
+                    else {
+                        //totalNoDiv = j;
+                        //totalNoDiv = totalNoDiv - 1;
+                        //alert(totalNoDiv);
+                        $("#div1_" + j).show();
+                        c3 = j + 1;
+
+                    }
+                    break;
+                }
+            }
+
+        }
+        else {
+            alertify.alert("Please select any options").setHeader('AdvancePT Says');
+            //return false;
+        }
+    }
+
+</script>

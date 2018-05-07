@@ -1,0 +1,128 @@
+﻿@model DataLayer.Models.tblMReferralSource
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<section class="bodyinner">
+    <div class="container">
+        <div class="bodyleft">
+
+            @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+        </div>
+        <div class="bodyright">
+
+            <div class="report-form clearfix">
+                <h2 class="text-center">Create Referral Source</h2>
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.Hidden("CreatedOn", DateTime.Now)
+                    if (ViewBag.Error != null)
+                    {
+                        @Html.Raw(ViewBag.Error)
+                    }
+                    
+                                        
+                    <div class="row">
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Source Name")
+                            @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Name)
+                        </div>
+                 
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Related Query")
+                            @Html.TextBoxFor(model => model.Related_query, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Related_query)
+
+                        </div>
+                    </div>
+
+
+
+                    @*<div class="row">
+
+
+                        </div>*@
+
+
+                    <div class="subbutt">
+                        <input type="submit" value="Create" class="btn btn-orange pull-right" />
+
+                    </div>
+                    <p>@Html.ActionLink("Back to List", "Index")</p>
+                }
+            </div>
+
+
+
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>tblMReferralSource</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Related_query, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Related_query)
+                @Html.ValidationMessageFor(model => model.Related_query)
+            </div>
+        </div>
+
+      
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

@@ -1,0 +1,183 @@
+﻿@model DataLayer.Models.tblTNewEmpQuestionair
+
+@{
+    ViewBag.Title = "Create";
+}
+
+
+<div class="container">
+    <div class="bodyleft">
+       
+        @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+    </div>
+    <div class="bodyright">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="report-form clearfix">
+
+
+                <h2>New Employee Questionnaire</h2>
+
+
+
+                <p class="pull-right">*Required</p>
+                <div class="clearfix"></div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-4 form-group">
+                        <label>Today's Date </label>
+                        @*@Html.TextBox("date", new { @class = "form-control datepicker datepicker-bg", placeholder = "mm/dd/yyyy", style = "width:100%;" })*@
+
+                        @* @Html.TextBoxFor(model => model.CreatedOn, new {@class = "form-control datepicker datepicker-bg" })*@
+                        @Html.TextBoxFor(model => model.CreatedOn, "{0:MM/dd/yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                        @Html.HiddenFor(model => model.EmpQuestionair_Id)
+                        @Html.HiddenFor(model => model.CreatedBy)
+                        @Html.HiddenFor(model => model.ModifiedBy)
+                        @Html.Hidden("ModifiedOn", DateTime.Now)
+
+                    </div>
+                @if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+                    <div class="col-sm-6 col-md-4 form-group">
+
+
+
+
+                        @*@Html.LabelFor(model => model.EmpFirstName, new { @class = "" })*@
+                        <label for="EmpFirstName" class="">Employee First Name *</label>
+                        @Html.TextBoxFor(model => model.EmpFirstName, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.EmpFirstName)
+
+                    </div>
+                    <div class="col-sm-6 col-md-4 form-group">
+                        @* @Html.LabelFor(model => model.EmpLastName, new { @class = "" })*@
+                        <label for="EmpLastName" class="">Employee Last Name *</label>
+                        @Html.TextBoxFor(model => model.EmpLastName, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.EmpLastName)
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-4 form-group">
+                        @* @Html.LabelFor(model => model.PositionTitle, new { @class = "" })*@
+                        <label for="PositionTitle" class="">Position Title </label>
+                        @Html.TextBoxFor(model => model.PositionTitle, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.PositionTitle)
+                    </div>
+                    <div class="col-sm-6 col-md-4 form-group">
+                        @* @Html.LabelFor(model => model.Email, new { @class = "" })*@
+                        <label for="Email" class="">Email Address *</label>
+                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.Email)
+                    </div>
+                </div>
+
+
+
+
+                <hr>
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 form-group">
+
+
+                        <label for="PositionDesc" class="">Describe the essence of what you do in your position. As a (title), I...</label>
+                        @Html.TextAreaFor(model => model.PositionDesc, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.PositionDesc)
+                    </div>
+                    <div class="col-sm-12 col-md-6 form-group">
+
+                        <label for="PersonalInterestDesc" class="">Outside of work my personal interests include...</label>
+                        @Html.TextAreaFor(model => model.PersonalInterestDesc, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.PersonalInterestDesc)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 form-group">
+
+                        <label for="IdentifiesMeOrBelieveInDesc" class="">Something that I believe in or that identifies me would be...</label>
+                        @Html.TextAreaFor(model => model.IdentifiesMeOrBelieveInDesc, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.IdentifiesMeOrBelieveInDesc)
+                    </div>
+                    <div class="col-sm-12 col-md-6 form-group">
+                        <label for="MostLikingsInCompanyDesc" class="">The things that I like most about working for APTCF are...</label>
+                        @Html.TextAreaFor(model => model.MostLikingsInCompanyDesc, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.MostLikingsInCompanyDesc)
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 form-group">
+
+                        <label for="PatientCaringReasonsDesc" class="">The reasons that I enjoy caring for patients are... </label>
+                        @Html.TextAreaFor(model => model.PatientCaringReasonsDesc, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.PatientCaringReasonsDesc)
+
+                    </div>
+                    <div class="col-sm-12 col-md-6 form-group">
+
+                        <label for="BecamePTReasonDesc" class="">The reason I became a PT or chose to work in the PT field is...</label>
+                        @Html.TextAreaFor(model => model.BecamePTReasonDesc, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.BecamePTReasonDesc)
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 form-group">
+
+                        <label for="PatientWorkingWithMeDesc" class="">I believe patients enjoy working with me because...</label>
+                        @Html.TextAreaFor(model => model.PatientWorkingWithMeDesc, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.PatientWorkingWithMeDesc)
+
+                    </div>
+                    <div class="col-sm-12 col-md-6 form-group">
+                        <label for="PatientWorkingWithMeDesc" class="">I believe patients enjoy coming for treatment at APTCF because...</label>
+                        @Html.TextAreaFor(model => model.PatientComingForTreatmentDesc, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.PatientComingForTreatmentDesc)
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <b>
+                            <label for="HaveProfilePicture" class="">I have a profile picture that I prefer to use.</label></b><br />
+                        <b>
+                            <label for="HaveProfilePicture" class="">If yes, please email that picture to bethany@myadvancedpt.com</label></b><br />
+                        @Html.CheckBoxFor(model => model.HaveProfilePicture, new { @class = "checkbox", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.HaveProfilePicture)
+
+                    </div>
+
+                </div>
+                <hr>
+                <div class="subbutt">
+                    @if (Model.ApprovedBy == null)
+                    {
+                        <button type="submit" onclick="return validateInputs()" class="btn btn-orange pull-right" id="btnApprove">Approve</button>
+                    }
+                </div>
+                @*<div class="subbutt">
+
+                    <button type="submit" class="btn btn-orange pull-right">Approve</button>
+                    <div class="clearfix"></div>
+                </div>*@
+            </div>
+        }
+    </div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+

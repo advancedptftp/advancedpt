@@ -1,0 +1,3026 @@
+﻿@model DataLayer.Models.PatientProfile
+@using DataLayer;
+@{
+    ViewBag.Title = "CreatePersonalInfo";
+
+    var _PaymentType = Model.PaymentType;
+    var ActionName = (string)(ViewBag.ActionName);
+    var ControllerName = (string)(ViewBag.ControllerName);
+    var currentuserroleid = ViewContext.Controller.CurrentUserRole();
+    var dob1 = Model.DOB.GetExactValue();
+
+}
+<script src="~/Scripts/jquery.uploadPreview.min.js"></script>
+<style type="text/css">
+    #image-preview {
+        width: 100%;
+        height: 180px;
+        position: relative;
+        overflow: hidden;
+        background-color: #ffffff;
+        color: #ecf0f1;
+        background-size: cover;
+        background-size: 100% 100%;
+        cursor: pointer;
+    }
+
+    #image-preview1 {
+        width: 100%;
+        height: 180px;
+        position: relative;
+        overflow: hidden;
+        background-color: #ffffff;
+        color: #ecf0f1;
+        background-size: cover;
+        background-size: 100% 100%;
+        cursor: pointer;
+    }
+
+    .ImagePreviewDisplay1 input {
+        line-height: 200px;
+        font-size: 200px;
+        position: absolute;
+        opacity: 0;
+        z-index: 10;
+        cursor: pointer;
+    }
+
+    .ImagePreviewDisplay input {
+        -webkit-appearance: none;
+        cursor: pointer;
+        width: 200px;
+        height: 250px;
+        position: relative;
+        top: -35px;
+    }
+</style>
+<style>
+    .loadingdivschedule {
+        display: block;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 9998;
+        background-color: rgba(0,0,0,.3);
+        -webkit-animation: fade 500ms;
+        -moz-animation: fade 500ms;
+        -o-animation: fade 500ms;
+        animation: fade 500ms;
+    }
+
+    .loadingcontainerschedule {
+        width: 100%;
+        text-align: center;
+        padding-top: 26%;
+    }
+</style>
+
+@if (ViewBag.Error != null)
+{
+    Response.Write("<div id=\"loadforscheduleapp\" class=\"loadingdivschedule\"><div class=\"loadingcontainerschedule\"><img src=\"\\ptotslp/Images/pageloader1.gif\" width=\"200\" height=\"200\" /></div></div>");
+    @Html.Raw(ViewBag.Error)
+}
+
+
+<div class="body ">
+    <div class="activationform_fullpage">        
+        <div class="report-form clearfix">
+            @using (Html.BeginForm(ActionName, ControllerName, FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.HiddenFor(e => e.PatientCondition_Id)
+                @Html.HiddenFor(e => e.UserID)
+                @Html.HiddenFor(e => e.PatientSignature)
+                @Html.HiddenFor(e => e.DoctorID)
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(e => e.Patient_Id)
+                @Html.HiddenFor(m => m.DOB);
+                @Html.HiddenFor(model => model.PaymentType)
+                @Html.HiddenFor(model => model.KareoPatientID)
+
+                <div id="div_personalInfo">
+                    <h3 style="padding-bottom:15px;">Patient Profile</h3>
+                    @*<div class="clearfix line"></div>*@
+
+                    <div class="clearfix"></div>
+
+                    <div class="clearfix line"></div>
+                    <div class="row" id="dvid_1">
+                        <div class="col-sm-12 col-md-3 form-group">
+                            <div class="headrightcont">Last Name</div>
+                            <div>
+                                @Html.TextBoxFor(m => m.LastName, new { @class = "applitextfield2" })
+                                @Html.ValidationMessageFor(model => model.LastName)
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-3 form-group">
+                            <div class=headrightcont>First Name</div>
+                            <div>
+                                @Html.TextBoxFor(m => m.FirstName, new { @class = "applitextfield2" })
+
+                                @Html.ValidationMessageFor(model => model.FirstName)
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row" id="dvid_2">
+                        <div class="headrightcont">
+                            <div class="col-sm-12 form-group" >
+                                Date Of Birth<div style="padding-top:20px;">
+                                </div>
+                                @*@{var dob = "";
+                                if (@Model.DOB != null)
+                                {
+                                    dob = @Model.DOB.GetExactValue();
+
+                                  
+                                }
+                                }*@
+                                <div class="col-sm-6 form-group" style="padding-left:0;">
+                                    <div class="col-sm-2 form-group" style="padding: 0 8px 0 0;">
+                                        @*@Html.TextBoxFor(m => m.Patient.DOB, new { @class = "form-control CustomDateFormat", style = "width:30%; font-size:20px;", @placeholder = "mm/dd/yyyy" })*@
+                                        @Html.TextBox("month", "", new { @class = "form-control months", style = " font-size:20px;", @placeholder = "mm", onblur = "fn_Month_Validation()", @maxlength = 2, onkeyup = "movecursor(this,'date')" })
+                                    </div>
+                                    <div class="col-sm-1 form-group" style="padding: 0; width: auto; font-size: 34px; padding-top: 7px;">/</div>
+                                    <div class="col-sm-2 form-group" style="padding: 0 8px;">
+                                        @Html.TextBox("date", "", new { @class = "form-control days", style = " font-size:20px;", @placeholder = "dd", onblur = "fn_Date_Validation();", @maxlength = 2, onkeyup = "movecursor(this,'Year')" })
+
+                                    </div>
+                                    <div class="col-sm-1 form-group" style="padding: 0; width: auto; font-size: 34px; padding-top: 7px;">/</div>
+                                    <div class="col-sm-3 form-group" style="padding: 0 8px;">
+                                        @Html.TextBox("Year", "", new { @class = "form-control years", style = " font-size:20px;", @placeholder = "yyyy", onblur = "fn_Year_Validation();", })
+                                    </div>
+                                </div>
+                                <div>
+                                    <div id="divErrMsg_A5" style="display:none;"><span id="spanA5" style="color:red;"></span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @*<div class="col-sm-12 form-group">
+
+                            <div style="padding-top:30px;">
+                                @{var dob = "";
+                                if (@Model.DOB != null)
+                                {
+                                    dob = @Model.DOB.GetExactValue();
+
+                                    @Html.HiddenFor(m => m.DOB);
+                                }
+                                }
+
+
+                              
+                                <div class="col-sm-8 form-group">
+                                    <div class="col-sm-2 form-group" style="padding: 0 8px;">
+                                    
+                                        @Html.TextBox("month", "", new { @class = "form-control months", style = "width:60px; font-size:20px;", onblur = "myFunction()", @placeholder = "mm" })
+                                    </div>
+                                    <div class="col-sm-1 form-group" style="padding: 0; width: auto; font-size: 34px; padding-top: 7px;">/</div>
+                                    <div class="col-sm-2 form-group" style="padding: 0 8px;">
+                                        @Html.TextBox("date", "", new { @class = "form-control days", style = "width:61px; font-size:20px;", onblur = "myFunction1()", @placeholder = "dd" })
+
+                                    </div>
+                                    <div class="col-sm-1 form-group" style="padding: 0; width: auto; font-size: 34px; padding-top: 7px;">/</div>
+                                    <div class="col-sm-3 form-group" style="padding: 0 8px;">
+                                        @Html.TextBox("Year", "", new { @class = "form-control years", style = "width:110px; font-size:20px;", @placeholder = "yyyy" })
+                                    </div>
+                                </div>
+
+                                <div>
+                                    @Html.ValidationMessageFor(model => model.DOB)
+                                </div>
+                            </div>
+
+                        </div>*@
+                        <div class="col-sm-6 form-group">
+
+                            <div class=headrightcont>Sex</div><br>
+                            <div class="headrightcont">
+                                @*<div class="headrightcont">@Html.RadioButtonFor(m => m.Gender, "M")&nbsp;Male &nbsp;&nbsp;&nbsp;&nbsp;@Html.RadioButtonFor(m => m.Gender, "F")&nbsp;Female
+
+            </div>*@
+
+                                @*<div class="headrightcont">
+                <label class="radio-inline">
+                    @Html.RadioButtonFor(m => m.Gender, "M")&nbsp;Male &nbsp;&nbsp;&nbsp;&nbsp;
+                </label>
+                <label class="radio-inline">
+                    @Html.RadioButtonFor(m => m.Gender, "F")&nbsp;Female
+                </label>
+
+            </div>*@
+
+
+                                <div class="inlineradio">
+                                    <label class="control control--radio greenbuttradio1">
+                                        <span>Male</span>
+                                        @Html.RadioButtonFor(m => m.Gender, "M")
+                                        <div class="control__indicator"></div>
+                                    </label>
+
+                                </div>
+                                <div class="inlineradio">
+                                    <label class="control control--radio greenbuttradio1">
+                                        <span>Female</span>
+                                        @Html.RadioButtonFor(m => m.Gender, "F")
+                                        <div class="control__indicator"></div>
+                                    </label>
+
+                                </div>
+                            </div>
+                            <div style="clear:both;"></div>
+                            @Html.ValidationMessageFor(model => model.Gender)
+                        </div>
+
+                    </div>
+
+                    <div class="row" id="dvid_3">
+
+
+
+                        <div class="col-sm-6 col-md-3 form-group">
+
+                            <div class=headrightcont>Address1</div>
+                            <div>
+                                @Html.TextBoxFor(m => m.AddressLine1, new { @class = "applitextfield2" })
+                                @*<input class="form-control" id="" type="text">*@
+                                <div>
+                                    @Html.ValidationMessageFor(model => model.AddressLine1)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-3 form-group">
+                            <div class=headrightcont>Address2</div>
+                            @Html.TextBoxFor(m => m.AddressLine2, new { @class = "applitextfield2" })
+                            @*<input class="form-control" id="" type="text">*@
+
+                        </div>
+                        <div class="col-sm-6 col-md-2 form-group">
+                            <div class=headrightcont>City</div>
+                            @Html.TextBoxFor(m => m.City, new { @class = "applitextfield2" })
+                            @*<input class="form-control" id="" type="text">*@
+                            <div>
+                                @Html.ValidationMessageFor(model => model.City)
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-sm-12 col-md-2 form-group select_height">
+                            <div class=headrightcont>State</div>
+                            @Html.DropDownList("state")
+                            <div>
+                                @Html.ValidationMessageFor(model => model.State)
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2 form-group">
+                            <div class=headrightcont>ZIP</div>
+                            @Html.TextBoxFor(m => m.ZipCode, new { @class = "applitextfield2 zipcode", maxlength = "10" })
+                            <div>
+                                @*<input class="form-control" id="" type="text">*@
+                                @Html.ValidationMessageFor(model => model.ZipCode)
+
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                    <div class="row" id="dvid_4">
+
+                        <div class="col-sm-12 col-md-12 form-group">
+                            <div class=headrightcont>Email Address (Required to watch “New Patient Video”)</div>
+                            @Html.TextBoxFor(m => m.Email, new { @class = "applitextfield2" })
+                            @*<input class="form-control" id="" type="text">*@
+                            <div>
+                                @Html.ValidationMessageFor(model => model.Email)
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row" id="dvid_5">
+
+                        <div class="col-sm-6 col-md-4 form-group">
+                            <div class=headrightcont>Home Phone</div>
+                            @Html.TextBoxFor(m => m.Phone2, new { @class = "applitextfield2 UsCellFormat" })
+                            @*<input class="form-control" id="" type="text">*@
+                            @*@Html.ValidationMessageFor(model => model.Phone2)*@
+                        </div>
+                        <div class="col-sm-6 col-md-4 form-group">
+                            <div class=headrightcont>Cellular</div>
+                            @Html.TextBoxFor(m => m.MobNo, new { @class = "applitextfield2 UsCellFormat" })
+                            @*<input class="form-control" id="" type="text">*@
+                            @*@Html.ValidationMessageFor(model => model.MobNo)*@
+                        </div>
+                        <div class="col-sm-6 col-md-4 form-group">
+                            <div class=headrightcont>Work Phone Number</div>
+                            @Html.TextBoxFor(m => m.Phone3, new { @class = "applitextfield2 UsCellFormat" })
+                            @*<input class="form-control" id="" type="text">*@
+                            @*@Html.ValidationMessageFor(model => model.Phone3)*@
+                        </div>
+                        <div>
+                            @Html.TextBoxFor(model => model.Phone4, new { @style = "opacity: 0;" })
+                            @Html.ValidationMessageFor(model => model.Phone4)
+                        </div>
+                    </div>
+
+                    <div class="row" id="dvid_6">
+
+
+
+                        <div class="col-sm-12 col-md-12 ">
+                            <div class=headrightcont> <label><strong>Work Status</strong></label></div>
+
+                        </div>
+                        <div class="col-sm-12 col-md-12 headrightcont">
+                            <div class="col-sm-6">
+
+                                @*<div class=headrightcont><input class="chkeffect chk1" name="optradio1" type="checkbox" id="chkCurrentlyemp">&nbsp;&nbsp;Currently Employed</div>*@
+                                @*<div class=headrightcont>
+                    <label class="radio-inline">
+                        <input class="chkeffect chk1" name="optradio1" type="checkbox" id="chkCurrentlyemp">&nbsp;&nbsp;Currently Employed
+                    </label>
+
+                </div>*@
+                                <div class="radiosec widebutton">
+                                    <input id="chkCurrentlyemp" class="checkbox-custom chk1" name="chkCurrentlyemp" type="checkbox">
+                                    <label for="chkCurrentlyemp" class="checkbox-custom-label">Currently Employed</label>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                @*<div class=headrightcont>
+                    <label class="radio-inline">
+                        <input class="chkeffect chk2" name="optradio2" type="checkbox" id="chkRetired">&nbsp;Retired
+                    </label>
+                </div>*@
+                                <div class="radiosec widebutton">
+                                    <input id="chkRetired" class="checkbox-custom chk2" name="chkRetired" type="checkbox">
+                                    <label for="chkRetired" class="checkbox-custom-label">Retired</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-12 headrightcont">
+                            <div class="col-sm-6">
+                                @*<div class=headrightcont>
+                    <label class="radio-inline">
+                        <input class="chkeffect chk3" name="optradio3" type="checkbox" id="chkDisabled">&nbsp;Disabled
+                    </label>
+                </div>*@
+                                <div class="radiosec widebutton">
+                                    <input id="chkDisabled" class="checkbox-custom chk3" name="chkDisabled" type="checkbox">
+                                    <label for="chkDisabled" class="checkbox-custom-label">Disabled</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                @*<div class=headrightcont>
+                    <label class="radio-inline">
+                        <input class="chkeffect chk4" name="optradio4" type="checkbox" id="chkStudent">&nbsp;Student
+                    </label>
+                </div>*@
+                                <div class="radiosec widebutton">
+                                    <input id="chkStudent" class="checkbox-custom chk4" name="chkStudent" type="checkbox">
+                                    <label for="chkStudent" class="checkbox-custom-label">Student</label>
+                                </div>
+                            </div>
+                        </div>
+                        @Html.TextBoxFor(model => model.Work_Status, new { @style = "opacity:0;" })
+                        <div style="clear:both;"></div>
+                        @Html.ValidationMessageFor(model => model.Work_Status)
+                    </div>
+
+
+                </div>
+                <div class="row" id="dvid_7">
+                    <div class="col-sm-6 col-md-4 form-group">
+                        <div class=headrightcont>Employer Name</div>
+                        @Html.TextBoxFor(m => m.Employer_Name, new { @class = "applitextfield2" })
+                        @Html.ValidationMessageFor(model => model.Employer_Name)
+
+                    </div>
+                    <div class="col-sm-6 col-md-4 form-group">
+                        <div class="headrightcont">Employer Phone</div>
+                        @Html.TextBoxFor(m => m.Employer_Phone, new { @class = "applitextfield2 UsCellFormat" })
+                        @Html.ValidationMessageFor(model => model.Employer_Phone)
+
+                    </div>
+                </div>
+
+
+                <div class="row" id="dvid_8">
+                    <div class="col-sm-6 col-md-6 form-group headrightcont">
+                        <div class=headrightcont>Marital status</div>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;<br />
+
+                        @*<div class="headrightcont">
+                <label class="radio-inline">@Html.RadioButtonFor(m => m.Marital_Status, "0")&nbsp;Single</label>
+            </div>
+            <div class="headrightcont">
+                <label class="radio-inline">@Html.RadioButtonFor(m => m.Marital_Status, "1")&nbsp;Married</label>
+            </div>*@
+                        @*<label class="radio-inline"><input name="optradio" type="radio">Single</label>
+            <label class="radio-inline"><input name="optradio" type="radio">Married</label>*@
+
+
+                        <div class="inlineradio">
+                            <label class="control control--radio greenbuttradio1">
+                                <span>Single</span>
+                                @Html.RadioButtonFor(m => m.Marital_Status, "0")
+                                <div class="control__indicator"></div>
+                            </label>
+
+                        </div>
+                        <div class="inlineradio">
+                            <label class="control control--radio greenbuttradio1">
+                                <span>Married</span>
+                                @Html.RadioButtonFor(m => m.Marital_Status, "1")
+                                <div class="control__indicator"></div>
+                            </label>
+
+                        </div>
+                        <div class="inlineradio">
+                            <label class="control control--radio greenbuttradio1">
+                                <span>Widow</span>
+                                @Html.RadioButtonFor(m => m.Marital_Status, "2")
+                                <div class="control__indicator"></div>
+                            </label>
+
+                        </div>
+                        <div style="clear:both;"></div>
+                        @Html.ValidationMessageFor(model => model.Marital_Status)
+                    </div>
+                    <br />
+                    @Html.TextBoxFor(model => model.Injury_Type, new { @style = "opacity:0;" })
+                    <div style="clear:both;"></div>
+                    @Html.ValidationMessageFor(model => model.Injury_Type)
+                </div>
+                <div class="row" id="dvid_9">
+                    @Html.HiddenFor(m => m.Work_Status)
+                    <div class="col-sm-12 col-md-12 form-group headrightcont">
+
+                        @*<div class="headrightcont" style="padding:6px 0 0 20px;">
+                <label class="radio-inline"><input name="optradio" type="radio" id="rdSingle">&nbsp;Single</label>
+                <label class="radio-inline"><input name="optradio" type="radio" id="rdTemporary">&nbsp;Temporary</label>
+            </div>*@
+
+                        <div class="inlineradio">
+                            <label class="control control--radio greenbuttradio1">
+                                <span>Single</span>
+                                <input name="optradio" type="radio" id="rdSingle">
+                                <div class="control__indicator"></div>
+                            </label>
+
+                        </div>
+                        <div class="inlineradio">
+                            <label class="control control--radio redbuttradio1">
+                                <span>Temporary</span>
+                                <input name="optradio" type="radio" id="rdTemporary">
+                                <div class="control__indicator"></div>
+                            </label>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="dvid_10">
+                    <div class="col-sm-12 col-md-12 form-group headrightcont">
+                        @*<div class="headrightcont">
+                <label class="radio-inline"><input name="optradio" type="radio" id="rdPT">&nbsp;Part Time</label>
+                <label class="radio-inline"><input name="optradio" type="radio" id="rdFT">&nbsp;Full Time</label>
+            </div>*@
+
+                        <div class="inlineradio">
+                            <label class="control control--radio greenbuttradio1">
+                                <span>Part Time</span>
+                                <input name="optradio" type="radio" id="rdPT">
+                                <div class="control__indicator"></div>
+                            </label>
+
+                        </div>
+                        <div class="inlineradio">
+                            <label class="control control--radio redbuttradio1">
+                                <span>Full Time</span>
+                                <input name="optradio" type="radio" id="rdFT">
+                                <div class="control__indicator"></div>
+                            </label>
+
+                        </div>
+                    </div>
+                </div>
+                @*<div class="row" id="dvid_11">
+
+
+                                                <div class="col-sm-12 col-md-12 form-group">
+                                                    <div class="headrightcont"><label> Condition Info</label></div><br />
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;<br />
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;<br />
+                                                    <div class="headrightcont">My injury/ailment is related to . . .</div>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;<br />
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;<br />
+                                                    <div class="col-sm-6 col-md-5 form-group">
+
+                                                        <div class="headrightcont">
+                                                            <label class="radio-inline">
+                                                                <input class="chkeffect chk5" name="optradio11" type="checkbox" id="chkInjury">&nbsp;AUTO/PERSONAL INJURY
+                                                            </label>
+                    </div>
+                                                    </div>
+                                                    <div class="col-sm-6 col-md-3 form-group">
+                                                        <div class="headrightcont">
+                                                            <label class="radio-inline">
+                                                                <input class="chkeffect chk6" name="optradio24" type="checkbox" id="chkWORK">&nbsp;WORK INJURY
+                                                            </label>
+                    </div>
+                                                    </div>
+                                                    <div class="col-sm-6 col-md-3 form-group">
+                                                        <div class="headrightcont">
+                                                            <label class="radio-inline">
+                                                                <input class="chkeffect chk7" name="optradio55" type="checkbox" id="chkNO_INJURY">&nbsp;NO INJURY
+                                                            </label>
+                    </div>
+
+                                                    </div><br />
+                                                    @Html.TextBoxFor(model => model.Injury_Type, new { @style = "opacity:0;" })
+                                                    <div style="clear:both;"></div>
+                                                    @Html.ValidationMessageFor(model => model.Injury_Type)
+                                                </div>
+                                            </div>*@
+                <div class="row" id="dvid_12">
+                    <div class="col-sm-3 col-md-4 form-group">
+                        <div class="headrightcont">Date of accident :</div>
+                        @Html.TextBoxFor(m => m.Date_Of_Accident, new { @class = "applitextfield2 datepicker datepicker-bg", style = "width:100%;", @Value = @Model.Date_Of_Accident.GetExactValue() })
+                        @Html.ValidationMessageFor(model => model.Date_Of_Accident)
+                    </div>
+
+                </div>
+                <div class="row" id="dvid_13">
+                    <div class="col-sm-12 col-md-12 headrightcont">
+                        <div class="headrightcont">
+                            <label>Complete all information below</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-md-2 headrightcont">
+                        <div class="headrightcont">Date of injury</div>
+                        @Html.TextBoxFor(m => m.Date_Of_injury, new { @class = "applitextfield2 datepicker datepicker-bg", @Value = @Model.Date_Of_injury.GetExactValue() })
+                        @Html.ValidationMessageFor(model => model.Date_Of_injury)
+                    </div>
+                    <div class="col-sm-3 col-md-3 headrightcont">
+                        <div class="headrightcont">Your company HR person’s name</div>
+                        @Html.TextBoxFor(m => m.Company_HR_Name, new { @class = "applitextfield2" })
+                        @Html.ValidationMessageFor(model => model.Company_HR_Name)
+                    </div>
+
+
+
+                    <div class="col-sm-3 col-md-3 headrightcont">
+                        <div class="headrightcont">Insurance adjustor’s phone</div><br>
+                        @Html.TextBoxFor(m => m.Insurance_Adjustor_Phone, new { @class = "applitextfield2" })
+                        @Html.ValidationMessageFor(model => model.Insurance_Adjustor_Phone)
+                    </div>
+                    <div class="col-sm-3 col-md-3 headrightcont">
+                        <div class="headrightcont">Insurance adjustor’s name</div>
+                        @Html.TextBoxFor(m => m.Insurance_Adjustor_Name, new { @class = "applitextfield2" })
+                        @Html.ValidationMessageFor(model => model.Insurance_Adjustor_Name)
+                    </div>
+
+                </div>
+                <div class="row" id="dvid_14">
+                    <div class="col-sm-12 col-md-10 headrightcont">
+                        <div class="headrightcont">What do you think may have caused it?</div>
+                        @Html.TextBoxFor(m => m.Cause_Of_Ailment, new { @class = "applitextfield2" })
+                        @Html.ValidationMessageFor(model => model.Cause_Of_Ailment)
+                    </div>
+                </div>
+
+                <div class="row" id="dvid_15">
+
+                    @Html.HiddenFor(m => m.Is_OtherCare)
+
+                    <div class="col-sm-12 col-md-12 headrightcont" style="width:100%;">
+                        <h4 style="padding-bottom:10px;">I have already had . . </h4>
+
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 headrightcont">
+                                <div class="col-sm-6">
+
+                                    @*<div>
+                    <label class="radio-inline" style="padding-left:0;">
+                        <input class="chkeffect chk8" name="optradio78" type="checkbox" id="chkSurgery">&nbsp;Surgery
+                    </label>
+
+
+                </div>*@
+                                    <div class="radiosec widebutton">
+                                        <input id="chkSurgery" class="checkbox-custom chk8" name="optradio78" type="checkbox">
+                                        <label for="chkSurgery" class="checkbox-custom-label">Surgery</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    @*<div>
+                    <label class="radio-inline" style="padding-left:0;">
+                        <input class="chkeffect chk9" name="optradio86" type="checkbox" id="chkPhysical_Therapy">&nbsp;Physical Therapy Before
+                    </label>
+
+
+                </div>*@
+                                    <div class="radiosec widebutton">
+                                        <input id="chkPhysical_Therapy" class="checkbox-custom chk9" name="optradio86" type="checkbox">
+                                        <label for="chkPhysical_Therapy" class="checkbox-custom-label">Physical Therapy Before</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-12 headrightcont">
+                                <div class="col-sm-6">
+                                    @*<div>
+                    <label class="radio-inline" style="padding-left:0;">
+                        <input class="chkeffect chk10" name="optradio99" type="checkbox" id="chkHome_Healthcare">&nbsp;Home Healthcare
+                    </label>
+                </div>*@
+                                    <div class="radiosec widebutton">
+                                        <input id="chkHome_Healthcare" class="checkbox-custom chk10" name="optradio99" type="checkbox">
+                                        <label for="chkHome_Healthcare" class="checkbox-custom-label">Home Healthcare</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    @*<div>
+                    <label class="radio-inline" style="padding-left:0;">
+                        <input class="chkeffect chk11" name="optradio85" type="checkbox" id="chkOther_Care">&nbsp;Other Care
+                    </label>
+                </div>*@
+                                    <div class="radiosec widebutton">
+                                        <input id="chkOther_Care" class="checkbox-custom chk11" name="optradio85" type="checkbox">
+                                        <label for="chkOther_Care" class="checkbox-custom-label">Other Care</label>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+
+                        @Html.HiddenFor(m => m.Is_Surgury_Done)
+                        @Html.HiddenFor(m => m.IsHomeHealthCare)
+                        @Html.HiddenFor(m => m.Is_PhysicalTherephyBefore)
+                        @Html.TextBoxFor(model => model.alreadydone, new { @style = "opacity:0;" })
+                        <div style="clear:both;"></div>
+                        @Html.ValidationMessageFor(model => model.alreadydone)
+                    </div>
+                </div>
+
+                @*<div class="row" id="dvid_16">
+                        <div class="col-sm-4 col-md-4 form-group">
+                            <div class="headrightcont">Surgery Type</div>
+                            @Html.TextBoxFor(m => m.SurgeryType, new { @class = "applitextfield2" })
+                            @Html.ValidationMessageFor(model => model.SurgeryType)
+                        </div>
+                        <div class="col-sm-4 col-md-4 form-group">
+                            <div class="headrightcont">Date of Surgery</div>
+                            @Html.TextBoxFor(m => m.SurgeryDate, new { @class = "applitextfield2 datepicker datepicker-bg", @Value = @Model.SurgeryDate.GetExactValue() })
+                            @Html.ValidationMessageFor(model => model.SurgeryDate)
+                        </div>
+                    </div>*@
+                <div class="row" id="dvid_17">
+                    <div class="col-sm-6 col-md-6 form-group">
+                        <div class="headrightcont">Name of Physical Therapy Office</div>
+                        @Html.TextBoxFor(m => m.PTName, new { @class = "applitextfield2" })
+                        @Html.ValidationMessageFor(model => model.PTName)
+                    </div>
+                    <div class="col-sm-6 col-md-6 form-group">
+                        <div class="headrightcont">Location OF Physical Therapy Office</div>
+                        @Html.TextBoxFor(m => m.PTWhere, new { @class = "applitextfield2" })
+                        @Html.ValidationMessageFor(model => model.PTWhere)
+                    </div>
+                    <div class="col-sm-6 col-md-6 form-group">
+                        <div class="headrightcont">Date You Started There</div>
+                        @Html.TextBoxFor(m => m.PTDate, new { @class = "applitextfield2 datepicker datepicker-bg" })
+                        @Html.ValidationMessageFor(model => model.PTDate)
+                    </div>
+                    <div class="col-sm-6 col-md-6 form-group">
+                        <div class="headrightcont">Date You Finished There</div>
+                        @Html.TextBoxFor(m => m.PTDateEnd, new { @class = "applitextfield2 datepicker datepicker-bg" })
+                        @*@Html.ValidationMessageFor(model => model.PTDateEnd)*@
+                    </div>
+                </div>
+                <div class="row" id="dvid_18">
+                    <div class="col-sm-12 col-md-12 form-group headrightcont">
+                        <div class="headrightcont">Are you still receiving it?</div><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<br />
+
+                        @*<div style="padding-left:15px;">
+                <div class="headrightcont"><label class="radio-inline">@Html.RadioButtonFor(m => m.IsHomeHealthCare, "0")&nbsp;YES</label></div>
+                <div class="headrightcont">
+                    <label class="radio-inline">@Html.RadioButtonFor(m => m.IsHomeHealthCare, "1")&nbsp;NO</label>
+                </div>
+            </div>*@
+
+                        <div class="inlineradio">
+                            <label class="control control--radio greenbuttradio1">
+                                <span>YES</span>
+                                @Html.RadioButtonFor(m => m.IsHomeHealthCare, "0")
+                                <div class="control__indicator"></div>
+                            </label>
+
+                        </div>
+                        <div class="inlineradio">
+                            <label class="control control--radio redbuttradio1">
+                                <span>NO</span>
+                                @Html.RadioButtonFor(m => m.IsHomeHealthCare, "1")
+                                <div class="control__indicator"></div>
+                            </label>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" id="dvid_19">
+                    <div class="col-sm-4 col-md-4 form-group">
+                        <div class="headrightcont"> Other Treatement Name</div>
+                        @Html.TextBoxFor(m => m.Other_Treatement, new { @class = "applitextfield2" })
+                        @Html.ValidationMessageFor(model => model.Other_Treatement)
+                    </div>
+                    <div class="col-sm-4 col-md-4 form-group">
+                        <div class="headrightcont">Other Treatement Date</div>
+                        @Html.TextBoxFor(m => m.Other_TreatementDate, new { @class = "applitextfield2 datepicker datepicker-bg", @Value = @Model.Other_TreatementDate.GetExactValue() })
+                        @Html.ValidationMessageFor(model => model.Other_TreatementDate)
+                    </div>
+                </div>
+
+                @*<div class="row" id="dvid_21">
+
+                        <div class="col-sm-12 col-md-12 headrightcont">
+                            <label>I am Paying today by:</label><br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;<br />
+
+                            <label class="radio-inline">@Html.RadioButtonFor(m => m.PaymentMode, "1", new { @class = "PaymentMode" })&nbsp;Insurance</label>
+
+                            <label class="radio-inline">@Html.RadioButtonFor(m => m.PaymentMode, "3", new { @class = "PaymentMode" })&nbsp;Cash, Check, or Credit</label>
+                            <label class="radio-inline">@Html.RadioButtonFor(m => m.PaymentMode, "4", new { @class = "PaymentMode" })&nbsp;I have an Attorney</label>
+
+
+                        </div>
+                        <div style="clear:both;"></div>
+                        @Html.ValidationMessageFor(model => model.PaymentMode)
+                    </div>*@
+                @*<div class="row" id="dvid_22">
+
+                        <div class="col-sm-12 col-md-12 headrightcont">
+                            <label class="radio-inline">@Html.RadioButtonFor(m => m.InsuranceDealType, "0")&nbsp;I would like you deal directly with them. I will assign my benefits by completing the ‘Assignment of Benefits’ section.  The following is required prior to my first visit:</label><br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;<br />
+
+                            <label class="radio-inline">@Html.RadioButtonFor(m => m.InsuranceDealType, "1")&nbsp;Get a 30% discount by paying the entire bill at the time of service. I’ll get reimbursement on my own.  (Ask the front desk person for details).</label>
+
+                        </div>
+                        <div style="clear:both;"></div>
+                        @Html.ValidationMessageFor(model => model.InsuranceDealType)
+
+                    </div>*@
+                @*<div class="row" id="dvid_23">
+                        <div class="col-sm-3 col-md-3 form-group">
+                            <div class="headrightcont">CoInsurance is % </div>
+                            @Html.TextBoxFor(m => m.MyCoInsurance, new { @class = "applitextfield2" })
+
+                        </div>
+                        <div class="col-sm-3 col-md-3 form-group">
+                            <div class="headrightcont">Copay is $ </div>
+                            @Html.TextBoxFor(m => m.MyCoPay, new { @class = "applitextfield2" })
+
+                        </div>
+
+                        <div class="col-sm-3 col-md-3 form-group">
+                            <div class="headrightcont">CoDeductible is $</div>
+                            @Html.TextBoxFor(m => m.MyDeductible, new { @class = "applitextfield2" })
+
+                        </div>
+                        <div style="clear:both;"></div>
+                        @Html.ValidationMessageFor(model => model.MyCoPay)
+                    </div>*@
+                <div class="row" id="dvid_20">
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <div class="headrightcont">How did you hear about us?  </div>
+
+                        @Html.DropDownList("ReferralSource")
+
+
+                    </div>
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <div class="headrightcont" id="Related_query2"></div>
+                        @Html.TextBoxFor(m => m.ReferralNote, new { @class = "applitextfield2" })
+                        @*@Html.ValidationMessageFor(model => model.ReferralNote)*@
+                        
+                    </div>
+                    <span id="nameoftheattorneyError" style="color:red;">Please enter name of the attorney</span>
+                </div>
+                <div class="row" id="dvid_24">
+                    <div class="col-sm-12 col-md-8 form-group">
+                        <div class="headrightcont">
+                            Physician/Dentist/Chiroprator/Nurse:
+                            <div>
+                                @Html.TextBoxFor(m => m.DoctorName, new { @class = "applitextfield1 marleftnone" })
+                               
+                                <button class="btn btn-primary DoctorSearchModal" id="btndocsearch" data-toggle="modal" data-id="To" data-target="#_SearchDoctor">Select Doctor</button>
+                             </div>
+                            @*<input type="text" id="txtDoctorName" class="applitextfield1" /></div>*@
+                            <span id="txtDoctorNameValidatinMsg" style="color:red;  align-items:center">Enter Doctor Name </span>
+                            @*@Html.DropDownList("DoctorID")*@
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="row" id="dvid_25">
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <h2>Patient’s Identification:</h2>
+                    </div>
+                    <div class="col-sm-12 col-md-6 form-group">
+                        <div class="headrightcont">
+                            Front Image:
+                            <div>
+                                @*@{var imgurl11 = Url.Content("~/Images/no-image.jpg");
+                                    if (Model.DocumentFront != null)
+                                    {
+                                        imgurl11 = "data:image/png;base64," + Convert.ToBase64String(Model.DocumentFront);
+                                    }
+                                    }
+                                    <img src="@imgurl11" alt="Alternate Text" class="form-control" id="imgPatientSignsdfsdsd" style="width:100px; height:100px;" />*@
+
+
+
+
+
+                                <div id="image-preview" style="width:250px;">
+                                </div>
+                                <input type="file" id="uploadImagesFront" name="uploadImagesFront" accept="image/*" capture="camera" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-12 col-md-6 form-group">
+                        <div class="headrightcont">
+                            Back Image:
+                            <div>
+                                @*@{var imgurl12 = Url.Content("~/Images/no-image.jpg");
+                                    if (Model.DocumentBack != null)
+                                    {
+                                        imgurl12 = "data:image/png;base64," + Convert.ToBase64String(Model.DocumentBack);
+                                    }
+                                    }
+                                    <img src="@imgurl12" alt="Alternate Text" class="form-control" id="imgPatientSignddfdfsdds" style="width:100px; height:100px;" />*@
+
+
+
+                                <div id="image-preview1" style="width:250px;">
+                                </div>
+                                <input type="file" id="uploadImagesBack" name="uploadImagesBack" accept="image/*" capture="camera" />
+                            </div>
+                        </div>
+
+                    </div>
+                    @*<div class="col-sm-12 col-md-12">
+                        <input class="checkbox-inline" data-val="true" id="ChackBoxId1" name="ChackBoxId1" type="checkbox" value="true">
+                        <strong>Do you want to skip from here</strong>
+                    </div>*@
+                    <div class="radiosec1">
+                        <input id="ChackBoxId1" class="checkbox-custom chk1" name="ChackBoxId1" type="checkbox">
+                        <label for="ChackBoxId1" class="checkbox-custom-label">Skip image upload for now</label>
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="row" id="dvid_26">
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <div class="headrightcont"><label>Important Company Polices For A Successful Relationship</label></div>
+
+                    </div>
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <div class="headrightcont">
+                            We strive to provide you the best personalized care available.
+                            To make this possible we adhere to a set of very important policies.
+                            Please read them carefully, initial all the boxes, and indicate your agreement by signing at the bottom.
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row" id="dvid_27">
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <h4 style="color:blue">Please Provide Initial</h4>
+                        &nbsp;&nbsp;&nbsp;<br />
+                        <div class="headrightcont">
+                            @Html.TextBoxFor(m => m.Tc_LatePolicy, new { @class = "applitextfield2", @Style = "width: 54px; height:30px;" })
+                            @*<input class="chkeffect chk8" name="optradio111" type="checkbox" id="guarantees1">*@<strong> &nbsp;&nbsp;&nbsp;Late Policy “10-minutes”</strong><br />
+                            &nbsp;&nbsp;&nbsp;<br />
+
+
+                            Being late by more than 10 minutes will require you to either reschedule or wait for the next available opening.
+                            There are no guarantees since openings due to cancellations are unpredictable.
+                            We do not allow appointment overlap because this undeservedly compromises the care of another patient.
+                        </div>
+                    </div>
+                    @*@Html.TextBoxFor(model => model.guarantees, new { @style = "opacity:0;" })*@
+                    <div style="padding-left:14px;">@Html.ValidationMessageFor(model => model.Tc_LatePolicy)</div>
+                @*</div>
+                <div class="row" id="dvid_27">*@
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <h4 style="color:blue">Please Provide Initial</h4>
+                        &nbsp;&nbsp;&nbsp;<br />
+                        <div class="headrightcont">
+                            @Html.TextBoxFor(m => m.Tc_AdvanceNotice, new { @class = "applitextfield2", @Style = "width: 54px; height:30px;" })
+                            @*<input class="chkeffect chk8" name="optradio112" type="checkbox" id="guarantees2">*@<strong> &nbsp;&nbsp;&nbsp;48-Hour Advance Notice Fee</strong><br />
+                            &nbsp;&nbsp;&nbsp;<br />
+                            If you wish to change or cancel an appointment we require a minimum 48-hour advance notice. Anything
+                            less will result in a $30 fee charged to your account. It costs us money to make appointments available to you.
+                            Whether you attend or not we still accrue the expenses (for staff wages, rent, etc.). We don’t charge you the
+                            actual cost for that appointment but rather a mere $30 fee. We do NOT make money with this charge; it’s only
+                            to act as a deterrent from making last minute changes. Advance notice allows someone else (who needs it)
+                            time to reserve it in place of you. Please be courteous and responsible. Thank you.
+                        </div>
+                    </div>
+
+                    <div style="padding-left:14px;">
+                        @Html.ValidationMessageFor(model => model.Tc_AdvanceNotice)</div>
+                </div>
+                <div class="row" id="dvid_28">
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <h4 style="color:blue">Please Provide Initial</h4>
+                        &nbsp;&nbsp;&nbsp;<br />
+                        <div class="headrightcont">
+                            @Html.TextBoxFor(m => m.Tc_CopaysOnArrival, new { @class = "applitextfield2", @Style = "width: 54px; height:30px;" })<strong> &nbsp;&nbsp;&nbsp;Copays are due upon arrival</strong><br />
+                            &nbsp;&nbsp;&nbsp;<br />
+                            If you happen to forget your wallet or checkbook we may still be able to see you upon completion of an “Extension
+                            Request” form. This is a “promise-to-pay” form and carries a minimal fee that allows you to keep your
+                            appointment.
+                        </div>
+                    </div>
+
+                    <div style="padding-left:14px;">
+                        @Html.ValidationMessageFor(model => model.Tc_CopaysOnArrival)</div>
+                @*</div>
+                <div class="row" id="dvid_28">*@
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <h4 style="color:blue">Please Provide Initial</h4>
+                        &nbsp;&nbsp;&nbsp;<br />
+                        <div class="headrightcont">
+                            @Html.TextBoxFor(m => m.Tc_NoShowsBad, new { @class = "applitextfield2", @Style = "width: 54px; height:30px;" })<strong> &nbsp;&nbsp;&nbsp;No-shows are bad</strong><br />
+                            &nbsp;&nbsp;&nbsp;<br />
+                            If you fail to show for an appointment without notice all future appointments will be removed and a $30 fee assessed
+                            to your account. You may re-schedule appointments again on a “first - come, first - serve basis”.
+                        </div>
+                    </div>
+
+                    <div style="padding-left:14px;">
+                        @Html.ValidationMessageFor(model => model.Tc_NoShowsBad)</div>
+                    </div>
+                <div class="row" id="dvid_29">
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <h4 style="color:blue">Please Provide Initial</h4>
+                        &nbsp;&nbsp;&nbsp;<br />
+                        <div class="headrightcont">
+                            @Html.TextBoxFor(m => m.Tc_CellPhoneShouldOff, new { @class = "applitextfield2", @Style = "width: 54px; height:30px;" })<strong> &nbsp;&nbsp;&nbsp;Cell phones must be shut OFF or silent.</strong><br />
+                            &nbsp;&nbsp;&nbsp;<br />
+                            We realize emergencies may arise and therefore allow you to carry your cell phone during your session, however,
+                            please be courteous and set to silent mode or turn off. Thank you.
+                        </div>
+                    </div>
+
+                    <div style="padding-left:14px;">
+                        @Html.ValidationMessageFor(model => model.Tc_CellPhoneShouldOff)</div>
+                    @*</div>
+                <div class="row" id="dvid_29">*@
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <h4 style="color:blue">Please Provide Initial</h4>
+                        &nbsp;&nbsp;&nbsp;<br />
+                        <div class="headrightcont">
+                            @Html.TextBoxFor(m => m.Tc_ChildrenSupervisionNotAllowed, new { @class = "applitextfield2", @Style = "width: 54px; height:30px;" })<strong> &nbsp;&nbsp;&nbsp;Children requiring supervision are NOT allowed to attend sessions with you.</strong><br />
+                            &nbsp;&nbsp;&nbsp;<br />
+                            Unless your facility offers child care services, you may not bring children who require supervision with you to
+                            your appointment. If your child does not require supervision and is capable of waiting for you quietly then you
+                            may bring them. If any disturbance is caused to other patients or staff members you may be asked to terminate
+                            your session early and attend to your child.
+                        </div>
+                    </div>
+
+                    <div style="padding-left:14px;">
+                        @Html.ValidationMessageFor(model => model.Tc_ChildrenSupervisionNotAllowed)</div>
+                    </div>
+                <div class="row" id="dvid_30">
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <h4 style="color:blue">Please Provide Initial</h4>
+                        &nbsp;&nbsp;&nbsp;<br />
+                        <div class="headrightcont">
+                            @Html.TextBoxFor(m => m.Tc_FinancialHardship, new { @class = "applitextfield2", @Style = "width: 54px; height:30px;" })<strong>&nbsp;&nbsp;&nbsp;Financial Hardship</strong><br />
+                            &nbsp;&nbsp;&nbsp;<br />
+                            If you are experiencing financial difficulties and are unable to afford the cost of our services we have a “Financial
+                            Hardship Form” which may be filled-out. If you quality for financial assistance according to the Federal
+                            guidelines, we may legally assist you by waiving or discounting your (patient responsibility) portions of the bill.
+                            Ask the front desk person for assistance.
+                        </div>
+                    </div>
+
+                    <div style="padding-left:14px;">
+                        @Html.ValidationMessageFor(model => model.Tc_FinancialHardship)</div>
+                </div>
+                <div class="row" id="dvid_31">
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <h4 style="color:blue">Please Provide Initial</h4>
+                        &nbsp;&nbsp;&nbsp;<br />
+                        <div class="headrightcont">
+                            @Html.TextBoxFor(m => m.Tc_NoticeOfFederalGovt, new { @class = "applitextfield2", @Style = "width: 54px; height:30px;" })<strong> &nbsp;&nbsp;&nbsp;Important Notice from the Federal Government:</strong><br />
+                            &nbsp;&nbsp;&nbsp;<br />
+                            “It is unlawful to routinely avoid paying your copay, deductible or coinsurance payments . . . even if your doctor
+                            allows it. Unless you complete a “Financial Hardship” form and qualify for financial assistance under Federal
+                            Standards, you may NOT routinely evade paying your responsibility portions for medical care as outlined in
+                            your insurance plan even if your doctor allows it. You both may be charged for breaking the law. This includes
+                            services deemed as “professional courtesy” and “TWIP’s - Take what insurance pays”. Failure to comply
+                            places you in violation of the following laws: Federal False Claims Act, Federal Anti-Kickback Statute, Federal
+                            Insurance Fraud Laws, State Insurance Fraud Laws. Failure to comply may result in civil money penalties
+                            (CMP) in accordance with the new provision section 1128 A(a)(5) of the Health Insurance Portability and
+                            Accountability Act of 1996 [section 231(h) of HIPAA]. Exceptional cases do apply. Please see contact info
+                            for more information. Offi ce of Inspector General, Department of Health and Human Services. Contact by
+                            by phone: 202 619-1343, by fax: 202 260-8512, by email: paffairs@oig.hhs.gov, by mail: Office of Inspector
+                            General, Office of Public Affairs, Department of Health and Human Services, Room 5541 Cohen Building, 333
+                            Independence Avenue, S.W., Washington, D.C. 20201, Joel Schaer, Office of Counsel to the Inspector General,
+                            202 619-0089.”
+                        </div>
+                    </div>
+
+                    <div style="padding-left:14px;">
+                        @Html.ValidationMessageFor(model => model.Tc_NoticeOfFederalGovt)</div>
+                    </div>
+                <div id="loadforscheduleapp" class="loadingdivschedule">
+            <div class="loadingcontainerschedule">
+                <img src="~/Images/pageloader1.gif" width="200" height="200" />
+            </div>
+        </div>
+                <div class="row" id="dvid_32">
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <div class="headrightcont"><label>We look forward to building a relationship with you that will last a lifetime!</label></div>
+
+                    </div>
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <label>Signature of Claimant</label>
+                        <div></div>
+                        @Html.Partial("_SignPad")
+
+                        @{var imgurl4 = Url.Content("~/Images/nosignature.png");
+                        if (Model.PatientSignature != null)
+                        {
+                            imgurl4 = "data:image/png;base64," + Convert.ToBase64String(Model.PatientSignature);
+                        }
+                        }
+                        <img src="@imgurl4" alt="Alternate Text" class="form-control" id="imgPatientSign" style="width:500px; height:200px;" />
+                        <div style="clear:both; padding-top:15px;"></div>
+                        <label id="lblTime"></label>
+                        <div style="clear:both; padding-top:15px;"></div>
+                        <input type="hidden" name="name" value="" id="hdnImageVal2" />
+                        <input type="button" id="btnClaimantSignature" class="btn btn-primary" onclick="fnShowSignPad('imgPatientSign', 'PatientSignature', 'lblTime')" value="Click Here To Add Signature" />
+
+                        <div id="divErrMsg_IMG" style="display:none;"><span id="spanIMG" style="color:red;">Please do the signature</span></div>
+
+
+
+
+                        @*<img src="" alt="Alternate Text" id="imgPatientSign" width="400" height="200" />
+                            <div style="clear:both; padding-top:15px;"></div>
+                            <label id="lblTime"></label>
+                            <div style="clear:both; padding-top:15px;"></div>
+                            <input type="button" onclick="fnShowSignPad('imgPatientSign', 'PatientSignature', 'lblTime')" value="Show Sign" />*@
+
+                    </div>
+                </div>
+                <div class="clearfix line"></div>
+                <div>
+
+                    @Html.Partial("_PrevNextIntake")
+                </div>
+                @*<div id="dvid_subbutt" class="subbutt" style="display:none">
+
+
+                    </div>*@
+
+                <div class="clearfix"></div>
+
+            }
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<div class="modal fade" id="_SearchDoctor" role="dialog">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="padding-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 id="headingSearch" class="modal-title">Search Doctor</h3>
+                <h3 id="headingAddDoctor" class="modal-title">Add Doctor</h3>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div id="searchDoctor">
+                        <div class="row SearchFilterContainer" id="SearchFilterContainer">
+                            <div class="col-sm-6 col-md-3">
+                                <div class=headrightcont>First Name</div>
+                                <input id="txtDoctorFirstName" type="text" class="applitextfield2" name="name" value="" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class=headrightcont>Last Name</div>
+                                <input id="txtDoctorLastName" type="text" class="applitextfield2" name="name" value="" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class=headrightcont>NPI No</div>
+                                <input id="txtDoctorNpiNo" type="text" class="applitextfield2" name="name" value="" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="headrightcont">Phone</div>
+                                <input id="txtDoctorPhone" type="text" class="applitextfield2 UsCellFormat" name="name" value="" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class=headrightcont>City</div>
+                                <input id="txtDoctorCity" type="text" class="applitextfield2" name="name" value="" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class=headrightcont>State</div>
+                                <input id="txtDoctorState" type="text" class="applitextfield2" name="name" value="" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="headrightcont">Zip Code</div>
+                                <input id="txtDoctorZipCode" type="text" class="applitextfield2" name="name" value="" maxlength="5" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="headrightcont">&nbsp;</div>
+                                <button class="btn btn-success" onclick="fnSearchForDoctor();" id="btnTo">Search</button>
+                            </div>
+                        </div>
+                        <div class="SearchResultContainer">
+                            <table class="table table-bordered" id="tblDoctorList">
+                                <thead>
+                                    <tr>
+                                        <td>First Name</td>
+                                        <td>Last Name</td>
+                                        <td>NPI No</td>
+                                        <td>Phone1 </td>
+                                        <td>Phone2</td>
+                                        <td>Address</td>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            <div id="div_noRec" style="text-align: center; vertical-align: middle; line-height: 38px; display:none;"><label style='color:red'>There no records are found !!</label></div>
+                            @if (currentuserroleid != 99)
+                            {
+                                <button style="display:none;" class="btn btn-success" id="btnAddNewDoctor" onclick="fnShowAddDoctorPane();">Add New Doctor</button>
+                            }
+                        </div>
+                    </div>
+                    <div id="CreateNewDoctor">
+
+                        <div class="row">
+                            <div class="col-sm-6 form-group">
+                                @Html.Label("First Name")
+                                <input type="text" id="First_Name" class="form-control" />
+                                @*@Html.TextBoxFor(model => model.First_Name, new { @class = "form-control" })>*@
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                @Html.Label("Last Name")
+                                <input type="text" id="Last_Name" class="form-control" />
+                                @*@Html.TextBoxFor(model => model.Last_Name, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Last_Name)*@
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-sm-6 form-group">
+                                @Html.Label("Doctor Type")
+                                @*@Html.DropDownListFor(m => m.DoctorType, from DataLayer.DoctorType state in Enum.GetValues(typeof(DataLayer.DoctorType))
+                                    select new SelectListItem() { Text = state.ToString(), Value = ((int)state).ToString() }, string.Empty, new { @class = "form-control" })*@
+
+                                @Html.DropDownList("DoctorType", from DataLayer.DoctorType state in Enum.GetValues(typeof(DataLayer.DoctorType))
+                                                                 select new SelectListItem() { Text = state.ToString(), Value = ((int)state).ToString() }, new { @class = "form-control" })
+                                @*@Html.TextBoxFor(model => model.DoctorType, new { @class = "form-control" })*@
+                                @*@Html.ValidationMessageFor(model => model.DoctorType)*@
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                @Html.Label("NPI No")
+                                <input type="text" id="NPI_No" class="form-control" />
+                                @*@Html.TextBoxFor(model => model.NPI_No, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.NPI_No)*@
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-sm-6 form-group">
+                                @Html.Label("Phone1")
+                                <input type="text" id="Phone1" class="form-control UsCellFormat" />
+                                @*@Html.TextBoxFor(model => model.Phone1, new { @class = "form-control UsCellFormat" })
+                                    @Html.ValidationMessageFor(model => model.Phone1)*@
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                @Html.Label("Phone2")
+                                <input type="text" id="Phone2" class="form-control UsCellFormat" />
+                                @*@Html.TextBoxFor(model => model.Phone2, new { @class = "form-control UsCellFormat" })
+                                    @Html.ValidationMessageFor(model => model.Phone2)*@
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-sm-6 form-group">
+                                @Html.Label("City")
+                                <input type="text" id="DoctorCity" class="form-control" />
+                                @*@Html.TextBoxFor(model => model.City, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.City)*@
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                @Html.Label("State")
+                                @*@Html.TextBoxFor(model => model.State, new { @class = "form-control" })*@
+                                @*@Html.DropDownListFor(e => e.KneeBraceFusionLigamentForm.FusionKneeBraceSize_Id, (IEnumerable<SelectListItem>)ViewBag.FusionKneeBraceSize_Id, new { @class = "form-control", disabled = "disabled" })*@
+                                @Html.DropDownList("State")
+                                @*@Html.ValidationMessageFor(model => model.State)*@
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+
+                            <div class="col-sm-6 form-group">
+                                @Html.Label("Fax")
+                                <input type="text" id="Fax" class="form-control" />
+                                @*@Html.TextBoxFor(model => model.Fax, new { @class = "form-control UsCellFormat" })
+                                    @Html.ValidationMessageFor(model => model.Fax)*@
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                @Html.Label("Zip Code")
+                                <input type="text" id="DoctorZipCode" class="form-control" maxlength="5" />
+                                @*@Html.TextBoxFor(model => model.ZipCode, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.ZipCode)*@
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                <button id="btnDoctorSave" type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@*<div id="loadforscheduleapp" class="loadingdivschedule" style="display:none">
+    <div class="loadingcontainerschedule">
+        <img src="~/Images/pageloader1.gif" width="200" height="200" />
+    </div>
+</div>*@
+
+
+<script>
+
+    //////////////////////////////////// image upload ///////////////////////////////////////
+    $(document).ready(function () {
+        $("#nameoftheattorneyError").hide();
+        $('#loadforscheduleapp').hide();
+
+        // Opera 8.0+
+        //var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+        // Firefox 1.0+
+        var isFirefox = typeof InstallTrigger !== 'undefined';
+        // Chrome 1+
+        var isChrome = !!window.chrome && !!window.chrome.webstore;
+        // Safari 3.0+ "[object HTMLElementConstructor]"
+        //var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || safari.pushNotification);
+        // Internet Explorer 6-11
+        //var isIE = cc_on!false || !!document.documentMode;
+        // Edge 20+
+        //var isEdge = !isIE && !!window.StyleMedia;
+        // Blink engine detection
+        //var isBlink = (isChrome || isOpera) && !!window.CSS;
+        if (isFirefox) {
+            $("#image-preview").addClass("ImagePreviewDisplay1");
+            $("#image-preview1").addClass("ImagePreviewDisplay1");
+        }
+        else if (isChrome) {
+            $("#image-preview").addClass("ImagePreviewDisplay");
+            $("#image-preview1").addClass("ImagePreviewDisplay");
+        }
+        else {
+            $("#image-preview").addClass("ImagePreviewDisplay1");
+            $("#image-preview1").addClass("ImagePreviewDisplay1");
+        }
+        $.uploadPreview({
+            input_field: "#uploadImagesFront",
+            preview_box: "#image-preview",
+
+            no_label: false,
+            success_callback: fnsuccesscallback
+        });
+        $.uploadPreview({
+            input_field: "#uploadImagesBack",
+            preview_box: "#image-preview1",
+
+            no_label: false,
+            success_callback: fnsuccesscallback
+        });
+        $("#ChackBoxId1").click(function () {
+            debugger;
+            var isChecked211 = $('#ChackBoxId1').prop('checked');
+
+            if (isChecked211) {
+                $('#image-preview').css('backgroundImage', 'url("")');
+                $('#image-preview1').css('backgroundImage', 'url("")');
+            }
+        });
+        //$("#image-preview").css('background-image', 'url("@ViewBag.StudentImageUrl")');
+    });
+
+    function fnsuccesscallback() {
+        //$("form").submit();
+    }
+    $("#uploadImagesFront").change(function (e) {
+        var data = new FormData();
+        var files = $("#uploadImagesFront").get(0).files;
+        var isize = files[0].size / 1024;
+        var x = files[0].name.split('.');
+        var fileExt = x[1].toLowerCase();
+        if (fileExt == 'jpg' || fileExt == 'png' || fileExt == 'jpeg') {
+            if (isize <= 2000.00) {
+                if (files.length <= 2000) {
+                    data.append("MyImages", files[0]);
+                }
+            }
+            else {
+                alert('File size should not exceed 2Mb');
+            }
+        }
+        else {
+            alert('Please upload the image in jpeg or png format');
+        }
+    });
+    $("#uploadImagesBack").change(function (e) {
+        var data = new FormData();
+        var files = $("#uploadImagesBack").get(0).files;
+        var isize = files[0].size / 1024;
+        var x = files[0].name.split('.');
+        var fileExt = x[1].toLowerCase();
+        if (fileExt == 'jpg' || fileExt == 'png' || fileExt == 'jpeg') {
+            if (isize <= 2000.00) {
+                if (files.length <= 2000) {
+                    data.append("MyImages1", files[0]);
+                }
+            }
+            else {
+                alert('File size should not exceed 2Mb');
+            }
+        }
+        else {
+            alert('Please upload the image in jpeg or png format');
+        }
+    });
+
+    //////////////////////////////////// image upload //////////////////////////////////////
+
+    function stopRKey(evt) {
+        var evt = (evt) ? evt : ((event) ? event : null);
+        var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
+        if ((evt.keyCode == 13) && (node.type == "text")) { return false; }
+    }
+
+    document.onkeypress = stopRKey;
+
+
+    function fnShowDoctorSearch() {
+        $('#_SearchDoctor').modal();
+
+        $('#btnDoctorSave').hide();
+        $('#headingAddDoctor').hide();
+        $('#CreateNewDoctor').hide();
+
+        $('#btnDoctorSearch').show();
+        $('#headingSearch').show();
+        $('#searchDoctor').show();
+
+        $("#btnAddNewDoctor").hide();
+
+
+        //$('#txtDoctorFirstName').val("");
+        //$('#txtDoctorLastName').val("");
+        //$('#txtDoctorNpiNo').val("");
+        //$('#txtDoctorPhone').val("");
+        //$('#txtDoctorCity').val("");
+        //$('#txtDoctorState').val("");
+        //$('#txtDoctorZipCode').val("");
+        $("#tblDoctorList tbody").html('');
+
+    }
+    function fnSearchForDoctor() {
+
+        var fname = $('#txtDoctorFirstName').val();
+        // alert(fname);
+        //var name = "";
+        //if (fname == "") {
+        //    //   alert(1);
+        //    name = $('#DoctorName').val();
+        //}
+        //else {
+        //    //   alert(11);
+        //    name = fname;
+        //}
+        //  alert(name);
+        // $("#DoctorName").val("");
+        //"SearchForDoctorByAllFields", "PatientRegistration"
+        $.ajax({            
+            url: '@Url.Action("SearchForDoctor", "PatientActivation")',
+            type: 'POST',
+            data: {
+
+                FirstName: fname,
+                LastName: $('#txtDoctorLastName').val(),
+                NpiNo: $('#txtDoctorNpiNo').val(),
+                Phone: $('#txtDoctorPhone').val(),
+                City: $('#txtDoctorCity').val(),
+                State: $('#txtDoctorState').val(),
+                ZipCode: $('#txtDoctorZipCode').val()
+            },
+            success: function (json) {
+                //alert(json.length);
+                $("#tblDoctorList tbody").html('');
+                for (var i = 0; i < json.length; i++) {
+                    var row = "<tr onclick='fnSelectRow(this);'>" +
+                                       " <td>  " + json[i].First_Name + "</td>" +
+                                        "<td>" + json[i].Last_Name + "</td>" +
+                                        "<td>" + json[i].NPI_No + "</td>" +
+                                        "<td>" + json[i].Phone1 + " </td>" +
+                                        "<td>" + json[i].Phone2 + "</td>" +
+                                        "<td> <input type='hidden' name='' value='" + json[i].Doctor_Id + "' class='doctorid' />" + json[i].Address + "</td>" +
+                                    "</tr>";
+                    $("#tblDoctorList tbody").append(row);
+                }
+                if (json.length == 0) {
+                    $("#div_noRec").show();
+                    $("#btnAddNewDoctor").show();
+                }
+                else {
+                    $("#div_noRec").hide();
+                    $("#btnAddNewDoctor").hide();
+                }
+            },
+            error: function (msg) {
+            }
+        });
+    }
+    function fnShowAddDoctorPane() {
+        //alert(1);
+        $('#btnDoctorSave').show();
+        $('#headingAddDoctor').show();
+        $('#CreateNewDoctor').show();
+
+        $('#btnDoctorSearch').hide();
+        $('#headingSearch').hide();
+        $('#searchDoctor').hide();
+
+        var theText = $("#txtDoctorState").val();
+        // alert("Loop:" + theText);
+
+        $("#State option").each(function () {
+            if ($(this).text() == theText) {
+                $(this).attr('selected', 'selected');
+            }
+        });
+
+
+
+        $("#First_Name").val($('#txtDoctorFirstName').val());
+        $("#Last_Name").val($('#txtDoctorLastName').val());
+        //$("#DoctorType").val($('#txtDoctorNpiNo').val());
+        $("#NPI_No").val($('#txtDoctorNpiNo').val());
+        $("#Phone1").val($('#txtDoctorPhone').val());
+        //$("#Phone2").val("");
+        //$("#Fax").val("");
+        //alert($('#txtDoctorCity').val());
+        $("#DoctorCity").val($('#txtDoctorCity').val());
+        //alert($('#City').val());
+        //$("#State").val($('#txtDoctorState').val());
+        $("#DoctorZipCode").val($('#txtDoctorZipCode').val());
+
+
+
+        $("#btnAddNewDoctor").show();
+    }
+    function fnSelectRow(obj) {
+        $("#tblDoctorList tbody tr").removeClass('selectedRow');
+        $(obj).addClass('selectedRow');
+        //alert($($(obj).find('td')[0]).html() + " " + $($(obj).find('td')[1]).html());
+        $('#_SearchDoctor').modal('hide');
+        //alert($($(obj).find('input')[0]).val());
+        $("#DoctorName").val(($($(obj).find('td')[0]).html().trim() + " " + $($(obj).find('td')[1]).html().trim()).trim());
+        $("#Condition_DoctorID").val($($(obj).find('input')[0]).val());
+        $("#txtDoctorNameValidatinMsg").hide();
+    }
+</script>
+<script>
+    $("#btnDoctorSave").click(function () {
+        var objClass = {
+            "First_Name": $("#First_Name").val().trim(),
+            "Last_Name": $("#Last_Name").val().trim(),
+            "DoctorType": $("#DoctorType").val(),
+            "NPI_No": $("#NPI_No").val().trim(),
+            "Phone1": $("#Phone1").val().trim(),
+            "Phone2": $("#Phone2").val().trim(),
+            "Fax": $("#Fax").val().trim(),
+            "City": $("#DoctorCity").val().trim(),
+            "State": $("#State").val().trim(),
+            "ZipCode": $("#DoctorZipCode").val().trim()
+
+        };
+
+        $.ajax({
+            url: '@Url.Action("CreateDoctor", "PatientRegistration")',
+            type: 'POST',
+            data: JSON.stringify(objClass),
+            cache: 'false',
+            contentType: 'application/json',
+            dataType: "json",
+            success: function (result) {
+
+                //alert(result.Message);
+                //alert(result.DoctorID);
+                $("#DoctorName").val(result.DoctorName);
+                $("#Condition_DoctorID").val(result.DoctorID);
+                $("#First_Name").val("");
+                $("#Last_Name").val("");
+                $("#DoctorType").val("");
+                $("#NPI_No").val("");
+                $("#Phone1").val("");
+                $("#Phone2").val("");
+                $("#Fax").val("");
+                $("#DoctorCity").val("");
+                $("#State").val("");
+                $("#DoctorZipCode").val("");
+
+            },
+            error: function () {
+
+                return false;
+            }
+        });
+    });
+
+
+</script>
+
+<script>
+    // $(document).ready(function () {
+    var _VarPaymentType = '@_PaymentType';
+    //alert(_VarPaymentType);
+    // });
+
+    //function myFunction() {
+
+    //    if ($("#month").val() != " ") {
+    //        $("#date").focus()
+    //    }
+    //}
+    //function myFunction1() {
+    //    if ($("#date").val() != " ") {
+    //        // alert("ok")
+    //        $("#Year").focus()
+    //    }
+
+    //}
+    function movecursor(field, nextField) {
+        //alert("ok");
+        if (field.value.length >= field.maxLength) {
+            document.getElementById(nextField).focus();
+
+        }
+
+    }
+</script>
+
+
+
+
+
+<script type="text/javascript">
+
+
+
+
+    __last = 32;
+
+    function fnValidate(pos) {
+        var ele = [];
+        if (pos == 1) {
+            ele = ["LastName", "FirstName"];
+        }
+        else if (pos == 2) {
+            ele = ["DOB", "Gender"];
+        }
+        else if (pos == 3) {
+            ele = ["AddressLine1", "City", , "State", "ZipCode"];
+        }
+        else if (pos == 4) {
+            ele = ["Email"];
+        }
+
+        else if (pos == 5) {
+            if ($("#Phone2").val() == "" && $("#MobNo").val() == "" && $("#Phone3").val() == "")
+                ele = ["Phone4"];
+        }
+        else if (pos == 6) {
+            ele = ["Work_Status"];
+        }
+        else if (pos == 8) {
+            ele = ["Marital_Status"];
+        }
+        else if (pos == 11) {
+            ele = ["Injury_Type"];
+        }
+        else if (pos == 12) {
+            ele = ["Date_Of_Accident"];
+        }
+        else if (pos == 13) {
+            ele = ["Date_Of_injury", "Company_HR_Name", "Insurance_Adjustor_Name", "Insurance_Adjustor_Phone"];
+        }
+
+        else if (pos == 14) {
+            ele = ["Cause_Of_Ailment"];
+        }
+        else if (pos == 15) {
+            ele = ["alreadydone"];
+        }
+        else if (pos == 16) {
+            ele = ["SurgeryType", "SurgeryDate"];
+        }
+        else if (pos == 17) {
+            ele = ["PTName", "PTWhere", "PTDate"];
+        }
+        else if (pos == 19) {
+            ele = ["Other_Treatement", "Other_TreatementDate"];
+        }
+            //else if (pos == 21) {
+            //    ele = ["PaymentMode"];
+            //}
+            //else if (pos == 22) {
+            //    ele = ["InsuranceDealType"];
+            //}
+            //else if (pos == 23) {
+            //    if ($("#MyCoInsurance").val() == "" && $("#MyCoPay").val() == "")
+            //        ele = ["MyCoInsurance"];
+            //}
+        else if (pos == 27) {
+
+            ele = ["Tc_LatePolicy"];
+        }
+        else if (pos == 28) {
+
+            ele = ["Tc_AdvanceNotice"];
+        }
+        else if (pos == 29) {
+
+            ele = ["Tc_CopaysOnArrival"];
+        //}
+        //else if (pos == 30) {
+
+            ele = ["Tc_NoShowsBad"];
+        }
+        else if (pos == 30) {
+
+            ele = ["Tc_CellPhoneShouldOff"];
+        //}
+        //else if (pos == 32) {
+
+            ele = ["Tc_ChildrenSupervisionNotAllowed"];
+        }
+        else if (pos == 31) {
+
+            ele = ["Tc_FinancialHardship"];
+        }
+        else if (pos == 32) {
+
+            ele = ["Tc_NoticeOfFederalGovt"];
+        }
+            //else if (pos == 20) {
+            //    ele = ["hear_about_us"];
+            //}
+            //else if (pos == 24) {
+            //    ele = ["number_of_visits"];
+            //}
+            //else if (pos == 25) {
+            //    ele = ["Dollar_Amount"];
+            //}
+            //else if (pos == 26) {
+            //    ele = ["Holder_FirstName", "Holder_LastName"];
+            //}
+        else if (pos == 7) {
+            ele = ["Employer_Name", "Employer_Phone"];
+        }
+        return ___validate(ele);
+    }
+
+    function fnNextToShow(pos) {
+        $("#txtDoctorNameValidatinMsg").hide();
+        $("#dvid_subbutt").css("display", "none");
+        //__last = 34;
+        if (pos == 1) {
+
+            var dobs = '@dob1';
+            if (dobs != "") {
+                var fields = dobs.split("/");
+                var month = fields[0];
+                var date = fields[1];
+                var year = fields[2];
+                $("#date").val(date);
+                $("#month").val(month);
+                $("#Year").val(year);
+            }
+
+            return pos = 2;
+        }
+        if (pos == 2) {
+            //var PatientDOB1 = $(".PatientDOB1").val();
+            ////alert(11);
+            //if ($(".PatientDOB1").val() != "") {
+            //    //alert(12);
+            //    if ((Math.abs(new Date().getFullYear() - new Date(PatientDOB1).getFullYear())) < 10) {
+            //        //  alert(13);
+            //        $(".PatientDOB1").show();
+            //        alert("Patient's age should be 10 years or more!!");
+            //        $(".PatientDOB1").focus();
+            //        return pos;
+
+            //    }
+            //}
+        }
+        if (pos == 3) {
+            var day1 = $("#date").val();
+            var month1 = $("#month").val();
+            var year1 = $("#Year").val();
+            //alert(day1);
+            //alert(month1);
+            //alert(year1);
+            var pos = DOB_Validation();
+            if (pos == 3) {
+                return 3;
+            }
+            if (day1 != " " && month1 != " " && year1 != " ") {
+                //if ((Math.abs(new Date().getFullYear() - new Date(DOB).getFullYear())) < 10) {
+                //    $("#Patient_DOB").show();
+                //    alert("Patient's age should be 10 years or more!!");
+                //    $("#Patient_DOB").focus();
+                //    return pos;
+
+                //}
+                //alert(month1 + '/' + day1 + '/' + year1)
+                $("#dob").val(month1 + '/' + day1 + '/' + year1);
+                
+                return 4;
+            }
+        }
+        //var name = $('#FirstName').val();
+        //if (pos == 2 && name == "sudeep")
+        //    return 4;
+        //
+        //if (pos == 5) {
+        //    if ($('#Phone2').val()) {
+        //        if ($('#MobNo').val())
+        //        {
+        //            if ($('#Phone3').val())
+        //            {
+        //                $("#Phone4").val(2)
+        //            }
+        //        }
+
+        //    }
+        //    else { $("#Phone4").val(''); }
+        //}
+
+        if (pos == 6) {
+            if ($("#currentlyemp").is(':checked')) {
+                return 7;
+            }
+            else if ($("#chkDisabled").is(':checked')) {
+                return 9;
+            }
+            else if ($("#chkStudent").is(':checked')) {
+                return 10;
+            }
+
+            else if ($("#chkRetired").is(':checked')) {
+                return 8;
+            }
+        }
+        if (pos == 9) {
+            if ($("#rdSingle").is(':checked')) {
+                return 8;
+            }
+            else if ($("#rdTemporary").is(':checked')) {
+                return 8;
+            }
+        }
+        if (pos == 10) {
+            if ($("#rdPT").is(':checked')) {
+                return 8;
+            }
+            else if ($("#rdFT").is(':checked')) {
+                return 8;
+            }
+        }
+        if (pos == 7) {
+
+            return 8;
+        }
+        if (pos == 8) {
+
+            // return 11;
+            //alert(_VarPaymentType);
+            if (_VarPaymentType == 6) {
+                return 13;
+            }
+            else if (_VarPaymentType == 7 || _VarPaymentType == 8) {
+                return 12;
+            }
+            else
+                return 15;
+        }
+        //
+
+
+
+        //if (pos == 11) {
+        //    //if ($("#chkInjury").is(':checked')) {
+        //    //    return 12;
+        //    //}
+        //    //else if ($("#chkWORK").is(':checked')) {
+        //    //    return 13;
+        //    //}
+        //    //else if ($("#chkNO_INJURY").is(':checked')) {
+        //    //    return 14;
+        //    //}
+
+
+        //}
+        if (pos == 12) {
+
+            return 15;
+        }
+        if (pos == 13) {
+
+            return 15;
+
+        }
+        if (pos == 14) {
+
+            return 15;
+
+        }
+        if (pos == 15) {
+
+            if ($("#chkPhysical_Therapy").is(':checked')) {
+                return 17;
+            }
+            else if ($("#chkHome_Healthcare").is(':checked')) {
+                return 18;
+            }
+            else if ($("#chkOther_Care").is(':checked')) {
+                return 19;
+            }
+            else if ($("#chkSurgery").is(':checked')) {
+                return 20;
+            }
+                //else if ($("#chkSurgery").is(':checked') && $("#chkPhysical_Therapy").is(':checked')) {
+                //    return 16;
+                //}
+                //else if ($("#chkSurgery").is(':checked') && $("#chkPhysical_Therapy").is(':checked') && $("#chkHome_Healthcare").is(':checked')) {
+                //    return 16;
+                //}
+                //else if ($("#chkSurgery").is(':checked') && $("#chkPhysical_Therapy").is(':checked') && $("#chkHome_Healthcare").is(':checked') && $("#chkOther_Care").is(':checked')) {
+                //    return 16;
+                //}
+                //else if ($("#chkSurgery").is(':checked') && $("#chkHome_Healthcare").is(':checked')) {
+                //    return 16;
+                //}
+                //else if ($("#chkSurgery").is(':checked') && $("#chkHome_Healthcare").is(':checked') && $("#chkOther_Care").is(':checked')) {
+                //    return 16;
+                //}
+                //else if ($("#chkSurgery").is(':checked') && $("#chkPhysical_Therapy").is(':checked') && $("#chkOther_Care").is(':checked')) {
+                //    return 16;
+                //}
+                //else if ($("#chkSurgery").is(':checked') && $("#chkOther_Care").is(':checked')) {
+                //    return 16;
+                //}
+            else if ($("#chkPhysical_Therapy").is(':checked') && $("#chkHome_Healthcare").is(':checked')) {
+                return 17;
+            }
+            else if ($("#chkPhysical_Therapy").is(':checked') && $("#chkHome_Healthcare").is(':checked') && $("#chkOther_Care").is(':checked')) {
+                return 17;
+            }
+            else if ($("#chkPhysical_Therapy").is(':checked') && $("#chkOther_Care").is(':checked')) {
+                return 17;
+            }
+            else if ($("#chkHome_Healthcare").is(':checked') && $("#chkOther_Care").is(':checked')) {
+                return 18;
+            }
+
+        }
+        if (pos == 16) {
+            if ($("#chkSurgery").is(':checked') && $("#chkPhysical_Therapy").is(':checked')) {
+
+                return 17;
+            }
+            else if ($("#chkSurgery").is(':checked') && $("#chkHome_Healthcare").is(':checked')) {
+                return 18;
+            }
+            else if ($("#chkSurgery").is(':checked') && $("#chkHome_Healthcare").is(':checked') && $("#chkOther_Care").is(':checked')) {
+                return 18;
+            }
+            else if ($("#chkSurgery").is(':checked') && $("#chkPhysical_Therapy").is(':checked') && $("#chkOther_Care").is(':checked')) {
+                return 17;
+            }
+            else if ($("#chkSurgery").is(':checked') && $("#chkOther_Care").is(':checked')) {
+                return 19;
+            }
+
+
+            return 20;
+        }
+        if (pos == 17) {
+            if ($("#chkSurgery").is(':checked') && $("#chkPhysical_Therapy").is(':checked') && $("#chkHome_Healthcare").is(':checked')) {
+                return 18;
+            }
+            else if ($("#chkSurgery").is(':checked') && $("#chkPhysical_Therapy").is(':checked') && $("#chkOther_Care").is(':checked')) {
+                return 19;
+            }
+            else if ($("#chkPhysical_Therapy").is(':checked') && $("#chkHome_Healthcare").is(':checked')) {
+                return 18;
+            }
+            else if ($("#chkPhysical_Therapy").is(':checked') && $("#chkHome_Healthcare").is(':checked') && $("#chkOther_Care").is(':checked')) {
+                return 18;
+            }
+            else if ($("#chkPhysical_Therapy").is(':checked') && $("#chkOther_Care").is(':checked')) {
+                return 19;
+            }
+            return 20;
+
+        }
+        if (pos == 18) {
+            if ($("#chkSurgery").is(':checked') && $("#chkPhysical_Therapy").is(':checked') && $("#chkHome_Healthcare").is(':checked') && $("#chkOther_Care").is(':checked')) {
+
+                return 19;
+
+
+            }
+            else if ($("#chkSurgery").is(':checked') && $("#chkHome_Healthcare").is(':checked') && $("#chkOther_Care").is(':checked')) {
+
+                return 19;
+            }
+            else if ($("#chkPhysical_Therapy").is(':checked') && $("#chkHome_Healthcare").is(':checked') && $("#chkOther_Care").is(':checked')) {
+
+                return 19;
+
+            }
+            else if ($("#chkHome_Healthcare").is(':checked') && $("#chkOther_Care").is(':checked')) {
+
+                return 19;
+
+            }
+            return 20;
+
+        }
+        if (pos == 19) {
+
+            return 20;
+
+        }
+        //if (pos == 21) {
+        //    if ($('input[name=PaymentMode]:checked').val() == "1") {
+        //        __last = 33;
+        //        return 22;
+        //    }
+        //    else if ($('input[name=PaymentMode]:checked').val() == "2") {
+
+        //        return 24;
+        //    }
+        //    else if ($('input[name=PaymentMode]:checked').val() == "3") {
+
+        //        return 24;
+        //    }
+        //    else if ($('input[name=PaymentMode]:checked').val() == "4") {
+        //        __last = 33;
+        //        return 24;
+        //    }
+
+        //}
+        //if (pos == 22) {
+
+        //    if ($('input[name=InsuranceDealType]:checked').val() == "0") {
+        //        return 23;
+        //    }
+        //    else if ($('input[name=InsuranceDealType]:checked').val() == "1") {
+        //        return 24;
+        //    }
+
+
+        //}
+
+
+        if (pos == 24) {
+
+            if ($(".applitextfield1").val() == "") {
+                $("#txtDoctorNameValidatinMsg").show();
+                return 24;
+            }
+            else {
+                return 25;
+            }
+        }
+
+
+
+            //}
+            //var HolderLastName = $('#LastName1').val();
+            //var HolderFirstName = $('#FirstName1').val();
+            //var FirstName = $('#FirstName').val();
+            //var LastName = $('#LastName').val();
+            //if (pos == 26 && HolderFirstName == FirstName && HolderLastName == LastName) {
+            //    return 28;
+            //}
+            //if (pos == 30) {
+
+            //    if ($('#rdAttorney').is(':checked')) {
+            //        return 31;
+            //    }
+            //    else {
+            //        return 32;
+            //    }
+
+            //}
+            //if (pos == 33) {
+
+            //    if ($('#chkYess').is(':checked')) {
+            //        return 34;
+            //    }
+            //    else {
+            //        return 35;
+            //    }
+
+            //}
+            //if (pos == 41) {
+
+            //    if ($('#chkyes1').is(':checked')) {
+            //        return 42;
+            //    }
+            //    else {
+            //        return 44;
+            //    }
+
+            //}
+            //if (pos == 42) {
+
+            //    if ($('#ChkMedicationsdone').is(':checked')) {
+            //        return 43;
+            //    }
+            //    else {
+            //        return 44;
+            //    }
+
+            //}
+            //if (pos == 44) {
+
+            //    if ($('#chkyes2').is(':checked')) {
+            //        return 45;
+            //    }
+            //    else {
+            //        return 46;
+            //    }
+
+            //}
+            //if (pos == 46) {
+
+            //    if ($('#ChkYes3').is(':checked')) {
+            //        return 47;
+            //    }
+            //    else {
+            //        return 48;
+            //    }
+
+            //}
+            //if (pos == 47) {
+
+            //    if ($('#Chksurgeriess').is(':checked')) {
+            //        return 48;
+            //    }
+
+
+            //}
+
+         else if (pos == 20) {
+            //alert(20);
+            //alert(("#ReferralNote").val());
+            //if (("#ReferralNote").val() == "") {
+            //    $("#nameoftheattorneyError").show();
+            //    return 20;
+            //}
+            //else {
+            //    $("#nameoftheattorneyError").hide();
+            //    return 24;
+            //}
+           
+            return 24;
+        }
+
+        //else if (pos == 23) {
+
+        //    return 20;
+
+        //}
+
+        if (pos == 23) {
+            $("#dvid_subbutt").css("display", "block");
+        }
+       
+        return pos + 1;
+    }
+
+    $('#dvid_subbutt').click(function () {
+        if ($('#imgPatientSign').attr('src') == '/Images/nosignature.png') {
+            $('#divErrMsg_IMG').show();
+            return false;
+        }
+        else if ($('#imgPatientSign').attr('src') == '') {
+            $('#divErrMsg_IMG').show();
+            return false;
+        }
+        else {
+            $('#divErrMsg_IMG').hide();
+        }
+        $('#loadforscheduleapp').show();
+    });
+
+    function fnTriggerAtEnd() {
+        if ($("#dvid_" + __last).is(':visible')) {
+            $('#dvid_subbutt').show();            
+        }
+        else {
+            $('#dvid_subbutt').hide();
+            $('#loadforscheduleapp').hide();
+        }
+    }
+    $('.chk1').click(function () {
+        $('.chk2').attr('checked', false);
+        $('.chk3').attr('checked', false);
+        $('.chk4').attr('checked', false);
+    });
+    $('.chk2').click(function () {
+        $('.chk1').attr('checked', false);
+        $('.chk3').attr('checked', false);
+        $('.chk4').attr('checked', false);
+    });
+    $('.chk3').click(function () {
+        $('.chk1').attr('checked', false);
+        $('.chk2').attr('checked', false);
+        $('.chk4').attr('checked', false);
+    });
+    $('.chk4').click(function () {
+        $('.chk1').attr('checked', false);
+        $('.chk3').attr('checked', false);
+        $('.chk2').attr('checked', false);
+    });
+    $('.chk5').click(function () {
+        $('.chk6').attr('checked', false);
+        $('.chk7').attr('checked', false);
+
+    });
+    $('.chk6').click(function () {
+        $('.chk5').attr('checked', false);
+        $('.chk7').attr('checked', false);
+
+    });
+    $('.chk7').click(function () {
+        $('.chk5').attr('checked', false);
+        $('.chk6').attr('checked', false);
+
+    });
+    //$('.chk8').click(function () {
+    //    $('.chk9').attr('checked', false);
+    //    $('.chk10').attr('checked', false);
+    //    $('.chk11').attr('checked', false);
+    //});
+    //$('.chk9').click(function () {
+    //    $('.chk8').attr('checked', false);
+    //    $('.chk10').attr('checked', false);
+    //    $('.chk11').attr('checked', false);
+    //});
+    //$('.chk10').click(function () {
+    //    $('.chk9').attr('checked', false);
+    //    $('.chk8').attr('checked', false);
+    //    $('.chk11').attr('checked', false);
+    //});
+    //$('.chk11').click(function () {
+    //    $('.chk8').attr('checked', false);
+    //    $('.chk9').attr('checked', false);
+    //    $('.chk10').attr('checked', false);
+    //});
+    $('.chk12').click(function () {
+        $('.chk13').attr('checked', false);
+
+    });
+    $('.chk13').click(function () {
+        $('.chk12').attr('checked', false);
+
+    });
+</script>
+
+
+<script>
+    $('#EveryDayActivities').addClass('applitextfield2');
+</script>
+<script>
+    $('#ReferralSource').addClass('applitextfield2');
+    $('#DoctorID').addClass('applitextfield2');
+    $('#state').addClass('applitextfield2');
+
+</script>
+@*<script>
+        $(function () {
+            $('#ReferralSources').change(function () {
+                window.location = "ViewPatientProfile?ReferralSource_Id=" + $(this).val();
+            });
+        });
+    </script>*@
+
+<script>
+    function fnGetRelatedQuestion() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetRelatedQuery", "PatientRegistration")',
+            datatype: "Json",
+            data: { ReferralSource_Id: $('#ReferralSource').val() },
+            success: function (data) {
+                //alert(data);
+                if (data == "Specify the details of the Walk/Drive in") {
+                    $("#ReferralNote").val("");
+                    document.getElementById("Related_query2").innerHTML = "";
+                    $("#ReferralNote").hide();
+                }
+                else {
+
+                    document.getElementById("Related_query2").innerHTML = data;
+                    $("#ReferralNote").show();
+                }
+            }
+        });
+    }
+</script>
+<script>
+
+    $(document).ready(function () { fnGetRelatedQuestion(); })
+
+    $('#ReferralSource').change(function () { fnGetRelatedQuestion(); });
+
+
+</script>
+
+
+<script>
+
+</script>
+
+<script type="text/javascript">
+  
+
+    $(document).ready(function () {
+
+
+
+        var hdnWorkStatus = $("#Work_Status").val().trim();
+        //alert(hdnWorkStatus);
+        if (hdnWorkStatus != undefined && hdnWorkStatus != "") {
+            if (parseInt(hdnWorkStatus.trim()) == 1) {
+                $("#chkCurrentlyemp").prop("checked", true);
+                $("#Work_Status").val(1);
+            }
+            else if (parseInt(hdnWorkStatus) == 2) {
+                $("#chkRetired").prop("checked", true);
+                $("#Work_Status").val(1);
+            }
+            else if (parseInt(hdnWorkStatus) == 3) {
+                $("#chkDisabled").prop("checked", true);
+                $("#rdSingle").prop("checked", true);
+                $("#Work_Status").val(1);
+            }
+            else if (parseInt(hdnWorkStatus) == 4) {
+                $("#chkDisabled").prop("checked", true);
+                $("#rdTemporary").prop("checked", true);
+                $("#Work_Status").val(1);
+            }
+            else if (parseInt(hdnWorkStatus) == 5) {
+                $("#chkStudent").prop("checked", true);
+                $("#rdPT").prop("checked", true);
+                $("#Work_Status").val(1);
+            }
+            else {
+                $("#chkStudent").prop("checked", true);
+                $("#rdFT").prop("checked", true);
+                $("#Work_Status").val(1);
+            }
+        }
+
+        var InjuryType = $("#Injury_Type").val().trim();
+
+        if (InjuryType != undefined) {
+            if (parseInt(InjuryType.trim()) == 0) {
+                $("#chkInjury").prop("checked", true);
+                $("#Injury_Type").val(1)
+            }
+            else if (parseInt(InjuryType) == 1) {
+                $("#chkWORK").prop("checked", true);
+                $("#Injury_Type").val(1)
+            }
+            else if (parseInt(InjuryType) == 2) {
+                $("#chkNO_INJURY").prop("checked", true);
+                $("#Injury_Type").val(1)
+
+            }
+
+        }
+        var Referral = $("#ReferralSource").val();
+
+
+        if (Referral == "" && Referral == null) {
+            $("#ReferralNote").hide();
+        }
+        else {
+            $("#ReferralNote").show();
+        }
+
+        if ($("#Is_Surgury_Done").val() == "1") { $('#chkSurgery').prop("checked", true); $("#alreadydone").val(1); }
+        if ($("#Is_PhysicalTherephyBefore").val() == "1") { $('#chkPhysical_Therapy').prop("checked", true); $("#alreadydone").val(2) }
+        if ($("#IsHomeHealthCare").val() == "1") { $('#chkHome_Healthcare').prop("checked", true); $("#alreadydone").val(3) }
+        if ($("#Other_Treatement").val() != "" && $("#Other_TreatementDate").val() != "") { $('#chkOther_Care').prop("checked", true); $("#alreadydone").val(4) }
+        //var already = $("#alreadydone").val().trim();
+
+        //if (already != undefined) {
+        //    if (parseInt(already.trim()) == 1) {
+        //        $("#chkSurgery").prop("checked", true);
+        //    }
+        //    else if (parseInt(already.trim()) == 1 && parseInt(already) == 2 && parseInt(already) == 3 )  {
+        //        $("#chkPhysical_Therapy").prop("checked", true);
+        //        $("#chkSurgery").prop("checked", true);
+        //        $("#chkHome_Healthcare").prop("checked", true);
+        //        $("#rdyes8").prop("checked", true);
+        //    }
+        //    else if (parseInt(already.trim()) == 1 && parseInt(already) == 2 && parseInt(already) == 3 && $("#Other_Treatement").val() != "" && $("#Other_TreatementDate").val() != "") {
+        //        $("#chkPhysical_Therapy").prop("checked", true);
+        //        $("#chkSurgery").prop("checked", true);
+        //        $("#chkHome_Healthcare").prop("checked", true);
+        //        $("#rdyes8").prop("checked", true);
+        //        $("#chkOther_Care").prop("checked", true);
+        //    }
+        //    //else if (parseInt(already.trim()) == 1 && parseInt(already) == 2) {
+        //    //    $("#chkPhysical_Therapy").prop("checked", true);
+        //    //    $("#chkSurgery").prop("checked", true);
+        //    //}
+        //    //else if ($("#Other_Treatement").val() != "" && $("#Other_TreatementDate").val() != "") {
+        //    //    $("#chkOther_Care").prop("checked", true);
+
+        //    //}
+        //    //else if (parseInt(already) == 3) {
+        //    //    $("#chkHome_Healthcare").prop("checked", true);
+        //    //    $("#rdyes8").prop("checked", true);
+        //    //}
+        //    // else {
+        //    //    $("#chkHome_Healthcare").prop("checked", true);
+        //    //    $("#rdno8").prop("checked", true);
+        //    //}
+        //}
+
+    });
+
+    $("#rdSingle").click(function () {
+        var isChecked = $('#rdSingle').prop('checked');
+        if (isChecked) {
+            $("#Work_Status").val(2)
+            $("#rdTemporary").prop("checked", false);
+
+        }
+        else { $("#Work_Status").val(''); }
+        //alert($("#Work_Status").val());
+    });
+    $("#rdTemporary").click(function () {
+        var isChecked = $('#rdTemporary').prop('checked');
+        if (isChecked) {
+            $("#Work_Status").val(3)
+            $("#rdSingle").prop("checked", false);
+
+        }
+        else { $("#Work_Status").val(''); }
+        //alert($("#Work_Status").val());
+    });
+    $("#chkDisabled").click(function () {
+        var isChecked = $('#chkDisabled').prop('checked');
+        if (isChecked) {
+            $("#Work_Status").val(2)
+            $("#chkCurrentlyemp").prop("checked", false);
+            $("#chkStudent").prop("checked", false);
+            $("#rdFT").prop("checked", false);
+            $("#rdPT").prop("checked", false);
+            $("#rdSingle").prop("checked", true);
+            $("#rdTemporary").prop("checked", false);
+            $("#chkRetired").prop("checked", false);
+            $("#Employer_Name").val('');
+            $("#Employer_Phone").val('');
+        }
+        else { $("#Work_Status").val(''); }
+        //alert($("#Work_Status").val());
+    });
+    $("#chkStudent").click(function () {
+        var isChecked = $('#chkStudent').prop('checked');
+        if (isChecked) {
+            $("#Work_Status").val(4)
+            $("#chkCurrentlyemp").prop("checked", false);
+            $("#chkDisabled").prop("checked", false);
+            $("#rdFT").prop("checked", false);
+            $("#rdPT").prop("checked", true);
+            $("#rdSingle").prop("checked", false);
+            $("#rdTemporary").prop("checked", false);
+            $("#chkRetired").prop("checked", false);
+            $("#Employer_Name").val('');
+            $("#Employer_Phone").val('');
+        }
+        else { $("#Work_Status").val(''); }
+        //alert($("#Work_Status").val());
+    });
+    $("#rdPT").click(function () {
+        var isChecked = $('#rdPT').prop('checked');
+        if (isChecked) {
+            $("#Work_Status").val(4)
+            $("#rdFT").prop("checked", false);
+
+        }
+        else { $("#Work_Status").val(''); }
+        //alert($("#Work_Status").val());
+    });
+    $("#rdFT").click(function () {
+        var isChecked = $('#rdFT').prop('checked');
+        if (isChecked) {
+            $("#Work_Status").val(5)
+            $("#rdPT").prop("checked", false);
+
+        }
+        else { $("#Work_Status").val(''); }
+        //alert($("#Work_Status").val());
+    });
+    $("#chkCurrentlyemp").click(function () {
+        //alert("Currently Employed == " + $("#chkCurrentlyemp").val());
+        var isChecked = $('#chkCurrentlyemp').prop('checked');
+        if (isChecked) {
+            $("#Work_Status").val(0);
+            // alert($("#Work_Status").val());
+            $("#chkDisabled").prop("checked", false);
+            $("#chkStudent").prop("checked", false);
+            $("#rdFT").prop("checked", false);
+            $("#rdPT").prop("checked", false);
+            $("#rdSingle").prop("checked", false);
+            $("#rdTemporary").prop("checked", false);
+
+        }
+        else { $("#Work_Status").val(''); }
+    });
+
+    $("#chkRetired").click(function () {
+        var isChecked = $('#chkRetired').prop('checked');
+        if (isChecked) {
+            $("#Work_Status").val(1)
+            $("#chkDisabled").prop("checked", false);
+            $("#chkStudent").prop("checked", false);
+            $("#rdFT").prop("checked", false);
+            $("#rdPT").prop("checked", false);
+            $("#rdSingle").prop("checked", false);
+            $("#rdTemporary").prop("checked", false);
+            $("#Employer_Name").val('');
+            $("#Employer_Phone").val('');
+
+        }
+        else { $("#Work_Status").val(''); }
+    });
+
+
+    $("#chkInjury").click(function () {
+        var isChecked = $('#chkInjury').prop('checked');
+        if (isChecked) {
+            $("#Injury_Type").val(0)
+            $("#chkWORK").prop("checked", false);
+            $("#chkNO_INJURY").prop("checked", false);
+            $("#Date_Of_injury").val('');
+            $("#Company_HR_Name").val('');
+            $("#Insurance_Adjustor_Phone").val('');
+            $("#Insurance_Adjustor_Name").val('');
+            $("#Cause_Of_Ailment").val('');
+
+
+        }
+        else { $("#Injury_Type").val(''); }
+    });
+    $("#chkWORK").click(function () {
+        var isChecked = $('#chkWORK').prop('checked');
+        if (isChecked) {
+            $("#Injury_Type").val(1)
+            $("#chkInjury").prop("checked", false);
+            $("#chkNO_INJURY").prop("checked", false);
+            $("#Date_Of_Accident").val('');
+            $("#Cause_Of_Ailment").val('');
+
+        }
+        else { $("#Injury_Type").val(''); }
+    });
+    $("#chkNO_INJURY").click(function () {
+        var isChecked = $('#chkNO_INJURY').prop('checked');
+        if (isChecked) {
+            $("#Injury_Type").val(2)
+            $("#chkWORK").prop("checked", false);
+            $("#chkInjury").prop("checked", false);
+            $("#Date_Of_Accident").val('');
+            $("#Date_Of_injury").val('');
+            $("#Company_HR_Name").val('');
+            $("#Insurance_Adjustor_Phone").val('');
+            $("#Insurance_Adjustor_Name").val('');
+
+        }
+        else { $("#Injury_Type").val(''); }
+    });
+
+    $("#chkSurgery").click(function () {
+        var isChecked = $('#chkSurgery').prop('checked');
+        if (isChecked) {
+            $("#alreadydone").val(1)
+            $("#Is_Surgury_Done").val(1)
+
+            //$("#chkPhysical_Therapy").prop("checked", false);
+            //$("#chkHome_Healthcare").prop("checked", false);
+            //$("#chkOther_Care").prop("checked", false);
+
+
+        }
+        else {
+            if ($('#chkPhysical_Therapy').prop('checked') == true || $('#chkHome_Healthcare').prop('checked') == true || $('#chkOther_Care').prop('checked') == true) {
+
+            }
+            else {
+                $("#alreadydone").val('');
+            }
+            $("#Is_Surgury_Done").val(0);
+            $("#SurgeryType").val('');
+            $("#SurgeryDate").val('');
+
+        }
+    });
+    $("#chkPhysical_Therapy").click(function () {
+        var isChecked = $('#chkPhysical_Therapy').prop('checked');
+        if (isChecked) {
+            $("#alreadydone").val(2)
+            $("#Is_PhysicalTherephyBefore").val(1)
+            //$("#chkSurgery").prop("checked", false);
+            //$("#chkHome_Healthcare").prop("checked", false);
+            //$("#chkOther_Care").prop("checked", false);
+
+
+        }
+        else {
+            if ($('#chkSurgery').prop('checked') == true || $('#chkHome_Healthcare').prop('checked') == true || $('#chkOther_Care').prop('checked') == true) {
+
+            }
+            else {
+                $("#alreadydone").val('');
+            }
+            $("#Is_PhysicalTherephyBefore").val(0);
+            $("#PTName").val('');
+            $("#PTWhere").val('');
+            $("#PTDate").val('');
+        }
+    });
+    $("#chkHome_Healthcare").click(function () {
+        var isChecked = $('#chkHome_Healthcare').prop('checked');
+        if (isChecked) {
+            $("#alreadydone").val(3)
+            $("#IsHomeHealthCare").val(1)
+
+            //$("#chkPhysical_Therapy").prop("checked", false);
+            //$("#chkSurgery").prop("checked", false);
+            //$("#chkOther_Care").prop("checked", false);
+            $("#rdyes8").prop("checked", true);
+
+
+        }
+        else {
+            if ($('#chkSurgery').prop('checked') == true || $('#chkPhysical_Therapy').prop('checked') == true || $('#chkOther_Care').prop('checked') == true) {
+
+            }
+            else {
+                $("#alreadydone").val('');
+            }
+            $("#IsHomeHealthCare").val(0);
+
+        }
+    });
+    $("#rdyes8").click(function () {
+        var isChecked = $('#rdyes8').prop('checked');
+        if (isChecked) {
+            $("#rdyes8").val(3)
+            $("#IsHomeHealthCare").val(3)
+            $("#rdno8").prop("checked", false);
+
+
+
+        }
+        else { $("#rdyes8").val(''); }
+        $("#IsHomeHealthCare").val(0);
+    });
+    $("#rdno8").click(function () {
+        var isChecked = $('#rdno8').prop('checked');
+        if (isChecked) {
+            $("#rdno8").val(4)
+            //$("#IsHomeHealthCare").val(4)
+            $("#rdyes8").prop("checked", false);
+
+
+        }
+        else { $("#rdno8").val(''); }
+        $("#IsHomeHealthCare").val(0);
+    });
+    $("#chkOther_Care").click(function () {
+        var isChecked = $('#chkOther_Care').prop('checked');
+        if (isChecked) {
+            $("#alreadydone").val(5)
+            $("#Is_OtherCare").val(1)
+            //$("#chkPhysical_Therapy").prop("checked", false);
+            //$("#chkHome_Healthcare").prop("checked", false);
+            //$("#chkSurgery").prop("checked", false);
+
+
+        }
+        else {
+            if ($('#chkSurgery').prop('checked') == true || $('#chkHome_Healthcare').prop('checked') == true || $('#chkPhysical_Therapy').prop('checked') == true) {
+
+            }
+            else {
+                $("#alreadydone").val('');
+            }
+
+            $("#Is_OtherCare").val(0);
+            $("#Other_Treatement").val('');
+            $("#Other_TreatementDate").val('');
+        }
+    });
+    $(".PaymentMode").click(function () {
+
+        if ($('input[name=PaymentMode]:checked').val() == "2" || $('input[name=PaymentMode]:checked').val() == "3" || $('input[name=PaymentMode]:checked').val() == "4") {
+
+
+            $("#InsuranceDealType").prop("checked", false);
+            $("#MyCoInsurance").val('');
+            $("#MyCoPay").val('');
+            $("#MyDeductible").val('');
+        }
+
+    });
+    function fn_Month_Validation() {
+        $("#spanA5").text('');
+        $("#divErrMsg_A5").hide();
+
+        //For Month
+        if ($("#month").val() != "") {
+            if ($("#month").val() >= 1 && $("#month").val() <= 12) {
+                for (var i = 1; i <= 9; i++) {
+                    if ($("#month").val() == i) {
+                        $("#month").val("0" + i);
+                    }
+                }
+                $("#spanA5").text('');
+                $("#divErrMsg_A5").hide();
+                $("#date").focus();
+            }
+            else {
+                $("#spanA5").text('Month always 1 - 12');
+                $("#divErrMsg_A5").show();
+                $("#month").val(' ');
+                $("#month").focus();
+            }
+        }
+    }
+
+
+    function fn_Date_Validation() {
+        //For Date
+        $("#spanA5").text('');
+        $("#divErrMsg_A5").hide();
+
+        if ($("#date") != "") {
+            if ($("#date").val() >= 1 && $("#date").val() <= 31) {
+                for (var i = 1; i <= 9; i++) {
+                    if ($("#date").val() == i) {
+                        $("#date").val("0" + i);
+                    }
+                }
+                $("#spanA5").text('');
+                $("#divErrMsg_A5").hide();
+                $("#Year").focus();
+            } else {
+                $("#spanA5").text('Date always 1 - 31');
+                $("#divErrMsg_A5").show();
+                $("#date").val(' ');
+                $("#date").focus();
+            }
+        }
+    }
+
+    function fn_Year_Validation() {
+        //For Year
+        $("#spanA5").text('');
+        $("#divErrMsg_A5").hide();
+
+        if ($("#Year") != null) {
+            if ($("#Year").val() >= 1900 && $("#Year").val() <= 1990) {
+                $("#spanA5").text('');
+                $("#divErrMsg_A5").hide();
+            } else {
+                $("#spanA5").text('Year always 1900 - 1990');
+                $("#divErrMsg_A5").show();
+                $("#Year").val(' ');
+                $("#Year").focus();
+            }
+        }
+    }
+
+    function DOB_Validation() {
+        var pos = "";
+        if ($("#month").val() == "" || $("#date").val() == "" || $("#Year").val() == "") {
+            $("#spanA5").text('');
+            $("#divErrMsg_A5").hide();
+            $("#spanA5").text("Please enter Date of birth");
+            $("#divErrMsg_A5").show();
+            pos = 3;
+        }
+        else {
+            $("#spanA5").text('');
+            $("#divErrMsg_A5").hide();
+
+            if ($("#Year").val() >= 1900 && $("#Year").val() <= 1990) {
+                $("#spanA5").text('');
+                $("#divErrMsg_A5").hide();
+            } else {
+                $("#spanA5").text('Year always 1900 - 1990');
+                $("#divErrMsg_A5").show();
+                $("#Year").val(' ');
+                $("#Year").focus();
+                pos = 3;
+            }
+        }
+        return pos;
+    }
+
+    $("#month").click(function () {
+        $("#spanA5").html("");
+    });
+
+    //$("#guarantees1").click(function () {
+    //    var isChecked = $('#guarantees1').prop('checked');
+    //    if (isChecked) {
+    //        $("#Tc_LatePolicy").val(1)
+
+    //    }
+    //    else {
+    //        $("#Tc_LatePolicy").val('');
+
+    //    }
+    //});
+    //$("#guarantees2").click(function () {
+    //    var isChecked = $('#guarantees2').prop('checked');
+    //    if (isChecked) {
+    //        $("#Tc_AdvanceNotice").val(2)
+
+    //    }
+    //    else {
+    //        $("#Tc_AdvanceNotice").val('');
+
+    //    }
+    //});
+    //$("#guarantees3").click(function () {
+    //    var isChecked = $('#guarantees3').prop('checked');
+    //    if (isChecked) {
+    //        $("#guarantees12").val(3)
+
+    //    }
+    //    else {
+    //        $("#guarantees12").val('');
+
+    //    }
+    //});
+    //$("#guarantees4").click(function () {
+    //    var isChecked = $('#guarantees4').prop('checked');
+    //    if (isChecked) {
+    //        $("#guarantees13").val(4)
+
+    //    }
+    //    else {
+    //        $("#guarantees13").val('');
+
+    //    }
+    //});
+    //$("#guarantees5").click(function () {
+    //    var isChecked = $('#guarantees5').prop('checked');
+    //    if (isChecked) {
+    //        $("#guarantees14").val(5)
+
+    //    }
+    //    else {
+    //        $("#guarantees14").val('');
+
+    //    }
+    //});
+    //$("#guarantees6").click(function () {
+    //    var isChecked = $('#guarantees6').prop('checked');
+    //    if (isChecked) {
+    //        $("#guarantees16").val(6)
+
+    //    }
+    //    else {
+    //        $("#guarantees16").val('');
+
+    //    }
+    //});
+    //$("#guarantees7").click(function () {
+    //    var isChecked = $('#guarantees7').prop('checked');
+    //    if (isChecked) {
+    //        $("#guarantees17").val(7)
+
+    //    }
+    //    else {
+    //        $("#guarantees17").val('');
+
+    //    }
+    //});
+    //$("#guarantees8").click(function () {
+    //    var isChecked = $('#guarantees8').prop('checked');
+    //    if (isChecked) {
+    //        $("#guarantees18").val(8)
+
+    //    }
+    //    else {
+    //        $("#guarantees18").val('');
+
+    //    }
+    //});
+    $('#State').addClass('form-control');
+</script>
+<script>
+    $("#LastName").keypress(function (event) {
+        var inputValue = event.which;
+        // allow letters and whitespaces only.
+        if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
+            event.preventDefault();
+        }
+    });
+    $("#FirstName").keypress(function (event) {
+        var inputValue = event.which;
+        // allow letters and whitespaces only.
+        if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
+            event.preventDefault();
+        }
+    });
+    $("#Employer_Name").keypress(function (event) {
+        var inputValue = event.which;
+        // allow letters and whitespaces only.
+        if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
+            event.preventDefault();
+        }
+    });
+    $("#ReferralNote").keypress(function (event) {
+        var inputValue = event.which;
+        // allow letters and whitespaces only.
+        if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
+            event.preventDefault();
+        }
+    });
+    
+
+    //$("#EmployerZipCode2").keypress(function (event) {
+    //    alert(1);
+    //    var inputValue = event.which;
+    //    //if the letter is not digit then display error and don't type anything
+    //    if (inputValue != 8 && inputValue != 0 && (inputValue < 48 || inputValue > 57)) {
+    //        //display error message
+    //        event.preventDefault();
+    //    }
+    //});
+
+   
+    
+   
+</script>
+<script>
+    //$('#DoctorName').on("keypress", function (e) {
+    //    //alert(11);
+    //    $("#txtDoctorNameValidatinMsg").hide();
+    //    if (e.keyCode == 13) {
+            
+    //        fnShowDoctorSearch();
+    //        $("#btnTo").click();
+    //        $("#txtDoctorFirstName").val($("#DoctorName").val());
+    //        $("#DoctorName").val("");
+    //        $("#txtDoctorNameValidatinMsg").hide();
+    //       //return false; // prevent the button click from happening
+    //    }
+    //});
+    //$(document).on("click", ".DoctorSearchModal", function () {
+        
+    //    fnShowDoctorSearch();
+    //    $("#btnTo").click();
+    //    $("#txtDoctorFirstName").val($("#DoctorName").val());
+    //    $("#DoctorName").val("");
+    //});
+
+    $('#DoctorName').on("keypress", function (e) {
+        if (e.keyCode == 13) {
+            var DoctorFirstName = $("#DoctorName").val();
+            var DoctorFirstNamesplit = DoctorFirstName.split(" ");
+            if (DoctorFirstNamesplit.length > 1 && DoctorFirstNamesplit.length < 3) {
+                $("#txtDoctorFirstName").val(DoctorFirstNamesplit[0]);
+                $("#txtDoctorLastName").val(DoctorFirstNamesplit[1]);
+            }
+            else if (DoctorFirstNamesplit.length > 1 && DoctorFirstNamesplit.length >= 3) {
+                $("#txtDoctorFirstName").val(DoctorFirstNamesplit[0]);
+                $("#txtDoctorLastName").val(DoctorFirstNamesplit[1] + " " + DoctorFirstNamesplit[2]);
+            }
+            else {
+                $("#txtDoctorFirstName").val($("#DoctorName").val());
+                $("#txtDoctorLastName").val("");
+            }
+            fnShowDoctorSearch();
+            $("#btnTo").click();
+            $("#DoctorName").val("");
+            $("#txtDoctorNameValidatinMsg").hide();
+        }
+    });
+    $(document).on("click", ".DoctorSearchModal", function () {
+        if ($("#DoctorName").val() != "") {
+            var DoctorFirstName = $("#DoctorName").val();
+            var DoctorFirstNamesplit = DoctorFirstName.split(" ");
+            if (DoctorFirstNamesplit.length > 1 && DoctorFirstNamesplit.length < 3) {
+                $("#txtDoctorFirstName").val(DoctorFirstNamesplit[0]);
+                $("#txtDoctorLastName").val(DoctorFirstNamesplit[1]);
+            }
+            else if (DoctorFirstNamesplit.length > 1 && DoctorFirstNamesplit.length >= 3) {
+                $("#txtDoctorFirstName").val(DoctorFirstNamesplit[0]);
+                $("#txtDoctorLastName").val(DoctorFirstNamesplit[1] + " " + DoctorFirstNamesplit[2]);
+            }
+            else {
+                $("#txtDoctorFirstName").val($("#DoctorName").val());
+                $("#txtDoctorLastName").val("");
+            }
+            $("#btnTo").click();
+            $("#DoctorName").val("");
+        }
+        $('#btnDoctorSave').hide();
+        $('#headingAddDoctor').hide();
+        $('#CreateNewDoctor').hide();
+
+        $('#btnDoctorSearch').show();
+        $('#headingSearch').show();
+        $('#searchDoctor').show();
+
+        $("#btnAddNewDoctor").hide();
+    });
+
+    
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

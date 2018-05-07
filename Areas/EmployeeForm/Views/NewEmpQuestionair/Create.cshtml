@@ -1,0 +1,279 @@
+﻿@model DataLayer.Models.tblTNewEmpQuestionair
+@{
+    ViewBag.Title = "Create";
+}
+
+
+<div class="container">
+    <div class="bodyleft">
+       
+        @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+    </div>
+    <div class="bodyright" id="create">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="report-form clearfix">
+
+
+                <h2>New Employee Questionnaire</h2>
+
+                @if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+
+                <p class="pull-right">*Required</p>
+                <div class="clearfix"></div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-4 form-group">
+                        <label>Today's Date </label>
+                        @*<input name="date" class="form-control datepicker datepicker-bg" placeholder="MM/dd/yyyy" style="width: 100%;" type="text" >*@
+                        @Html.TextBoxFor(m => m.CreatedOn, new { @class = "form-control datepicker datepicker-bg DenyAdvanceDateSelection", style = "width:100%;", @Value = DateTime.Now.ToString("MM/dd/yyyy"), @Readonly = true })
+                    </div>
+
+                    <div class="col-sm-6 col-md-4 form-group">
+
+
+
+
+                        @*@Html.LabelFor(model => model.EmpFirstName, new { @class = "" })*@
+                        <label for="EmpFirstName" class="">Employee First Name *</label>
+                        @Html.TextBoxFor(model => model.EmpFirstName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.EmpFirstName)
+
+                    </div>
+                    <div class="col-sm-6 col-md-4 form-group">
+                        @* @Html.LabelFor(model => model.EmpLastName, new { @class = "" })*@
+                        <label for="EmpLastName" class="">Employee Last Name *</label>
+                        @Html.TextBoxFor(model => model.EmpLastName, new { @class = "form-control required" })
+                        @Html.ValidationMessageFor(model => model.EmpLastName)
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-4 form-group">
+                        @* @Html.LabelFor(model => model.PositionTitle, new { @class = "" })*@
+                        <label for="PositionTitle" class="">Position Title </label>
+                        @Html.TextBoxFor(model => model.PositionTitle, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.PositionTitle)
+                    </div>
+                    <div class="col-sm-6 col-md-4 form-group">
+                        @* @Html.LabelFor(model => model.Email, new { @class = "" })*@
+                        <label for="Email" class="">Email Address *</label>
+                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Email)
+                    </div>
+                </div>
+
+
+
+
+                <hr>
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 form-group">
+
+
+                        <label for="PositionDesc" class="">Describe the essence of what you do in your position. As a (title), I...</label>
+                        @Html.TextAreaFor(model => model.PositionDesc, new { @class = "form-control", @id = "txtPositionDesc", @onkeyup = "javascript:ValidateCharactercount(this);", @maxlength = "2000", @autocomplete = "off" })
+                        @Html.ValidationMessageFor(model => model.PositionDesc)
+                        <div id="divmessage1" style="color: green;"></div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 form-group">
+
+                        <label for="PersonalInterestDesc" class="">Outside of work my personal interests include...</label>
+                        @Html.TextAreaFor(model => model.PersonalInterestDesc, new { @class = "form-control", @id = "txtPersonalInterestDesc", @onkeyup = "javascript:ValidateCharactercount(this);", @maxlength = "2000", @autocomplete = "off" })
+                        @Html.ValidationMessageFor(model => model.PersonalInterestDesc)
+                        <div id="divmessage2" style="color: green;"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 form-group">
+
+                        <label for="IdentifiesMeOrBelieveInDesc" class="">Something that I believe in or that identifies me would be...</label>
+                        @Html.TextAreaFor(model => model.IdentifiesMeOrBelieveInDesc, new { @class = "form-control", @id = "txtIdentifiesMeOrBelieveInDesc", @onkeyup = "javascript:ValidateCharactercount(this);", @maxlength = "2000", @autocomplete = "off" })
+                        @Html.ValidationMessageFor(model => model.IdentifiesMeOrBelieveInDesc)
+                        <div id="divmessage3" style="color: green;"></div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 form-group">
+                        <label for="MostLikingsInCompanyDesc" class="">The things that I like most about working for APTCF are...</label>
+                        @Html.TextAreaFor(model => model.MostLikingsInCompanyDesc, new { @class = "form-control", @id = "txtMostLikingsInCompanyDesc", @onkeyup = "javascript:ValidateCharactercount(this);", @maxlength = "2000", @autocomplete = "off" })
+                        @Html.ValidationMessageFor(model => model.MostLikingsInCompanyDesc)
+                        <div id="divmessage4" style="color: green;"></div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 form-group">
+
+                        <label for="PatientCaringReasonsDesc" class="">The reasons that I enjoy caring for patients are... </label>
+                        @Html.TextAreaFor(model => model.PatientCaringReasonsDesc, new { @class = "form-control", @id = "txtPatientCaringReasonsDesc", @onkeyup = "javascript:ValidateCharactercount(this);", @maxlength = "2000", @autocomplete = "off" })
+                        @Html.ValidationMessageFor(model => model.PatientCaringReasonsDesc)
+                        <div id="divmessage5" style="color: green;"></div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 form-group">
+
+                        <label for="BecamePTReasonDesc" class="">The reason I became a PT or chose to work in the PT field is...</label>
+                        @Html.TextAreaFor(model => model.BecamePTReasonDesc, new { @class = "form-control", @id = "txtBecamePTReasonDesc", @onkeyup = "javascript:ValidateCharactercount(this);", @maxlength = "2000", @autocomplete = "off" })
+                        @Html.ValidationMessageFor(model => model.BecamePTReasonDesc)
+                        <div id="divmessage6" style="color: green;"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 form-group">
+
+                        <label for="PatientWorkingWithMeDesc" class="">I believe patients enjoy working with me because...</label>
+                        @Html.TextAreaFor(model => model.PatientWorkingWithMeDesc, new { @class = "form-control", @id = "txtPatientWorkingWithMeDesc", @onkeyup = "javascript:ValidateCharactercount(this);", @maxlength = "2000", @autocomplete = "off" })
+                        @Html.ValidationMessageFor(model => model.PatientWorkingWithMeDesc)
+                        <div id="divmessage7" style="color: green;"></div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 form-group">
+                        <label for="PatientWorkingWithMeDesc" class="">I believe patients enjoy coming for treatment at APTCF because...</label>
+                        @Html.TextAreaFor(model => model.PatientComingForTreatmentDesc, new { @class = "form-control", @id = "txtPatientComingForTreatmentDesc", @onkeyup = "javascript:ValidateCharactercount(this);", @maxlength = "2000", @autocomplete = "off" })
+                        @Html.ValidationMessageFor(model => model.PatientComingForTreatmentDesc)
+                        <div id="divmessage8" style="color: green;"></div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <b><label for="HaveProfilePicture" class="">I have a profile picture that I prefer to use.</label></b><br />
+                        <b><label for="HaveProfilePicture" class="">If yes, please email that picture to bethany@myadvancedpt.com</label></b><br />
+                        @Html.CheckBox("HaveProfilePicture", false, new { @class = "checkbox" })
+                        @Html.ValidationMessageFor(model => model.HaveProfilePicture)
+
+                    </div>
+
+                </div>
+                <hr>
+
+                <div class="subbutt">
+                    <button type="submit" class="btn btn-orange pull-right">Submit</button>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        }
+    </div>
+
+
+
+</div>
+
+
+
+
+<script language="javascript">
+    function ValidateCharactercount(cont) {
+        //alert(cont.id);
+        //1
+        if (cont.id == 'txtPositionDesc') {
+            var len = cont.value.length;
+            var remchars = 2000 - len;
+            if (remchars == 0) {
+                $('#divmessage1').css('color', 'red');
+            }
+            else {
+                $('#divmessage1').css('color', 'green');
+            }
+            $("#divmessage1").html("Character remaning :" + remchars);
+        }
+
+        //2
+        if (cont.id == 'txtPersonalInterestDesc') {
+            var len = cont.value.length;
+            var remchars = 2000 - len;
+            if (remchars == 0) {
+                $('#divmessage2').css('color', 'red');
+            }
+            else {
+                $('#divmessage2').css('color', 'green');
+            }
+            $("#divmessage2").html("Character remaning :" + remchars);
+        }
+
+        //3
+        if (cont.id == 'txtIdentifiesMeOrBelieveInDesc') {
+            var len = cont.value.length;
+            var remchars = 2000 - len;
+            if (remchars == 0) {
+                $('#divmessage3').css('color', 'red');
+            }
+            else {
+                $('#divmessage3').css('color', 'green');
+            }
+            $("#divmessage3").html("Character remaning :" + remchars);
+        }
+
+        //4
+        if (cont.id == 'txtMostLikingsInCompanyDesc') {
+            var len = cont.value.length;
+            var remchars = 2000 - len;
+            if (remchars == 0) {
+                $('#divmessage4').css('color', 'red');
+            }
+            else {
+                $('#divmessage4').css('color', 'green');
+            }
+            $("#divmessage4").html("Character remaning :" + remchars);
+        }
+
+        //5
+        if (cont.id == 'txtPatientCaringReasonsDesc') {
+            var len = cont.value.length;
+            var remchars = 2000 - len;
+            if (remchars == 0) {
+                $('#divmessage5').css('color', 'red');
+            }
+            else {
+                $('#divmessage5').css('color', 'green');
+            }
+            $("#divmessage5").html("Character remaning :" + remchars);
+        }
+
+        //6
+        if (cont.id == 'txtBecamePTReasonDesc') {
+            var len = cont.value.length;
+            var remchars = 2000 - len;
+            if (remchars == 0) {
+                $('#divmessage6').css('color', 'red');
+            }
+            else {
+                $('#divmessage6').css('color', 'green');
+            }
+            $("#divmessage6").html("Character remaning :" + remchars);
+        }
+
+        //7
+        if (cont.id == 'txtPatientWorkingWithMeDesc') {
+            var len = cont.value.length;
+            var remchars = 2000 - len;
+            if (remchars == 0) {
+                $('#divmessage7').css('color', 'red');
+            }
+            else {
+                $('#divmessage7').css('color', 'green');
+            }
+            $("#divmessage7").html("Character remaning :" + remchars);
+        }
+
+        //8
+        if (cont.id == 'txtPatientComingForTreatmentDesc') {
+            var len = cont.value.length;
+            var remchars = 2000 - len;
+            if (remchars == 0) {
+                $('#divmessage8').css('color', 'red');
+            }
+            else {
+                $('#divmessage8').css('color', 'green');
+            }
+            $("#divmessage8").html("Character remaning :" + remchars);
+        }
+    }
+</script>
+
+
+
+
+

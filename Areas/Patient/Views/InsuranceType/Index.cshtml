@@ -1,0 +1,189 @@
+﻿@model PagedList.IPagedList<DataLayer.Models.tblMPatientInsuranceType>
+@using DataLayer;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Index";
+}
+<style>
+    .SortHeader {
+        color: #fff;
+    }
+
+    .sortorderasc {
+        color: black;
+    }
+
+    .sortorderdesc {
+        color: green;
+    }
+
+    .searchsec {
+        width: 350px;
+    }
+</style>
+<center><h2 style="margin-top:20px;">Insurance Plan List</h2></center>
+@*<h2>Index</h2>*@
+
+@*<p>
+        @Html.ActionLink("Create New", "Create")
+    </p>*@
+
+<section class="bodyinner2">
+    <div>
+        <p class="pull-right">
+            @Html.ActionLink("Create New Record", "Create", null, new { @class = "btn btn-primary" })
+        </p>
+        @{
+            bool? direction = ViewBag.SortDirection;
+            if (direction == null) { direction = false; }
+        }
+        @using (Html.BeginForm("Index", "InsuranceType", FormMethod.Get))
+        {
+            <div class="searchsec">
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search here ..." })
+                <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                <div class="clearfix"></div>
+            </div>
+        }
+        <div class="clearfix"></div>
+    </div>
+
+    <div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+
+                        <th>
+                            @{ var classname = "botharrow";}
+                            @if ((ViewBag.CurrentSort == "Name" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                            {
+                                classname = "bottarrow";
+                            }
+                            else if ((ViewBag.CurrentSort == "Name" && ViewBag.SortDirection == false))
+                            {
+                                classname = "toparrow";
+                            }
+                            @Html.ActionLink("Plan", "Index", new { sortOrder = "Name", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname })
+
+                        </th>
+                        @*<th>
+                            @{ var classname1 = "botharrow";}
+                            @if ((ViewBag.CurrentSort == "Description" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                            {
+                                classname1 = "bottarrow";
+                            }
+                            else if ((ViewBag.CurrentSort == "Description" && ViewBag.SortDirection == false))
+                            {
+                                classname1 = "toparrow";
+                            }
+                            @Html.ActionLink("Description", "Index", new { sortOrder = "Description", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname1 })
+
+                        </th>*@
+                        <th>Company</th>
+                        <th>
+                            @{ var classname1 = "botharrow";}
+                            @if ((ViewBag.CurrentSort == "AppointmentTypeId" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                            {
+                                classname1 = "bottarrow";
+                            }
+                            else if ((ViewBag.CurrentSort == "AppointmentTypeId" && ViewBag.SortDirection == false))
+                            {
+                                classname1 = "toparrow";
+                            }
+                            @Html.ActionLink("Appointment Type", "Index", new { sortOrder = "AppointmentTypeId", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname1 })
+
+
+                        </th>
+                        <th>Created On</th>
+                        <th>Modified On</th>
+                        <th>
+                            @Html.DisplayName("Is Active")
+                        </th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Plan)
+                        </td>
+                        @*<td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.tblMPatientInsuranceCompanyName.CompanyName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.tblMPatSchdAppointmentType.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreatedOn)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ModifiedOn)
+                        </td>
+                        <td align="center">
+                            @if (item.IsActive == true)
+                            {<label class="fa fa-unlock" style="color: #0f68e6; "></label> }
+                            else
+                            {<label class="fa fa-lock" style="color: #eb1923;"></label> }
+                        </td>
+                        <td>
+                           
+                            <a href="@Url.Action("Edit", "InsuranceType", new { id = item.PatientInsuranceType_ID })">
+                                <i class="fa fa-edit" aria-hidden="true"></i>
+                            </a>
+
+                            <a href="@Url.Action("Details", "InsuranceType", new { id = item.PatientInsuranceType_ID })">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+                        </td>
+
+                    </tr>
+                }
+
+            </table>
+
+        </div>
+        <div>
+            <br />
+            @using (Html.BeginForm("Index", "InsuranceType", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+            {
+                @Html.DropDownList("PageSize")
+            }
+            <div class="pull-left" style=" padding:10px;">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                      new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction }))
+        </div>
+    </div>
+
+</section>
+
+
+
+<script>
+    function fnShowDetail(Doctor_Id) {
+        var url = "@Url.Action("InsuranceType", "InsuranceType", new { Area = "Patient" })" + "?id=" + PatientInsuranceType_ID;
+        //fnShowPopupForDetail(url);
+        popupwindow(url, 'InsuranceType', 1000, 800);
+    }
+</script>
+
+<script>
+    $("#PageSize").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+</script>
+
+

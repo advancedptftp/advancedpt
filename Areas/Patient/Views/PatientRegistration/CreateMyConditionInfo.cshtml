@@ -1,0 +1,195 @@
+﻿
+@{
+    ViewBag.Title = "CreateMyConditionInfo";
+}
+
+<section class="bodyinner">
+    <div class="container">
+        <div class="bodyleft">
+
+            @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+        </div>
+        <div class="bodyright">
+            <div class="report-form clearfix">
+                <h2 style="padding-bottom:15px;">Patient Express Registration</h2>
+                <h3 class="pull-left p_top05">
+                    Advanced Physical Therapy
+                    of Central Florida
+                </h3>
+                <div class="patient"><input name="date" class="form-control datepicker datepicker-bg" placeholder="mm/dd/yyyy" type="text"></div>
+                <div class="clearfix"></div>
+
+
+           
+                   
+                    <div class="tabcont">
+
+                        <h3 class="pull-left">My Condition Info</h3>
+                        <p class="pull-right p_top15"><strong>**ALL INFO REQUIRED**</strong></p>
+                        <div class="clearfix"></div>
+
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12">
+
+
+
+                                <h4>My injury/ailment is related to . . .</h4>
+                                <div class="outerf">
+                                    <label class="checkbox-inline"><input name="optradio" type="checkbox"><strong>AUTO/PERSONAL INJURY</strong></label>
+                                    <div class="hiddenform">
+                                        <div class="form-inline">
+                                            <div class="form-group">
+                                                <label for="exampleInputName2" class="p_rig15">Date of accident :</label>
+                                                <input name="date" class="form-control datepicker datepicker-bg" placeholder="mm/dd/yyyy" type="text">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="outerf">
+                                    <label class="checkbox-inline"><input name="optradio" type="checkbox"><strong>WORK INJURY</strong></label>
+                                    <div class="hiddenform">
+                                        <p>Complete all information below</p>
+                                        <div class="row">
+                                            <div class="col-sm-6 col-md-6 form-group">
+                                                <label>Date of injury</label>
+                                                <input class="form-control" id="" type="text">
+                                            </div>
+                                            <div class="col-sm-6 col-md-6 form-group">
+                                                <label for="date">Your company HR person’s name</label>
+                                                <input class="form-control" id="" type="text">
+                                            </div>
+                                            <div class="col-sm-6 col-md-6 form-group">
+                                                <label>Insurance adjustor’s name</label>
+                                                <input class="form-control" id="" type="text">
+                                            </div>
+                                            <div class="col-sm-6 col-md-6 form-group">
+                                                <label for="location-incident">Insurance adjustor’s phone</label><br>
+                                                <input class="form-control" id="" type="text">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="outerf">
+                                    <label class="checkbox-inline"><input name="optradio" type="checkbox"><strong>NO INJURY</strong></label>
+                                    <div class="hiddenform">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label>What do you think may have caused it?</label>
+                                                <textarea class="form-control"></textarea>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+
+                                <h4>I have already had . . </h4>
+                                <div class="outerf">
+                                    <label class="checkbox-inline"><input name="optradio" type="checkbox"><strong>SURGERY</strong></label>
+                                    <div class="hiddenform">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label>When and what type?</label>
+                                                <textarea class="form-control"></textarea>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="outerf">
+                                    <label class="checkbox-inline"><input name="optradio" type="checkbox"><strong>PHYSICAL THERAPY BEFORE</strong></label>
+                                    <div class="hiddenform">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label>When and where?</label>
+                                                <textarea class="form-control"></textarea>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="outerf">
+                                    <label class="checkbox-inline"><input name="optradio" type="checkbox"><strong>HOME HEALTHCARE</strong></label>
+                                    <div class="hiddenform">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label>Are you still receiving it?</label><br>
+                                                <label class="radio-inline"><input name="optradio" type="radio">YES</label>
+                                                <label class="radio-inline"><input name="optradio" type="radio">NO</label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="outerf">
+                                    <label class="checkbox-inline"><input name="optradio" type="checkbox"><strong>OTHER CARE</strong></label>
+                                    <div class="hiddenform">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <label>When and what type?</label>
+                                                <textarea class="form-control"></textarea>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+                        <div class="subbutt">
+                            <button type="submit" class="btn btn-primary pull-left">Back</button>
+                            <button type="submit" class="btn btn-orange pull-right">Proceed to Next Step</button>
+                            <div class="clearfix"></div>
+                        </div>
+
+                    </div>
+               
+
+
+
+
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+
+</section>
+<script>
+    $('#Credentials').addClass('form-control');
+</script>
+<script>
+    $('#CompanyId').addClass('form-control');
+</script>
+<script>
+    $('#OfficeLocation').addClass('form-control');
+</script>
+<script>
+    $('#PhoneExt').addClass('form-control');
+</script>
+<script>
+    $('#PositionTitle').addClass('form-control');
+</script>
+<script>
+    jQuery('.datepicker').datepicker();
+</script>
+<script>
+    $('#selectState').addClass('form-control');
+
+</script>
+

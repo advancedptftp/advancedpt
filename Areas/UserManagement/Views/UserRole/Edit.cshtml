@@ -1,0 +1,45 @@
+﻿@model DataLayer.Models.tblMUserRole
+@{
+    ViewBag.Title = "Edit";
+}
+
+<section class="bodyinner">
+    <div class="container">
+        <div class="innerform">
+            <div class="user-form clearfix">
+
+                <h2 class="text-center">Edit User Role</h2>
+                @using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+                     @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.UserRole_Id)
+                    <div class="col-sm-6 form-group">
+                        @Html.LabelFor(model => model.UserRole)
+                        @Html.TextBoxFor(model => model.UserRole, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.UserRole)
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        @Html.LabelFor(model => model.Description)
+                        @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Description)
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        @Html.LabelFor(model => model.IsSuperAdmin)
+                        @Html.EditorFor(model => model.IsSuperAdmin)
+                        @Html.ValidationMessageFor(model => model.IsSuperAdmin)
+                    </div>
+                    
+                    <div class="subbutt">
+                        <input type="submit" value="Save" class="btn btn-orange pull-right" />
+                        
+                    </div>
+                    <p>@Html.ActionLink("Back to List", "Index")</p>
+                }
+
+            </div>
+        </div>
+        </div>
+        <div class="clearfix"></div>
+</section>
+

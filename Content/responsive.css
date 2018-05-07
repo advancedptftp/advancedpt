@@ -1,0 +1,103 @@
+@media only screen and (min-width : 320px) and (max-width : 639px) {
+	img{max-width:100%;}
+	.loginsec {width:90%;}
+.formlogin {padding:20px;}
+.logo {float:left; text-align:center; width:150px; margin:0 auto;}
+header{text-align:center;}
+.rightlink {float:none; display:inline-block; padding:00 0 10px 0;}
+.bodyinner {background:none; padding:15px 0;}
+.bodyleft {width:100%;}
+.bodyright {width:100%; padding-right:0;}
+.dashboardbox {text-align:center; margin:0 5px 10px 5px; float:none; display:inline-block; vertical-align:top; width:100%;}
+.dashboardinner {text-align:center;}
+.calender {text-align:center;}
+.graph {margin-bottom:25px;}
+
+
+.headrightcont {width:79%; }
+.heading {width:40px; font-size:13px;}
+.applitextfield1 {width:auto;}
+.todo_inner2 {width:100%;}
+.navouter {height:auto;}
+
+}
+
+@media only screen and (min-width : 640px) and (max-width : 767px) {
+		img{max-width:100%;}
+			.loginsec {width:90%;}
+.formlogin {padding:20px;}
+.logo {float:none; text-align:center; width:180px; margin:0 auto;}
+header{text-align:center;}
+.rightlink {float:none; display:inline-block; padding:00 0 10px 0;}
+.bodyinner {background:none; padding:15px 0;}
+.bodyleft {width:100%;}
+.bodyright {width:100%; padding-right:0;}
+.dashboardbox {text-align:center; margin:0 5px 10px 5px; float:none; display:inline-block; vertical-align:top; width:46.5%;}
+.dashboardinner {text-align:center;}
+.calender {text-align:center;}
+.graph {margin-bottom:25px;}
+.todo_inner2 {width:100%;}
+.navouter {height:auto;}
+
+}
+
+
+
+@media only screen and (min-width : 768px) and (max-width : 1023px) {
+	img{max-width:100%;}
+	.bodyleft {width:34%;}
+	.bodyright {width:64%;}
+	.bodyinner { background:none;}
+	/*.dashboardbox {width:164px; height:165px; margin:0 9px 9px 0; }
+.dashboardbox a{width:164px; height:165px;}*/
+.dashboardbox {width:45.5%;}
+.form-group {min-height:90px;}
+.todo_inner .form-group {
+    min-height: inherit;
+}
+.headrightcont {width:80%;}
+.todo_inner2 {width:100%;}
+.navouter {height:auto;}
+.responsive-calendar .day a {font-size:17px;}
+.activationform_fullpage .heading {
+    font-size: 24px;
+    line-height: 30px;
+    width: 95px;
+}
+ .activationform_fullpage .topforn .applitextfield1 {width:95%;}
+.activationform_fullpage .applitextfield1 {width:280px; margin:6px;}
+.dvPrevNext {padding-top:30px;}
+.full_textarea textarea {
+    height: 110px !important;
+    width: 100% !important;
+}
+}
+
+@media only screen and (min-width : 1024px) and (max-width : 1469px) {
+	
+	img{max-width:100%;}
+		.bodyleft {width:34%;}
+	.bodyright {width:64%;}
+	.bodyinner { background:none;}
+/*		.dashboardbox {width:174px; height:165px; margin:0 9px 9px 0; }
+.dashboardbox a{width:174px; height:165px;}*/
+
+.dashboardbox {width:45.5%;}
+.abovetext input {width:41px; margin:0 3px;}
+.todo_inner2 {width:100%;}
+.activationform_fullpage .applitextfield1 {width:95%;}
+.activationform_fullpage .heading {
+    font-size: 29px;
+    line-height: 39px;
+    width: 95px;
+}
+.headrightcont {width:88%;}
+.dvPrevNext {padding-top:30px;}
+ .activationform_fullpage .topforn .applitextfield1 {width:95%;}
+.activationform_fullpage .applitextfield1 {    width: 265px; margin:6px;}
+.full_textarea textarea {
+    height: 110px !important;
+    width: 100% !important;
+}
+}
+

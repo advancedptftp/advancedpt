@@ -1,0 +1,551 @@
+﻿@model DataLayer.Models.tblMPatSchdEmpAppmntType
+@using DataLayer
+@{
+    ViewBag.Title = "Create";
+
+}
+
+
+<style>
+    #slider-range, #SlideMax {
+        width: 400px;
+    }
+
+    #slider-range, #time, #SlideMax, table {
+        margin: 10px;
+        display: block;
+    }
+
+    #slider-range1, #SlideMax1 {
+        width: 400px;
+    }
+
+    #slider-range1, #time1, #SlideMax1, table {
+        margin: 10px;
+        display: block;
+    }
+</style>
+
+<section class="bodyinner">
+    <div class="container">
+        @*<div class="bodyleft">
+
+                @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+            </div>*@
+        @*<div class="bodyright">*@
+
+        <div class="report-form clearfix">
+            <h2 class="text-center">Resource Setup  </h2>
+            <br /><br />
+            @using (Html.BeginForm("EmpAppTypeEdit", "Resource", FormMethod.Post, new { name = "ResourceAppintmentType", id = "ResourceAppintmentType" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+
+                if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+                @*if (ViewBag.Resource1 != null)
+                    {
+                        <script>
+                            $("#EmployeeID").val(@ViewBag.Resource1)
+                        </script>
+                    }*@
+                if (ViewBag.EmpApptype_Id != null)
+                {
+                    <script>
+                        $("#EmpAppmntType_Id").val(@ViewBag.EmpApptype_Id)
+                    </script>
+                }
+                @*if (ViewBag.EmpTypeID != null)
+                    {
+                        <script>
+                            $("#Emp_Type").selected(@ViewBag.EmpTypeID)
+                        </script>
+                    }*@
+                <div class="row">
+                    @Html.Hidden("EmpAppmntType_Id")
+                    @*@Html.Hidden("Emp_Type")*@
+                    @*@Html.HiddenFor(e => e.EmpAppmntType_Id)*@
+                    @Html.HiddenFor(e => e.EmployeeID)
+                    @Html.HiddenFor(e => e.AppointmentTypes)
+                    @Html.HiddenFor(e => e.Location_ID)
+                    @*@Html.HiddenFor(e => e.Emp_Type)*@
+                    @*@Html.HiddenFor(e => e.Resource1AppointmentType)*@
+                    @*@Html.HiddenFor(e => e.Resource2AppointmentType)*@
+                    @*@Html.HiddenFor(e => e.ShiftStart)
+                        @Html.HiddenFor(e => e.ShiftEnd)
+                        @Html.HiddenFor(e => e.LunchStart)
+                        @Html.HiddenFor(e => e.LunchEnd)*@
+                    @*@Html.HiddenFor(e => e.Resource_Id)*@
+                    @Html.HiddenFor(e => e.CreatedBy)
+                    @Html.HiddenFor(e => e.CreatedOn)
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <div class="col-sm-12 form-group">
+                            <div class="col-sm-6 form-group">
+                                @Html.Label("Location")
+                                @Html.DropDownListFor(e => e.Location_ID, (SelectList)ViewBag.Location, new { @class = "form-control" })
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                @Html.Label("Employee Type")
+                                @Html.DropDownListFor(m => m.Emp_Type, from EmployeeType emptype in Enum.GetValues(typeof(EmployeeType))
+                                                                       select new SelectListItem() { Text = emptype.ToCustomString(), Value = ((int)emptype).ToCustomString() }, new { @class = "form-control" })
+                            </div>
+                            <div class="col-sm-6 form-group" id="div_resource1">
+                                <div class="headrightcont" id="PT"></div>
+                                <div class="headrightcont" id="PTA"></div>
+                                <div class="headrightcont" id="LMT"></div>
+                                <div class="headrightcont" id="PersonalTrainerOnly"></div>
+                                @Html.Label("Employee Name")
+                                @*@Html.DropDownList("Resource1")*@
+                                @Html.DropDownList("Resource1", (SelectList)ViewBag.Resource1, null, new { @class = "form-control" })
+
+                            </div>
+
+                        </div>
+                        <div class="col-sm-12 col-md-12 form-group">
+                            <div id="Massage">
+                                <div class="col-sm-6 form-group">
+                                    <div class="headrightcont">
+                                        <label>Is the tech a Licensed Massage Therapist?</label><br />
+                                        <label class="radio-inline">@Html.RadioButtonFor(m => m.IsTechLMT, 1)Yes</label>
+                                        <label class="radio-inline">@Html.RadioButtonFor(m => m.IsTechLMT, 0)No</label>
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-6 form-group" id="minutes1">
+
+                                    <label>How many minutes of the <span id="minutes"></span> minute day would you like for this LMT to have Massage Only clients?</label>
+                                    @Html.TextBoxFor(m => m.MassageClientMinute, new { @class = "form-control", @style = "width:100px;" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-12 form-group">
+                            <div id="Personal_Trainer">
+                                <div class="col-sm-6 form-group">
+                                    <div class="headrightcont">
+                                        <label>Is the tech a Certified Personal Trainer?</label><br />
+                                        <label class="radio-inline">@Html.RadioButtonFor(m => m.IsTechCPT, 1)Yes</label>
+                                        <label class="radio-inline">@Html.RadioButtonFor(m => m.IsTechCPT, 0)No</label>
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-6 form-group" id="minutes2">
+
+                                    <label>How many minutes of the <span id="Client"></span> minute day would you like for this Trainer to have Personal Training clients? </label>
+                                    @Html.TextBoxFor(m => m.PersonalTrainingClient, new { @class = "form-control", @style = "width:100px;" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-12 form-group">
+                            <div class="col-sm-6 form-group">
+                                <label>
+                                    What Appointment Types should be allowed for
+                                    the P.T. portion of this Resource?
+                                </label>
+                                <br />
+                                @foreach (var item in ViewBag.AppointmentType)
+                                {
+                                    <input id="chk@(item.Value)"
+                                           type="checkbox"
+                                           class="chk"
+                                           value="@item.Value"
+                                           checked="@item.Selected"
+                                           name="@item.Text" />
+                                    @item.Text <br />
+                                }
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6 form-group">
+                                    @Html.Label("Is Active", new { @class = "checkbox-inline" })
+                                    @Html.CheckBoxFor(model => model.IsActive)
+                                </div>
+                            </div>
+                        </div>
+                        <div style="clear:both;"></div>
+
+                    </div>
+
+                </div>
+                <div>
+                    <span id="Res_ource" class="col-sm-6 form-group" style="display:none"></span>
+                </div>
+                <div class="subbutt">
+                    <input type="submit" onclick="return validateInputs()" value="Save" class="btn btn-orange pull-right" />
+
+                </div>
+                <p>@Html.ActionLink("Back to List", "EmployeeAppointment")</p>
+            }
+        </div>
+
+        @*</div>*@
+        <div class="clearfix"></div>
+    </div>
+</section>
+
+
+<script>
+
+    function validateInputs() {
+        var flag = true;
+        var Resource_Type = document.getElementById("Emp_Type");
+        //var Resource_1 = document.getElementById("Resource1");
+        //var Resource_2 = document.getElementById("Resource2");
+        //var Resource1Appointment = document.getElementById("#Resource1AppointmentType");
+        //var MassageClientMinute = document.getElementById("#MassageClientMinute");
+        //var minutes = document.getElementById("#minutes");
+        //alert($("#Client").text(totalhours));
+        //alert($("#Client").val());
+        //var t1 = $("#Client").val();
+        //alert($("#MassageClientMinute1").val());
+        //if ($("#MassageClientMinute1").val() > $("#Client").text(totalhours)) {
+        //    alert('ok');
+
+        //    return false;
+        //}
+        //alert(Resource_Type.value);
+        if (Resource_Type.value == 0) {
+
+            $("#Res_ource").show();
+            $("#Res_ource").text("Please Select Employee type");
+            Resource_Type.focus();
+            flag = false;
+        }
+        else {
+            $("#Res_ource").hide();
+            $("#Res_ource").text("");
+            flag = true;
+        }
+        //if (Resource_1.value == 0) {
+
+        //    $("#Res_ource").show();
+        //    $("#Res_ource").text("Please Select Employee");
+        //    Res_ource.focus();
+        //    flag = false;
+        //}
+        //else {
+        //    $("#Res_ource").hide();
+        //    $("#Res_ource").text("");
+        //}
+        //if (Resource_Type.value == 2 && Resource_2.value == 0) {
+
+        //    $("#Res_ource1").show();
+        //    $("#Res_ource1").text("Please Select Tech");
+        //    Res_ource1.focus();
+        //    flag = false;
+        //}
+        //else {
+        //    $("#Res_ource1").hide();
+        //    $("#Res_ource1").text("");
+        //}
+        //if (Resource_Type.value == 4 && Resource_2.value == 0) {
+        //    // alert("ok");
+        //    $("#Res_ource1msg").show();
+        //    $("#Res_ource1msg").text("Please Select Tech");
+        //    Res_ource1.focus();
+        //    flag = false;
+        //}
+        //else {
+        //    $("#Res_ource1msg").hide();
+        //    $("#Res_ource1msg").text("");
+        //}
+        ////if (MassageClientMinute.value > minutes.value)  {
+        ////    alert("ok");
+        ////    $("#MassageC").show();
+        ////    $("#MassageC").text("Please Select Tech");
+        ////    MassageC.focus();
+        ////    flag = false;
+        ////}
+        ////else {
+        ////    $("#MassageC").hide();
+        ////    $("#MassageC").text("");
+        ////}
+        //if (Resource_Type.value == 1) {
+        //    // alert($("#MaxNoPatientVisit").val());
+
+        //    if ($("#MaxNoPatientVisit").val() == "") {
+        //        $("#visit").show();
+        //        flag = false;
+        //    }
+        //}
+        //else {
+        //    $("#visit").hide();
+        //}
+
+        //if (Resource_Type.value == 4 || Resource_Type.value == 2) {
+        //    //alert($("#Resource2AppointmentType").val());
+        //    getValueUsingClasses1()
+        //    if ($("#Resource2AppointmentType").val() == "") {
+        //        // alert("ok")
+        //        flag = false;
+        //    }
+        //}
+
+        return flag;
+    }
+    $("#ResourceAppintmentType").submit(function () {
+        return getValueUsingClass();
+        //getValueUsingClasses();
+
+    })
+
+
+    //$(document).ready(function () {
+
+    //    //fnGetRelatedQuestion();
+    //    //fnGetRelatedQuestion1();
+
+
+    //    //var selected1 = $("#Resource2AppointmentType").val();
+
+    //    //if (selected1) {
+    //    //    var chkArray = selected1.split(',');
+    //    //    for (var i = 0; i < chkArray.length; i++) {
+    //    //        $('input#chk1' + chkArray[i]).attr('checked', 'true');
+    //    //    }
+    //    //}
+
+
+
+
+    //    //if ($("#ResourceType").val() == 2) {
+
+    //    //    document.getElementById("TECH").innerHTML = "Select tech";
+    //    //    document.getElementById("PT").innerHTML = "Select P.T";
+    //    //    $("#TECH").show();
+    //    //    $("#PT").show();
+    //    //    $("#Resource1").show();
+    //    //    $("#Resource2").show();
+    //    //    $("#Appointment").show();
+    //    //    $("#Massage").show();
+    //    //    $("#PatientVisit").hide();
+
+    //    //}
+    //    //else if ($("#ResourceType").val() == 1) {
+
+    //    //    document.getElementById("PT").innerHTML = "Select P.T";
+    //    //    $("#PT").show();
+    //    //    $("#Resource1").show();
+    //    //    $("#Resource2").hide();
+    //    //    $("#Appointment").hide();
+    //    //    $("#Personal_Trainer").hide();
+    //    //    $("#PatientVisit").show();
+
+    //    //}
+    //    //else if ($("#ResourceType").val() == 3) {
+
+    //    //    document.getElementById("PTA").innerHTML = "Select P.T.A";
+    //    //    $("#PTA").show();
+    //    //    $("#Resource1").show();
+    //    //    $("#Resource2").hide();
+    //    //    $("#Appointment").hide();
+    //    //    $("#PatientVisit").hide();
+    //    //}
+    //    //else if ($("#ResourceType").val() == 4) {
+
+    //    //    document.getElementById("PTA").innerHTML = "Select P.T.A";
+    //    //    $("#PTA").show();
+    //    //    document.getElementById("TECH").innerHTML = "Select tech";
+    //    //    $("#TECH").show();
+    //    //    $("#Resource1").show();
+    //    //    $("#Resource2").show();
+    //    //    $("#Appointment").show();
+    //    //    $("#Massage").show();
+    //    //    $("#PatientVisit").hide();
+    //    //}
+    //    //else if ($("#ResourceType").val() == 5) {
+
+    //    //    document.getElementById("LMT").innerHTML = "Select L.M.T";
+    //    //    $("#LMT").show();
+    //    //    $("#Resource1").show();
+    //    //    $("#Resource2").hide();
+    //    //    $("#Appointment").hide();
+    //    //    $("#PatientVisit").hide();
+    //    //}
+    //    //else if ($("#ResourceType").val() == 6) {
+
+    //    //    document.getElementById("PersonalTrainerOnly").innerHTML = "Select Personal Trainer Only";
+    //    //    $("#PersonalTrainerOnly").show();
+    //    //    $("#Resource1").show();
+    //    //    $("#Appointment").hide();
+    //    //    $("#Resource2").hide();
+    //    //    $("#PatientVisit").hide();
+    //    //}
+
+
+    //});
+
+
+</script>
+<script>
+    $(function () {
+        // $('#Resource1').html("");
+        debugger;
+        // fnGetEmployee();
+        var employeeId = $("#EmployeeID").val();
+        if (employeeId != null) {
+            //document.getElementById('Resource1').value = employeeId;
+            $('#Resource1').val(employeeId).attr("selected", "selected");
+            //$("#Resource1 option[value=" + employeeId + "]").attr('selected', 'selected');
+            //$("#Resource1 option").map(function () {
+            //    //alert($(this).val());
+            //    if ($(this).val() == "" + employeeId + "") {
+            //        $(this).attr("selected", "selected");
+            //    }
+
+            //});
+
+            //$("#Resource1 > [value=" + employeeId + "]").attr("selected", "selected");
+
+            //var select = document.getElementById('Resource1');
+            //var option;
+
+            //for (var i=0; i < select.options.length;  i++) {
+            //    option = select.options[i];
+
+            //    if (option.value == '' + employeeId + '') {
+            //        // or
+            //        // if (option.text = 'Malaysia') {
+            //        //option.setAttribute('selected', true);
+            //        document.getElementById("Resource1").selected = true;
+            //        // For a single select, the job's done
+            //        return;
+            //    }
+            //}
+
+            //selectItemByValue(document.getElementById('Resource1'), employeeId);
+
+        }
+        var selected = $("#AppointmentTypes").val();
+
+        if (selected) {
+            var chkArray = selected.split(',');
+            for (var i = 0; i < chkArray.length; i++) {
+                $('input#chk' + chkArray[i]).attr('checked', 'true');
+            }
+        }
+
+
+        $("#Emp_Type").change(function () {
+            fnGetEmployee();
+
+        });
+
+
+
+    });
+    
+
+    function selectItemByValue(elmnt, value) {
+
+        for (var i = 0; i < elmnt.options.length; i++) {
+            if (elmnt.options[i].value === value) {
+                elmnt.selectedIndex = i;
+                break;
+            }
+        }
+    }
+
+
+    function fnGetEmployee() {
+        debugger;
+        //$('#Resource1').html("");
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetEmployee", "Resource")',
+            datatype: "Json",
+            data: { EmpType: $('#Emp_Type').val(), LocationID: $('#Location_ID').val() },
+            success: function (data) {
+                //alert(data);
+                var items = '<option value="0">Select a Employee name</option>';
+                $.each(data, function (i, Related_query) {
+
+                    items += "<option value='" + Related_query.id + "'>" + Related_query.firstname + ' ' + Related_query.Last_Name + "</option>";
+
+                });
+                //alert(items);
+                $('#Resource1').html(items);
+                //$('#Resource1').show();
+                $('#div_resource1').show();
+                $("#Massage").show();
+                $("#lblAptType").text("What Appointment Types should be allowed for the  " + $("#Emp_Type option:selected").text() + " portion of this Resource?");
+
+            }
+
+
+        });
+    }
+    function getValueUsingClass() {
+
+        var chkArray = [];
+        $(".chk:checked").each(function () {
+            chkArray.push($(this).val());
+        });
+        var selected;
+        selected = chkArray.join(',') + ",";
+        //alert(selected);
+        if (selected.length > 1) {
+            selected = selected.substring(0, selected.length - 1);
+            $("#AppointmentTypes").val(selected);
+
+        }
+
+        else {
+            alert("Please select any one apppointment type");
+            return false;
+        }
+        return true;
+    }
+
+    //function fn() {
+    //    debugger;
+    //    fnGetEmployee();
+    //    getValueUsingClass();
+    //}
+
+    $("input:radio[name='IsTechLMT']").change(function () {
+
+        if ($("input:radio[name='IsTechLMT']:checked").val() == 1) {
+
+            $("#minutes1").show();
+        }
+        else {
+            $("#minutes1").hide();
+        }
+    });
+    $("input:radio[name='IsTechCPT']").change(function () {
+
+        if ($("input:radio[name='IsTechCPT']:checked").val() == 1) {
+
+            $("#minutes2").show();
+        }
+        else {
+            $("#minutes2").hide();
+        }
+    });
+
+    $('#IsActive').change(function () {
+        debugger;
+
+        //if ($("#IsActive").is("checked")) {
+        //    $("#IsActive").val() = true;
+        //}
+        //else {
+        //    $("#IsActive").val() = false;
+        //}
+
+    });
+</script>
+
+
+
+
+
+
+
+

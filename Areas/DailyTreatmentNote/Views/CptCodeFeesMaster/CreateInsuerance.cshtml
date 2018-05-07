@@ -1,0 +1,49 @@
+﻿@model DataLayer.Models.TblMDTNKareo_Insuerance
+@{
+    ViewBag.Title = "CreateInsuerance";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="bodyinner">
+    <div class="container">
+        <div class="innerform">
+            <div class="user-form clearfix">
+
+                <h2 class="text-center">Create Insurance Company</h2>
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    if (ViewBag.Error != null)
+                    {
+                        @Html.Raw(ViewBag.Error)
+                    }
+               
+                   
+                    <div class="col-sm-10 form-group">
+                        @Html.Label("Insurance Company Name")
+                        @Html.TextBoxFor(model => model.Insuerance_name,new { @class ="form-control" })
+                        @Html.ValidationMessageFor(model => model.Insuerance_name)
+
+                    </div>
+                  
+                    <div class="clearfix"></div>
+                    <div class="subbutt">
+                        <input type="submit" id="btn-submit" value="Create"
+                               class="btn btn-orange pull-right" />
+
+                    </div>
+                    <p>
+
+                        @Html.ActionLink("Back to List", "Index")
+
+                    </p>
+                }
+
+            </div>
+        </div>
+
+        <div class="clearfix"></div>
+    </div>
+</section>
+

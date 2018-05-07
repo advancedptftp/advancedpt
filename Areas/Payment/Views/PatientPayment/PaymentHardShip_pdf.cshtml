@@ -1,0 +1,823 @@
+﻿@model DataLayer.Models.tblTPaymtHardShip
+@using DataLayer;
+@{
+    ViewBag.Title = "PaymentHardShip_pdf";
+    Layout = null;
+    bool IsPatientUnEmployed = false;
+    bool IsSpouseUnEmployed = false;
+    int intHouseHoldCount = 0;
+    string[] strArrHouseholdContributedBy = new string[4];
+    string strPatientName = string.Empty;
+    
+    bool IsPatient = false;
+    bool IsResponsibleParty = false;
+    bool IsChildrenWorking = false;
+    bool IsSpouse = false;
+
+    string strCreatedOn = string.Empty;
+    if (Model.CreatedOn != null && Model.CreatedOn!=DateTime.MinValue)
+    {
+        strCreatedOn = Model.CreatedOn.ToString("MM/dd/yyyy");
+    }
+}
+
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>myadvancedpt.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="favicon.png">
+
+    <!-- Bootstrap core CSS -->
+
+
+</head>
+
+<body>
+
+
+    <div style="width:700px; margin:0 auto; padding:5px 0; font-family:verdana; font-size:13px; color:#333;">
+
+
+        <div style="padding:0 0 10px 0; border-bottom:2px solid #ccc;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="37%"><div>@*<img src="~/Images/logo.png" style="width:180px;height:60px" alt="advancedpt image" />*@</div></td>
+                    <td width="63%"><div style="padding:10px; text-align:center;font-size:23px; font-weight:bold;">Financial Hardship Application</div></td>
+                </tr>
+            </table>
+        </div>
+        <div style="padding:20px 0 5px 0;">
+            <h3 style="padding:0 0 5px 0; margin:0; font-size:19px;">Instruction Page</h3>
+            <p style="padding:0 0 15px 0; margin:0; font-size:15px; font-weight:bold;">All information relating to financial hardship requests will be kept confidential.</p>
+
+            <p style="padding:0 0 15px 0; margin:0;">The patient will need to complete a financial disclosure form and provide documentation of proof of income. Appropriate documentation of financial hardship would be one or more of the following:</p>
+
+            <p style="padding:0 0 8px 0; margin:0;">1) Documented proof that patient is at or below 200% of the current federal poverty guidelines (see attachment B for 2008 guidelines). This can include documents such as</p>
+            <div style="padding:0 0 20px 20px;">
+                a. W-2 withholding statements<br>
+                b. Pay check stubs<br>
+                c. Income tax return<br>
+                d. Forms from Medicaid or other State-funded medical assistance<br>
+                e. Forms from employers or welfare agencies.
+            </div>
+
+            <p style="padding:0 0 8px 0; margin:0;">2) Patient has other circumstances that indicate financial hardship. These can be situations such as:</p>
+            <div style="padding:0 0 20px 20px;">
+                a. proof of bankruptcy settlement<br>
+                b. catastrophic situations (death or disability in family, divorce)<br>
+                c. or other documentation that shows that patient would be unable to pay medical bill and still be able to pay for other basic necessary expenses.
+            </div>
+
+            <p style="padding:0 0 12px 0; margin:0;">Income shall be annualized from the date of request based on documentation provided and upon verbal information provided by the patient. The annualization process will also take into consideration seasonal employment and temporary increases and/or decreases to income.</p>
+            <p style="padding:0 0 12px 0; margin:0;">Any denial of “financial hardship” discount request will be written and will include instructions for reconsideration. If additional documentation of financial need is received to support charity care, the request will be reviewed and considered per the above guidelines.</p>
+
+
+
+        </div>
+
+        <div style="padding:15px 0 15px 0; margin-top:10px; text-align:center; font-size:17px; font-weight:bold; border-top:2px solid #8a8a8a;">
+            <p>
+                2014 POVERTY GUIDELINES FOR THE 48 CONTIGUOUS STATES<br/>
+                AND THE DISTRICT OF COLUMBIA
+            </p>
+
+        </div>
+
+        <table style="width:100%; text-align:center; font-size:13px;" border="1" cellpadding="0" cellspacing="0">
+            <tr>
+                <td style="padding:5px; font-size:13px;"><strong>Persons In Household</strong></td>
+                <td style="padding:5px; font-size:13px;"><strong>Poverty Guideline</strong></td>
+            </tr>
+            <tr>
+                <td style="padding:3px;">1</td>
+                <td style="padding:3px;">$11,670</td>
+            </tr>
+            <tr>
+                <td style="padding:3px;">2</td>
+                <td style="padding:3px;">$15,730</td>
+            </tr>
+            <tr>
+                <td style="padding:3px;">3</td>
+                <td style="padding:3px;">$19,790</td>
+            </tr>
+            <tr>
+                <td style="padding:3px;">4</td>
+                <td style="padding:3px;">$23,850</td>
+            </tr>
+            <tr>
+                <td style="padding:3px;">5</td>
+                <td style="padding:3px;">$27,910</td>
+            </tr>
+            <tr>
+                <td style="padding:3px;">6</td>
+                <td style="padding:3px;">$31,970</td>
+            </tr>
+            <tr>
+                <td style="padding:3px;">7</td>
+                <td style="padding:3px;">$36,030</td>
+            </tr>
+            <tr>
+                <td style="padding:3px;">8</td>
+                <td style="padding:3px;">$40,090</td>
+            </tr>
+            <tr>
+                <td colspan="2" style="padding:8px;"><strong>For households with more than 8 persons, add $4,060 for each additional person.</strong></td>
+            </tr>
+        </table>
+
+        <div style="text-align:center; padding:25px 0 25px 0;">SOURCE: Federal Register, Vol. 77, No. 17, January 26, 2012, pp. 4034-4035</div>
+
+        <div style="padding:0 0 30px 0;">
+            OIG Special Fraud Alert (1994). OIG Advisory Opinion 97-4. Federal Register, Vol 65, No. 81, 4-26-00 pages 24401-2440742 CFR, section 1001.952 (k)HIPAA, section 231(h), section 1128A42 USC, Section 1320a-7aBBA, section 4331 False Claims Act, Public Law 104-191, Kennedy v Connecticut General Life Ins. Co (Case Law) 924 F.2d 698 (7th Cir. 1991) Managed Care Contracts
+        </div>
+
+
+        <h3 style="padding:0 0 5px 0; margin:0; font-size:19px;">Disclosure Form & Financial Statement</h3>
+        <p style="padding:0 0 15px 0; margin:0; font-size:15px; font-weight:bold;">Please provide the following information:</p>
+
+        <div style="padding:0 0 2px 0;">
+            <table width="100%" border="0">
+                <tbody>
+                    <tr>
+                        <td style="padding-right:10px;" width="67%">
+                            <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:2px; min-height:10px;">
+                                @{
+                                    strPatientName = Model.tblMPatient.FirstName + " " + Model.tblMPatient.LastName;
+                                }
+                                @strPatientName
+                            </div>
+                            Patient Name
+                        </td>
+                        <td style="padding-right:10px;" width="33%" valign="top">
+                           
+                            <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:2px; min-height:10px;">
+                                @Model.HardShipDate.ToString("MM/dd/yyyy")
+                            </div>
+                            Date
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div style="padding:0 0 2px 0;">
+            <table width="100%" border="0">
+                <tbody>
+                    <tr>
+                        <td style="padding-right:10px;" width="67%">
+                          
+                            <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:2px; min-height:10px;">
+                                @Model.ResponsiblePartyName
+                            </div>
+                            Name of Responsible Party
+                        </td>
+                        <td style="padding-right:10px;" width="33%" valign="top">
+                            
+                            <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:2px; min-height:10px;">
+                                @Model.RelationShipToPatient
+                            </div>
+                            Relationship to Patient
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div style="padding:0 0 2px 0;">
+            <table width="100%" border="0">
+                <tbody>
+                    <tr>
+                        <td style="padding-right:10px;" width="67%">
+                            
+                            <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:2px; min-height:10px;">
+                                @Model.PatientHomeAddress
+                            </div>
+                            Patient’s Home Address
+                        </td>
+                        <td style="padding-right:10px;" width="33%" valign="top">
+                           
+                            <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:2px; min-height:10px;">
+                                @Model.PatientPhoneNo
+                            </div>
+                            Patient’s Phone Number
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div style="padding:0 0 2px 0;">
+            <table width="100%" border="0">
+                <tbody>
+                    <tr>
+                        <td style="padding-right:10px;" width="37%">
+                           
+                            <div style="padding:8px 0 8px 0; border-bottom:1px solid #333;margin-bottom:2px; min-height:10px;">
+                                @Model.PatientEmployerName
+                            </div>
+                            Patient’s Employer Name
+                        </td>
+                        <td style="padding-right:10px;" width="63%" valign="top">
+                            
+                            <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:2px; min-height:10px;">
+                                @Model.PatientEmployerAddress
+                            </div>
+                            Patient’s Employer Address
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        @{
+            IsPatientUnEmployed = Model.IsPatientUnEmployed == null ? false : Convert.ToBoolean(Model.IsPatientUnEmployed);
+            IsSpouseUnEmployed = Model.IsSpouseUnEmployed == null ? false : Convert.ToBoolean(Model.IsSpouseUnEmployed);
+            if (Model.tblTPaymtHouseholdMembers != null)
+            {
+                intHouseHoldCount = Model.tblTPaymtHouseholdMembers.Count;
+            }
+        }
+        <div style="padding:0 0 2px 0;">
+            <table width="100%" border="0">
+                <tbody>
+                    <tr>
+                        <td style="padding-right:10px;" width="62%">
+                            <strong>Is the Patient Unemployed?	
+                            @if (IsPatientUnEmployed)
+                            {
+                                 @:YES , how long?
+                            }
+                            else
+	                        {
+                                @:NO
+	                        }
+                            </strong>
+                        </td>
+                        @if (IsPatientUnEmployed)
+                        {
+                        <td style="padding-right:10px;" width="38%" valign="top">
+                            <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:2px; min-height:10px;">
+                                    @Model.HowLongPatientUnEmployed
+                            </div>
+                        </td>
+                        }
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+@if (IsPatientUnEmployed)
+                        {
+        <div style="padding:0 0 2px 0;">
+            <table width="100%" border="0">
+                <tbody>
+                    <tr>
+                        <td style="padding-right:10px;" width="68%">
+                            
+                            <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:2px; min-height:10px;">
+                                @Model.SpouseName
+                            </div>
+                            Spouse’s Name
+                        </td>
+                        <td style="padding-right:10px;" width="32%" valign="top">
+                            
+                            <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:2px; min-height:10px;">
+                                @Model.SpousePhoneNo
+                            </div>
+                            Spouse’s Phone Number
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div style="padding:0 0 2px 0;">
+            <table width="100%" border="0">
+                <tbody>
+                    <tr>
+                        <td style="padding-right:10px;" width="45%">
+                            
+                            <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:2px; min-height:10px;">
+                                @Model.SpouseEmployerName
+                            </div>
+                            Spouse’s Employer Name
+                        </td>
+                        <td style="padding-right:10px;" width="55%" valign="top">
+                            
+                            <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:2px; min-height:10px;">
+                                @Model.SpouseEmployerAddress
+                            </div>
+                            Spouse’s Employer Address
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+}
+        <div style="padding:0 0 2px 0;">
+            <table width="100%" border="0">
+                <tbody>
+                    <tr>
+                        <td style="padding-right:10px;" width="62%">
+
+                            <strong>Is the Spouse Unemployed?	
+                            @if (IsSpouseUnEmployed)
+                            {
+                                 @:YES , how long?
+                            }
+                            else
+                            {
+                                @:NO
+                            }
+                            </strong>
+                        </td>
+                        @if (IsSpouseUnEmployed)
+                        {
+                            <td style="padding-right:10px;" width="38%" valign="top">
+                                <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:2px; min-height:10px;">
+                                    @Model.HowLongPatientUnEmployed
+                                </div>
+                            </td>
+                        }
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div style="padding:0 0 2px 0;">
+            <table width="100%" border="0">
+                <tbody>
+                    <tr>
+                        <td style="padding-right:10px;" width="28%">
+                            How many people are living in your household?
+                        </td>
+                        <td style="padding-right:10px;" width="34%" valign="top">
+                            <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:2px; min-height:10px;">
+                                @intHouseHoldCount
+                            </div>
+
+                        </td>
+                        <td style="padding-right:10px;" width="38%" valign="top">
+                            List Names, Employers and Addresses below.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        @foreach (var item in Model.tblTPaymtHouseholdMembers)
+        {
+            <div style="padding:0 0 2px 0;">
+                <table width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td style="padding-right:10px;" width="34%">
+                                <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:2px; min-height:10px;">
+                                    @item.HouseholdMemberName
+                                </div>
+                                Household Member Name
+                            </td>
+                            <td style="padding-right:10px;" width="33%">
+                                <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:2px; min-height:10px;">
+                                    @item.Employer
+                                </div>
+                                Employer
+                            </td>
+                            <td style="padding-right:10px;" width="33%" valign="top">
+                                <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:2px; min-height:10px;">
+                                    @item.EmployerAddress
+                                </div>
+                                Employer Address
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        }
+        <div style="padding:0 0 2px 0;">
+            <table width="100%" border="0">
+                <tbody>
+                    <tr>
+                        <td style="padding-top:20px;" width="34%">
+                            <strong>Who Contributes to the Monthly Household Income?</strong>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div style="padding:0 0 2px 0;">
+            <table width="100%" border="0">
+                <tbody>
+                    <tr>
+                        <td style="padding-top:0px;" width="34%">
+                            @{
+                                if(Model.HouseholdContributedBy!=null)
+                                { 
+                                if (Model.HouseholdContributedBy.Contains(","))
+                                {
+                                    string[] tempstrArrHouseholdContributedBy = Model.HouseholdContributedBy.Split(',');
+                                    for (int i = 0; i < tempstrArrHouseholdContributedBy.Length; i++)
+                                    {
+                                        strArrHouseholdContributedBy[i] = tempstrArrHouseholdContributedBy[i];
+                                    }
+                                }
+                                else
+                                {
+                                    strArrHouseholdContributedBy[0] = Model.HouseholdContributedBy;
+                                }
+                                }
+                            }
+                            @for (int i = 0; i < 4; i++)
+                            {
+                                if (strArrHouseholdContributedBy[i] != null)
+                                {
+                                    if (strArrHouseholdContributedBy[i].Trim() == "Patient")
+                                    {
+                                        IsPatient = true;
+                                    }
+                                    else if (strArrHouseholdContributedBy[i].Trim() == "Spouse")
+                                    {
+                                        IsSpouse = true;
+                                    }
+                                    else if (strArrHouseholdContributedBy[i].Trim() == "Responsible Party")
+                                    {
+                                        IsResponsibleParty = true;
+                                    }
+                                    else if (strArrHouseholdContributedBy[i].Trim() == "Children Working")
+                                    {
+                                        IsChildrenWorking = true;
+                                    }
+                                }
+                            }
+                            @if (IsPatient)
+                            {
+                                <input type="checkbox" id="ChkHouseholdIncome_1" name="ContributesMonthlyIncome" value="Patient" checked="checked" disabled="disabled" />@:&nbsp;
+                                <strong>Patient</strong>
+                            }
+                            else
+                            {
+                                <input type="checkbox" id="ChkHouseholdIncome_1" name="ContributesMonthlyIncome" value="Patient" disabled="disabled" />@:&nbsp;
+                                <strong>Patient</strong>
+                            }
+                            @if (IsSpouse)
+                            {
+                                <input type="checkbox" id="ChkHouseholdIncome_2" name="ContributesMonthlyIncome" value="Spouse" checked="checked" disabled="disabled" />@:&nbsp;
+                                <strong>Spouse</strong>
+                            }
+                            else
+                            {
+                                <input type="checkbox" id="ChkHouseholdIncome_2" name="ContributesMonthlyIncome" value="Spouse" disabled="disabled" />@:&nbsp;
+                                <strong>Spouse</strong>
+                            }
+                            @if (IsResponsibleParty)
+                            {
+                                <input type="checkbox" id="ChkHouseholdIncome_3" name="ContributesMonthlyIncome" value="Responsible Party" checked="checked" disabled="disabled" />@:&nbsp;
+                                <strong>Responsible Party</strong>
+                            }
+                            else
+                            {
+                                <input type="checkbox" id="ChkHouseholdIncome_3" name="ContributesMonthlyIncome" value="Responsible Party" disabled="disabled" />@:&nbsp;
+                                <strong>Responsible Party</strong>
+                            }
+                            @if (IsChildrenWorking)
+                            {
+                                <input type="checkbox" id="ChkHouseholdIncome_4" name="ContributesMonthlyIncome" value="Children Working" checked="checked" disabled="disabled" />@:&nbsp;
+                                <strong>Children Working</strong>
+                            }
+                            else
+                            {
+                                <input type="checkbox" id="ChkHouseholdIncome_4" name="ContributesMonthlyIncome" value="Children Working" disabled="disabled" />@:&nbsp;
+                                <strong>Children Working</strong>
+                            }       
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div style="padding:0 0 2px 0;">
+            <table width="100%" border="0">
+                <tbody>
+                    <tr>
+                        <td style="padding-right:10px;" width="51%">
+                            <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:2px; min-height:10px;">
+                            $@Model.MonthlySalary
+                            </div>
+                            Monthly Salary (Gross)
+                        </td>
+                        <td style="padding-right:10px;" width="49%" valign="top">
+                            <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:2px; min-height:10px;">
+                            $@Model.PublicAssistanceBenefits
+                            </div>
+                            Public Assistance Benefits
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div style="padding:0 0 2px 0;">
+            <table width="100%" border="0">
+                <tbody>
+                    <tr>
+                        <td style="padding-right:10px;" width="51%">
+                            <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:2px; min-height:10px;">
+                            $@Model.UnemploymentBenefits
+                            </div>
+                            Unemployment Benefits
+                        </td>
+                        <td style="padding-right:10px;" width="49%" valign="top">
+                            <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:2px; min-height:10px;">
+                            $@Model.SocialSecurityBenefits
+                            </div>
+                            Social Security Benefits
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div style="padding:0 0 2px 0;">
+            <table width="100%" border="0">
+                <tbody>
+                    <tr>
+                        <td style="padding-right:10px;" width="51%">
+                            <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:2px; min-height:10px;">
+                            $@Model.WorkmansCompensation
+                            </div>
+                            Workman’s Compensation
+                        </td>
+                        <td style="padding-right:10px;" width="49%" valign="top">
+                            <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:2px; min-height:10px;">
+                            $@Model.ChildSupport
+                            </div>
+                            Child Support
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div style="padding:0 0 2px 0;">
+            <table width="100%" border="0">
+                <tbody>
+                    <tr>
+                        <td style="padding-right:10px;" width="51%">
+                            <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:2px; min-height:10px;">
+                            $@Model.Other
+                            </div>
+                            Other (Alimony, Etc.)
+                        </td>
+                        <td style="padding-right:10px;" width="49%" valign="top">
+                            <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:2px; min-height:10px;">
+                            $@Model.TotalIncome
+                            </div>
+                            <strong>TOTAL FAMILY INCOME</strong>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div style="padding:12px 0; font-weight:bold;">
+            I HEREBY ACKNOWLEDGE THAT THE INFORMATION GIVEN HEREIN IS TRUE AND CORRECT. I AUTHORIZE
+            ADVANCED PHYSICAL THERAPY OF CENTRAL FLORIDA, INC TO VERIFY ANY INFORMATION CONTAINED IN
+            THIS DOCUMENT FOR THE SOLE PURPOSE OF ASSESSING FINANCIAL NEED.
+        </div>
+
+        <div style="padding:0 0 2px 0;">
+            <table width="100%" border="0">
+                <tbody>
+                    <tr>
+                        <td style="padding-right:10px;" width="68%">
+                            <div style="padding:8px 0 8px 0; margin-bottom:0px; min-height:10px;">
+                                @{var imgurl1 = "";
+                                if (Model.SignatureOfPersonMakingReq != null)
+                                {
+                                    imgurl1 = "data:image/png;base64," + Convert.ToBase64String(Model.SignatureOfPersonMakingReq);
+                                }
+                                }
+                                <img src="@imgurl1" alt="Alternate Text" id="imgSignatureofPersonMakingRequest" style="width: 200px; height: 120px; " />
+                            </div>
+                            Signature of Person Making Request
+                        </td>
+                        <td style="padding-right:10px;" width="32%" valign="top">
+                            <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:2px; min-height:10px;">
+                                @Model.CreatedOn
+                            </div>
+                            Date
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div style="padding:0 0 35px 0;">
+            <table width="100%" border="0">
+                <tbody>
+                    <tr>
+                        <td style="padding-right:10px;" width="68%">
+                            <div style="padding:8px 0 8px 0; margin-bottom:2px; min-height:10px;">
+                                @{
+                                    var imgurl2 = "";
+                                if (Model.SignatureOfSpouseOrOther != null)
+                                {
+                                    imgurl2 = "data:image/png;base64," + Convert.ToBase64String(Model.SignatureOfSpouseOrOther);
+                                }
+                                }
+                                <img src="@imgurl2" alt="Alternate Text" id="imgSignatureofSpouse" style="width: 200px; height: 120px; " />
+                            </div>
+                            Signature of Spouse/Other
+                        </td>
+                        <td style="padding-right:10px;" width="32%" valign="top">
+                            <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:2px; min-height:10px;">
+                                @Model.CreatedOn
+                            </div>
+                            Date
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div>
+            <h3 style="padding:0 0 5px 0; margin:0; font-size:19px;">Supporting Documents</h3>
+            <p style="padding:0 0 15px 0; margin:0; font-size:15px; font-weight:bold;">Please return all items (as applicable) on this checklist (in person or by mail):</p>
+
+            <div style="padding:5px 0;">
+                @Html.CheckBox("tblTPaymentHardShipSupportingDoc.IsMostRecentIRSTaxFormSigned")
+                &nbsp;Most recent IRS tax forms (1040 and/or W-2). Must be signed.
+            </div>
+            <div style="padding:5px 0;">
+                @Html.CheckBox("tblTPaymentHardShipSupportingDoc.IsCheckStubsForPast30Days")
+                &nbsp;Check stubs for the past 30 days for all persons employed in the home.
+            </div>
+            <div style="padding:5px 0;">
+                @Html.CheckBox("tblTPaymentHardShipSupportingDoc.IsUnEmploymentCheckStubsFor30Days")
+                &nbsp;Unemployment check stubs for the past 30 days.
+            </div>
+            <div style="padding:5px 0;">
+                @Html.CheckBox("tblTPaymentHardShipSupportingDoc.IsDriverLicenseOrIDCards")
+                &nbsp;Driver’s license or identification cards for adults.
+            </div>
+            <div style="padding:5px 0;">
+                @Html.CheckBox("tblTPaymentHardShipSupportingDoc.IsProofOfAllOtherIncomeReceived")
+                &nbsp;Proof of all other income received in the past 30 days.
+            </div>
+            <div style="padding:5px 0;">
+               @Html.CheckBox("tblTPaymentHardShipSupportingDoc.IsProofOfAllOutstandingBills")
+                &nbsp;Proof of all outstanding bills (payment stubs, cancelled checks, etc.).
+            </div>
+            <div style="padding:5px 0;">
+               @Html.CheckBox("tblTPaymentHardShipSupportingDoc.IsDSHSDenialLetter")
+                &nbsp;DSHS Denial letter.
+            </div>
+            <div style="padding:5px 0;">
+                @Html.CheckBox("tblTPaymentHardShipSupportingDoc.IsMedicaidFormsOrCard")
+                &nbsp;Medicaid forms or card
+            </div>
+            <div style="padding:5px 0;">
+               @Html.CheckBox("tblTPaymentHardShipSupportingDoc.IsCompletedOrSignedDisclosureForm")
+                &nbsp;Completed and Signed Disclosure Form & Financial Statement (Page 2 of this application).
+            </div>
+
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+
+
+        <div style="padding:20px; border:2px solid #000;">
+
+            <strong style="font-style:italic;"><i>DO NOT WRITE IN BOX – FOR OFFICE PERSONNEL USE ONLY</i></strong>
+
+
+            <div style="padding:0 0 5px 0;">
+                <table width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td style="padding-right:10px;" width="36%">
+                                This document was received on
+                            </td>
+                            <td style="padding-right:10px;" width="55%" valign="top">
+                                <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:3px; min-height:15px;">
+                                    @if(Model.IsApproved)
+                                    { 
+                                        @strCreatedOn
+                                    }
+                                </div>
+                            </td>
+                            <td style="padding-right:10px;" width="9%">
+                                (date)
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="padding:0 0 5px 0;">
+                <table width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td style="padding-right:10px;" width="5%">
+                                by
+                            </td>
+                            <td style="padding-right:10px;" width="80%" valign="top">
+                                <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:3px; min-height:15px;">
+                                    @if(Model.IsApproved)
+                                    {
+                                        @Model.strCreatedBy
+                                    }
+                                </div>
+
+                            </td>
+                            <td style="padding-right:10px;" width="15%">
+                                (Name/Title).
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div style="padding:0 0 5px 0;">
+                <table width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td style="padding-right:10px;" width="19%">
+                                Patient Name
+                            </td>
+                            <td style="padding-right:10px;" width="81%" valign="top">
+                                <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:3px; min-height:15px;">
+                                    @if(Model.IsApproved)
+                                    {
+                                        @strPatientName
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div style="padding:0 0 5px 0;">
+                <table width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td style="padding-right:10px;" width="33%">
+                                Approved Co-Pay Amount:
+                            </td>
+                            <td style="padding-right:10px;" width="67%" valign="top">
+                                <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:3px; min-height:15px;">
+                                $
+                                    @if(Model.IsApproved)
+                                    {
+                                        @Model.strApprovedCoPayAmount
+                                    }
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div style="padding:0 0 5px 0;">
+                <table width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td style="padding-right:10px;" width="18%">
+                                Approved by
+                            </td>
+                            <td style="padding-right:10px;" width="82%" valign="top">
+                                <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:3px; min-height:15px;">
+                                    @if(Model.IsApproved)
+                                    {
+                                        @Model.strApprovedBy
+                                    }
+                                </div>
+                                (signature of office manager)
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <p></p>
+        <br><br>
+    </div>
+</body>
+</html>

@@ -1,0 +1,347 @@
+﻿@*@model IEnumerable<DataLayer.Models.tblTSpinomedIVTLSOForm>*@
+@model PagedList.IPagedList<DataLayer.Models.tblTSpinomedIVTLSOForm>
+@using PagedList.Mvc;
+@using DataLayer;
+@{
+    ViewBag.Title = "Index";
+    var currentuserid = ViewContext.Controller.CurrentUserID();
+    var lStatus = ViewContext.Controller.DmePermittedStatusList(9);
+}
+
+<center><h2 style="margin-top:20px;">Spinomed IV TLSO Order List</h2></center>
+<section class="bodyinner2">
+    <div>
+        <p class="pull-right">
+            @Html.ActionLink("Create New Record", "Create1", null, new { @class = "btn btn-primary" })
+        </p>
+        @using (Html.BeginForm("Index", "SpinomedIVTLSOForm", FormMethod.Get))
+        {
+            <div class="searchsec">
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search by Patient Name" })
+                <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                <div class="clearfix"></div>
+            </div>
+        }
+        <div class="clearfix"></div>
+    </div>
+
+    <div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayName("Patient Name")
+                        </th>
+                        <th>
+                            @Html.DisplayName("DOB")
+                        </th>
+                        <th>
+                            @Html.DisplayName("HCPCS Code")
+                        </th>
+
+                        <th>
+                            @Html.DisplayName("Status")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Last Review Date")
+                        </th>
+                        <th>
+
+                        </th>
+                        <th>
+
+                        </th>
+                        <th>
+
+                        </th>
+                        <th>
+
+                        </th>
+                    </tr>
+
+                </thead>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Patient_Name)
+                        </td>
+                        <td>
+                            @if (item.DOB != null)
+                            {
+                                @item.DOB.Value.GetExactValue()
+                            }
+                        </td>
+                        @*<td>
+                                @Html.DisplayFor(modelItem => item.DMEClinicalStaffPrescription_Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DMEClinicalStaffPrescription_Id)
+                            </td>*@
+                        <td>
+                            @if (item.HCPCSCode != null)
+                            {
+                                @Html.DisplayFor(modelItem => item.HCPCSCode)
+                            }
+                        </td>
+
+                        <td>
+                            @if (item.DMEForm_Status_Id != null)
+                            {
+                                @item.tblMDMEFormStatu.DMEForm_Status
+                            }
+                        </td>
+                        <td>
+                            @if (item.Revised_Date != null)
+                            {
+                                @item.Revised_Date.Value.GetExactValue()
+                            }
+                        </td>
+                        @*<td>
+                                @if (item.CreatedOn != null)
+                                {
+                                    @item.CreatedOn.ToString("MM/dd/yyyy")
+                                }
+                            </td>*@
+
+                        <td>
+
+                            @if (item.DMEForm_Status_Id != null && item.DMEForm_Status_Id < 4 && lStatus.Contains(item.DMEForm_Status_Id.Value + 1))
+                            {
+                                <a href="@Url.Action("Create", "SpinomedIVTLSOForm", new { id = item.SpinomedIVTLSOForm_Id })">
+                                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                </a>
+                            }
+                              else if (item.DMEForm_Status_Id == 4)
+                            {
+                                <a href="@Url.Action("Create", "SpinomedIVTLSOForm", new { id = item.SpinomedIVTLSOForm_Id })">
+                                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                </a>
+                            }
+                            @*else if (item.DMEForm_Status_Id == 5)
+                            {
+                                <a href="@Url.Action("Create", "PurchaseOrder", new { DME_Id = item.SpinomedIVTLSOForm_Id, DMEType = "L0456" })">
+                                    <i class="fa fa-angle-double-up" aria-hidden="true"></i>
+                                </a>
+                            }*@
+                        </td>
+                        @*@if (item.DMEForm_Status_Id == 9)
+                        {
+                        <td>&nbsp;</td>}
+                        else
+                        {*@
+                            <td>
+                                @if (item.DMEForm_Status_Id != null && item.DMEForm_Status_Id <5 && ((item.DMEForm_Status_Id == 1 && item.CreatedBy == currentuserid) || (item.DMEForm_Status_Id != 1 && item.ModifiedBy == currentuserid)))
+                                {
+                                    <a href="@Url.Action("Edit", "SpinomedIVTLSOForm", new { id = item.SpinomedIVTLSOForm_Id })">
+                                        <i class="fa fa-edit" aria-hidden="true"></i>
+                                    </a>
+                                }
+                            </td>
+                        @*}*@
+                        <td>
+                            <a href="@Url.Action("Details", "SpinomedIVTLSOForm", new { id = item.SpinomedIVTLSOForm_Id })">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                        @if (item.DMEForm_Status_Id == 5)
+                        {
+                            <td class="tdList_PDF">
+                                <a href="javascript:void(0);" onclick="fnShowDetail(@item.SpinomedIVTLSOForm_Id);">
+                                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                        }
+                    </tr>
+                }
+
+            </table>
+
+        </div>
+        <div>
+            <br />
+            @using (Html.BeginForm("Index", "SpinomedIVTLSOForm", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+            {
+                @Html.DropDownList("PageSize")
+            }
+            @{
+                bool? direction = ViewBag.SortDirection;
+                if (direction == null) { direction = false; }
+            }
+            <div class="pull-left" style=" padding:10px;">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                      new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction }))
+        </div>
+    </div>
+
+</section>
+
+<script>
+    function fnShowDetail(SpinomedIVTLSOForm_Id) {
+        var url = "@Url.Action("SpinomedIVTLSOFormPdf", "SpinomedIVTLSOForm", new { Area = "DmeForm" })" + "?id=" + SpinomedIVTLSOForm_Id;
+        
+        
+        //fnShowPopupForDetail(url);
+        popupwindow(url, 'SpinomedIVTLSOForm', 1000, 800);
+    }
+</script>
+
+
+<script>
+    $("#PageSize").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+</script>
+
+
+
+
+
+
+
+
+@*------------------------------------------------------------------------------------*@
+
+@*<p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.HCPCSCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product_Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Manufacturer_Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TLSOFitting_SacrumBelowC7)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Model_No)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Patient_Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DOB)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Revised_Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedOn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ModifiedOn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblMDMEFormStatu.DMEForm_Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblMTLSOSize.Size)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblMUser.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblMUser1.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblRDMEClinicalStaffPrescription.DMEFormCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblRDMEClinicAndOfficeStaffDeliver.DMEFormCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblRDMEOfficeStaffMC.DMEFormCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblRDMEOfficeStaffOrder.DMEFormCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tblRDMEOfficeStaffPaperwork.DMEFormCode)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HCPCSCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product_Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Manufacturer_Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TLSOFitting_SacrumBelowC7)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Model_No)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Patient_Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DOB)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Revised_Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedOn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModifiedOn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tblMDMEFormStatu.DMEForm_Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tblMTLSOSize.Size)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tblMUser.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tblMUser1.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tblRDMEClinicalStaffPrescription.DMEFormCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tblRDMEClinicAndOfficeStaffDeliver.DMEFormCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tblRDMEOfficeStaffMC.DMEFormCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tblRDMEOfficeStaffOrder.DMEFormCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tblRDMEOfficeStaffPaperwork.DMEFormCode)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.SpinomedIVTLSOForm_Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.SpinomedIVTLSOForm_Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.SpinomedIVTLSOForm_Id })
+                </td>
+            </tr>
+        }
+
+    </table>*@

@@ -1,0 +1,413 @@
+﻿@model DataLayer.Models.tblTLocationWorkingDetail
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .clsloadingforCard {
+        display: block;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 9998;
+        background-color: rgba(0,0,0,.3);
+        -webkit-animation: fade 500ms;
+        -moz-animation: fade 500ms;
+        -o-animation: fade 500ms;
+        animation: fade 500ms;
+    }
+
+    .divloadingforCard {
+        width: 100%;
+        text-align: center;
+        padding-top: 26%;
+    }
+</style>
+<center><h2 style="margin-top:20px;">Location Working Schedule </h2></center>
+
+<section class="bodyinner">
+    <div class="container">
+
+        <div class="report-form clearfix">
+            @using (Html.BeginForm("Create", "WorkingDetails", FormMethod.Post, new { name = "WorkingDetails", id = "WorkingDetails" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.Hidden("CreatedOn", DateTime.Now)
+                if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+                <div class="row" id="PersiaHideShow">
+                    <div class="col-sm-6 form-group">
+                        @Html.Label("Location:")
+                        @Html.DropDownList("LocationId", "--Select Location--")
+                        <span id="LocationSelect" style="color:red">Please Select Location</span>
+                        <span style="color:red" id="AlertExistsLocation">Record already exists for this location. Please select another location</span>
+                    </div>
+                    <div class="col-sm-6 col-md-6 form-group" hidden>
+                        <label class="checkbox-inline"><input name="AllLocation" id="AllLocation" type="checkbox">Allow All Location</label>
+
+                    </div>
+                    
+                </div>
+
+                <div id="divOneDayPriority" class="col-sm-12 form-group">
+                    @{
+                for (int i = 1; i <= 7; i++)
+                {
+                    <div class="row TotalTable">
+                        <div class="row form-group">
+                            <div class="col-sm-3 form-group" id="div1DaysOption">
+                                <label>Days</label>
+                                <input type="text" id="txt_OneDayAWeek__@(i)" name="OneDayAWeek__@(i)" class="txt_OneDayAWeek form-control" readonly="readonly" />
+                            </div>
+                            <div class="col-sm-3 form-group" id="div1DaysOption">
+                                <label>Clinic Open Time </label>
+                                <input type="text" id="txt_OpenFrom__@(i)" name="OpenFrom__@(i)" class="txt_OpenFrom CustomTimeFormat form-control clockpicker" />
+                                <span id="validationOPenFrom_@i" style="color:red">Please give clinic open time  </span>
+                            </div>
+                            <div class="col-sm-3 form-group" id="div1DaysOption">
+                                <label> Clinic Closing Time</label>
+                                <input type="text" id="txt_OpenTo__@(i)" name="OpenTo__@(i)" class="txt_OpenTo CustomTimeFormat form-control clockpicker" />
+                                <span id="validationOPenTo_@i" style="color:red"> Please give clinic closing time</span>
+                                <span id="timecompare_@i" style="color:red"> Clinic Closing Time cannot be less than Clinic Open Time</span>
+                            </div>
+                            @*<div class="col-sm-2 form-group">
+                                    <label>IsHoliday:</label>
+                                    <select title="--Select--" class="dr2_Holiday form-control" id="IsHoliday__@(i)" name="IsHoliday__@(i)">
+                                        <option selected="selected" value="False">No</option>
+                                        <option value="True">Yes</option>
+                                    </select>
+                                </div>*@
+                            <div class="col-sm-3 form-group">
+                                <label>IsClosed:</label>
+                                <select title="--Select--" class="dr2_OffDay form-control" id="IsClosed__@(i)" name="IsClosed__@(i)">
+                                    <option selected="selected" value="False">No</option>
+                                    <option value="True">Yes</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                }
+                    }
+
+                    <div class="subbutt">
+                        <input type="button" id="__btnSave" value="Save" class="btn btn-orange pull-right" />
+                        <span style="color:red" id="AlertMoreeThenOneDay">More than two days in a week cannot be closed</span>
+                    </div>
+
+                </div>
+                <div>
+                    @Html.ActionLink("Back to List", "Index")
+                </div>
+            }
+        </div>
+
+    </div>
+</section>
+<div id="loadingforCard" class="clsloadingforCard">
+    <div class="divloadingforCard">
+        <img src="~/Images/pageloader1.gif" width="200" height="200" />
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#loadingforCard').hide();
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#LocationId').addClass('form-control');
+        $("#txt_OneDayAWeek__1").val("Mon");
+        $("#txt_OneDayAWeek__2").val("Tue");
+        $("#txt_OneDayAWeek__3").val("Wed");
+        $("#txt_OneDayAWeek__4").val("Thu");
+        $("#txt_OneDayAWeek__5").val("Fri");
+        $("#txt_OneDayAWeek__6").val("Sat");
+        $("#txt_OneDayAWeek__7").val("Sun");
+        HideValidation();
+    });
+</script>
+<script type="text/javascript">
+    var IsValue = false;
+
+    $("#__btnSave").click(function () {
+        
+        HideValidation();
+        var loId = $('#LocationId').val()
+        @*$.ajax({
+            url: "@Url.Action("ChackLocation", "WorkingDetails")",
+            type: "POST",
+            dataType: "JSON",
+            data: { locationid: loId },
+            success: function (result) {
+                if (result != "") {
+                    alert("Record already exists for this location. Please select another location");
+                }
+                else {
+                    IsValue = true;
+                }
+            },
+        });*@      
+        var CountIsClosed = 0;
+        for (var i = 1; i <= 7; i++) {
+            var FromTime = $("#txt_OpenFrom__" + i + "").val();
+            var ToTime = $("#txt_OpenTo__" + i + "").val();
+            //alert(loId);
+            //alert($("#AllLocation").is(':checked'));
+            var ValInclosed = $("#IsClosed__" + i + "").val();
+            //alert(ValInclosed);
+            if (ValInclosed=="True") {
+                CountIsClosed++;
+                if (CountIsClosed > 2) {
+                    $("#AlertMoreeThenOneDay").show();
+                   // alert("More than two days in a week cannot be closed");
+                    IsValue = false;
+                    break;
+                }
+            }
+            if (loId == 0 && $("#AllLocation").is(':checked') == false) {
+                $('#LocationSelect').show();
+                IsValue = false;
+                break;
+            }            
+            else if (FromTime == "") {
+                $("#validationOPenFrom_" + i + "").show();
+                IsValue = false;
+                break;
+            }
+            else if (ToTime == "") {
+                $("#validationOPenTo_" + i + "").show();
+                IsValue = false;
+                break;
+            }
+            else if (FromTime > ToTime) {
+                $("#timecompare_" + i + "").show();
+                IsValue = false;
+                break;
+            }
+            else {
+                IsValue = true;
+            }
+        }
+
+
+        if (IsValue == true) {
+            var AllLocationId = null;
+            if ($("#AllLocation").is(':checked') == true) {
+                AllLocationId = "true";
+            }
+            else {
+                AllLocationId = "false";
+            }
+            var __AllTable = [];
+            $(".TotalTable").each(function () {
+                var AllDataTableObj = {}                
+                AllDataTableObj['LocationId'] = $("#LocationId").val();
+                AllDataTableObj['DayName'] = $(this).find(".txt_OneDayAWeek").val();
+                AllDataTableObj['OpenFrom'] = $(this).find(".txt_OpenFrom").val();
+                AllDataTableObj['OpenTo'] = $(this).find(".txt_OpenTo").val();
+                //AllDataTableObj['IsHoliday'] = $(this).find(".dr2_Holiday").val();
+                AllDataTableObj['IsClosed'] = $(this).find(".dr2_OffDay").val();
+                __AllTable.push(AllDataTableObj);
+            });
+            var data = {};
+            data = __AllTable;
+            $('#loadingforCard').show();
+            $.ajax({
+
+                url: '@Url.Action("SaveLocationWorking", "WorkingDetails")',
+                type: 'POST',
+                data: JSON.stringify({ JSONObject: data, AllLocation: AllLocationId }),                
+                cache: 'false',
+                contentType: 'application/json',
+                dataType: "json",
+                success: function (result) {
+                    if (result != null) {
+                       // alert("Inserted Successfully");
+                        window.location.href = '@Url.Action("Index", "WorkingDetails")?msg=Success!...' + '&locationID=' + result;
+                    }
+                    else {
+                       // alert("Error");
+                        window.location.href = '@Url.Action("Index", "WorkingDetails")?msg=Error Occured!...';
+                    }
+                },
+                error: function () {
+                    return false;
+                }
+            });
+        }
+    });
+    function CkaekLocation() {
+
+
+
+    };
+    function HideValidation() {
+        for (var i = 1; i <= 7; i++) {
+            $("#validationOPenTo_" + i + "").hide();
+            $("#validationOPenFrom_" + i + "").hide(); 
+            $("#timecompare_" + i + "").hide();
+            $("#AlertMoreeThenOneDay").hide();
+           
+        }
+        $("#AlertExistsLocation").hide();
+        $('#LocationSelect').hide();
+    };
+
+    $("#LocationId").change(function () {
+        var loId = $('#LocationId').val()
+        HideValidation();
+        $.ajax({
+            url: "@Url.Action("ChackLocation", "WorkingDetails")",
+            type: "POST",
+            dataType: "JSON",
+            data: { locationid: loId },
+            success: function (result) {
+                if (result != "") {
+                    $("#AlertExistsLocation").show();
+                   // alert("Record already exists for this location. Please select another location");
+                    $("#LocationId").val(null);
+                }
+                else {
+                    IsValue = true;
+                }
+            },
+        });
+    });
+
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //var txt11 = $('#txt_OpenFrom__1').val();
+        $('#IsClosed__1').change(function () {
+            if ($('#IsClosed__1').val() == "True") {
+                $('#txt_OpenFrom__1').val("00:00");
+                $('#txt_OpenTo__1').val("00:00");
+                $("#txt_OpenFrom__1").attr('disabled', 'disabled');
+                $("#txt_OpenTo__1").attr('disabled', 'disabled');
+            }
+            else {
+                $('#txt_OpenFrom__1').val("");
+                $('#txt_OpenTo__1').val("");
+                $("#txt_OpenFrom__1").prop("disabled", false);
+                $("#txt_OpenTo__1").prop("disabled", false);
+                $('#txt_OpenFrom__1').focus();
+            }
+        });
+        $('#IsClosed__2').change(function () {
+            if ($('#IsClosed__2').val() == "True") {
+                $('#txt_OpenFrom__2').val("00:00");
+                $('#txt_OpenTo__2').val("00:00");
+                $("#txt_OpenFrom__2").attr('disabled', 'disabled');
+                $("#txt_OpenTo__2").attr('disabled', 'disabled');
+            }
+            else {
+                $('#txt_OpenFrom__2').val("");
+                $('#txt_OpenTo__2').val("");
+                $("#txt_OpenFrom__2").prop("disabled", false);
+                $("#txt_OpenTo__2").prop("disabled", false);
+                $('#txt_OpenFrom__2').focus();
+            }
+        });
+        $('#IsClosed__3').change(function () {
+            if ($('#IsClosed__3').val() == "True") {
+                $('#txt_OpenFrom__3').val("00:00");
+                $('#txt_OpenTo__3').val("00:00");
+                $("#txt_OpenFrom__3").attr('disabled', 'disabled');
+                $("#txt_OpenTo__3").attr('disabled', 'disabled');
+            }
+            else {
+                $('#txt_OpenFrom__3').val("");
+                $('#txt_OpenTo__3').val("");
+                $("#txt_OpenFrom__3").prop("disabled", false);
+                $("#txt_OpenTo__3").prop("disabled", false);
+                $('#txt_OpenFrom__3').focus();
+            }
+        });
+        $('#IsClosed__4').change(function () {
+            if ($('#IsClosed__4').val() == "True") {
+                $('#txt_OpenFrom__4').val("00:00");
+                $('#txt_OpenTo__4').val("00:00");
+                $("#txt_OpenFrom__4").attr('disabled', 'disabled');
+                $("#txt_OpenTo__4").attr('disabled', 'disabled');
+            }
+            else {
+                $('#txt_OpenFrom__4').val("");
+                $('#txt_OpenTo__4').val("");
+                $("#txt_OpenFrom__4").prop("disabled", false);
+                $("#txt_OpenTo__4").prop("disabled", false);
+                $('#txt_OpenFrom__4').focus();
+            }
+        });
+        $('#IsClosed__5').change(function () {
+            if ($('#IsClosed__5').val() == "True") {
+                $('#txt_OpenFrom__5').val("00:00");
+                $('#txt_OpenTo__5').val("00:00");
+                $("#txt_OpenFrom__5").attr('disabled', 'disabled');
+                $("#txt_OpenTo__5").attr('disabled', 'disabled');
+            }
+            else {
+                $('#txt_OpenFrom__5').val("");
+                $('#txt_OpenTo__5').val("");
+                $("#txt_OpenFrom__5").prop("disabled", false);
+                $("#txt_OpenTo__5").prop("disabled", false);
+                $('#txt_OpenFrom__5').focus();
+            }
+        });
+        $('#IsClosed__6').change(function () {
+            if ($('#IsClosed__6').val() == "True") {
+                $('#txt_OpenFrom__6').val("00:00");
+                $('#txt_OpenTo__6').val("00:00");
+                $("#txt_OpenFrom__6").attr('disabled', 'disabled');
+                $("#txt_OpenTo__6").attr('disabled', 'disabled');
+            }
+            else {
+                $('#txt_OpenFrom__6').val("");
+                $('#txt_OpenTo__6').val("");
+                $("#txt_OpenFrom__6").prop("disabled", false);
+                $("#txt_OpenTo__6").prop("disabled", false);
+                $('#txt_OpenFrom__6').focus();
+            }
+        });
+        $('#IsClosed__7').change(function () {
+            if ($('#IsClosed__7').val() == "True") {
+                $('#txt_OpenFrom__7').val("00:00");
+                $('#txt_OpenTo__7').val("00:00");
+                $("#txt_OpenFrom__7").attr('disabled', 'disabled');
+                $("#txt_OpenTo__7").attr('disabled', 'disabled');
+            }
+            else {
+                $('#txt_OpenFrom__7').val("");
+                $('#txt_OpenTo__7').val("");
+                $("#txt_OpenFrom__7").prop("disabled", false);
+                $("#txt_OpenTo__7").prop("disabled", false);
+                $('#txt_OpenFrom__7').focus();
+            }
+        });
+        //var input = $('#single-input').clockpicker({
+        //    align: 'left',
+        //    autoclose: true,
+        //    'default': 'now'
+        //});
+        //$('#txt_OpenFrom__7').clockpicker(function () {
+        //    // $('#txt_OpenFrom__7').clockpicker('option', 'hours', { starts: 05, ends: 23 });
+        //    e.stopPropagation();
+        //    input.clockpicker('show')
+        //            .clockpicker('toggleView', 'minutes');
+        //});
+        $('#AllLocation').change(function () {
+            if ($(this).is(':checked')) {
+                $("#LocationId").attr('disabled', 'disabled');
+                $("#LocationId").val(null);
+            }
+            else {
+                $("#LocationId").prop("disabled", false);
+            }
+        });
+    });
+</script>

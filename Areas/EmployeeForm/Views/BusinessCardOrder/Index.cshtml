@@ -1,0 +1,175 @@
+﻿@model PagedList.IPagedList<DataLayer.Models.tblTBusinessCardOrder>
+@using PagedList.Mvc;
+@using DataLayer;
+@{
+    ViewBag.Title = "Index";
+    var IsApprover = ViewContext.Controller.IsApprover(6);
+}
+<style>
+    .searchsec {
+        width: 521px;
+    } 
+</style>
+
+<center><h2 style="margin-top:20px;">Business Card Order List</h2></center>
+
+
+
+<section class="bodyinner2">
+    <div>
+        <p class="pull-right">
+            @Html.ActionLink("Create New Record", "Create", null, new { @class = "btn btn-primary" })
+        </p>
+        @using (Html.BeginForm("Index", "BusinessCardOrder", FormMethod.Get))
+        {
+            <div class="searchsec">
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search by Employee First Name,Employee Last Name,Email" })
+                <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                <div class="clearfix"></div>
+            </div>
+        }
+        <div class="clearfix"></div>
+    </div>
+
+    <div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            @*@Html.DisplayNameFor(model => model.Involved_Person_Name)*@
+                            @Html.Label("Employee First Name")
+                        </th>
+                        <th>
+                            @Html.Label("Employee Last Name")
+                        </th>
+                        <th>
+                            @Html.Label("Credentials")
+                        </th>
+                        <th>
+                            @Html.Label("Position")
+                        </th>
+                        <th>
+                            @Html.Label("Email")
+                        </th>
+
+                        <th>
+                            @Html.Label("Approved By")
+                        </th>
+                        <th>
+                            @Html.Label("Approved On")
+                        </th>
+                        <th class="tdList_Edit"></th>
+                        <th class="tdList_Details"></th>
+                        <th class="tdList_PDF"></th>
+                        <th class="tdList_Approve"></th>
+                    </tr>
+
+                </thead>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EmpFirstName)
+                        </td>
+                        <td>
+                            @*@Html.DisplayFor(modelItem => item.DateOfOccurance)*@
+                            @Html.DisplayFor(modelItem => item.EmpLastName)
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.Credentials)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.PositionTitle)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.Email)
+                        </td>
+
+                        <td>
+
+                            @if (item.ApprovedBy != null)
+                            {
+                                @item.tblMUser.Name
+                            }
+                        </td>
+                        <td>
+                            @if (item.ApprovedOn != null)
+                            {
+                                @item.ApprovedOn.Value.GetExactValue()
+                            }
+                        </td>
+
+                        <td class="tdList_Edit">
+                            @if (item.ApprovedBy == null)
+                            {
+                                <a href="@Url.Action("Edit", "BusinessCardOrder", new { id = item.CardOrder_Id })">
+                                    <i class="fa fa-edit" aria-hidden="true"></i>
+                                </a>
+                            }
+                        </td>
+                        <td class="tdList_Details">
+                            <a href="@Url.Action("Details", "BusinessCardOrder", new { id = item.CardOrder_Id })">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                        <td class="tdList_PDF">
+                            <a href="javascript:void(0);" onclick="fnShowDetail(@item.CardOrder_Id);">
+                                <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                        <td class="tdList_Approve">
+                            @if (item.ApprovedBy == null && IsApprover)
+                            {
+                                @Html.ActionLink("Approve", "Approve", new { id = item.CardOrder_Id }, new { @class = "btn btn-success" })
+                            }
+                        </td>
+                    </tr>
+                }
+
+            </table>
+
+        </div>
+        <div>
+            <br />
+            @using (Html.BeginForm("Index", "BusinessCardOrder", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+            {
+                @Html.DropDownList("PageSize")
+            }
+            @{
+                bool? direction = ViewBag.SortDirection;
+                if (direction == null) { direction = false; }
+            }
+            <div class="pull-left" style=" padding:10px;">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                      new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction }))
+        </div>
+    </div>
+
+</section>
+
+<script>
+    function fnShowDetail(CardOrder_Id) {
+        var url = "@Url.Action("businesscardorder", "BusinessCardOrder", new { Area = "EmployeeForm" })" + "?id=" + CardOrder_Id;
+        //fnShowPopupForDetail(url);
+        popupwindow(url, 'businesscardorder', 1000, 800);
+    }
+</script>
+
+<script>
+    $("#PageSize").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+</script>

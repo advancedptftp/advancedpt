@@ -1,0 +1,153 @@
+﻿@model PagedList.IPagedList<DataLayer.Models.TblTDTNKareoCPICodeFees>
+@using DataLayer;
+@using PagedList.Mvc;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Index";
+}
+<style>
+    .SortHeader {
+        color: #fff;
+    }
+
+    .sortorderasc {
+        color: black;
+    }
+
+    .sortorderdesc {
+        color: green;
+    }
+
+    .searchsec {
+        width: 350px;
+    }
+</style>
+<center><h2 style="margin-top:20px;">CPT Code Fee List</h2></center>
+
+
+<section class="bodyinner2">
+    <div>
+        <p class="pull-right">
+            @Html.ActionLink("Create New Record", "Create", null, new { @class = "btn btn-primary" })
+
+            @Html.ActionLink("Add insurance company", "CreateInsuerance", null, new { @class = "btn btn-primary" })
+        </p>
+        @using (Html.BeginForm("Index", "CptCodeFeesMaster", FormMethod.Get))
+{<div class="searchsec">
+        @Html.DropDownList("insuerancenames", (SelectList)ViewBag.insuerancename, "Select Insurance Company", new { @onchange = "Hitinsueranceindex(this.value);" })
+    </div>
+            <div class="searchsec">
+                
+                    
+                <div class="col-sm-12 form-group">
+                    @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search here to CPT Code ..." })
+                    <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                </div>
+                  
+                    <div class="clearfix"></div>
+                </div>
+        }
+        <div class="clearfix"></div>
+    </div>
+
+    <div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+
+
+                        <th>
+                            @Html.DisplayName("CPT Code")
+                        </th>
+
+                        <th>
+                            @Html.DisplayName("Modifier")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Fee")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Description")
+                        </th>
+
+                        <th></th>
+                      
+                    </tr>
+
+                </thead>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Cpt_code)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Modifier)
+                        </td>
+                       
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Cpt_Fee)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+
+                            <a href="@Url.Action("Edit", "CptCodeFeesMaster", new { id = item.cpt_Id })">
+                                <i class="fa fa-edit" aria-hidden="true"></i>
+                            </a>
+                           
+                        </td>
+                       
+
+                    </tr>
+                }
+
+            </table>
+
+        </div>
+        <div>
+            <br />
+            @using (Html.BeginForm("Index", "CptCodeFeesMaster", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, searchdroupdown = ViewBag.insuerancenamedroupdown, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+            {
+                @Html.DropDownList("PageSize")
+            }
+            @{
+                bool? direction = ViewBag.SortDirection;
+                if (direction == null) { direction = false; }
+            }
+            <div class="pull-left" style=" padding:10px;">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                               new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, searchdroupdown = ViewBag.insuerancenamedroupdown, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction }))
+        </div>
+    </div>
+
+</section>
+
+
+<script>
+    $("#PageSize").addClass("form-control");
+    $("#insuerancenames").addClass("form-control");
+    
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+</script>
+
+<script>
+    function Hitinsueranceindex(val) {
+        window.location.href = "@Url.Action("Index", "CptCodeFeesMaster", new { Area = "DailyTreatmentNote" })?searchdroupdown=" + val;
+    }
+</script>

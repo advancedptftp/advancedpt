@@ -1,0 +1,235 @@
+﻿@model PagedList.IPagedList<DataLayer.Models.tblMEmployee>
+@using PagedList.Mvc;
+@using DataLayer;
+@{
+    ViewBag.Title = "Index";
+}
+<style>
+    .searchsec {
+        width: 521px;
+    }
+</style>
+
+<center><h2 style="margin-top:20px;">Employee List</h2></center>
+
+<section class="bodyinner2">
+    <div>
+        <p class="pull-right">
+            @Html.ActionLink("Create New Record", "Create", null, new { @class = "btn btn-primary" })
+        </p>
+        @using (Html.BeginForm("Index", "EmployeeMaster", FormMethod.Get))
+        {
+            <div class="searchsec">
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search by Employee First Name,Employee Last Name" })
+                <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                <div class="clearfix"></div>
+            </div>
+        }
+
+
+        @*@using (Html.BeginForm("Index", "EmployeeMaster", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+        {
+            @Html.DropDownList("PageSize1")
+        }
+        @{
+            bool? direction1 = ViewBag.SortDirection;
+            if (direction1 == null) { direction1 = false; }
+        }
+        <div class="pull-left" style=" padding:10px;">
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        </div>*@
+
+
+
+
+       
+        <div class="clearfix"></div>
+    </div>
+    
+
+
+    <div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            @{ var classname = "botharrow";}
+                            @if ((ViewBag.CurrentSort == "User" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                            {
+                                classname = "bottarrow";
+                            }
+                            else if ((ViewBag.CurrentSort == "User" && ViewBag.SortDirection == false))
+                            {
+                                classname = "toparrow";
+                            }
+                            @Html.ActionLink("User Name", "Index", new { sortOrder = "User", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname })
+
+                        </th>
+                        <th>
+                            @{ var classname1 = "botharrow";}
+                            @if ((ViewBag.CurrentSort == "First_Name" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                            {
+                                classname1 = "bottarrow";
+                            }
+                            else if ((ViewBag.CurrentSort == "First_Name" && ViewBag.SortDirection == false))
+                            {
+                                classname1 = "toparrow";
+                            }
+                            @Html.ActionLink("First Name", "Index", new { sortOrder = "First_Name", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname1 })
+
+                        </th>
+                        <th>
+                            @{ var classname2 = "botharrow";}
+                            @if ((ViewBag.CurrentSort == "Last_Name" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                            {
+                                classname2 = "bottarrow";
+                            }
+                            else if ((ViewBag.CurrentSort == "Last_Name" && ViewBag.SortDirection == false))
+                            {
+                                classname2 = "toparrow";
+                            }
+                            @Html.ActionLink("Last Name", "Index", new { sortOrder = "Last_Name", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname2 })
+                          
+                        </th>
+                     
+                        <th>
+                            @{ var classname3 = "botharrow";}
+                            @if ((ViewBag.CurrentSort == "Emp_Type" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                            {
+                                classname3 = "bottarrow";
+                            }
+                            else if ((ViewBag.CurrentSort == "Emp_Type" && ViewBag.SortDirection == false))
+                            {
+                                classname3 = "toparrow";
+                            }
+                            @Html.ActionLink("Employee Type", "Index", new { sortOrder = "Emp_Type", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname3 })
+
+
+                            @*@Html.DisplayName("Employee Type")*@
+                        </th>
+                      
+                        <th>
+                            @Html.DisplayName("Job Title")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Department")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Marital Status")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Gender")
+                        </th>
+                       
+                        <th>@Html.DisplayName("Action")</th>
+                    </tr>
+                </thead>
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>
+                            @Html.DisplayFor(model => item.tblMUser.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.First_Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Last_Name)
+                        </td>
+                     
+                        <td>
+                            @(((EmployeeType)Enum.ToObject(typeof(EmployeeType), (Convert.ToInt32(item.Emp_Type)))).ToCustomString())
+                        </td>
+                        
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Job_Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Department)
+                        </td>
+                        <td>
+                            @if (item.Marital_Status == 0)
+                            {
+                                @Html.DisplayName("Single")
+                            }
+                            else if (item.Marital_Status == 1)
+                            {
+                                @Html.DisplayName("Married")
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Gender)
+                        </td>
+                        
+                        <td>
+                           
+                            <a href="@Url.Action("Edit", "EmployeeMaster", new { id = item.Employee_Id })" >
+                                <i class="fa fa-edit" aria-hidden="true"></i>
+                            </a>
+                            &nbsp;&nbsp;
+                            <a href="@Url.Action("Delete", "EmployeeMaster", new { id = item.Employee_Id })" onclick="return confirm('Are you sure you want to delete?');">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                            </a>
+
+                            @*@Html.ActionLink("Edit", "Edit", new { id = item.Employee_Id }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.Employee_Id })*@
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+        
+
+        <div>
+            <br />
+            @using (Html.BeginForm("Index", "EmployeeMaster", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort}, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+            {
+                @Html.DropDownList("PageSize")
+            }
+            @{
+                bool? direction = ViewBag.SortDirection;
+                if (direction == null) { direction = false; }
+            }
+            <div class="pull-left" style=" padding:10px;">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                      new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction }))
+        </div>
+    </div>
+</section>
+<script>
+    $("#PageSize").addClass("form-control");
+    //$("#PageSize1").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+       // $("#PageSize1").val($("#PageSize").val());
+       // alert($('#PageSize').val());
+       // alert($('#PageSize1').val());
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+    //$('#PageSize1').on('change', function (event) {
+      
+       
+    //    var form = $(event.target).parents('form');
+
+    //    form.submit();
+    //});
+</script>
+<script>
+    $(document).ready(function () {
+    
+        if('@ViewBag.Delete'!="")
+        {
+            alertify.alert('@ViewBag.Delete').setHeader('AdvancePT Says');
+        }
+        
+    });
+   
+    //ViewBag.Delete
+</script>

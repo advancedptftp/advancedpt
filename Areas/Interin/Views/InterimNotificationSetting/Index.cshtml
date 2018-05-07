@@ -1,0 +1,82 @@
+﻿@model PagedList.IPagedList<DataLayer.Models.tblTCIAInterimNotification>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<center><h2 style="margin-top:20px;">Interim Notification Setting</h2></center>
+
+<section class="bodyinner2">
+    <div>
+        <p class="pull-right">
+            @Html.ActionLink("Create New Record", "Create", null, new { @class = "btn btn-primary" })
+        </p>
+      
+        <div class="clearfix"></div>
+    </div>
+
+
+    <div>
+        <div class="table-responsive">
+
+            <table class="table table-bordered table-striped">
+
+                <thead>
+                    <tr>
+
+                        
+                        <th>Location</th>
+                        <th>Total Number of Day</th>
+                        <th>Total Number of Visit</th>
+                        <th></th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tblMLocation.Location_Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DaysNotification)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.VisitNotification)
+                            </td>
+                           
+
+                            <td>
+                                <a href="@Url.Action("Edit", "InterimNotificationSetting", new { id = item.InterimNotification_Id })">
+                                    <i class="fa fa-edit" aria-hidden="true"></i>
+                                </a>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+        <div>
+            <br />
+            @using (Html.BeginForm("Index", "InterimNotificationSetting", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+            {
+                @Html.DropDownList("PageSize")
+            }
+            @{
+                bool? direction = ViewBag.SortDirection;
+                if (direction == null) { direction = false; }
+            }
+            <div class="pull-left" style=" padding:10px;">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                      new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction }))
+        </div>
+    </div>
+
+</section>

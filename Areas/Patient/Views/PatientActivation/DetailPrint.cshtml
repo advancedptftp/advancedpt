@@ -1,0 +1,138 @@
+﻿@model DataLayer.Models.PatientResponseReferralPdf
+
+@{
+    Layout = null;
+}
+@using DataLayer;
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>myadvancedpt.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="favicon.png">
+
+    <!-- Bootstrap core CSS -->
+
+
+</head>
+
+<body>
+
+
+    <div style="width:700px; margin:0 auto; padding:5px 0; font-family:verdana; font-size:13px; color:#333;">
+
+
+        <div style="padding:0 0 20px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="100%">
+                        <h2 style="padding:0; font-size:20px; margin:0;">
+                            Patient Response Referral Form<br>
+                        </h2>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+
+
+        @*<div style="padding:0 0 5px 0;">
+            <table width="25%" border="0">
+                <tr>
+                    <td width="31%" style="padding-right:10px;">
+                        <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.FaxedOn.GetExactValue()</div>
+                        FaxOn Date:
+                    </td>
+
+
+                </tr>
+            </table>
+
+        </div>*@
+
+        @*<div style="padding:0 0 5px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="31%" style="padding-right:10px;" valign="top">
+                        <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">
+                            @Model.Note
+                        </div>
+                        Note:
+                    </td>
+                </tr>
+            </table>
+
+        </div>*@
+
+        <div style="padding:0 0 5px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="31%" style="padding-right:10px;" valign="top">
+                        <div style="padding:8px 0 8px 0; margin-bottom:5px; min-height:20px;">
+                            @Model.Note
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+
+        <div style="padding:0 0 5px 0;">
+            <table width="80%" border="0">
+                
+                <tr>
+                    <td>&nbsp;</td>
+
+                </tr>
+                <tr>
+                    <td width="20%" style="padding-right: 10px; valign="top">
+                        Call Record List:
+                    </td>
+
+                </tr>
+                @{var count = 1;}
+                @foreach (var item in Model.CallDates)
+                {
+                    <tr>
+                        <td width="20%" style="padding-right:10px; padding-bottom:12px;">
+                            @(count++). Date:@item.ToString("MM/dd/yyyy") Time:@item.ToString("HH:mm:ss tt ")
+                        </td>
+                    </tr>
+                }
+                <tr><td>&nbsp;</td></tr>
+                <tr>
+                    <td width="20%" style="padding-right:10px;">
+                      <div style="float: left; padding: 8px 0 8px 0;">Doctor's Name:&nbsp;</div>  <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.DoctorName</div>
+                       
+                    </td>
+                </tr>
+                <tr>
+                    <td width="20%" style="padding-right:10px;" valign="top">
+                        <div style="float: left; padding: 8px 0 8px 0;">Patient's Name:&nbsp;</div>  <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:15px; min-height:20px;">@Model.PatientName</div>
+                        
+                    </td>
+                </tr>
+
+            </table>
+
+        </div>
+        <div style="padding:0 0 5px 0;">
+            <table width="20%" border="0">
+                <tr>
+                    <td width="10%" style="padding-right:10px;">
+                        <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.FaxedOn.GetExactValue()</div>
+                        FaxOn Date:
+                    </td>
+
+
+                </tr>
+            </table>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

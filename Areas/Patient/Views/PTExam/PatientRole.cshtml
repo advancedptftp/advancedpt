@@ -1,0 +1,217 @@
+﻿@model DataLayer.Models.PatientRole
+@using DataLayer;
+
+@{
+
+}
+@if (ViewBag.Error != null)
+{
+    @Html.Raw(ViewBag.Error)
+}
+<section class="bodyinner">
+    <div class="container ">
+        <div class="body ">
+            <div class="report-form clearfix">
+                @using (Html.BeginForm("ViewPatientProfile", "PTExam", FormMethod.Post, new { name = "CreatePersonalInfo", id = "CreatePersonalInfo" }))
+                {
+                    <h1><u>Patient Roles</u></h1>
+                    <div class="topforn">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <table width="100%" border="0">
+                                <tr>
+                                    <td width="10%"><strong>Patient Name:</strong></td>
+                                    <td width="90%">@Html.TextBoxFor(m => m.PatientName, new { @class = "applitextfield", @readonly = true })</td>
+                                </tr>
+                            </table>
+
+                        </div>
+                        <div class="col-sm-4">
+                            <table width="100%" border="0">
+                                <tr>
+                                    <td width="22%"><strong>Date of Birth:</strong></td>
+                                    <td width="78%" class="applitextfield CustomDateFormat">@Model.DOB.GetExactValue()   @*@Html.TextBoxFor(m => m.DOB., new { @class = "applitextfield CustomDateFormat" })*@</td>
+                                </tr>
+                            </table>
+
+                        </div>
+                        <div class="col-sm-3">
+                            <table width="100%" border="0">
+                                <tr>
+                                    <td width="22%"><strong>Date:</strong></td>
+                                    <td width="78%" class="applitextfield CustomDateFormat">@Model.Date.GetExactValue()   @*@Html.TextBoxFor(m => m.Date, new { @class = "applitextfield CustomDateFormat" })*@</td>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+                    <div class="row">
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <div class=headrightcont><h3>Things You <strong>SHOULD NOT DO:</strong></h3></div>
+                        <div>
+                            @Html.TextAreaFor(m => m.SHOULD_NOT_DO, new { @class = "form-control " })
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <div class=headrightcont><h3>Things You<strong> SHOULD DO: </strong></h3></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2 col-md-1 form-group">
+
+                        @Html.CheckBoxFor(m => m.IsRest, new { @class = "checkbox-inline" }) &nbsp; &nbsp;Rest
+
+                    </div>
+                    <div class="col-sm-2 col-md-2 form-group">
+                        @Html.TextBoxFor(m => m.Rest, new { @class = "form-control", @Style = "width: 150px;" })
+
+                    </div>
+                    <div class="col-sm-2 col-md-1 form-group">
+
+                        @Html.CheckBoxFor(m => m.IsIce, new { @class = "checkbox-inline" }) &nbsp; &nbsp;Ice
+                    </div>
+                    <div class="col-sm-2 col-md-2 form-group">
+                        @Html.TextBoxFor(m => m.Ice, new { @class = "form-control", @Style = "width: 150px;" })
+
+                    </div>
+
+
+                    <div class="col-sm-2 col-md-1 form-group">
+
+                        @Html.CheckBoxFor(m => m.IsHeat, new { @class = "checkbox-inline" })&nbsp; &nbsp;Heat
+                    </div>
+
+                    <div class="col-sm-2 col-md-2 form-group">
+                        @Html.TextBoxFor(m => m.Heat, new { @class = "form-control", @Style = "width: 150px;" })
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2 col-md-2 form-group">
+
+                        @Html.CheckBoxFor(m => m.IsCold_Laser_AddOn, new { @class = "checkbox-inline" })&nbsp; &nbsp;Cold Laser Add-On
+                    </div>
+
+                    <div class="col-sm-2 col-md-2 form-group">
+                        @Html.TextBoxFor(m => m.Cold_Laser_AddOn, new { @class = "form-control", @Style = "width: 150px;" })
+
+                    </div>
+
+                    <div class="col-sm-2 col-md-2 form-group">
+
+                        @Html.CheckBoxFor(m => m.IsMassage_AddOn, new { @class = "checkbox-inline" })&nbsp; &nbsp;Massage Add-On
+                    </div>
+                    <div class="col-sm-2 col-md-2 form-group">
+                        @Html.TextBoxFor(m => m.Massage_AddOn, new { @class = "form-control", @Style = "width: 150px;" })
+
+                    </div>
+                    <div class="col-sm-2 col-md-2 form-group">
+
+                        @Html.CheckBoxFor(m => m.IsPersonal_Training, new { @class = "checkbox-inline" })&nbsp; &nbsp;Personal Training
+                    </div>
+
+                </div>
+                     <div class=headrightcont><strong> Ice & heat packs are available at the front desk</strong></div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 form-group">
+
+                        @Html.CheckBoxFor(m => m.IsExercises, new { @class = "checkbox-inline" })&nbsp; &nbsp;Exercises:
+                        @Html.TextAreaFor(m => m.Exercises, new { @class = "form-control", })
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <div class=headrightcont><h3>You Would<strong> BENEFIT FROM:</strong></h3></div>
+                    </div>
+                    <div class="col-sm-4 col-md-4 form-group">
+
+                        @Html.CheckBoxFor(m => m.IsKnee_Arthritis_Brace, new { @class = "checkbox-inline" })&nbsp; &nbsp;Knee Arthritis Brace
+                    </div>
+                    <div class="col-sm-4 col-md-4 form-group">
+
+                        @Html.CheckBoxFor(m => m.IsKnee_Ligament_Brace, new { @class = "checkbox-inline" })&nbsp; &nbsp;Knee Ligament Brace
+                    </div>
+                    <div class="col-sm-4 col-md-4 form-group">
+
+                        @Html.CheckBoxFor(m => m.IsLowBack_Pain_Support, new { @class = "checkbox-inline" })&nbsp; &nbsp;Low Back Pain Support
+                    </div>
+                    <div class="col-sm-4 col-md-4 form-group">
+
+                        @Html.CheckBoxFor(m => m.IsUpperBack_Postural_Correction, new { @class = "checkbox-inline" })&nbsp; &nbsp;Upper Back Postural Correction
+                    </div>
+                    <div class="col-sm-4 col-md-5 form-group">
+
+                        @Html.CheckBoxFor(m => m.IsApplicable_Your_Conditions, new { @class = "checkbox-inline" }) &nbsp; &nbsp;None of these are Applicable to your Conditions
+                    </div>
+
+                </div>
+                    <div class="row">
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <div class=headrightcont><h3><strong>Treatment Plan:</strong></h3></div>
+                    </div>
+                </div>
+                     <div class="row">
+                        <div class="col-sm-2 col-md-2 form-group">
+                            <div class="headrightcont">Patient Goals:</div> 
+                        </div>
+                        <div class="col-sm-8 col-md-8 form-group">
+                            @Html.TextAreaFor(m => m.Patient_Goals, new { @class = "form-control" })
+
+                        </div>
+                    </div>
+                <div class="row">
+                    <div class="col-sm-2 col-md-3 form-group">
+                       
+                        <div class="headrightcont">Physical Therapy Goals:</div> 
+                    </div>
+                    <div class="col-sm-8 col-md-8 form-group">
+                        @Html.TextAreaFor(m => m.Physical_Therapy_Goals, new { @class = "form-control" })
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 col-md-5 form-group">
+                       
+                        <div class="headrightcont">Number of Weeks Needed to Achieve Goals:</div> 
+                    </div>
+                    <div class="col-sm-2 col-md-2 form-group">
+                        @Html.TextBoxFor(m => m.Number_of_Weeks, new { @class = "form-control" })
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 col-md-5 form-group">
+                       
+                        <div class="headrightcont"> Number of Visits Per Week Needed to Achieve Goals:</div> 
+                    </div>
+                    <div class="col-sm-2 col-md-2 form-group">
+                        @Html.TextBoxFor(m => m.Number_of_Visits, new { @class = "form-control" })
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 col-md-5 form-group">
+                       
+                        <div class="headrightcont">Total Number of Visits Needed to Achieve Goals:</div> 
+                    </div>
+                    <div class="col-sm-2 col-md-2 form-group">
+                        @Html.TextBoxFor(m => m.Total_Number, new { @class = "form-control" })
+
+                    </div>
+                </div>
+                <div >
+
+                    <button type="submit" class="btn btn-orange pull-right">Submit</button>
+                    <div class="clearfix"></div>
+                </div>
+
+                }
+            </div>
+        </div>
+    </div>
+</section>

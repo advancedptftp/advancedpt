@@ -1,0 +1,89 @@
+﻿@model DataLayer.Models.tblTCIAObjective
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>tblTCIAObjective</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ICD_Codes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ICD_Codes)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ObjectiveQuestion_Ids)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ObjectiveQuestion_Ids)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ObjectiveOption_Ids)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ObjectiveOption_Ids)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMPatient.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMPatient.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMUser.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMUser.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMUser1.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMUser1.UserName)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

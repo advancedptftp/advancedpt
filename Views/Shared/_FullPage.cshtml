@@ -1,0 +1,43 @@
+﻿<!-- saved from url=(0072)http://karmickproduction.com/designer/advanced/html/admin-dashboard.html -->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>myadvancedpt.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="http://karmickproduction.com/designer/advanced/html/favicon.png">
+    @Styles.Render("~/SiteContent/Css")
+    <script>
+        var __NotificationRelated = {
+            _GetNotification: "@Url.Action("GetNotifications", "Home", new { Area=""})",
+            _MarkAsReadNotification: "@Url.Action("MarkAsReadNotification", "Home", new { Area=""})",
+            _DeleteNotification: "@Url.Action("DeleteNotification", "Home", new { Area = "" })"
+        };
+        var __ImageRelated = {
+            _arrowtop: "@Url.Content("~/Images/arrowtop.png")",
+            _arrowbott: "@Url.Content("~/Images/arrowbott.png")"
+        };
+        var __MenuRelated = {
+            _GetMenu: "@Url.Action("GetMenu", "Home", new { Area = "" })",
+        };
+        var __pdfRelated = {
+            _embededpdf: "@Url.Action("PDFEmbeded", "Home", new { Area = "" })",
+            _ShowPdfInPopup: "@Url.Action("PDFPopUp", "Home", new { Area = "" })",
+            _showPdfInWinPopup: "@Url.Action("showPdfInWinPopup", "Home", new { Area = "" })",
+        };
+    </script>
+    @Scripts.Render("~/SiteContent/Js")
+
+</head>
+<body>
+
+
+    <section class="bodyinner">
+        <div class="container">
+            @RenderBody()
+            <div class="clearfix"></div>
+        </div>
+    </section>
+
+</body>
+
+</html>

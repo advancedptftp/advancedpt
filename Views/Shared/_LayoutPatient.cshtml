@@ -1,0 +1,377 @@
+﻿<!-- saved from url=(0072)http://karmickproduction.com/designer/advanced/html/admin-dashboard.html -->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>myadvancedpt.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="http://karmickproduction.com/designer/advanced/html/favicon.png">
+    @Styles.Render("~/SiteContent/Css")
+    <script>
+        var __NotificationRelated = {
+            _GetNotification: "@Url.Action("GetNotifications", "Home", new { Area=""})",
+            _MarkAsReadNotification: "@Url.Action("MarkAsReadNotification", "Home", new { Area=""})",
+            _DeleteNotification: "@Url.Action("DeleteNotification", "Home", new { Area = "" })"
+        };
+        var __ImageRelated = {
+            _arrowtop: "@Url.Content("~/Images/arrowtop.png")",
+            _arrowbott: "@Url.Content("~/Images/arrowbott.png")"
+        };
+        var __MenuRelated = {
+            _GetMenu: "@Url.Action("GetMenu", "Home", new { Area = "" })",
+        };
+        var __pdfRelated = {
+            _embededpdf: "@Url.Action("PDFEmbeded", "Home", new { Area = "" })",
+            _ShowPdfInPopup: "@Url.Action("PDFPopUp", "Home", new { Area = "" })",
+            _showPdfInWinPopup: "@Url.Action("showPdfInWinPopup", "Home", new { Area = "" })",
+        };
+
+        //$(document).ready(function () {
+        //    window.history.forward(0);
+        //});
+    </script>
+    @Scripts.Render("~/SiteContent/Js")
+
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="@Url.Action("Index", new { Controller="Patient", Area=""})"><img src="@Url.Content("~/Images/logo.png")" title="myadvancedpt.com" alt=""></a>
+            </div>
+            <div class="rightlink">
+                <div class="menu-btn">&nbsp;</div>
+            </div>
+            <div class="rightlink">
+                <div class="authorsec">
+                    <div class="dropdown">
+                        <a href="http://karmickproduction.com/designer/advanced/html/admin-dashboard.html#" id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="@Url.Content("~/Images/profilepic.jpg")" class="profilepic" alt="">
+                            @{
+                                if (Session["LogedInUser"] != null)
+                                {
+                                    @Html.Label(((DataLayer.Models.tblMUser)Session["LogedInUser"]).UserName)<i class="fa fa-chevron-down" aria-hidden="true"></i>
+                                }
+                            }
+
+                            @*Lorem Ipsum &nbsp;&nbsp;<i class="fa fa-chevron-down" aria-hidden="true"></i>*@
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dLabel">
+                            <li>@Html.ActionLink("My Profile", "MyProfile", new { Area = "", Controller = "Home" })</li>
+                            <li>@Html.ActionLink("Change Password", "Forgot", new { Area = "", Controller = "Home" })</li>
+                            <li>@Html.ActionLink("Log Out", "Logout", new { Area = "", Controller = "Home" })</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="rightlink">
+                <div class="authorsec1">
+                    <div id="dvNotificationContainer" class="dropdown">
+                        <a href="#" id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-bell" aria-hidden="true"></i><span id="sNotificationCount" class="noticount">...</span>
+                        </a>
+                        <ul id="uNotification" class="dropdown-menu" aria-labelledby="dLabel"></ul>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="pushy pushy-left">
+                <div class="rightinnermenu">
+                    <div class="menulogo"><a href="@Url.Action("Index", new { Controller="Home", Area=""})"><img src="@Url.Content("~/Images/logo.png")" title="myadvancedpt.com" alt=""></a> </div>
+                    <a href="#" class="cross"><i class="fa fa-close" aria-hidden="true"></i></a>
+
+                    <ul class="topnav">
+
+                        <li class="active"><a href="#">Patients</a></li>
+                        <li>
+                            <a href="#" class="parent">Physicians</a>
+                            <ul>
+                                <li><a href="#">Physicians 1</a></li>
+                                <li>
+                                    <a href="#" class="parent">Physicians 2</a>
+                                    <ul>
+                                        <li><a href="#">Physicians 1</a></li>
+                                        <li>
+                                            <a href="#" class="parent">Physicians 2</a>
+                                            <ul>
+                                                <li><a href="#">Physicians 1</a></li>
+                                                <li><a href="#">Physicians 2</a></li>
+                                                <li><a href="#">Physicians 3</a></li>
+                                                <li><a href="#">Physicians 4</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#">Physicians 3</a></li>
+                                        <li><a href="#">Physicians 4</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#">Physicians 3</a></li>
+                                <li><a href="#">Physicians 4</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">Schedule</a></li>
+                        <li><a href="#">Reports</a></li>
+                        <li><a href="#">User Manager</a></li>
+                        <li><a href="#">Employee Handbook</a></li>
+
+
+                    </ul>
+
+
+                </div>
+
+
+            </div>
+
+            <div class="site-overlay"></div>
+
+
+
+        </div>
+    </header>
+    <div class="navouter">
+        <nav id="sidebar-wrapper">
+            @*<a class="toggleMenu" href="#" style="display: none;">Menu</a>
+                <ul class="navi">
+                    <li class="active"><a href="#">Patients</a></li>
+                    <li>
+                        <a href="#" class="parent">Physicians</a>
+                        <ul>
+                            <li><a href="#">Physicians 1</a></li>
+                            <li>
+                                <a href="#" class="parent">Physicians 2</a>
+                                <ul>
+                                    <li><a href="#">Physicians 1</a></li>
+                                    <li>
+                                        <a href="#" class="parent">Physicians 2</a>
+                                        <ul>
+                                            <li><a href="#">Physicians 1</a></li>
+                                            <li><a href="#">Physicians 2</a></li>
+                                            <li><a href="#">Physicians 3</a></li>
+                                            <li><a href="#">Physicians 4</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="#">Physicians 3</a></li>
+                                    <li><a href="#">Physicians 4</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">Physicians 3</a></li>
+                            <li><a href="#">Physicians 4</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Schedule</a></li>
+                    <li><a href="#">Reports</a></li>
+                    <li><a href="#">User Manager</a></li>
+                    <li><a href="#">Employee Handbook</a></li>
+                </ul>*@
+        </nav>
+    </div>
+    <section class="bodyinner">
+        <div class="container">
+            @RenderBody()
+            <div class="clearfix"></div>
+        </div>
+    </section>
+    <footer>© Copyright 2017. All Rights Reserved</footer>
+
+    <script>
+
+
+
+
+
+
+
+        $(document).ready(function () {
+
+            //$('#dvNotificationContainer').on('show.bs.dropdown', function () {
+            //    console.log("Opening dropdown..");
+            //});
+
+            //$('#dvNotificationContainer').on('shown.bs.dropdown', function () {
+            //    console.log("Dropdown opened..");
+            //});
+
+            //$('#dvNotificationContainer').on('hide.bs.dropdown', function (data, e) {
+            //    console.log("Hiding dropdown..");
+            //});
+
+            //$('#dvNotificationContainer').on('hidden.bs.dropdown', function (data, e, event) {
+            //    MarkAsReadNotification();
+            //    if ($(e.relatedTarget).parents().find('#dvNotificationContainer').length > 0)
+            //        $(data.target).addClass('open');
+            //});
+        });
+
+
+
+        //    $(document).ready(function () {
+        //        $.validator.addMethod('requiredif',
+        //function (value, element, parameters) {
+        //    var id = '#' + parameters['dependentproperty'];
+
+        //     get the target value (as a string,
+        //     as that's what actual value will be)
+        //    var targetvalue = parameters['targetvalue'];
+        //    targetvalue = (targetvalue == null ? '' : targetvalue).toString();
+
+        //     get the actual value of the target control
+        //     note - this probably needs to cater for more
+        //     control types, e.g. radios
+        //    var control = $(id);
+        //    var controltype = control.attr('type');
+        //    var actualvalue =
+        //        (controltype === 'checkbox' || controltype === 'radio') ?
+        //        control.attr('checked').toString() :
+        //        control.val();
+
+        //     if the condition is true, reuse the existing
+        //     required field validator functionality
+        //    if ($.trim(targetvalue) === $.trim(actualvalue) || ($.trim(targetvalue) === '*' && $.trim(actualvalue) !== ''))
+        //        return $.validator.methods.required.call(
+        //          this, value, element, parameters);
+
+        //    return true;
+        //});
+
+        //        $.validator.unobtrusive.adapters.add(
+        //            'requiredif',
+        //            ['dependentproperty', 'targetvalue'],
+        //            function (options) {
+        //                options.rules['requiredif'] = {
+        //                    dependentproperty: options.params['dependentproperty'],
+        //                    targetvalue: options.params['targetvalue']
+        //                };
+        //                options.messages['requiredif'] = options.message;
+        //            });
+        //    });
+    </script>
+    <script>
+        //Initialize 2nd demo:
+        @*ddaccordion.init({
+            headerclass: "technology", //Shared CSS class name of headers group
+            contentclass: "thelanguage", //Shared CSS class name of contents group
+            revealtype: "click", //Reveal content when user clicks or onmouseover the header? Valid value: "click", "clickgo", or "mouseover"
+            mouseoverdelay: 200, //if revealtype="mouseover", set delay in milliseconds before header expands onMouseover
+            collapseprev: true, //Collapse previous content (so only one open at any time)? true/false
+            defaultexpanded: [true], //index of content(s) open by default [index1, index2, etc]. [] denotes no content.
+            onemustopen: true, //Specify whether at least one header should be open always (so never all headers closed)
+            animatedefault: true, //Should contents open by default be animated into view?
+            scrolltoheader: false, //scroll to header each time after it's been expanded by the user?
+            persiststate: true, //persist state of opened contents within browser session?
+            toggleclass: ["closedlanguage", "openlanguage"], //Two CSS classes to be applied to the header when it's collapsed and expanded, respectively ["class1", "class2"]
+            togglehtml: ["prefix", "<img src='@Url.Content("~/Images/arrowtop.png")' style='width:13px; height:9px' /> ", "<img src='@Url.Content("~/Images/arrowbott.png")' style='width:13px; height:9px' /> "], //Additional HTML added to the header when it's collapsed and expanded, respectively  ["position", "html1", "html2"] (see docs)
+            animatespeed: "normal", //speed of animation: integer in milliseconds (ie: 200), or keywords "fast", "normal", or "slow"
+            oninit: function (expandedindices) { //custom code to run when headers have initalized
+                do nothing
+            },
+            onopenclose: function (header, index, state, isuseractivated) { //custom code to run whenever a header is opened or closed
+                do nothing
+            }
+        })*@
+
+    </script>
+    <script>
+        //jQuery('.datepicker').datepicker();
+        //$('#uNotification').on('close.bs.alert', function (data) {
+        //    var ID = $(data.target).attr('id').replace("Noti_", "");
+        //    DeleteNotification(ID);
+        //});
+
+        //$(document).click(function (e) {
+
+        //    var container = $("#uNotification");
+
+        //    if (!container.is(e.target) // if the target of the click isn't the container...
+        //    && container.has(e.target).length === 0) // ... nor a descendant of the container
+        //    {
+        //        if (container.css('display') != 'none') {
+        //            $('#dvNotificationContainer').removeClass('open');
+        //            //if ((!(e.target.href != undefined && e.target.href.indexOf('#') == -1 && e.target.href.indexOf('void(0)') == -1)))
+        //            //    MarkAsReadNotification();
+        //        }
+        //    }
+        //});
+    </script>
+    <script language="JavaScript">
+        //$(document).ready(function () {
+        //    $(".topnav").accordion({
+        //        accordion: false,
+        //        speed: 500,
+        //        closedSign: '[+]',
+        //        openedSign: '[-]'
+        //    });
+        //});
+
+        //function fnShowPopupForDetail(url) {
+        //    window.open(url, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=50,left=50,width=800,height=1000,center");
+        //}
+
+    </script>
+    <style type="text/css">
+        .thelanguage {
+            display: none;
+        }
+
+        a.hiddenajaxlink {
+            display: none;
+        }
+
+        #uNotification {
+            min-width: 400px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+            #uNotification .alert {
+                margin-bottom: 3px;
+                padding-top: 1px;
+                padding-bottom: 1px;
+            }
+
+        .form-control.input-validation-error {
+            background-color: rgba(239, 21, 21, 0.06);
+        }
+
+        .form-control.valid {
+            background-color: rgba(29, 234, 111, 0.08);
+        }
+    </style>
+    <!--for accordion-->
+</body>
+
+</html>
+
+<script>
+    var timeout = null;
+    $(document).ready(function () {
+        clearTimeout(timeout);
+        timeout = setTimeout(function () {
+
+            fnShowSessionOutAlert();
+
+        }, 30*60*1000);
+
+    });
+    $(document).on('mousemove', function () {
+
+        clearTimeout(timeout);
+        timeout = setTimeout(function () {
+            fnShowSessionOutAlert();
+
+        },30*60*1000);
+    });
+    function fnShowSessionOutAlert() {
+        var link = "@Url.Action("Logout", "Home", new { Area = "" })";
+        var closable = alertify.alert().setting('closable');
+
+        alertify.alert().setHeader('AdvancePT Says')
+          .setting({
+              'label': 'OK',
+              'message': 'The session has been expired, please login again',
+              'onok': function () { window.location = link; }
+          }).show();
+
+    }
+</script>

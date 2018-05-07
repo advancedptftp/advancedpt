@@ -1,0 +1,84 @@
+﻿@model DataLayer.Models.tblEmpMasterForSignature
+@using DataLayer;
+@{
+    ViewBag.Title = "CreateEmployeeSignature";
+}
+
+
+<section class="bodyinner">
+    <div class="container">
+        @*<div class="bodyleft">
+
+                @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+            </div>*@
+        @*<div class="bodyright">*@
+
+        <div class="report-form clearfix">
+            <h2 class="text-center">Employee Signature</h2>
+            <br /><br />
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(m => m.EmployeeSignature)
+                if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+                
+
+             
+                    <div class="row">
+
+                        <div class="row">
+
+                            <div class="col-sm-6 form-group">
+                                <h3>Signature of employee</h3>
+                                <div></div>
+                                @Html.Partial("_SignPad")
+
+                                @{var imgurl4 = Url.Content("~/Images/nosignature.png");
+                                if (Model.EmployeeSignature != null)
+                                {
+                                    imgurl4 = "data:image/png;base64," + Convert.ToBase64String(Model.EmployeeSignature);
+                                }
+                                }
+                                <img src="@imgurl4" alt="Alternate Text" class="form-control optional" id="imgPatientSign" style="width:500px; height:200px;" />
+                                <div style="clear:both; padding-top:15px;"></div>
+                                <label id="lblTime"></label>
+                                <div>
+                                    <span id="Signature_Validation" style="color:red"></span>
+                                </div>
+                                <div style="clear:both; padding-top:15px;"></div>
+                                <input type="hidden" name="name" value="" id="hdnImageVal2" />
+                                <input type="button" id="btnClaimantSignature" class="btn btn-primary" onclick="fnShowSignPad('imgPatientSign', 'EmployeeSignature', 'lblTime')" value="Click Here To Add Signature" />
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                
+                
+                
+                
+
+                
+                
+                
+                
+
+                <div class="subbutt">
+                    <input type="submit" value="Create Employee Signature" class="btn btn-orange pull-right" id="btnCreateEmp" />
+
+                </div>
+                @*<p>@Html.ActionLink("Back to List", "Index")</p>*@
+            }
+        </div>
+
+        @*</div>*@
+        <div class="clearfix"></div>
+    </div>
+</section>
+

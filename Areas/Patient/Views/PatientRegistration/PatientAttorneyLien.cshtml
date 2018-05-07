@@ -1,0 +1,216 @@
+﻿@model DataLayer.Models.tblTPatientAttorneyLien
+@{
+    ViewBag.Title = "PatientAttorneyLien";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="bodyinner">
+    <div class="container ">
+
+        <div class="body ">
+            <div class="report-form clearfix">
+                @using (Html.BeginForm("PatientAttorneyLien", "PatientRegistration", FormMethod.Post, new { name = "AttorneyLien", id = "AttorneyLien" }))
+                {
+                    @Html.HiddenFor(e => e.PatientConditionID)
+    @Html.HiddenFor(e => e.AttornetLien_Id)
+                    @Html.HiddenFor(e => e.CreatedBy)
+                    @Html.HiddenFor(e => e.CreatedOn)
+                    @Html.HiddenFor(e => e.PatientSignature)
+                    @Html.HiddenFor(e=>e.AttorneySignature)
+                    @Html.HiddenFor(e=>e.WitnessSignature)
+                    
+                    @Html.ValidationSummary(true)
+
+                    <h2 style="padding-bottom:15px;" align="center"><u>ATTORNEY LIEN</u></h2>
+                    <div class="clearfix line"></div>
+
+                    <div id="div_personalInfoAdvance">
+                        <div class="clearfix lineadvance"></div>
+                        <div id="div_personalInfo">
+
+                            <div class="clearfix"></div>
+
+                            <div class="row">
+                                <div class="col-sm-6 col-md-7 form-group">
+                                    <label>Attorney Name</label>
+                                    @Html.TextBoxFor(m => m.AttorneyName, new { @class = "form-control", @Readonly = true })
+                                </div>
+                                <div class="col-sm-4 col-md-4 form-group">
+                                    <label for="date">Phone</label>
+                                    @Html.TextBoxFor(m => m.AttorneyPhone, new { @class = "form-control", @Readonly = true })
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 col-md-11 form-group">
+                                    <label>Address</label>
+                                    @Html.TextBoxFor(m => m.AttorneyAddress1, new { @class = "form-control", @Readonly = true })
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6 col-md-4 form-group">
+                                    <label for="date">City</label>
+                                    @Html.TextBoxFor(m => m.AttorneyCity, new { @class = "form-control", @Readonly = true })
+                                </div>
+                                <div class="col-sm-6 col-md-4 form-group">
+                                    <label>State</label>
+                                    @Html.TextBoxFor(m => m.AttorneyState, new { @class = "form-control", @Readonly = true })
+                                </div>
+                                <div class="col-sm-6 col-md-3 form-group">
+                                    <label for="date">Zip</label>
+                                    @Html.TextBoxFor(m => m.AttorneyZip, new { @class = "form-control", @Readonly = true })
+                                </div>
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-sm-6 col-md-4 form-group">
+                                    <label for="date">Patient First Name (Print)</label>
+                                    @Html.TextBoxFor(m => m.tblTPatientCondition.tblMPatient.FirstName, new { @class = "form-control", @Readonly = true })
+                                </div>
+                                <div class="col-sm-6 col-md-4 form-group">
+                                    <label for="date">Patient Last Name (Print)</label>
+                                    @Html.TextBoxFor(m => m.tblTPatientCondition.tblMPatient.LastName, new { @class = "form-control", @Readonly = true })
+                                </div>
+                                <div class="col-sm-3 col-md-3 form-group">
+                                    <label for="location-incident">Date of Accident</label>
+                                    @Html.TextBoxFor(m => m.tblTPatientCondition.Date_Of_Accident, new { @class = "form-control", @Readonly = true })
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="clearfix line"></div>
+                        <div id="div_condition">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-9 form-group">
+                                    <p><strong> agreement is made between Advanced Physical Therapy of Central Florida Inc., Patient (named above), and Attorney (named above). Advanced Physical Therapy of Central Florida Inc. will have a lien on all claims and causes of action of Patient regarding accident dated above and on all proceeds of any recovery, whether by settlement, arbitration award, or court judgment. The lien will secure payment of all amounts now or hereafter owed by patient to Advanced Physical Therapy of Central Florida Inc. for physical therapy/physical medicine/wellness or any service directly rendered to Patient out of such accident. Patient hereby directs Attorney to honor the lien and to pay funds secured directly to patient no later than 30 days* after the proceeds of any recovery are received by Attorney.</strong></p>
+                                    <p><strong>Attorney acknowledges notice of the lien herein by Patient and Advanced Physical Therapy of Central Florida Inc. and will honor the lien by paying funds secured directly to Advanced Physical Therapy of Central Florida Inc. no later than 30 days* after the proceeds of any recovery are received by Attorney.</strong></p>
+                                    <p><strong>Tue under signed, understands fully the limited nature of this lien, and by signature agrees to its provisions completely and instructs all other parties, and agents thereof, to comply with same.</strong></p>
+                                    <p><strong>*After 30 days a 1.5% interest rate will be added to the outstanding balance (18% annually).</strong></p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div id="div_Witness">
+
+                            <div class="row">
+                                <div class="col-sm-6 col-md-4 form-group">
+                                    <label>Patient First Name (Print)</label>
+                                    @Html.TextBoxFor(m => m.tblTPatientCondition.tblMPatient.FirstName, new { @class = "form-control", @Readonly = true })
+                                </div>
+                                <div class="col-sm-6 col-md-4 form-group">
+                                    <label>Patient Last Name (Print)</label>
+                                    @Html.TextBoxFor(m => m.tblTPatientCondition.tblMPatient.LastName, new { @class = "form-control", @Readonly = true })
+                                </div>
+                                <div class="col-sm-6 col-md-4 form-group">
+                                    <label>Attorney Name (Print)</label>
+                                    @Html.TextBoxFor(m => m.AttorneyName, new { @class = "form-control", @Readonly = true })
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6 form-group">
+                                    <label>Patient Signature</label>
+                                    <div></div>
+                                    @Html.Partial("_SignPad")
+                                    @{var imgurl = Url.Content("~/Images/nosignature.png");
+                                    if (Model.PatientSignature != null)
+                                    {
+                                        imgurl = "data:image/png;base64," + Convert.ToBase64String(Model.PatientSignature);
+                                    }
+                                    }
+                                    <img src="@imgurl" alt="Alternate Text" class="form-control" id="imgPatientSign" style="width:500px; height:200px;" />
+                                    @*<label id="lblTime1"></label>*@
+                                    <input type="hidden" name="name" value="" id="hdnImageVal1" />
+                                    @*<button onclick="fnShowSignPad('imgPatientSign', 'PatientSignature', 'lblTime')">Show Sign</button>*@
+                                    <input type="button" id="btnPatientSign" class="btn btn-primary" onclick="fnShowSignPad('imgPatientSign', 'PatientSignature', 'PatientSignatureDate')" value="Click To Add Signature" />
+                                </div>
+                                <div class="col-sm-6 col-md-6 form-group">
+                                    <label>Attorney Signature</label>
+                                    <div></div>
+                                    @Html.Partial("_SignPad")
+                                    @{var imgurl2 = Url.Content("~/Images/nosignature.png");
+                                    if (Model.AttorneySignature != null)
+                                    {
+                                        imgurl2 = "data:image/png;base64," + Convert.ToBase64String(Model.AttorneySignature);
+                                    }
+                                    }
+                                    <img src="@imgurl2" alt="Alternate Text" class="form-control" id="imgAttorneySign" style="width:500px; height:200px;" />
+                                    @*<label id="lblTime2"></label>*@
+                                    <input type="hidden" name="name" value="" id="hdnImageVal2" />
+                                    @*<button onclick="fnShowSignPad('imgAttorneySign', 'AttorneySignature', 'lblTime')">Show Sign</button>*@
+                                    <input type="button" id="btnAttorneySign" class="btn btn-primary" onclick="fnShowSignPad('imgAttorneySign', 'AttorneySignature', 'AttorneySignatureDate')" value="Click To Add Signature" />
+
+                                </div>
+
+
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6 form-group">
+                                    <label for="date">Patient Signature Date</label>
+                                    @Html.TextBoxFor(m => m.PatientSignatureDate, new { @class = "form-control", @Readonly = true })
+                                </div>
+                                <div class="col-sm-6 col-md-6 form-group">
+                                    <label>Attorney Signature Date</label>
+                                    @Html.TextBoxFor(m => m.AttorneySignatureDate, new { @class = "form-control", @Readonly = true })
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6 form-group">
+                                    <label>Witness/Facility Representative Name (Print) </label>
+                                    @Html.TextBoxFor(m => m.WitnessName, new { @class = "form-control", @Readonly = true })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6 form-group">
+                                    <label>Witness/Facility Representative Signature</label>
+                                    <div></div>
+                                    @Html.Partial("_SignPad")
+                                   
+                                       @{var imgurl3 = Url.Content("~/Images/nosignature.png");
+                                    if (Model.WitnessSignature != null)
+                                    {
+                                        imgurl3 = "data:image/png;base64," + Convert.ToBase64String(Model.WitnessSignature);
+                                    }
+                                    }
+                                    <img src="@imgurl3" alt="Alternate Text" id="imgWitnessSign" class="form-control" style="width:500px; height:200px;" />
+                                    @*<label id="lblTime3"></label>*@
+                                    <input type="hidden" name="name" value="" id="hdnImageVal3" />
+                                    @*<button onclick="fnShowSignPad('imgWitnessSign', 'WitnessSignature', 'lblTime')">Show Sign</button>*@
+                                    <input type="button" id="btnWitnessSign" class="btn btn-primary" onclick="fnShowSignPad('imgWitnessSign', 'WitnessSignature', 'WitnessSignatureDate')" value="Click To Add Signature" />
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 col-md-5 form-group">
+                                    <label>Witness Signature Date</label>
+                                    @Html.TextBoxFor(m => m.WitnessSignatureDate, new { @class = "form-control", @Readonly = true })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subbutt">
+                            <input type="submit" id="btnSubmit" class="btn btn-orange pull-right" value="Submit" />
+                            <div class="clearfix"></div>
+                        </div>
+
+                    </div>
+                    <div class="clearfix line"></div>
+
+                }
+            </div>
+        </div>
+    </div>
+
+</section>
+@*<script type="text/javascript">
+    $("#btnPatientSign").click(function () {
+        var t1 = $("#lblTime1").val();
+        alert(t1);
+        $("#PatientSignatureDate").val(t1);
+    });
+</script>*@

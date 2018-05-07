@@ -1,0 +1,168 @@
+﻿@model DataLayer.Models.tblMPatSchdScheduleSetting
+@using DataLayer
+@{
+    ViewBag.Title = "Details";
+    var _AlertObserveDay = Model.AlertObserveDay;
+}
+
+<script>
+    $(document).ready(function () {
+        //alert('document ready');
+        //fnGetWorkingday();
+        var selectVal = @ViewBag.SelectedObserveDay
+            //alert("val ====" + selectVal);
+
+        //alert("val ====" + _AlertObserveDay);
+        $("#AlertObserveDay").val(selectVal);
+        
+     //   $('#AlertObserveDay')
+     //.removeAttr('selected')
+     //.filter('[value=' + _AlertObserveDay + ']')
+     //    .attr('selected', true);
+
+    });
+
+
+</script>
+<section class="bodyinner">
+    <div class="container">
+        @*<div class="bodyleft">
+
+                @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+            </div>*@
+        @*<div class="bodyright">*@
+
+        <div class="report-form clearfix">
+            <h2 class="text-center">Patient Schedule Settings Details</h2>
+            <br /><br />
+            @using (Html.BeginForm("Edit", "ScheduleSettings", FormMethod.Post, new { name = "ScheduleSettings", id = "ScheduleSettings" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+
+                if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+                <div class="row">
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            @Html.Label("Location")
+                            @Html.DropDownListFor(e => e.LocationId, (SelectList)ViewBag.Location, new { @class = "form-control", @disabled = "disabled" })
+                        </div>
+                        <div class="col-sm-6">
+                            <label>Full Alert Level Percentage</label>
+                            @Html.TextBoxFor(m => m.FullAlertLevelPercentage, new { @class = "form-control", @disabled = "disabled" })
+
+                        </div>
+
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            <label>Alert Observe Day</label>
+                            @Html.DropDownListFor(m => m.AlertObserveDay, (SelectList)ViewBag.AlertObserveDay, "Select Days", new { @class = "form-control", @disabled = "disabled" })
+
+                            @*@Html.DropDownListFor(m => m.AlertObserveDay, from Days day in Enum.GetValues(typeof(Days))
+                                select new SelectListItem() { Text = day.ToCustomString(), Value = ((int)day).ToCustomString() }, new { @class = "form-control" })*@
+                            @*@Html.DropDownList("AlertObserveDay")*@
+                            @*@Html.DropDownListFor(e => e.AlertObserveDay, (SelectList)ViewBag.AlertObserveDay, new { @class = "form-control" })*@
+                            @* @Html.TextBoxFor(m => m.AlertObserveDay, new { @class = "form-control" })*@
+                        </div>
+                        <div class="col-sm-6">
+                            <label>ReSchedule Charge Minimum Amount</label>
+                            @Html.TextBoxFor(m => m.ReScheduleChargeMinAmount, new { @class = "form-control", @disabled = "disabled" })
+
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            <label>Cancellation Charge Minimum Amount</label>
+                            @Html.TextBoxFor(m => m.CancelationChargeMinAmount, new { @class = "form-control", @disabled = "disabled" })
+                        </div>
+                        <div class="col-sm-6">
+                            <label>ReSchedule Charged Hours</label>
+                            @Html.TextBoxFor(m => m.ReScheduleChargedHours, new { @class = "form-control", @disabled = "disabled" })
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            <label>Cancellation Charged Hours</label>
+                            @Html.TextBoxFor(m => m.CancelationChargedHours, new { @class = "form-control", @disabled = "disabled" })
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label>Weeks of Appointments To Keep Scheduled</label>
+                            @Html.TextBoxFor(m => m.WeeksOfAppointments, new { @class = "form-control", @disabled = "disabled" })
+
+                        </div>
+
+
+                        @*<div class="row">
+                                <div class="col-sm-6">
+                                    @Html.Label("Is Active")
+                                    @Html.CheckBoxFor(model => model.IsActive, new { @disabled = "disabled" })
+                                </div>
+                            </div>
+                            </div>
+
+
+                            <div style="clear:both;"></div>*@
+
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            @Html.Label("Is Active")
+                            @Html.CheckBoxFor(model => model.IsActive, new { @disabled = "disabled" })
+                        </div>
+                    </div>
+                </div>
+
+
+                <div style="clear:both;"></div>
+
+
+
+                <p>@Html.ActionLink("Back to List", "Index")</p>
+            }
+        </div>
+
+        @*</div>*@
+        <div class="clearfix"></div>
+    </div>
+</section>
+
+@*<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>*@
+
+<script>
+    $("#LocationId").change(function () {
+        alert("onchange");
+        fnGetWorkingday();
+
+    });
+
+    function fnGetWorkingday() {
+       // alert('hi');
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetWorkingday", "ScheduleSettings")',
+            datatype: "Json",
+            data: { Location_Id: $('#LocationId').val() },
+            success: function (data) {
+                var items = '<option value="0">Select Day</option>';
+                $.each(data, function (i, _workingDays) {
+                    items += "<option value='" + _workingDays.id + "'>" + _workingDays.val + "</option>";
+
+                });
+                $('#AlertObserveDay').html(items);
+            }
+
+        });
+    }
+
+
+   // $('#AlertObserveDay').addClass('form-control', disabled = true);
+
+</script>

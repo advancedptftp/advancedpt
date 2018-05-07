@@ -1,0 +1,75 @@
+﻿@model DataLayer.Models.tblTCIAAssessment
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>tblTCIAAssessment</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMPatient.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMPatient.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMUser.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMUser.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMUser1.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMUser1.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblTCIAObjective.ICD_Codes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblTCIAObjective.ICD_Codes)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblTCIASubjective.ComplainsIds)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblTCIASubjective.ComplainsIds)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Assessment_Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

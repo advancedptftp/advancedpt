@@ -1,0 +1,194 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    .sidenav {
+        height: 400px;
+        width: 0;
+        position: absolute;
+        z-index: 1;
+        top: 130px;
+        left: 0;
+        background-color: #f3f2f2;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 50px;
+    }
+
+        .sidenav a:hover, .offcanvas a:focus {
+            color: red;
+        }
+
+        .sidenav .closebtn {
+            position: absolute;
+            top: 2px;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+            padding-top: 20px;
+        }
+
+    #main {
+        transition: margin-left .5s;
+        padding: 16px;
+    }
+
+    .spanBorderRounded {
+        border-radius: 0px 50px 50px 0px;
+    }
+    /* mouse over link */
+    .selected {
+        color: #2a6bb0;
+        font-weight: 900;
+    }
+</style>
+
+<section class="bodyinner">
+
+@using (Html.BeginForm("Create", "DMEPaperwork", FormMethod.Post, new { name = "Create2", id = "Create2" }))
+            {
+
+    <div class="col-sm-12" style="text-align:center;">
+        <div id="main" style="float:left">
+            <span id="spn1" class="btn btn-info glyphicon glyphicon-circle-arrow-right spanBorderRounded" style="background-color: #f58f22;"></span>
+        </div>
+
+        <h3>DME Paperwork</h3>
+
+    </div>
+    <div class="col-md-10 col-sm-10" style="height:470px; text-align:left; padding-left:2%; background-color:white; color:black; font-family:Arial; padding-right:5%; overflow:scroll; width:100%;">
+        @*Content*@
+
+
+        <img src="~/Images/DME%20PAPERWORK.page4.jpg" />
+        <img src="~/Images/DME%20PAPERWORK.page6.jpg" />
+        <img src="~/Images/DME%20PAPERWORK.page7.jpg" />
+    </div>
+    <div class="clearfix"></div>
+    <div id="dvSignature" class="col-md-12 col-sm-12" style="margin-top:20px;">
+        @*Signature*@
+        <div class="col-sm-12 col-md-12 form-group">
+            <h3>Signature of Claimant</h3>
+            <div></div>
+            @Html.Partial("_SignPad")
+
+            @{var imgurl4 = Url.Content("~/Images/nosignature.png");
+
+            }
+            <img src="@imgurl4" alt="Alternate Text" class="form-control" id="imgPatientSign" style="width:500px; height:200px;" />
+            <div style="clear:both; padding-top:15px;"></div>
+            <label id="lblTime"></label>
+            <div style="clear:both; padding-top:15px;"></div>
+            <input type="hidden" name="name" value="" id="hdnImageVal2" />
+            <input type="button" id="btnClaimantSignature" class="btn btn-primary" onclick="fnShowSignPad('imgPatientSign', 'PatientSignature', 'lblTime')" value="Click Here To Add Signature" />
+            <button type="submit" class="btn btn-orange pull-right" onclick="return validateInputs();">Submit</button>
+        </div>
+
+    </div>
+    <div class="clearfix"></div>
+    <div id="mySidenav" class="sidenav" style="margin-top: 38px; height:auto;">
+        <a id="aClose" href="javascript:void(0)" class="closebtn">&times;</a>
+        <br />
+        @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+    </div>
+}
+
+</section>
+<script type="text/javascript">
+    function openNav() {
+        document.getElementById("mySidenav").style.width = "350px";
+        document.getElementById("main").style.marginLeft = "350px";
+        $("#spn1").hide();
+        $(".closebtn").hide();
+        $("#divLeft").addClass("bodyleft");
+        $("#divRight").addClass("bodyright");
+    }
+
+    function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+        document.getElementById("main").style.marginLeft = "0";
+        $("#spn1").show();
+    }
+
+</script>
+<script>
+    $("#Hide").click(function () {
+        //$("#show").hide();
+        $("#deleteditems").hide();
+        $("#Show").show();
+        $("#Hide").hide();
+        $('#mySidenav').css("height", "400px");
+        //alert($("#divRight").height());
+    });
+    $("#Show").click(function () {
+        $("#deleteditems").show();
+        $("#Hide").show();
+        $("#Show").hide();
+        $('#mySidenav').css("height", $("#divRight").height() + "px");
+    });
+</script>
+<script type="text/javascript">
+        $("#spn1").click(function () {
+            openNav();
+            $("#divRight").removeClass("body-content");
+            $("#divRight").addClass("bodyright");
+        });
+        $("#spn1").hover(function () {
+            $(this).css('background-color', '#5bc0de');
+        },
+        function () {
+            $(this).css("background-color", "#f58f22")
+        });
+        //-------------
+        $(".closebtn").click(function () {
+            $("#divLeft").removeClass("bodyleft");
+            $("#divRight").removeClass("bodyright");
+            $("#divRight").addClass("body-content");
+            closeNav();
+        });
+        //---------------------
+        $(".closebtn").click(function () {
+            $.ajax({
+                url: '@Url.Action("ShowHideLeftPart", "Home")',
+                type: "POST",
+                dataType: "JSON",
+                data: { things: false },
+                success: function () {
+                },
+                error: function (error) { //alert("Error: " + error);
+                },
+                statusCode: {
+                    404: function () {
+                        //alert("Page Not Found.");
+                    }
+                }
+            });
+        });
+        //----------------------------
+        $("#spn1").click(function () {
+            $.ajax({
+                url: '@Url.Action("ShowHideLeftPart", "Home")',
+                type: "POST",
+                dataType: "JSON",
+                data: { things: true },
+                success: function () { },
+                error: function (error) {
+                    //alert("Error: " + error);
+                },
+                statusCode: {
+                    404: function () {
+                        //alert("Page Not Found.");
+                    }
+                }
+            });
+        });
+        //-----------------------
+        $(".sidenav").hover(function () {
+            $(".closebtn").toggle();
+            $("#aClose").addClass("selected");
+        });
+</script>
+

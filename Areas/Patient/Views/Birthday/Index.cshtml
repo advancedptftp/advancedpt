@@ -1,0 +1,285 @@
+﻿@model PagedList.IPagedList<DataLayer.Models.tblMPatient>
+@using DataLayer;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Index";
+}
+<center><h2 style="margin-top:20px;">Patient Birthday List</h2></center>
+<style>
+    .printing {
+        color: #fff;
+        text-align: center;
+        position: absolute;
+        left: 0px;
+        width: 100%;
+        height: 100vh;
+        top: 45%;
+    }
+</style>
+<section class="bodyinner2">
+    @*<div id="loading" class="loadingdiv" style="display:none;">
+        <div class="loadingcontainere">
+            <div class="printing"> Printing Please Wait... 
+                <img src="~/Images/pleasewait_.gif" />
+            </div>
+        
+           
+        </div>
+       
+    </div>*@
+
+    <div id="loading" class="loadingdiv" style="display:none;">
+        <div class="loadingcontainere">
+            <div class="printing">
+                <h2 style="color:white; font-weight:bold;">  Printing Please Wait...</h2> <br>
+                <img src="~/Images/printing_pleaseWait.png" width="200" height="200"/>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div>
+            @using (Html.BeginForm("Index", "Birthday", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Get))
+            {
+                @*<div class="searchsec">
+                    @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search here ..." })
+                    <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                    <div class="clearfix"></div>
+                </div>*@
+                <div id="divdate" class="pull-left">
+                    <label for="startDate">Date From:</label>
+                    @Html.TextBox("fromDT", ViewBag.fromDT as string, new { @class = "datepicker datepicker-bg", placeholder = "mm-dd ..." })
+                    <label for="startDate">Date To:</label>
+                    @Html.TextBox("toDT", ViewBag.toDT as string, new { @class = "datepicker datepicker-bg", placeholder = "mm-dd ..." })
+                    <button type="submit" class="btn btn-default">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="pull-right">
+                    <b> <span>@ViewBag.RecordCount</span> Records Found </b>
+                </div>
+            }
+            <div class="pull-left">                
+                <div style="padding-left:35px">
+                    <button class="btn btn-primary" onclick="fnPrintAll()">Print All Envelopes</button>
+                </div>
+            </div>
+        <div class="clearfix"></div>
+    </div>
+    </div>
+    <div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+
+                        <th>
+
+                            @Html.DisplayName("First Name")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Last Name")
+                        </th>
+
+                        <th>
+
+                            @Html.DisplayName("Date of Birth")
+
+                        </th>
+                        <th>Go for Envelope pdf</th>
+                        <th>Go for Birthday Card pdf</th>
+                    </tr>
+
+                </thead>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FirstName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastName)
+                        </td>
+
+                        <td>
+                            @item.DOB.GetExactValue()
+                        </td>
+                        @*<td>
+                            <a href="@Url.Action("Edit", "Birthday", new { id = item.Patient_Id })">
+                                <i class="fa fa-edit" aria-hidden="true"></i>
+                            </a>                         
+                        </td>*@
+                      
+                        <td>
+                            <a href="javascript:void(0);" onclick="fnShowPdf(@item.Patient_Id);" title="Envelope.pdf">
+                                <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                            </a>
+
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="PDFsizeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h4 class="modal-title" id="myModalLabel">Select Envelope Size</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div id="dialog" title="Basic dialog">
+                                                <select id="drPDFsize" class="selectpicker">
+                                                    @*<option value="1">Stamps</option>*@
+                                                    <option value="2">Shipping Label - 8 1/2" X 11" Paper</option>
+                                                    <option value="3">Shipping Label - Stamps.com SDC-1200, 4 1/4" X 6 3/4"</option>
+                                                    <option value="4">Shipping Label - 5 1/2" X 8 1/2"</option>
+                                                    <option value="5">Envelope - #10, 4 1/2" X 9 1/2"</option>
+                                                    <option value="6">Envelope - #9, 3 7/8" X 8 7/8"</option>
+                                                    <option value="7">Envelope - #A9, 5 3/4" X 8 3/4"</option>
+                                                    <option value="8">Envelope - #6, 3 5/8" X 6 1/2"</option>
+                                                    <option value="9">Envelope - #A2, 4 3/8" X 5 3/4"</option>
+                                                    <option value="10">Envelope - #7, 3 7/8" X 7 1/2"</option>
+                                                    <option value="11">Envelope - #11, 4 1/2" X 10 3/8"</option>
+                                                    <option value="12">Envelope - #12, 4 3/4" X 11"</option>
+                                                    <option value="13">Envelope - #A2, 4 3/8" X 5 3/4"</option>
+                                                    @*<option value="14">Certified Mail Label - Stamps.com SDC3610</option>
+                                                    <option value="15">Certified Mail Label - Stamps.com SDC3710</option>
+                                                    <option value="16">Certified Mail Label - Stamps.com SDC3910</option>
+                                                    <option value="17">Certified Mail #11 Envelope - Stamps.com SDC3810</option>*@
+                                                    <option value="18">Roll - 4" X 6" Shipping Label</option>
+                                                    <option value="19">Roll - 4 1/8" X 6 1/4" Shipping Label</option>
+                                                </select>
+                                            </div>
+                                            <input type="hidden" name="PDFId" id="PDFId" value="" />
+                                            @*<input type="button" id="target" value="click" />*@
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" id="btnPDFsize" class="btn btn-primary" data-dismiss="modal">Generate </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                       @*PDF For Template*@
+                        <td>
+                            <a href="javascript:void(0);" onclick="fnShowPdf1(@item.Patient_Id);" title="BirthdayCard.pdf">
+                                <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                            </a>
+
+                            @*@Html.ActionLink("PatientAddress", "PatientAddress",  new { @id = item.Patient_Id })*@
+                        </td>
+                    </tr>
+                }
+
+            </table>
+
+        </div>
+        
+        <div>
+            <br />
+            @using (Html.BeginForm("Index", "Birthday", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, fromDT = ViewBag.fromDT, toDT= ViewBag.toDT }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+            {
+                @Html.DropDownList("PageSize")
+            }
+            @{
+                bool? direction = ViewBag.SortDirection;
+                if (direction == null) { direction = false; }
+            }
+            <div class="pull-left" style=" padding:10px;">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                               new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction, fromDT = ViewBag.fromDT, toDT = ViewBag.toDT }))
+        </div>
+    </div>
+    <iframe id="iFramePdf" style="display:none"></iframe>
+    
+</section>
+<link href="~/Content/print.min.css" rel="stylesheet" />
+<script src="~/Scripts/print.min.js"></script>
+<script>
+    function fnShowDetail(Doctor_Id) {
+        var url = "@Url.Action("Birthday", "Birthday", new { Area = "Patient" })" + "?id=" + Doctor_Id;
+        //fnShowPopupForDetail(url);
+        popupwindow(url, 'Birthday', 1000, 800);
+    }
+    function fnShowPdf(id) {
+        $('#PDFId').val(id);
+
+        $('#PDFsizeModal').modal('show');
+        //var url = "@Url.Action("PatientAddressPdf", "Birthday", new { Area = "Patient" })" + "?id=" + id;
+        //popupwindow(url, 'PatientAddressPdf', 1000, 800);
+    }
+
+    $("#btnPDFsize").click(function () {
+        var selectedText = $("#drPDFsize").find("option:selected").text();
+        var selectedValue = $("#drPDFsize").val();
+        //alert("Selected Text: " + selectedText + " Value: " + selectedValue);
+        //alert("id " + id);
+        var url = "@Url.Action("PatientAddressPdf", "Birthday", new { Area = "Patient" })" + "?id=" + $('#PDFId').val() + "&selectedValue=" + selectedValue;
+        popupwindow(url, 'PatientAddressPdf', 1000, 800);
+
+    });
+
+    $('.datepicker').datepicker({
+        format: 'mm-dd'
+    });
+
+    function fnShowPdf1(id) {
+        var url = "@Url.Action("BirthdayCardPdf", "Birthday")" + "?id=" + id;
+        //fnShowPopupForDetail(url);
+        popupwindow(url, 'PatientAddressPdf1', 1000, 800);
+    }
+    function fnPrintAll() {
+        $('#loading').show();
+        $.ajax({
+
+            url: '@Url.Action("PrintAll", "Birthday")',
+            contentType: 'application/json; charset=utf-8',
+            datatype: 'json',
+            type: 'POST',
+            //data: param,
+            success: function (result) {
+                //alert(result);
+                //printPDF(result);
+                printJS(result);
+
+                $('#loading').hide();
+                alert('Printing complete');
+            },
+            error: function (e) {
+                alert('Error Occured');
+                $('#loading').hide();
+            }
+        });
+    }
+
+    //function PrintFile(documentPath)
+    //{
+    //    window.print(documentPath);
+    //}
+    function printPDF(pageLink) {
+        var link = "~/HtmlImages/" + pageLink + "";
+        //alert(link);
+        document.getElementById('iFramePdf').src = link;
+        var getMyFrame = document.getElementById('iFramePdf');
+        getMyFrame.focus();
+        getMyFrame.contentWindow.print();
+        //var w = window.open("about:blank");
+        //w.document.write(htmlPage);
+        //if (navigator.appName == 'Microsoft Internet Explorer') window.print();
+        //else w.print();
+    }
+
+</script>
+
+<script>
+    $("#PageSize").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+
+
+</script>

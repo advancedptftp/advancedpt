@@ -1,0 +1,123 @@
+﻿<style type="text/css">
+    
+
+    #signatureparent {
+        color: darkblue;
+        background-color: darkgrey;
+        padding: 20px;
+        min-height:130px;
+    }
+
+    /*This is the div within which the signature canvas is fitted*/
+    #signature {
+        border: 2px dotted black;
+        background-color: lightgrey;
+        min-height:130px;
+    }
+   
+    
+</style>
+
+
+
+<script>
+
+    (function ($) {
+        var topics = {};
+        $.publish = function (topic, args) {
+            if (topics[topic]) {
+                var currentTopic = topics[topic],
+                args = args || {};
+
+                for (var i = 0, j = currentTopic.length; i < j; i++) {
+                    currentTopic[i].call($, args);
+                }
+            }
+        };
+        $.subscribe = function (topic, callback) {
+            if (!topics[topic]) {
+                topics[topic] = [];
+            }
+            topics[topic].push(callback);
+            return {
+                "topic": topic,
+                "callback": callback
+            };
+        };
+        $.unsubscribe = function (handle) {
+            var topic = handle.topic;
+            if (topics[topic]) {
+                var currentTopic = topics[topic];
+
+                for (var i = 0, j = currentTopic.length; i < j; i++) {
+                    if (currentTopic[i] === handle.callback) {
+                        currentTopic.splice(i, 1);
+                    }
+                }
+            }
+        };
+    })(jQuery);
+
+</script>
+<script src="~/Scripts/jSignature.min.noconflict.js"></script>
+<script>
+    function __fnPutSignValue() {
+        var data = $("#signature").jSignature('getData', 'image');
+        $("#" + _imgfield).attr('src', 'data:' + data[0] + ',' + data[1]);
+        $("#" + _valufield).val(data[1]);
+        if (($("#" + _timefield)).is('Label') || ($("#" + _timefield)).is('Div'))
+            $("#" + _timefield).text($('#_datecontainer').html());
+        else
+            $("#" + _timefield).val($('#_datecontainer').html());
+        $('#_signPadPopUp').modal('hide');
+    }
+    var _imgfield = '';
+    var _valufield = '';
+    var _timefield = '';
+
+    function fnShowSignPad(ImgField, ValueField, SignatureDate) {
+        _imgfield = ImgField;
+        _valufield = ValueField;
+        _timefield = SignatureDate;
+
+        $('#_signPadPopUp').modal();
+        $('#_signPadPopUp').on('shown.bs.modal', function (e) {
+            setTimeout(function () {
+                if ($("#signature").html() == "")
+                    $("#signature").jSignature({ 'UndoButton': true });
+                else
+                    $("#signature").jSignature('reset');
+            }, 5);
+
+        });
+        setInterval(function () { var time = fnGetCurentTime(); $('#_datecontainer').html(time);}, 1000);
+    }
+
+    
+</script>
+
+<div class="modal fade" id="_signPadPopUp" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Signature Pad</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div id="content">
+                        <div id="signatureparent">
+                            <div id="signature"></div>
+                        </div>
+                    </div>
+                    <div id="_datecontainer"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="__fnPutSignValue();">OK</button>
+            </div>
+        </div>
+
+    </div>
+</div>

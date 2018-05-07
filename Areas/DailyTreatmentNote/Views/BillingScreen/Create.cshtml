@@ -1,0 +1,296 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="bodyinner" >
+    <div class="container">
+        <div class="innerform" style="width:100%">
+            <div class="user-form clearfix">
+
+                <div class="topforn">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="lefttext">
+                                @{
+                                    if (ViewBag.PatientName != null)
+                                    {
+                                        @ViewBag.PatientName
+                                    }
+                                }, DOB:
+                                @{
+                                    if (ViewBag.PatientDOB != null)
+                                    {
+                                        @ViewBag.PatientDOB
+                                    }
+                                }
+                                <br />
+                                @*Tx Time : 8:00-8:40 PM<br />*@
+                                @*POC: 3/11, ends 02/12/18*@
+
+                                @{
+                                    string hyfen = "-";
+                                    string space = " ";
+                                    string st1 = "Tx Time :";
+
+                                    if (ViewBag.TreatmentFromTime != null && ViewBag.TreatmentToTime != null)
+                                    {
+                                        @st1 @space @ViewBag.TreatmentFromTime @space @hyfen @space @ViewBag.TreatmentToTime
+                                    }
+                                }<br />
+
+                                POC:
+                                @{
+                                    string divideSign = "/";
+                                    string commaSign = ",";
+                                    string ends = "ends";
+
+                                    if (ViewBag.TotalNoofVisitRequired != null && ViewBag.CurrentVisitNo != null && ViewBag.TreatmentEndDate != null)
+                                    {
+                                        @ViewBag.CurrentVisitNo @divideSign @ViewBag.TotalNoofVisitRequired @commaSign @space @ends @space @ViewBag.TreatmentEndDate
+                                    }
+                                    <br />
+                                    if (ViewBag.Date_Of_injury != null)
+                                    {
+                                        string _Date_Of_injury = "Date Of injury : ";
+                                        @_Date_Of_injury @ViewBag.Date_Of_injury;
+                                    }
+                                    else
+                                    {
+                                        if (ViewBag.SurgeryDate != null)
+                                        {
+                                            string _SurgeryDate = "SurgeryDate : ";
+                                            @_SurgeryDate @ViewBag.SurgeryDate;
+                                        }
+                                        else
+                                        {
+                                            if (ViewBag.DateonSet != null)
+                                            {
+                                                string _DateonSet = "Date onset : ";
+                                                @_DateonSet @ViewBag.DateonSet;
+                                            }
+                                        }
+                                    }
+                                    <br />
+                                    @*if (ViewBag.FromWhenProblemExist != null)
+                            {
+                                string _FromWhenProblemExist = "From When Problem Exist : ";
+                                @_FromWhenProblemExist @ViewBag.FromWhenProblemExist;
+                            }*@
+                                }
+
+                             
+                            </div>
+                            <div class="righttext">
+                                @*Sumit Paul, DOB:01/14/74<br />
+                        Tx Time : 8:00-8:40 PM*@
+                                @{
+                                    //string str3 = string.Empty;
+                                    //if (ViewBag.Disease_name != null)
+                                    //{
+                                    //    str3 = Convert.ToString(ViewBag.Disease_name);
+                                    //}
+                                    //if (ViewBag.BodyPart != null)
+                                    //{
+                                    //    str1 = Convert.ToString(ViewBag.BodyPart);
+                                    //    str2 = str1.First().ToString().ToUpper() + str1.Substring(1);
+                                    //}
+
+
+                                    string s1 = string.Empty;
+                                    int pos1 = 0;
+                                    string icdCode = string.Empty;
+                                    string disease = string.Empty;
+                                    string _desc = string.Empty;
+
+                                    if (ViewBag.IcdCodeWithDisease != null)
+                                    {
+
+                                        foreach (var item in ViewBag.IcdCodeWithDisease)
+                                        {
+                                            s1 = Convert.ToString(item);
+                                            pos1 = s1.IndexOf('_');
+                                            icdCode = s1.Substring(0, pos1);
+                                            string NewICDCode = icdCode.Insert(3, ".");
+                                            disease = s1.Substring(pos1 + 1);
+                                            _desc = NewICDCode + commaSign + space + @disease;
+                                            <p>@_desc</p>
+                                        }
+                                    }
+                                }
+
+                                @*@str3<br />*@
+                                Auth: 3/15, ends 03/31/18
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                    </div>
+
+                    <div class="botheadingsec">Billing</div>
+
+
+                </div>
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    if (ViewBag.Error != null)
+                    {
+                        @Html.Raw(ViewBag.Error)
+                    }
+                   <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+
+
+                        <th>
+                            @Html.DisplayName("CPT Code")
+                        </th>
+
+                        <th>
+                            @Html.DisplayName("Title")
+                        </th>
+                        <th>
+                            @Html.DisplayName("No Of Units" )
+                        </th>
+                        @*<th>
+                            @Html.DisplayName("Price")
+                        </th>*@
+                    </tr>
+
+                </thead>
+              
+                @foreach (var item in ViewData.Model)
+                {
+                    <tr>
+                       
+                        <td>
+                            @item["CTPCode"]
+                        </td>
+                        <td>
+                            @item["Description"]
+                        </td>
+                        <input type="hidden" id="cptcode_@item["ctpcode"]"value="@item["CTPCode"]" />
+                        <td>
+                           @Html.TextBox("unitprice", null, new {  id = "unitprice" + @item["CTPCode"] + "", @type = "number", style = "width: 50px;", @min = "0" }) 
+                        </td>
+                        <td style="display: none">
+                            $ @Html.TextBox("price", null, new { id = "price" + @item["CTPCode"] + "", @disabled = "disabled", style = "display: none" })
+                        </td>
+                    </tr>
+                }
+
+            </table>
+                       <div id="msgaa"> 
+                           <span id="msg" style="color:red;">Please Try Again</span>
+                       </div>
+                       <div id="divSave" style="float: right;">
+                           <div style="display: none">Total Price:$ @Html.TextBox("totalss", null, new { id = "total", @disabled = "disabled", @style = "width: 234px;display: none" })</div>
+                          
+                           <a href="#" onclick="fn_Save()">
+                               <i class="btn btn-primary" aria-hidden="true">Save</i>
+                              
+                           </a>
+                       </div>
+                       </div>
+                    <p>
+                        <input type="hidden" id="cptcode" />
+                        <input type="hidden" id="unithide" />
+                        <input type="hidden" id="pid" />
+                        <input type="hidden" id="pcid" />
+                        <a href="@Url.Action("Index", "TreatmentNoteSubjective", new { Area = "DailyTreatmentNote" })">
+                            <i >Back to List</i>
+                        </a>
+                    </p>
+                }
+
+            </div>
+        </div>
+
+        <div class="clearfix"></div>
+    </div>
+</section>
+<script>
+    $(document).ready(function () {
+        $("#msgaa").hide();
+    });
+    //var cptcode = "";
+    //var umitssting = ""
+    //var unitprice = "";
+    //function yourFunction(id) {
+    //    //alert(id);
+    //    //alert(price);
+        
+    //    var totalammount = "";
+    //    var totalparice = "";
+    //    //var fee = price;
+    //     unitprice = $("#unitprice" + id).val();
+    //    if (cptcode == "") {
+    //        cptcode = id;
+    //    }
+    //    else {
+    //        cptcode = cptcode + ',' + id;
+    //        $("#cptcode").val(cptcode);
+    //    }
+    //    if (umitssting == "") {
+    //        umitssting = unitprice;
+    //    }
+    //    else {
+    //        umitssting = umitssting + ',' + unitprice;
+    //        $("#unithide").val(umitssting);
+    //    }
+   
+   
+         //totalparice = unitprice * fee;
+        //$("#price" + id).val(totalparice.toFixed(2));
+        ////alert($("#total").val());
+        //if ($("#total").val() == "") {
+        //    totalammount = totalparice.toFixed(2);
+        //}
+        //else {
+        //    var totalpricess = $("#total").val();
+        //    totalammount = parseFloat(totalpricess) + parseFloat(totalparice);
+        //}
+
+        //$("#total").val(totalammount);
+        
+    //}
+
+    function fn_Save() {
+        var uints = "";
+        var cpt = '@ViewBag.cptcod';
+        var cptsplit = cpt.split(",");
+        for (i = 0; i < cptsplit.length; i++)
+        {
+            if (uints == "") {
+                uints = ($("#unitprice" + cptsplit[i]).val());
+            }
+            else {
+                uints = uints + ',' + ($("#unitprice" + cptsplit[i]).val());
+            }
+        }
+        //var uints = $("#unithide").val();
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetCPTPRICE", "BillingScreen")',
+            datatype: "Json",
+            data: { Cptcod: cpt, unit: uints },
+            success: function (data) {
+                var splitdata = data.split(',');
+                if (splitdata[0] == true) {
+                    
+                    $("#msgaa").show();
+                }
+                else {
+                   
+                    window.location.href = '@Url.Action("Create", "TreatmentNoteAssessment")?PC_id=' + splitdata[1] + '&p_id=' + splitdata[2] + '';
+                }
+                
+            }
+
+        });
+    };
+</script>

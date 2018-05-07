@@ -1,0 +1,212 @@
+﻿@model DataLayer.Models.tblREmployeeRelation
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="bodyinner">
+    <div class="container">
+        <div class="innerform">
+            <div class="user-form clearfix">
+
+                <h2 class="text-center">Edit Employee Relationship</h2>
+
+                @using (Html.BeginForm())
+                {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.EmployeePTASignature)
+                @Html.HiddenFor(m => m.EmployeePTSignature)
+                @Html.HiddenFor(model => model.EmpRelation_Id)
+                @Html.ValidationSummary(true)
+                if (ViewBag.Error != null)
+                {
+                @Html.Raw(ViewBag.Error)
+                }
+
+
+                <div class="col-sm-12 form-group">
+                    @Html.LabelFor(model => model.Location_Id, "Location", new { })
+                    @Html.DropDownList("Location_Id")
+                    @Html.ValidationMessageFor(model => model.Location_Id)
+                </div>
+
+
+                <div class="col-sm-6 form-group">
+                    @Html.Label("Employee Role")
+                    @Html.TextBox("PT", "PT", new { @class = "form-control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.EmployeePT_Id)
+                </div>
+
+                <div class="col-sm-6 form-group">
+                    @Html.Label("Employee Role")
+                    @Html.TextBox("PTA", "PTA", new { @class = "form-control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.EmployeePTA_Id)
+                </div>
+
+                <div class="col-sm-6 form-group">
+                    @Html.LabelFor(model => model.EmployeePT_Id, "PT", new { })
+                    @Html.DropDownList("EmployeePT_Id")
+                    @Html.ValidationMessageFor(model => model.EmployeePT_Id)
+                </div>
+
+                <div class="col-sm-6 form-group">
+                    @Html.LabelFor(model => model.EmployeePTA_Id, "PTA", new { })
+                    @Html.DropDownList("EmployeePTA_Id")
+                    @Html.ValidationMessageFor(model => model.EmployeePTA_Id)
+                </div>
+
+                <div class="col-sm-6 form-group">
+                    <h3>Signature of PT</h3>
+                    <div></div>
+                    @Html.Partial("_SignPad")
+
+                    @{var imgurl4 = Url.Content("~/Images/nosignature.png");
+                    if (Model.EmployeePTSignature != null)
+                    {
+                    imgurl4 = "data:image/png;base64," + Convert.ToBase64String(Model.EmployeePTSignature);
+                    }
+                    }
+                    <img src="@imgurl4" alt="Alternate Text" class="form-control optional" id="imgPatientSign" style="width:500px; height:200px;" />
+                    <div style="clear:both; padding-top:15px;"></div>
+                    <label id="lblTime"></label>
+                    <div>
+                        <span id="Signature_Validation" style="color:red"></span>
+                    </div>
+                    <div style="clear:both; padding-top:15px;"></div>
+                    <input type="hidden" name="name" value="" id="hdnImageVal2" />
+                    <input type="button" id="btnClaimantSignature" class="btn btn-primary" onclick="fnShowSignPad('imgPatientSign', 'EmployeePTSignature', 'lblTime')" value="Click Here To Add Signature" />
+                </div>
+
+                <div class="col-sm-6 form-group">
+                    <h3> Signature of PTA</h3>
+
+                    <div></div>
+
+                    @Html.Partial("_SignPad")
+
+                    @{var imgurl5 = Url.Content("~/Images/nosignature.png");
+                    if (Model.EmployeePTASignature != null)
+                    {
+                    imgurl5 = "data:image/png;base64," + Convert.ToBase64String(Model.EmployeePTASignature);
+                    }
+                    }
+                    <img src="@imgurl5" alt="Alternate Text" class="form-control optional" id="imgTherapistSign" style="width:500px; height:200px;" />
+                    <div style="clear:both; padding-top:15px;"></div>
+                    <label id="lblTime1"></label>
+                    <div>
+                        <span id="Signature_Validation" style="color:red"></span>
+                    </div>
+                    <div style="clear:both; padding-top:15px;"></div>
+                    <input type="hidden" name="name" value="" id="hdnImageVal2" />
+                    <input type="button" id="btnTherapistSignature" class="btn btn-primary" onclick="fnShowSignPad('imgTherapistSign', 'EmployeePTASignature', 'lblTime1')" value="Click Here To Add Signature" />
+                </div>
+
+                <div class="clearfix "></div>
+
+                <div class="col-sm-6 form-group">
+
+                    @Html.HiddenFor(model => model.CreatedOn)
+                </div>
+                <div class="col-sm-6 form-group">
+
+                    @Html.HiddenFor(model => model.CreatedBy)
+                </div>
+                <div class="col-sm-6 form-group">
+
+                    @Html.Hidden("ModifiedOn", DateTime.Now)
+                </div>
+
+
+
+                <div class="subbutt">
+                    <input type="submit" id="btn-submit" value="Save" class="btn btn-orange pull-right" />
+
+                </div>
+
+                <p class="pull-left">@Html.ActionLink("Back to List", "Index")</p>
+                }
+
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script>
+    $('#Location_Id').addClass('form-control');
+    $('#EmployeePT_Id').addClass('form-control');
+    $('#EmployeePTA_Id').addClass('form-control');
+</script>
+
+<script type="text/javascript">
+
+    $(function () {
+        $("#Location_Id").change(function () {
+            PopulateEmployeePT();
+            debugger;
+            PopulateEmployeePTA();
+        });
+    });
+    $(document).ready(function () {
+         PopulateEmployeePT()
+             PopulateEmployeePTA()
+    });
+</script>
+<script type="text/javascript">
+    function PopulateEmployeePT() {
+
+        var LocationId = $("#Location_Id").val();
+        $.ajax({
+            url: "@Url.Action("PopulateEmployeePT", "EmployeeRelation")",
+            data: { strSelectedLocationId: LocationId },
+            dataType: "json",
+            type: "POST",
+            success: function (result) {
+
+                // alert(result);
+                $("#EmployeePT_Id").empty();
+                $("#EmployeePT_Id").append(result);
+                $("#EmployeePT_Id").prop("disabled", false);
+
+                //if (result != null && result != '') {
+                //    alertify.alert('Data deleted successfully', function () { window.location.href = result.redirectTo; }).setHeader('System says');
+                //}
+            },
+            error: function () {
+                debugger;
+                return false;
+            }
+        });
+
+    }
+
+    function PopulateEmployeePTA() {
+        debugger;
+        var LocationId = $("#Location_Id").val();
+        $.ajax({
+            url: "@Url.Action("PopulateEmployeePTA", "EmployeeRelation")",
+            data: { strSelectedLocationId: LocationId },
+            dataType: "json",
+            type: "POST",
+            success: function (result) {
+                debugger;
+                // alert(result);
+                $("#EmployeePTA_Id").empty();
+                $("#EmployeePTA_Id").append(result);
+                $("#EmployeePTA_Id").prop("disabled", false);
+
+                //if (result != null && result != '') {
+                //    alertify.alert('Data deleted successfully', function () { window.location.href = result.redirectTo; }).setHeader('System says');
+                //}
+            },
+            error: function () {
+                debugger;
+                return false;
+            }
+        });
+
+    }
+
+</script>

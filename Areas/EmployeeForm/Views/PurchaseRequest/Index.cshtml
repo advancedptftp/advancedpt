@@ -1,0 +1,139 @@
+﻿@*@model IEnumerable<DataLayer.Models.tblTPurchaseRequest>*@
+@model PagedList.IPagedList<DataLayer.Models.tblTPurchaseRequest>
+@using DataLayer;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Index";
+    var currentuserid = ViewContext.Controller.CurrentUserID();
+    var IsApprover = ViewContext.Controller.IsApprover(14);
+}
+
+
+<center><h2 style="margin-top:20px;">Purchase Requisition</h2></center>
+@*<h2>Index</h2>*@
+<section class="bodyinner2">
+    <div>
+        <p class="pull-right">
+            @Html.ActionLink("Create New Record", "Create", null, new { @class = "btn btn-primary" })
+        </p>
+        @using (Html.BeginForm("Index", "PurchaseRequest", FormMethod.Get))
+        {
+            <div class="searchsec">
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search by PR#" })
+                <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                <div class="clearfix"></div>
+            </div>
+        }
+        <div class="clearfix"></div>
+    </div>
+
+    <div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayName("PR #")
+                        </th>
+                        <th>
+                            @Html.DisplayName("PR Date")
+                        </th>
+                        <th>
+
+                        </th>
+
+                        <th>
+
+                        </th>
+                        <th>
+
+                        </th>
+                        <th class="tdList_Approve">
+
+                        </th>
+                    </tr>
+
+                </thead>
+                @if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @item.PR_No
+                            </td>
+                            <td>
+                                @if (item.PR_Date != null)
+                                {
+                                    @item.PR_Date.Value.GetExactValue()
+                                }
+                            </td>
+
+
+                            <td>
+@if (item.AuthorisedBy == null )
+                                {
+                                <a href="@Url.Action("Edit", "PurchaseRequest", new { id = item.PR_Id })">
+                                    <i class="fa fa-edit" aria-hidden="true"></i>
+                                </a>
+}
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Details", "PurchaseRequest", new { id = item.PR_Id })">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                            <td class="tdList_PDF">
+                                <a href="javascript:void(0);" onclick="fnShowDetail(@item.PR_Id);">
+                                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                            <td class="tdList_Approve">
+                                @if (item.AuthorisedBy == null && IsApprover)
+                                {
+                                    @Html.ActionLink("Approve", "Approve", new { id = item.PR_Id }, new { @class = "btn btn-success" })
+                                }
+                            </td>
+                        </tr>
+                    }
+
+                }
+            </table>
+
+        </div>
+        <div>
+            <br />
+            @using (Html.BeginForm("Index", "PurchaseRequest", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+            {
+                @Html.DropDownList("PageSize")
+            }
+            @{
+                bool? direction = ViewBag.SortDirection;
+                if (direction == null) { direction = false; }
+            }
+            <div class="pull-left" style=" padding:10px;">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                      new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction }))
+        </div>
+    </div>
+
+</section>
+<script>
+    function fnShowDetail(PO_Id) {
+        var url = "@Url.Action("PurchaseRequestPdf", "PurchaseRequest", new { Area = "PurchaseRequest" })" + "?id=" + PO_Id;
+        //fnShowPopupForDetail(url);
+        popupwindow(url, 'PurchaseRequest', 1000, 800);
+    }
+</script>
+<script>
+    $("#PageSize").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+</script>

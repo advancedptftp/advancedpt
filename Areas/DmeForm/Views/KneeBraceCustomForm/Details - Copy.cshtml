@@ -1,0 +1,706 @@
+﻿@model DataLayer.Models.KneeBraceCustomFormDetail
+@using DataLayer;
+@{
+    ViewBag.Title = "Details";
+}
+
+<section class="bodyinner">
+    @using (Html.BeginForm("Index", "KneeBraceCustomForm", FormMethod.Post, new { name = "Index", id = "Index" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="bodyleft">
+
+            @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+        </div>
+        @Html.ValidationSummary(true)
+        <div class="bodyright">
+
+            <div class="report-form clearfix">
+                <h2>BREG Custom Knee Brace Order Form (HCPCS Code: L1846)</h2>
+                <div class="p_bot15"><strong>*MEDICARE PATIENTS: DO NOT PROCEED IF THEY HAVE BEEN ISSUED A ‘KNEE BRACE’ IN THE PAST 5 YEARS.</strong></div>
+
+                <hr>
+                
+                @Html.Hidden("HCPCSCode", "L1846")
+                <div id="dvFirst">
+
+                    <h3>Description:</h3>
+                    <div class="row p_bot20">
+                        <div class="col-sm-6">
+                            <div class="p_bot05">
+                                <label class="checkbox-inline">
+                                    @Html.CheckBoxFor(e => e.KneeBraceCustomForm.IsCustomOAMedialOffLoader_01208, new { @class = "checkbox-inline", @disabled = "disabled" })
+                                    01208 Custom OA Medial Off-Loader
+                                </label>
+                            </div>
+                            <div class="p_bot05">
+                                <label class="checkbox-inline">
+                                    @Html.CheckBoxFor(e => e.KneeBraceCustomForm.IsCustomOALateralOffLoader_01300, new { @class = "checkbox-inline", @disabled = "disabled" })
+                                    01300 Custom OA Lateral Off-Loader
+                                </label>
+                            </div>
+                            <div class="p_bot05">
+                                <label class="checkbox-inline">
+                                    @Html.CheckBoxFor(e => e.KneeBraceCustomForm.IsCustomLigamentBrace_01207, new { @class = "checkbox-inline", @disabled = "disabled" })
+                                    01207 Custom Ligament Brace
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="rightgray">
+                                <h4>L1846 Code Includes the Following:</h4>
+                                <ul>
+                                    <li>Orthosis</li>
+                                    <li>All Straps, Closures and Padding</li>
+                                    <li>Fitting & Adjustment</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="dvDeliver" class="todo_inner">
+                        <h3>Fitting</h3>
+                        <div class="row">
+                            <div class="col-sm-9">
+                                <div class="borderbox">
+                                    <div class="row innerborder">
+                                        <div class="col-sm-5 p_top10"><strong>1. Thigh Circumference:</strong></div>
+                                        <div class="col-sm-7">
+
+                                            <div class="form-group">
+                                                @Html.TextBoxFor(m => m.KneeBraceCustomForm.Fitting_ThighCircumference, new { @class = "form-control shortfield", @disabled = "disabled" })
+                                                <label for="exampleInputName2" class=" p_left10">inches (6 inches above mid-patella)</label>
+                                                <br />
+                                                @Html.ValidationMessageFor(model => model.KneeBraceCustomForm.Fitting_ThighCircumference )
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="row innerborder">
+                                        <div class="col-sm-5 p_top10"><strong>2. Calf Circumference:</strong></div>
+                                        <div class="col-sm-7">
+
+                                            <div class="form-group">
+                                                @Html.TextBoxFor(m => m.KneeBraceCustomForm.Fitting_CalfCircumference, new { @class = "form-control shortfield", @disabled = "disabled" })
+                                                <label for="exampleInputName2" class=" p_left10">inches (6 inches below mid-patella)</label>
+                                                <br />
+                                                @Html.ValidationMessageFor(model => model.KneeBraceCustomForm.Fitting_CalfCircumference)
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="row innerborder">
+                                        <div class="col-sm-5 p_top10"><strong>3. Knee Offset:</strong></div>
+                                        <div class="col-sm-7">
+
+                                            <div class="form-group">
+                                                @Html.TextBoxFor(m => m.KneeBraceCustomForm.Fitting_KneeOffset, new { @class = "form-control shortfield", @disabled = "disabled" })
+                                                <label for="exampleInputName2" class=" p_left10">milimeter (push in plunger on tool)</label>
+                                                <br />
+                                                @Html.ValidationMessageFor(model => model.KneeBraceCustomForm.Fitting_KneeOffset)
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="row innerborder">
+                                        <div class="col-sm-5 p_top10"><strong>4. Knee Width:</strong></div>
+                                        <div class="col-sm-7">
+
+                                            <div class="form-group">
+                                                @Html.TextBoxFor(m => m.KneeBraceCustomForm.Fitting_KneeWidth, new { @class = "form-control shortfield", @disabled = "disabled" })
+                                                <label for="exampleInputName2" class=" p_left10">milimeter (use width caliper)</label>
+                                                <br />
+                                                @Html.ValidationMessageFor(model => model.KneeBraceCustomForm.Fitting_KneeWidth)
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="borderbox">
+                                    <div class="row">
+                                        <div class="col-md-3 col-sm-12"><strong>Circle</strong></div>
+                                        <div class="col-md-9 col-sm-12">
+                                            <span class=" p_rig30">
+                                                <label class="radio-inline"><input name="optradio" type="radio">@Html.RadioButtonFor(m => m.KneeBraceCustomForm.CirclePosition, "RIGHT",  new { @disabled = "disabled" })RIGHT</label>
+                                                <label class="radio-inline">@Html.RadioButtonFor(m => m.KneeBraceCustomForm.CirclePosition, "LEFT", new { @disabled = "disabled" })LEFT</label>
+                                                <br />
+                                                @Html.ValidationMessageFor(m => m.KneeBraceCustomForm.CirclePosition)
+                                            </span>
+                                        </div>
+                                        <div class="col-md-3 col-sm-12"><strong>Gender</strong> </div>
+                                        <div class="col-md-9 col-sm-12">
+
+                                            <span class="p_rig25">
+                                                <label class="radio-inline">@Html.RadioButtonFor(m => m.KneeBraceCustomForm.Gender, "M", new { @disabled = "disabled" })Male</label>
+                                                <label class="radio-inline">@Html.RadioButtonFor(m => m.KneeBraceCustomForm.Gender, "F", new { @disabled = "disabled" })Female</label>
+                                                <br />
+                                                @Html.ValidationMessageFor(m => m.KneeBraceCustomForm.Gender)
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6 form-group">
+                                        <label>Patient Name</label>
+                                        @Html.TextBoxFor(m => m.KneeBraceCustomForm.Patient_Name, new { @class = "form-control", @disabled = "disabled"})
+                                        <br />
+                                        @Html.ValidationMessageFor(m => m.KneeBraceCustomForm.Patient_Name)
+                                    </div>
+                                    <div class="col-sm-6 col-md-6 form-group">
+                                        <label for="date">DOB</label>
+                                        @Html.TextBoxFor(m => m.KneeBraceCustomForm.DOB, new { @class = "form-control  datepicker-bg", style = "width:100%;", @disabled = "disabled", @Value = @Model.KneeBraceCustomForm.DOB.GetExactValue() })
+                                        <br />
+                                        @Html.ValidationMessageFor(m => m.KneeBraceCustomForm.DOB)
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-3"><img src="@Url.Content("~/Images/pic1.png")" alt="" /></div>
+                        </div>
+                        </div>
+                        <hr>
+                        <div id="dvDeliver" class="todo_inner">
+                            <div class="outerf">
+                                <div class="stepheading"><strong>1. Clinical Staff </strong> <i>prescription</i></div>
+                                <div class="hiddenform">
+                                    <div class="row">
+                                        <div class="col-sm-4 col-md-5 form-group">
+                                            Diagnosis
+                                        </div>
+                                        <div class="col-sm-4 col-md-5 form-group">
+                                            ICD-10 Code
+                                        </div>
+                                        <div class="col-sm-4 col-md-2 form-group">
+
+                                        </div>
+                                    </div>
+                                    <div id="dvDiagnosis">
+                                        <script>
+                                    var counter = 0;
+                                        </script>
+                                        @for (int i = 0; i < Model.DMEDiognosis.Count; i++)
+                                {
+                                    <div class="row">
+                                        <div class="col-sm-4 col-md-5 form-group">
+                                            @Html.TextBoxFor(e => e.DMEDiognosis[i].Diagnosis_Desc, new { @class = "form-control Disease_nameForICD", @disabled = "disabled" })
+                                        </div>
+                                        <div class="col-sm-4 col-md-5 form-group">
+                                            @Html.TextBoxFor(e => e.DMEDiognosis[i].ICD10Code, new { @class = "form-control ICD_CodeForICD", @disabled = "disabled" })
+                                        </div>
+                                        <div class="col-sm-4 col-md-2 form-group">
+                                            <button id="addRows" class="addbutt" type="button" style="margin-top:0;" title="Add New Diagnosis"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                            @Html.HiddenFor(e => e.DMEDiognosis[i].DMEDiagnosis_Id, new { @class = "icdidForICD", @disabled = "disabled" })
+                                        </div>
+                                    </div>
+                                    <script>
+                                        counter += 1;
+                                    </script>
+                                }
+
+                                    </div>
+                                    @*<div class="p_bot15">
+                            <button type="button" class="btn btn-primary pull-left" onclick="OpenDialog()">Search ICD-10</button>
+                            <div class="clearfix"></div>
+                        </div>*@
+                                    <div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-12"></div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6 form-group">
+                                            <label class="checkbox-inline"><input name="optradio" type="checkbox">Item Requested By</label>
+                                            <div class="p_left15">
+                                                <label class="checkbox-inline">
+                                                    @Html.CheckBoxFor(e => e.Prescription.IsItemReqByTherapist, new { @class = "", @disabled = "disabled" })
+                                                    Therapist
+                                                </label>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 form-group p_top10">
+                                                        @Html.TextBoxFor(e => e.Prescription.Therapist_Name, new { @class = "form-control", @disabled = "disabled" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+
+                                        <div class="p_left15">
+                                            <label class="checkbox-inline">
+                                                @Html.CheckBoxFor(e => e.Prescription.IsItemReqByPatient, new { @class = "", @disabled = "disabled" })
+                                                Patient
+                                            </label>
+
+                                        </div>
+                                        <div class="p_left15">
+                                            <label class="checkbox-inline">
+                                                @Html.CheckBoxFor(e => e.Prescription.IsItemReqByDoctor, new { @class = "", @disabled = "disabled" })
+                                                Doctor
+                                            </label>
+
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-6 form-group p_top10">
+                                                    @Html.TextBoxFor(e => e.Prescription.Doctor_Name, new { @class = "form-control", @disabled = "disabled" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6 col-md-6 form-group">
+                                            <label class="checkbox-inline">
+                                                @Html.CheckBoxFor(e => e.Prescription.IsCompleteLOMN, new { @class = "", @disabled = "disabled" })
+                                                Complete <b>Letter of Medical Necessity</b>
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-6 col-md-6 form-group">
+                                            <div class="col-sm-1 p_top10">Int</div>
+                                            <div class="col-sm-5">
+                                                @Html.TextBoxFor(e => e.Prescription.CompleteLOMN_Initial, new { @class = "form-control", @disabled = "disabled" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label class="checkbox-inline">
+                                                @Html.CheckBoxFor(e => e.Prescription.IsGiveFormAndLOMN, new { @class = "", @disabled = "disabled" })
+                                                Give FORM &amp; LETTER of Med.Nec. to Office Staff
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                        <hr>
+                        <div id="dvMC" class="todo_inner">
+                            <div class="outerf">
+                                <div class="stepheading"><strong>2. Office Staff </strong> <i>(MC preapproval only)</i></div>
+                                <div class="hiddenform">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label class="checkbox-inline"><input name="optradio" type="checkbox" disabled="disabled">Verify Insurance Prior to Proceeding with MC</label>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-6 p_top10">Patient’s MC#:</div>
+                                            <div class="col-sm-6">@Html.TextBoxFor(m => m.MCPreApproval.PatientMCNo, new { @class = "form-control", @disabled = "disabled" })</div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-6">Check Driver’s License Region C:</div>
+                                            <div class="col-sm-6">
+                                                <label class="radio-inline">@Html.RadioButtonFor(m => m.MCPreApproval.IsRegionC, Model.MCPreApproval.IsRegionC, new { @disabled = "disabled" }) Yes</label>
+                                                <label class="radio-inline">@Html.RadioButtonFor(m => m.MCPreApproval.IsRegionC, !Model.MCPreApproval.IsRegionC, new { @disabled = "disabled" }) No</label>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-12">
+                                                Call MC Rep: 1-866-270-4909 Tax ID: 13056
+                                                PTAN#: 6240770001 NPI: 1265657555 REGION C
+                                                Confirm: “No L1846, etc. past 5 yrs.” SEE REF GUIDE
+                                            </div>
+                                        </div>
+                                        @*<div class="row form-group">
+                                            <div class="col-sm-3 p_top10">MC Rep Name:</div>
+                                            <div class="col-sm-4">@Html.TextBoxFor(m => m.MCPreApproval.MCRep_Name, new { @class = "form-control", @disabled = "disabled" })</div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-3 p_top10">MC Rep Badge#:</div>
+                                            <div class="col-sm-4">@Html.TextBoxFor(m => m.MCPreApproval.MCRep_BadgeNo, new { @class = "form-control", @disabled = "disabled" })</div>
+                                            <div class="col-sm-1 p_top10">Int:</div>
+                                            <div class="col-sm-3">@Html.TextBoxFor(m => m.MCPreApproval.MCRep_Initial, new { @class = "form-control", @disabled = "disabled" })</div>
+
+
+                                        </div>*@
+                                        <div class="row form-group">
+                                            <div class="col-sm-6">Same or similar device issued in the past 5 years?</div>
+                                            <div class="col-sm-6">
+                                                <label class="radio-inline">@Html.RadioButtonFor(m => m.MCPreApproval.IsSimilarDeviceIssued, true, new {  @disabled = "disabled" })Yes</label>
+                                                <label class="radio-inline">@Html.RadioButtonFor(m => m.MCPreApproval.IsSimilarDeviceIssued, false, new {@disabled = "disabled" })No</label>
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+
+                                </div>
+
+                            </div>
+
+
+
+
+
+                        </div>
+                        <hr>
+                        <div id="dvDeliver" class="todo_inner">
+                            <div class="outerf">
+                                <div class="stepheading"><strong>3. Office Staff </strong> <i>order</i></div>
+
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12 form-group">
+                                        <label class="checkbox-inline">
+
+                                            @Html.CheckBoxFor(e => e.Order.IsFaxLOMN, new { @class = "checkbox-inline", @disabled = "disabled" })
+                                            Fax Letter of Med.Nec.
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="row form-group">
+                                        <div class="col-sm-3 p_top10">Date</div>
+                                        <div class="col-sm-5">
+                                            @Html.TextBoxFor(m => m.Order.FaxLOMN_Date, new { @class = "form-control  datepicker-bg", style = "width:100%;", @Readonly = true, @Value = @Model.Order.FaxLOMN_Date.GetExactValue() })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="stepheading"><strong>4. Office Staff </strong> <i>order</i></div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12 form-group">
+                                        <label class="checkbox-inline">
+
+                                            @Html.CheckBoxFor(e => e.Order.IsReceiveLOMN, new { @class = "checkbox-inline", @disabled = "disabled" })
+                                            Receive Letter of Med.Nec.
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="row form-group">
+                                        <div class="col-sm-3 p_top10">Date</div>
+                                        <div class="col-sm-5">
+                                            @Html.TextBoxFor(m => m.Order.ReceiveLOMN_Date, new { @class = "form-control  datepicker-bg", style = "width:100%;", @Readonly = true, @Value = @Model.Order.ReceiveLOMN_Date.GetExactValue() })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="stepheading"><strong>5. Office Staff </strong> <i>order</i></div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12 form-group">
+                                        <label class="checkbox-inline">
+
+                                            @Html.CheckBoxFor(e => e.Order.IsOrderOrthosis, new { @class = "checkbox-inline", @disabled = "disabled" })
+                                            Order Orthosis
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="row form-group">
+                                        <div class="col-sm-3 p_top10">Date</div>
+                                        <div class="col-sm-5">
+                                            @Html.TextBoxFor(m => m.Order.OrderOrthosis_Date, new { @class = "form-control  datepicker-bg", style = "width:100%;", @Readonly = true, @Value = @Model.Order.OrderOrthosis_Date.GetExactValue() })
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                                <div class="row p_top15">
+                                    <div class="col-sm-12 col-md-12 form-group">
+
+                                        <p style="padding-bottom:8px;">
+                                            Ph# 800-321-0607 Acct#: 23298
+                                            <br /><strong>NOTE: Ground Shipping/UPS</strong>
+                                        </p>
+                                        <div class="row form-group">
+                                            <div class="col-sm-3 p_top10">Confirmation#</div>
+                                            <div class="col-sm-5">
+                                                @Html.TextBoxFor(m => m.Order.ConfirmationNo, new { @class = "form-control", @disabled = "disabled" })
+                                            </div>
+                                        </div>
+
+                                        PO#: Last Name of the Patient
+
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                        <hr>
+                        <div id="dvPaperwork" class="todo_inner">
+                            <div class="outerf">
+                                <div class="stepheading"><strong>6. Office Staff </strong> <i>paperwork</i></div>
+
+                                <div class="row p_top15">
+                                    <div class="col-sm-1 p_top10">Int</div>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.Paperwork.PrepareChartPaperwork_Initial, new { @class = "form-control", @disabled = "disabled" })
+                                    </div>
+                                </div>
+
+
+                                <div class="hiddenform">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label class="checkbox-inline">
+
+                                                @Html.CheckBoxFor(e => e.Paperwork.IsDeliveryTicketComplete, new { @class = "checkbox-inline", @disabled = "disabled" })
+                                                Delivery Ticket complete, pt signs, give pt carbon copy
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label class="checkbox-inline">
+
+                                                @Html.CheckBoxFor(e => e.Paperwork.IsAOBComplete, new { @class = "checkbox-inline", @disabled = "disabled" })
+                                                AOB complete, pt signs, give pt carbon copy
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label class="checkbox-inline">
+
+                                                @Html.CheckBoxFor(e => e.Paperwork.IsCheckListComplete, new { @class = "checkbox-inline", @disabled = "disabled" })
+                                                Check List complete with staff initials, pt signs, keep in chart
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label class="checkbox-inline">
+
+                                                @Html.CheckBoxFor(e => e.Paperwork.IsHIPPA1Complete, new { @class = "checkbox-inline", @disabled = "disabled" })
+                                                HIPPA #1 complete, pt signs, keep in chart
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label class="checkbox-inline">
+
+                                                @Html.CheckBoxFor(e => e.Paperwork.IsHIPPA2GiveToPT, new { @class = "checkbox-inline", @disabled = "disabled" })
+                                                HIPPA #2 give to pt
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label class="checkbox-inline">
+
+                                                @Html.CheckBoxFor(e => e.Paperwork.IsProtocolComplaintsGiveToPT, new { @class = "checkbox-inline", @disabled = "disabled" })
+                                                Protocol for Complaints give to pt
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label class="checkbox-inline">
+
+                                                @Html.CheckBoxFor(e => e.Paperwork.IsMC_DMEPOS_Supplier_StandardsGiveToPT, new { @class = "checkbox-inline", @disabled = "disabled" })
+                                                MC DMEPOS Supplier Standards give to pt
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+
+
+
+                        </div>
+                        <hr>
+                        <div id="dvDeliver" class="todo_inner">
+
+
+                            <div class="outerf">
+                                <div class="stepheading"><strong>7. Clinical & Office Staff </strong> <i>deliver</i></div>
+
+
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12 form-group">
+                                        <label class="checkbox-inline">
+                                            @Html.CheckBoxFor(e => e.Deliver.IsReceivedOrthosis, new { @class = "checkbox-inline", @disabled = "disabled" })
+                                            @*@Html.CheckBox("IsReceivedOrthosis", new { @class = "checkbox-inline", @disabled = "disabled" })*@
+                                            Received Orthosis
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="p_left15 p_bot15">
+                                        <div class="row">
+                                            <div class="col-sm-1 p_top10">Date</div>
+                                            <div class="col-sm-3">
+                                                @Html.TextBoxFor(m => m.Deliver.ReceivedOrthosis_Date, new { @class = "form-control  datepicker-bg", @disabled = "disabled", style = "width:100%;", @Readonly = true, @Value = @Model.Deliver.ReceivedOrthosis_Date.GetExactValue() })
+                                            </div>
+                                            <div class="col-sm-1 p_top10">By</div>
+                                            <div class="col-sm-3">@Html.TextBoxFor(m => m.Deliver.ReceivedOrthosisBy, new { @class = "form-control", @disabled = "disabled" })</div>
+                                            <div class="col-sm-4 p_top10">
+                                                Condition:
+                                                <label class="radio-inline">@Html.RadioButtonFor(m => m.Deliver.Condition, "Good", new {  @disabled = "disabled" })Good</label>
+                                                <label class="radio-inline">@Html.RadioButtonFor(m => m.Deliver.Condition, "Bad", new { @disabled = "disabled" })Bad </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="stepheading"><strong>8. Clinical & Office Staff </strong> <i>deliver</i></div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12 form-group">
+                                        <label class="checkbox-inline">
+                                            @Html.CheckBoxFor(e => e.Deliver.IsFitAndInstructed, new { @class = "checkbox-inline", @disabled = "disabled" })
+                                            @*@Html.CheckBox("IsFitAndInstructed", new { @class = "checkbox-inline", @disabled = "disabled" })*@
+                                            Fit & Instructed
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="p_left15 p_bot15">
+                                        <div class="row">
+                                            <div class="col-sm-1 p_top10">Date</div>
+                                            <div class="col-sm-3">
+                                                @Html.TextBoxFor(m => m.Deliver.FitAndInstructed_Date, new { @class = "form-control  datepicker-bg", @disabled = "disabled", style = "width:100%;", @Readonly = true, @Value = @Model.Deliver.FitAndInstructed_Date.GetExactValue() })
+                                            </div>
+                                            <div class="col-sm-1 p_top10">By</div>
+                                            <div class="col-sm-3">@Html.TextBoxFor(m => m.Deliver.FitAndInstructedBy, new { @class = "form-control", @disabled = "disabled" })</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="stepheading"><strong>9. Clinical & Office Staff </strong> <i>deliver</i></div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12 form-group">
+                                        <label class="checkbox-inline">
+                                            @Html.CheckBoxFor(e => e.Deliver.IsCompletePaperwork, new { @class = "checkbox-inline", @disabled = "disabled" })
+                                            @*@Html.CheckBox("IsCompletePaperwork", new { @class = "checkbox-inline", @disabled = "disabled" })*@
+                                            Complete Paperwork
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="p_left15 p_bot15">
+                                        <div class="row">
+                                            <div class="col-sm-1 p_top10">Date</div>
+                                            <div class="col-sm-3">
+                                                @Html.TextBoxFor(m => m.Deliver.CompletePaperwork_Date, new { @class = "form-control  datepicker-bg", @disabled = "disabled", style = "width:100%;", @Readonly = true, @Value = @Model.Deliver.CompletePaperwork_Date.GetExactValue() })
+                                            </div>
+                                            <div class="col-sm-1 p_top10">By</div>
+                                            <div class="col-sm-3">@Html.TextBoxFor(m => m.Deliver.CompletePaperworkBy, new { @class = "form-control", @disabled = "disabled" })</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+            </div>
+
+        </div>
+
+        <div class="clearfix"></div>
+    }
+</section>
+@*<script type="text/javascript">
+    $(document).ready(function () {
+        $("#dvSecond").hide();
+    });
+
+    function GotoSecondPanel() {
+        $("#dvFirst").hide();
+        $("#dvSecond").show();
+    }
+
+    function GotoFirstPanel() {
+        $("#dvFirst").show();
+        $("#dvSecond").hide();
+    }
+
+</script>*@
+
+
+<script type="text/javascript">
+
+
+
+    $(function () {
+        $("#addRows").click(function () {
+            //counter = 2;
+            $("#dvDiagnosis").append("<div class='row'><div id='Div"
+                + counter + "' class='col-sm-4 col-md-5 form-group'>" +
+                "<input class='form-control Disease_nameForICD'  id='DMEDiognosis_" + counter + "__Diagnosis_Desc' name='DMEDiognosis[" + counter + "].Diagnosis_Desc' type='text'>" +
+                "</div><div id='Div1" + counter + "' class='col-sm-4 col-md-5 form-group'>" +
+                "<input class='form-control ICD_CodeForICD' id='DMEDiognosis_" + counter + "__ICD10Code' name='DMEDiognosis[" + counter + "].ICD10Code'  type='text'>" +
+                "</div><div id='Div2" + counter +
+                "' class='col-sm-4 col-md-2 form-group'> <button  class='addbutt' type='button' style='margin-top:0;' title='Remove New Diagnosis' onclick='removeRow("
+                + counter + ")'><i class='fa fa-remove' aria-hidden='true'></i></button><input type='hidden' id='DMEDiognosis_" + counter + "__DMEDiagnosis_Id' name='DMEDiognosis[" + counter + "].DMEDiagnosis_Id' value='' class='icdidForICD' /></div></div>")
+            BindOnFocusForICD();
+            counter++;
+        });
+    });
+
+    function removeRow(cnt) {
+        $("#Div" + cnt).remove();
+        $("#Div1" + cnt).remove();
+        $("#Div2" + cnt).remove();
+        counter--;
+    }
+    $('#Dialog-Box').dialog({
+        autoOpen: false,
+        height: 500,
+        width: 700,
+        modal: true
+    });
+
+    function OpenDialog() {
+
+        var name = $('#Name').val();
+        var address = $('#Address').val();
+        $('#Dialog-Name').val(name);
+        $('#Dialog-Address').val(address);
+        $('#Dialog-Box').dialog("open");
+    }
+
+
+    function SearchICD10() {
+
+        // $('#Dialog-Box').dialog("close");
+
+        @*$.ajax({
+            url: '@Url.Action("ActionName", "ControllerName")',
+            type: 'POST',
+            data: {
+                code: $('#Dialog-Name').val()
+
+            },
+            success: function (msg) {
+            },
+            error: function (msg) {
+            }
+        });*@
+
+
+        }
+
+
+
+    //var formData = $('#Create').serializeObject();
+    //$.extend(formData, { 'count': counter }); //Send Additional data
+
+
+
+
+
+    function closeDiv() {
+        $('#Dialog-Box').dialog("close");
+    }
+</script>

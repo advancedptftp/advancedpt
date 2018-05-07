@@ -1,0 +1,245 @@
+﻿@model DataLayer.Models.DMEOfficeStaffDeliver
+@using DataLayer;
+@{
+    ViewBag.Title = "Knee Brace Custom Order";
+}
+
+
+<section class="bodyinner">
+    @*@using (Html.BeginForm("Create", "KneeBraceCustomForm", FormMethod.Post, new { name = "Create", id = "Create" }))
+        {*@
+
+
+    <div class="bodyright" style="width:100%">
+
+        <div class="report-form clearfix">
+            <h2>BREG Custom Knee Brace Order Form (HCPCS Code: L1846)</h2>
+            <div class="row" id="pname">
+                <div class="col-sm-4">
+                    Patient Name: @Html.Label("patientname", (string)@ViewBag.patientname)
+                </div>
+                <div class="col-sm-4">
+                    DOB: @Html.Label("dob", (string)@ViewBag.dob)
+
+                </div>
+               
+            </div>
+
+            <hr>
+             @using (Html.BeginForm("Create4", "KneeBraceCustomForm", FormMethod.Post, new { name = "Create", id = "Create" }))
+             {
+                <div id="dvFirst">
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(e => e.Deliver.DMEForm_Id)
+                    @Html.HiddenFor(e => e.Deliver.DMEFormCode)
+                    @Html.HiddenFor(e => e.Deliver.CreatedOn)
+                    @Html.HiddenFor(e => e.Deliver.IsReceivedOrthosis)
+                    @Html.HiddenFor(e => e.Deliver.DMEClinicAndOfficeStaffDeliver_Id)
+                    @if (ViewBag.Error != null)
+                    {
+                        @Html.Raw(ViewBag.Error)
+                    }
+
+
+                    <div id="dvDeliver" >
+
+
+                        <div class="outerf">
+                            
+
+                            <div class="hiddenform">
+                                <div class="row">
+                                    <div class="borderbox">
+                                        <div class="hiddenform">
+
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-12 form-group">
+                                                    <div class="col-sm-4"><h2>Received DME Item:</h2></div>
+                                                    <div class="radiosec">
+                                                        <input id="Order_IsReceiv" class="checkbox-custom" name="IsReceivedOrthosis" type="checkbox" value="true">
+                                                        <label for="Order_IsReceiv" class="checkbox-custom-label">
+                                                            Received
+                                                        </label>
+                                                        <span id="IsReceivedOrthosis" class="validateMsg"></span>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        @Html.TextBoxFor(m => m.Deliver.ReceivedOrthosis_Date, new { @class = "form-control ", @placeholder = "MM/dd/YYYY", style = "width:100%;", @Value = @DateTime.Now.ToShortDateString() })
+                                                        <span id="ReceivedOrthosis_Date" class="validateMsg"></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-12">
+                                                    <div class="col-sm-4">
+                                                        <h2>Condition:</h2>
+                                                    </div>
+                                                    <div class="radiosec">
+
+                                                        @Html.RadioButtonFor(m => m.Deliver.Condition, "Good", new { @class = "radio-custom", @id = "Good" })
+
+                                                        <label for="Good" class="radio-custom-label">Good</label>
+
+                                                    </div>
+                                                    <div class="radiosec">
+                                                        @Html.RadioButtonFor(m => m.Deliver.Condition, "Bad", new { @class = "radio-custom Present_Intensity_Symptom", @id = "Bad" })
+
+                                                        <label for="Bad" class="radio-custom-label">Bad</label>
+                                                       
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <span id="Conditionss" class="validateMsg"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                            <div class="subbutt">
+                                @*<button type="button" class="btn btn-primary pull-left" onclick="GotoPaperwork()">Back</button>*@
+                                <button type="submit" class="btn btn-orange pull-right" onclick="return validateInputs();">Submit</button>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            }
+
+
+
+
+        </div>
+
+    </div>
+
+    <div class="clearfix"></div>
+
+
+
+    @*}*@
+</section>
+<div class="modal fade" id="_Pandinglist" role="dialog">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="padding-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 id="headingSearchPatient" class="modal-title">Panding List</h3>
+            </div>
+            <div class="modal-body" style="width:95%; padding-left:60px;">
+                <div>
+                    <div id="searchPatient">
+                        <div class="row SearchFilterContainer" id="SearchFilterContainer">
+                            <table class="table table-fixed" id="tblPatientList" style="width: 95%; padding-left: 60px;">
+                                <thead>
+                                    <tr>
+                                        <th>Patient Name</th>
+                                        <th>DMEForm Status</th>
+                                        <th>HCPCS Code</th>
+                                        <th>pdf</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody> </tbody>
+                            </table>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer" style="padding:35px;">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    @*<button id="btnPatientSave" type="button" class="btn btn-primary">Save</button>*@
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function fnShowpandinglist() {
+        //  alert(PatientPayTran_Id);
+        $.ajax({
+            url: '@Url.Action("GetpandingList", "KneeBraceCustomForm")',
+            type: 'POST',
+            data: {},
+            success: function (res) {
+                //alert(res.length);
+                $("#tblPatientList tbody").html('');
+                for (var i = 0; i < res.length; i++) {
+                    var re= res[i].split(" ");
+                    var row = "<tr>" +
+                                        " <td>  " + re[0] + " " + re[1] + "</td>" + " <td>  " + re[2] + " " + re[3] + "  " + re[4] + " " + re[5] + "</td>" + "<td>" + re[6] + "</td>"
+                                        + " <td> " + " <a href='javascript:void(0);' onclick='fnShowDetail(" + re[7] + ");'>"
+                                + "<i class='fa fa-file-pdf-o' aria-hidden='true'></i>"
+                            +"</a>" + "</td>" +
+                    "</tr>";
+                    $("#tblPatientList tbody").append(row);
+                }
+
+            },
+            error: function (msg) {
+            }
+        });
+
+        $('#_Pandinglist').modal();
+    }
+</script>
+
+<script>
+    function fnShowDetail(KneeBraceCustomForm_Id) {
+        //alert('this obj ===' + obj);
+        
+            var url = "@Url.Action("MedicalNecessityPDF", "KneeBraceCustomForm", new { Area = "DmeForm" })" + "?id=" + KneeBraceCustomForm_Id;
+            //fnShowPopupForDetail(url);
+            popupwindow(url, 'Medical Necessity', 1000, 800);
+       
+    }
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#Deliver_IsReceivedOrthosis").focus();
+
+        $("#IsReceivedOrthosis").hide();
+        $("#ReceivedOrthosis_Date").hide();
+        $("#ReceivedOrthosisBy").hide();
+        $("#Condition").hide();
+        if ($("#Deliver_IsReceivedOrthosis").val() == "true") {
+
+            $('#Order_IsReceiv').prop('checked', true);
+        }
+
+    });
+    if ($("#Order_IsReceiv").val() == "true") {
+        $("#Deliver_IsReceivedOrthosis").val(true);
+    }
+
+    function validateInputs() {
+
+        //alert("ok");
+
+        var Condition = document.getElementById("Good");
+        //alert(Condition);
+        var flag = true;
+
+
+
+        if ($("input:radio:checked").length > 0) {
+            // go on with script
+            $("#Condition").text("");
+            $("#Condition").hide();
+        } else {
+            // NOTHING IS CHECKED
+            $("#Condition").show();
+            $("#Conditionss").text("Please select condition");
+            Condition.focus();
+            flag = false;
+        }
+        return flag;
+    }
+</script>

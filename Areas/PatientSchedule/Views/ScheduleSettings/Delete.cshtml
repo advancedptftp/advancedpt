@@ -1,0 +1,112 @@
+﻿@model DataLayer.Models.tblMPatSchdScheduleSetting
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>tblMPatSchdScheduleSetting</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FullAlertLevelPercentage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FullAlertLevelPercentage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AlertObserveDay)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AlertObserveDay)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReScheduleChargeMinAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReScheduleChargeMinAmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CancelationChargeMinAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CancelationChargeMinAmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReScheduleChargedHours)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReScheduleChargedHours)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CancelationChargedHours)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CancelationChargedHours)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMUser.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMUser.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMUser1.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMUser1.UserName)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

@@ -1,0 +1,1912 @@
+﻿@using DataLayer;
+@using System.Data
+
+@{ ViewBag.Title = "Index"; Layout = "~/Views/Shared/_PatientPortal.cshtml";
+ var cls = new PTPMS.Controllers.PatientController(); var PendingStep = cls.PendingStep();
+ //var AppoID = "";
+ if (ViewData["Msg"] != null)
+ {
+
+
+    @*<script>
+                    function startTimer(duration, display) {
+                        var timer = duration, minutes, seconds;
+                        setInterval(function () {
+                            minutes = parseInt(timer / 60, 10);
+                            seconds = parseInt(timer % 60, 10);
+
+                            minutes = minutes < 10 ? "0" + minutes : minutes;
+                            seconds = seconds < 10 ? "0" + seconds : seconds;
+                            $("#paymentTime").show();
+                            display.textContent = "Please wait " + minutes + ":" + seconds + " for next payment";
+                            $("#payment").hide();
+
+                            if (--timer <= 0) {
+                                //timer = duration;
+                                $("#payment").show();
+                                $("#paymentTime").hide();
+                            }
+                        }, 1000);
+                    }
+
+                    window.onload = function () {
+                        var fiveMinutes = 60 * 2, //2 minute
+                            display = document.querySelector('#paymentTime');
+                        startTimer(fiveMinutes, display);
+                    };
+        </script>*@
+ }
+
+
+ DataTable dtupcommingschedule = new DataTable();
+
+ if (ViewBag.upcommingschedule != null)
+ {
+     dtupcommingschedule = (DataTable)ViewBag.upcommingschedule;
+ }
+ DataTable dtCompletedschedule = new DataTable();
+ if (ViewBag.Completedschedule != null)
+ {
+     dtCompletedschedule = (DataTable)ViewBag.Completedschedule;
+ }
+ DataTable dtNoShowSchedule = new DataTable();
+ if (ViewBag.NoShowSchedule != null)
+ {
+     dtNoShowSchedule = (DataTable)ViewBag.NoShowSchedule;
+ }
+
+
+}
+<style>
+    .modal-backdrop {
+        opacity: 0.5 !important;
+    }
+
+    .PendingStep {
+        background: #ada8a8 !important;
+        color: white !important;
+    }
+</style>
+<link href="/Content/semantic.css" rel="stylesheet">
+<link href="~/Content/style.css" rel="stylesheet" />
+<style type="text/css">
+    .hoverTable tr:hover {
+        background-color: #eab92d;
+    }
+</style>
+@if (ViewBag.Error != null)
+{
+    <script>
+        alertify.alert('@ViewBag.Error').setHeader('AdvancePT Says');
+    </script>
+
+}
+@if (Session["wrong"] != null)
+{
+    <script>
+        alertify.alert("Payment not possible").setHeader('AdvancePT Says');
+    </script>
+    Session["wrong"] = null;
+
+}
+
+
+
+<div class="patientforleft">
+
+
+    <div class="row" style="padding-bottom: 98px;">
+        <div class="col-md-12">
+            <div class="accordion-2 panel-group" id="accordion">
+                <div class="accordion-2 panel panel-default">
+                    <div id="loadfirsttime" class="panel-heading-patient active">
+                        <h4 class="panel-title">
+                            <a id="togglefirsttime" data-toggle="collapse" data-parent="#accordion" href="#collapse1" class="collapsed">
+                                Upcoming Appointment(s)
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse1" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            @if (dtupcommingschedule != null && dtupcommingschedule.Rows.Count > 0)
+                            {
+                                <div id="searchPatient">
+
+                                    <div class="SearchResultContainer1">
+
+
+                                        @for (int i = 0; i < dtupcommingschedule.Rows.Count; i++)
+                                        {
+
+                                            <div class="bluebox1">
+                                                <div class="number">@(i + 1) </div>
+                                                <p>
+                                                    <strong>Appointment Date:</strong> @Convert.ToDateTime(dtupcommingschedule.Rows[i]["AppointmentDate"].ToString()).ToString("D")<br>
+                                                    @dtupcommingschedule.Rows[i]["FromTime"].ToString().Substring(0, 5) - @dtupcommingschedule.Rows[i]["ToTime"].ToString().Substring(0, 5)
+                                                </p>
+                                                <p><strong>Clinician</strong>: @dtupcommingschedule.Rows[i]["EmployeeName"]</p>
+                                                @if (String.IsNullOrEmpty(dtupcommingschedule.Rows[i]["IsComprehensive"].ToString()))
+                                                {
+                                                    <button type="button" class="orangebutt" id="btnReschedule" onclick="fnConfirmationForReschedule(@dtupcommingschedule.Rows[i]["Appointment_Id"].ToString())"><i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;Reschedule</button>
+                                                    <button type="button" class="whitebutt" id="btnCancel" onclick="fnConfirmation(@dtupcommingschedule.Rows[i]["Appointment_Id"].ToString())"><i class="fa fa-close" aria-hidden="true"></i>&nbsp;Cancel</button>
+                                                }
+
+                                                <div style="clear:both;"></div>
+                                            </div>
+                                        }
+
+                                    </div>
+
+
+                                </div>
+                            }
+                            @if (dtupcommingschedule != null && dtupcommingschedule.Rows.Count > 0)
+                            {
+                             }
+                            else
+                            {
+                                <div id="div_noRec" style="text-align: center; vertical-align: middle; line-height: 38px;"><label style='color:red'>Sorry! no records are found !!</label></div>
+
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading-patient">
+                        <h4 class="panel-title">
+                            <a id="toggleanotherfirsttime" data-toggle="collapse" data-parent="#accordion" href="#collapse2" class="collapsed">
+                                Completed Appointment(s)
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse2" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            @if (dtCompletedschedule != null && dtCompletedschedule.Rows.Count > 0)
+                            {
+                                <div id="searchPatientsdsd">
+
+                                    <div class="SearchResultContainer1dssd">
+
+
+                                        @for (int i = 0; i < dtCompletedschedule.Rows.Count; i++)
+                                        {
+
+                                            <div class="bluebox1">
+                                                <div class="number">@(i + 1) </div>
+                                                <p>
+                                                    <strong>Appointment Date:</strong> @Convert.ToDateTime(dtCompletedschedule.Rows[i]["AppointmentDate"].ToString()).ToString("D")<br>
+                                                    @dtCompletedschedule.Rows[i]["FromTime"].ToString().Substring(0, 5) - @dtCompletedschedule.Rows[i]["ToTime"].ToString().Substring(0, 5)
+                                                </p>
+                                                <p><strong>Clinician</strong>: @dtCompletedschedule.Rows[i]["EmployeeName"]</p>
+
+                                                <div style="clear:both;"></div>
+
+                                            </div>
+
+                                        }
+
+
+
+
+
+
+                                    </div>
+
+
+                                </div>
+                            }
+                            @if (dtCompletedschedule != null && dtCompletedschedule.Rows.Count > 0)
+                            {
+                            }
+                            else
+                            {
+                                <div id="div_noRecNew" style="text-align: center; vertical-align: middle; line-height: 38px;"><label style='color:red'>Sorry! no records are found !!</label></div>
+
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading-patient">
+                        <h4 class="panel-title">
+                            <a id="toggleanother1firsttime" data-toggle="collapse" data-parent="#accordion" href="#collapse3" class="collapsed">
+                                Missed Appointment(s)
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse3" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            @if (dtNoShowSchedule != null && dtNoShowSchedule.Rows.Count > 0)
+                            {
+                                <div id="searchPatientsdsdasas">
+
+                                    <div class="SearchResultContainer1dssd">
+
+
+                                        @for (int i = 0; i < dtNoShowSchedule.Rows.Count; i++)
+                                        {
+                                            <div class="bluebox1">
+
+                                                <div class="number">@(i + 1) </div>
+                                                <p>
+                                                    <strong>Appointment Date:</strong> @Convert.ToDateTime(dtNoShowSchedule.Rows[i]["AppointmentDate"].ToString()).ToString("D")<br>
+                                                    @dtNoShowSchedule.Rows[i]["FromTime"].ToString().Substring(0, 5) - @dtNoShowSchedule.Rows[i]["ToTime"].ToString().Substring(0, 5)
+                                                </p>
+                                                <p><strong>Clinician</strong>: @dtNoShowSchedule.Rows[i]["EmployeeName"]</p>
+
+
+                                                <div style="clear:both;"></div>
+                                            </div>
+                                        }
+
+
+
+
+
+
+                                    </div>
+
+
+                                </div>
+                            }
+                            @if (dtNoShowSchedule != null && dtNoShowSchedule.Rows.Count > 0)
+                            {
+                            }
+                            else
+                            {
+                                <div id="div_noRecNew" style="text-align: center; vertical-align: middle; line-height: 38px;"><label style='color:red'>Sorry! no records are found </label></div>
+
+                            }
+                        </div>
+                    </div>
+                </div>
+                @*<div class="clearfix">
+                        <br />
+                    </div>
+                    <div>
+                        @Html.ActionLink("Back to List", "PatientCoordination", new { @controller = "PatientActivation", @area = "Patient" })
+                    </div>*@
+                @*<div class="panel panel-default">
+                        <div class="panel-heading-patient">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse3" class="collapsed">
+                                    Sed Diam Nonummy Euismod
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapse3" class="panel-collapse collapse" s>
+                            <div class="panel-body">
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis egestas mauris ut vehicula. Cras viverra ac orci ac aliquam. Nulla eget condimentum mauris, eget tincidunt est.
+                                </p>
+                            </div>
+                        </div>
+                    </div>*@
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @*<div id="dvViewExistingAppointment" style="display:none">
+            <h2><strong>My Upcoming Appointment</strong></h2>
+            <div class="responsive-calendar">
+                <div class="controls">
+                    <a class="pull-left" data-go="prev"><div class="btn btn-primary">Prev</div></a>
+                    <h4><span data-head-month></span> &nbsp;<span data-head-year></span> </h4>
+                    <a class="pull-right" data-go="next"><div class="btn btn-primary">Next</div></a>
+                    <div class="clearfix"></div>
+                </div><hr />
+                <div class="day-headers">
+                    <div class="day header">Mon</div>
+                    <div class="day header">Tue</div>
+                    <div class="day header">Wed</div>
+                    <div class="day header">Thu</div>
+                    <div class="day header">Fri</div>
+                    <div class="day header">Sat</div>
+                    <div class="day header">Sun</div>
+                </div>
+                <div class="days" data-group="days">
+
+                </div>
+            </div>
+        </div>*@
+
+</div>
+<div class="patientforright">
+    <ul>
+        @if (PendingStep.Action != "" && PendingStep.Action != null)
+        {
+            <li>@Html.ActionLink(PendingStep.Text, PendingStep.Action, new { Area = "", Controller = PendingStep.Controller }, new { @class = PendingStep.htmlclass })</li>
+        }
+        else if (PendingStep.Controller == "#")
+        {
+            <li>
+                <a href="#" class="@PendingStep.htmlclass">@PendingStep.Text</a>
+            </li>
+        }
+        else
+        {
+
+            <li>@Html.ActionLink("My Profile", "ViewProfileInfo", new { Area = "", Controller = "Patient" }, new { })</li>
+        }
+        @if (ViewBag.CountPatientConlitionList != null)
+        {
+            <li><a href="#" data-toggle="modal" data-target="#PatientConlitionListModal">View Previous conditons</a></li>
+        }
+        <li><a href="#" onclick="return fnShowTotalamountNew(@ViewBag.Patientid, @ViewBag.ptconid);">My Balance ($@ViewBag.DueAmount)</a></li>
+        @if (ViewBag.procedtopay == "yes")
+        {
+            if (ViewBag.Hardship == 0)
+            {
+                <li id="payment">@Html.ActionLink("Pay", "Create", new { Area = "Payment", Controller = "PatientPayment" }, new { })</li>
+                <li id="paymentTime" style="padding: 20px; font-size: 18px; color:#337ab7; display: none; background: #f2f2f2; font-weight: bold; "> </li>
+            }
+            else
+            {
+                <li id="payment">@Html.ActionLink("Pay", "Create", new { Area = "Payment", Controller = "PatientPayment" }, new { })</li>
+                <li id="paymentTime" style="padding: 20px; font-size: 18px; color:#337ab7; display: none; background: #f2f2f2; font-weight: bold; "> </li>
+                <li id="payment">@Html.ActionLink("Hardship is already applied", "#", new { Area = "#", Controller = "#" }, new { })</li>
+            }
+
+        }
+        else if (ViewBag.procedtopay == "no")
+        {
+            if (ViewBag.Hardship != 0)
+            {
+                <li id="payment">@Html.ActionLink("Hardship is already applied", "#", new { Area = "#", Controller = "#" }, new { })</li>
+            }
+
+        }
+
+        @Html.Hidden("ischeckin", null, new { @id = "ischeckin" })
+        @Html.Hidden("ischeckout", null, new { @id = "ischeckout" })
+        @Html.Hidden("Appointment", null, new { @id = "Appointments" })
+
+        @*
+            <li> @Html.ActionLink("Schedule Future Appointment", "SchedulePatientForPatient", new { Area = "", Controller = "Patient" }, new { })</li>*@
+        @if (ViewBag.IsComprehensiveComplete == "yes")
+        {
+            <li> @Html.ActionLink("Schedule", "PatientSelfSchedule", new { Area = "", Controller = "Patient" }, new { })</li>
+        }
+        <li> @Html.ActionLink("Treatment Related Videos", "PatientTestimonials", new { Area = "", Controller = "Patient" }, new { })</li>
+        <li> @Html.ActionLink("Face Detection Enrollment", "FaceDetectionenrollment", new { Area = "", Controller = "Home" }, new { })</li>
+
+        <li> @Html.ActionLink("Schedule Setup", "ScheduleSetUp", new { Area = "", Controller = "Patient" }, new { })</li>
+
+        <li> @Html.ActionLink("Upload Patient’s Identification", "Camera", new { Area = "Patient", Controller = "WebCam" }, new { })</li>
+
+        @*
+            <li><a href="#">Schedule Future Appointment</a></li>*@
+        @*
+            <li><a href="#">Re-Schedule an existing Appointment</a></li>
+            <li><a href="#">Cancel an existing Appointment</a></li>*@
+    </ul>
+
+</div>
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div style="padding:11px 11px 0 11px;">
+                <button type="button" class="close" data-dismiss="modal" style="font-size:36px">&times;</button>
+                <h3 id="modalTitle" class="modal-title" style="padding:0px;text-align:center">Appointment Details</h3>
+            </div>
+            <div id="modalBody" class="modal-body ">
+                <form id="createAppointmentForm" class="form-horizontal">
+                    <div class="control-group shedule_popup ">
+                        @Html.Hidden("Select", new { @id = "Select" })
+                        <table class="table table-bordered table-striped">
+                            <tr>
+                                <td><strong>Appointment Date:</strong></td>
+                                <td><span id="AppointmentDate"></span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Appointment Type:</strong>
+                                </td>
+                                <td><span id="Appointment_Type"></span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Patient Name:</strong>
+                                </td>
+                                <td><span id="PatientName"></span></td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <strong>Start Time:</strong>
+                                </td>
+                                <td><span id="startTime"></span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>End Time:</strong>
+                                </td>
+                                <td><span id="endTime"></span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Therapist:</strong>
+                                </td>
+                                <td>
+                                    <span id="Employee"></span>
+                                    <input type="hidden" id="hdnAppointmentId" />
+                                    <input type="hidden" id="hdnAttendanceDate" />
+                                    <input type="hidden" id="hdnCheckIn" />
+                                    <input type="hidden" id="hdnCheckOut" />
+
+                                    @*<input type="hidden" id="AppointmentId" value="@ViewBag[" appointment_id"]" />*@
+                                </td>
+
+                            </tr>
+                        </table>
+
+                    </div>
+                    <input type="hidden" id="hdEventID" />
+                </form>
+                <div class="btnICon">
+                    @*<button type="button" class="btn btn-primary" id="btnReschedule">Re-Schedule</button>*@
+
+                    <button type="button" class="btn btn-primary" id="btnCheckIn" style="display:none" onclick="fnConfirmationCheckIn();"><i class="fa fa-calendar-check-o" aria-hidden="true"></i>&nbsp;Check-In</button>
+                    <button type="button" class="btn btn-primary" id="btnCheckOut" style="display:none" onclick="fnConfirmationCheckOut();"><i class="fa fa-calendar-minus-o" aria-hidden="true"></i>&nbsp;Check-Out</button>
+                    <a class="btn btn-primary" id="btnReschedule1" href="#" style="display:block" onclick=" return fnConfirmationforschedule();"><i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;Re-Schedule</a>
+                    <button type="button" class="btn btn-primary" id="btnCancelRequest" style="display: block" onclick="fnConfirmation();"><i class="fa fa-close" aria-hidden="true"></i>&nbsp;Cancel</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="_Paymenthistory" role="dialog">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="padding-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 id="headingSearchPatient" class="modal-title">Payment History</h3>
+            </div>
+            <div class="modal-body" style="width:95%; padding-left:60px;">
+                <div>
+                    <div id="searchPatient">
+                        @{
+                            if (ViewBag.TotalAmountPayable != 0 && Convert.ToString(ViewBag.TotalAmountPayable) != "" && Convert.ToString(ViewBag.TotalAmountPayable) != null)
+                            {
+                                <div class="totalpayableanddue" style="padding-bottom: 15px; position: relative; left: -17px; font-weight: bold">Total Payable : $@ViewBag.TotalAmountPayable</div>
+                            }
+                            else
+                            {
+                                <div class="totalpayableanddue" style="padding-bottom: 15px; position: relative; left: -17px; font-weight: bold">Total Payable : $0</div>
+
+                            }
+
+                            if (ViewBag.TotalRescheduleamount != 0 && Convert.ToString(ViewBag.TotalRescheduleamount) != "" && Convert.ToString(ViewBag.TotalRescheduleamount) != null)
+                            {
+                                <div class="totalpayableanddue" style="padding-bottom: 15px; position: relative; left: -17px; font-weight: bold">Total Reschedule Charge : $@ViewBag.TotalRescheduleamount</div>
+                            }
+                            else
+                            {
+                                <div class="totalpayableanddue" style="padding-bottom: 15px; position: relative; left: -17px; font-weight: bold">Total Reschedule Charge : $0</div>
+                            }
+
+
+                            if (ViewBag.TotalcancelAmount != 0 && Convert.ToString(ViewBag.TotalcancelAmount) != "" && Convert.ToString(ViewBag.TotalcancelAmount) != null)
+                            {
+                                <div class="totalpayableanddue" style="padding-bottom: 15px; position: relative; left: -17px; font-weight: bold">Total Cancellation Charge : $@ViewBag.TotalcancelAmount</div>
+                            }
+                            else
+                            {
+                                <div class="totalpayableanddue" style="padding-bottom: 15px; position: relative; left: -17px; font-weight: bold">Total Cancellation Charge : $0</div>
+                            }
+
+
+
+                            if (ViewBag.Noofreschedule != 0 && Convert.ToString(ViewBag.Noofreschedule) != "" && Convert.ToString(ViewBag.Noofreschedule) != null)
+                            {
+                                <div class="totalpayableanddue" style="padding-bottom: 15px; position: relative; left: -17px; font-weight: bold">Total No. Of Reschedule : @ViewBag.Noofreschedule</div>
+                            }
+                            else
+                            {
+                                <div class="totalpayableanddue" style="padding-bottom: 15px; position: relative; left: -17px; font-weight: bold">Total No. Of Reschedule : 0</div>
+                            }
+
+
+
+                            if (ViewBag.Noofcancellation != 0 && Convert.ToString(ViewBag.Noofcancellation) != "" && Convert.ToString(ViewBag.Noofcancellation) != null)
+                            {
+                                <div class="totalpayableanddue" style="padding-bottom: 15px; position: relative; left: -17px; font-weight: bold">Total No. Of Cancellation : @ViewBag.Noofcancellation</div>
+
+                            }
+                            else
+                            {
+                                <div class="totalpayableanddue" style="padding-bottom: 15px; position: relative; left: -17px; font-weight: bold">Total No. Of Cancellation : 0</div>
+                            }
+                        }
+                        <div class="row SearchFilterContainer" id="SearchFilterContainer">
+                            <table class="table table-fixed" id="tblPatientList" style="width: 95%; padding-left: 60px;">
+                                <thead>
+                                    <tr>
+                                        @*
+                                            <th style="vertical-align: top;">Patient Name</th>*@
+                                        <th>Transaction Date</th>
+                                        <th>Transaction Time</th>
+                                        <th>Amount Paid</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody> </tbody>
+
+                            </table>
+
+                        </div>
+                        <div id="div_noRecforpayment" style="text-align: center; vertical-align: middle; line-height: 38px; padding-bottom: 22px; display: none;"><label style='color:red'>There are no records found !!</label></div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer" style="padding:20px 0px;">
+                    <div class="totalpayableanddue" style="text-align: left; font-weight: bold">
+                        Total Dues : $@ViewBag.DueAmount
+                        @{
+                            if (ViewBag.procedtopay == "yes")
+                            {
+
+                                <a class="procedbuttNew" href="@Url.Action("Create", "Payment_PatientPayment" , new { })">
+                                    Proceed to pay
+                                </a>
+
+                            }
+                        }
+
+
+                    </div>
+
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    @*<button id="btnPatientSave" type="button" class="btn btn-primary">Save</button>*@
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="_duepaymentforRescheduleorCancel" role="dialog">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="padding-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 id="headingSearchPatient" class="modal-title">Payment Due</h3>
+            </div>
+            <div class="modal-body" style="width:95%; padding-left:60px;">
+                <div>
+                    <div class="totalpayableanddue" style="padding-bottom: 15px; position: relative; left: -17px; font-weight: bold">
+                        Your previous reschedule/Cancellation charge has not paid still now, so you should pay the charge before doing it
+                        <a class="procedbuttNew" href="@Url.Action("Create", "Payment_PatientPayment" , new { })">
+                            Proceed to pay
+                        </a>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer" style="padding:20px 0px;">
+
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="_duepaymentforReschedule" role="dialog">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="padding-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 id="headingSearchPatient" class="modal-title">Payment Due</h3>
+            </div>
+            <div class="modal-body" style="width:95%; padding-left:60px;">
+                <div>
+                    <div class="totalpayableanddue" style="padding-bottom: 15px; position: relative; left: -17px; font-weight: bold">
+                        Your previous reschedule charge has not paid still now, so you should pay the charge before doing it
+                        <a class="procedbuttNew" href="@Url.Action("Create", "Payment_PatientPayment" , new { })">
+                            Proceed to pay
+                        </a>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer" style="padding:20px 0px;">
+
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="_duepaymentforCancel" role="dialog">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="padding-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 id="headingSearchPatient" class="modal-title">Payment Due</h3>
+            </div>
+            <div class="modal-body" style="width:95%; padding-left:60px;">
+                <div>
+                    <div class="totalpayableanddue" style="padding-bottom: 15px; position: relative; left: -17px; font-weight: bold">
+                        Your previous cancellation charge has not paid still now, so you should pay the charge before doing it
+                        <a class="procedbuttNew" href="@Url.Action("Create", "Payment_PatientPayment" , new { })">
+                            Proceed to pay
+                        </a>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer" style="padding:20px 0px;">
+
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@if (ViewBag.noofvisitappoiment > ViewBag.noofvisitaattendence)
+{
+    if (ViewBag.appoimentincurrentminnute <= ViewBag.Appooutminute && ViewBag.appoimentincurrentminnute >= ViewBag.Appoinminute1 - 10)
+    {
+
+        <div class="modal fade" id="myAppointment" role="dialog">
+            <div class="modal-dialog outers">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    @*<div style="padding:11px 11px 0 11px;">
+                            <button type="button" class="close" data-dismiss="modal" style="font-size:36px">&times;</button>
+                            <h3 id="modalTitle" class="modal-title" style="padding:0px;text-align:center">Appointment Details</h3>
+                        </div>*@
+                    <div id="modalBody" class="modal-body patientshedule">
+                        <form id="formAppointment" class="form-horizontal">
+                            @if (ViewBag.ischeckin == false)
+                            {
+                                <div id="dvInitial" class="control-group shedule_popup">
+                                    <br />
+                                    <span style="font-family:Arial; font-weight:bold"><span id="gdmong"></span> Mr. @ViewBag.userfname .You have an appointment at <span id="aptime"></span>.Would you like to check in now?</span>
+                                    <br />
+                                    <br />
+                                    <button type="button" class="btn btn-primary btn-lg yesbutt" id="btnCheckInYes" onclick="fnConfirmCheckIn();">
+                                        Yes
+                                    </button>
+                                    &nbsp;
+                                    <button type="button" class="btn btn-primary btn-lg nobutt" id="btnCheckInNo" onclick="fnViewNextOption();">
+                                        No
+                                    </button>
+                                </div>
+                                <div id="dvNexOptions" class="control-group shedule_popup" style="display:none">
+
+                                    <button type="button" class="innerbut" id="btnViewAppointments" onclick="fnViewExistingAppointments();">
+                                        View existing appointments
+                                    </button>
+
+                                    <button type="button" class="innerbut" id="btnReScheduleAppointment" onclick="fnReScheduleAppointment();">
+                                        @*onclick="return fnConfirmationforschedule();"*@
+                                        Re-Schedule an existing appointment
+                                    </button>
+
+                                    <button type="button" class="innerbut" id="btnCancelAppointment" onclick="fnCancelAppointment();">
+                                        @*onclick="fnConfirmation();"*@
+                                        Cancel an existing appointment
+                                    </button>
+
+                                    <button type="button" class=" innerbut" id="btnHelp" onclick="fnHelpAppointment();">
+                                        I need help from an Advanced PT Team Member
+                                    </button>
+
+                                </div>
+
+                                <div id="dvCheckedIn" class="control-group shedule_popup" style="display:none">
+                                    You have checked in successfully
+                                </div>
+                            }
+                            else if (ViewBag.ischeckin == true && ViewBag.ischeckout == false)
+                            {
+                                <div id="dvCheckedIn" class="control-group shedule_popup">
+
+                                    Would you like to check out now ?
+                                    <br />
+                                    <br />
+                                    <button type="button" class="btn btn-primary btn-lg yesbutt" id="btnCheckedOut" onclick="fnCheckedOut()">
+                                        Yes
+                                    </button>
+                                    &nbsp;
+                                    <button type="button" class="btn btn-primary btn-lg nobutt" id="btnCheckedOut" onclick="fnNoCheckedOut()">
+                                        No
+                                    </button>
+                                </div>
+                                <div id="dvCheckedOut" class="control-group shedule_popup" style="display:none">
+
+                                    You have checked out successfully
+                                    <div style="padding-top:25px;">
+                                        <button type="button" class="btn btn-primary btn-lg yesbutt" id="btnCheckedOut" data-dismiss="modal">
+                                            Close
+                                        </button>
+                                    </div>
+
+                                </div>
+                            }
+
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    }
+
+
+}
+else if (ViewBag.noofvisitappoiment == ViewBag.noofvisitaattendence && ViewBag.ischeckin != false && ViewBag.ischeckout == false)
+{
+    <div class="modal fade" id="myAppointment" role="dialog">
+        <div class="modal-dialog outers">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                @*<div style="padding:11px 11px 0 11px;">
+                        <button type="button" class="close" data-dismiss="modal" style="font-size:36px">&times;</button>
+                        <h3 id="modalTitle" class="modal-title" style="padding:0px;text-align:center">Appointment Details</h3>
+                    </div>*@
+                <div id="modalBody" class="modal-body patientshedule">
+                    <form id="formAppointment" class="form-horizontal">
+                        @if (ViewBag.ischeckin == false)
+                        {
+                            <div id="dvInitial" class="control-group shedule_popup">
+                                <br />
+                                <span style="font-family:Arial; font-weight:bold"><span id="gdmong"></span> Mr. @ViewBag.userfname .You have an appointment at <span id="aptime"></span>.Would you like to check in now?</span>
+                                <br />
+                                <br />
+                                <button type="button" class="btn btn-primary btn-lg yesbutt" id="btnCheckInYes" onclick="fnConfirmCheckIn();">
+                                    Yes
+                                </button>
+                                &nbsp;
+                                <button type="button" class="btn btn-primary btn-lg nobutt" id="btnCheckInNo" onclick="fnViewNextOption();">
+                                    No
+                                </button>
+                            </div>
+                            <div id="dvNexOptions" class="control-group shedule_popup" style="display:none">
+
+                                <button type="button" class="innerbut" id="btnViewAppointments" onclick="fnViewExistingAppointments();">
+                                    View existing appointments
+                                </button>
+
+                                <button type="button" class="innerbut" id="btnReScheduleAppointment" onclick="fnReScheduleAppointment();">
+                                    @*onclick="return fnConfirmationforschedule();"*@
+                                    Re-Schedule an existing appointment
+                                </button>
+
+                                <button type="button" class="innerbut" id="btnCancelAppointment" onclick="fnCancelAppointment();">
+                                    @*onclick="fnConfirmation();"*@
+                                    Cancel an existing appointment
+                                </button>
+
+                                <button type="button" class=" innerbut" id="btnHelp" onclick="fnHelpAppointment();">
+                                    I need help from an Advanced PT Team Member
+                                </button>
+
+                            </div>
+
+                            <div id="dvCheckedIn" class="control-group shedule_popup" style="display:none">
+                                You have checked in successfully
+                            </div>
+                        }
+                        else if (ViewBag.ischeckin == true && ViewBag.ischeckout == false)
+                        {
+                            <div id="dvCheckedIn" class="control-group shedule_popup">
+
+                                Would you like to check out now ?
+                                <br />
+                                <br />
+                                <button type="button" class="btn btn-primary btn-lg yesbutt" id="btnCheckedOut" onclick="fnCheckedOut()">
+                                    Yes
+                                </button>
+                                &nbsp;
+                                <button type="button" class="btn btn-primary btn-lg nobutt" id="btnCheckedOut" onclick="fnNoCheckedOut()">
+                                    No
+                                </button>
+                            </div>
+                            <div id="dvCheckedOut" class="control-group shedule_popup" style="display:none">
+
+                                You have checked out successfully
+                                <div style="padding-top:25px;">
+                                    <button type="button" class="btn btn-primary btn-lg yesbutt" id="btnCheckedOut" data-dismiss="modal">
+                                        Close
+                                    </button>
+                                </div>
+
+                            </div>
+                        }
+
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+}
+@*else
+{
+    <script>
+        $("#dvViewExistingAppointment").show();
+    </script>
+
+}*@
+<script>
+
+    $('.clockpicker').each(function () {
+        var clockpicker = $(this).clockpicker({
+            autoclose: true,
+            twelvehour: false
+        });
+    });
+</script>
+<script>
+
+    function fnConfirmCheckIn() {
+        fnConfirmationCheckIn();
+        $("#dvInitial").hide();
+        $("#dvNexOptions").hide();
+        $("#dvCheckedIn").show();
+        $("#dvViewExistingAppointment").hide();
+        $("#dvCheckedOut").hide();
+    }
+
+    function fnViewNextOption() {
+        $("#dvInitial").hide();
+        $("#dvNexOptions").show();
+        $("#dvCheckedIn").hide();
+        $("#dvViewExistingAppointment").hide();
+        $("#dvCheckedOut").hide();
+    }
+
+    function fnViewExistingAppointments() {
+
+        $("#dvViewExistingAppointment").show();
+        $("#myAppointment").modal('hide');
+
+    }
+    function fnHelpAppointment() {
+        fnHelpemail();
+        $("#myAppointment").modal('hide');
+    }
+    function fnReScheduleAppointment() {
+        $("#btnReScheduleAppointment").val(1)
+        $("#btnCancelAppointment").val();
+        $("#dvViewExistingAppointment").show();
+        $("#myAppointment").modal('hide');
+
+    }
+    function fnCancelAppointment() {
+        $("#btnReScheduleAppointment").val();
+        $("#btnCancelAppointment").val(2);
+        $("#dvViewExistingAppointment").show();
+        $("#myAppointment").modal('hide');
+
+    }
+    function fnCheckedOut() {
+        fnConfirmationCheckOut();
+        $("#dvInitial").hide();
+        $("#dvNexOptions").hide();
+        $("#dvCheckedIn").hide();
+        $("#dvViewExistingAppointment").hide();
+        $("#dvCheckedOut").show();
+    }
+
+    function fnNoCheckedOut() {
+        $("#dvViewExistingAppointment").show();
+        $("#myAppointment").modal('hide');
+
+    }
+   
+        function fnConfirmationForReschedule(e) {
+            //alert("OK");
+            //debugger;
+            $.ajax({
+                url: '@Url.Action("ConfirmForClearPrevRescheduleAmount","Patient")',
+                type: "POST",
+                dataType: "JSON",
+                data: { things: false },
+                success: function (data) {
+                    if (data.flag == "havetopay") {
+                        $('#_duepaymentforReschedule').modal();
+                    }
+                    else if (data.flag == "noneedtopay") {
+                        $.ajax({
+                            url: '@Url.Action("ConfirmForAppliedChargeInReschedule")' + "?AppointmentId=" + e,
+                            type: "POST",
+                            dataType: "JSON",
+                            data: { things: false },
+                            success: function (data) {
+                                if (data.flag == "0") {
+                                    //charge not applicable
+                                    var txt;
+                                    var r = confirm("Do you want to re-schedule this appointment");
+                                    if (r == true) {
+
+                                        window.location.href = '@Url.Action("PatientSelfSchedule", "Patient")?ForReschedule="yes"&AppoID=' + e + "&chargeamount=" + null;
+                                    }
+                                    else {
+                                        txt = "Cancel";
+                                    }
+
+
+                                }
+                                else if (data.flag == "1") {
+                                    //charge applicable
+                                    var statement = "Do you want to re-Schedule this appointment as charge is applicable now and charge amount is $" + data.chargeamount;
+                                    var txt;
+                                    var r = confirm(statement);
+                                    if (r == true) {
+                                        //charge operation implement with reschedule
+
+                                        window.location.href = '@Url.Action("PatientSelfSchedule", "Patient")?ForReschedule="yes"&AppoID=' + e + "&chargeamount=" + data.chargeamount;
+
+                                    }
+                                    else {
+                                        txt = "Cancel";
+                                    }
+                                }
+                                else {
+                                    alertify.alert(data.flag).setHeader('AdvancePT Says');
+                                }
+
+
+                            },
+                            error: function () {
+                                alert("Error occured.");
+                            }
+                        });
+                    }
+                    else {
+                        alertify.alert(data.flag).setHeader('AdvancePT Says')
+                    }
+
+                },
+                error: function () {
+                    alert("Error occured.");
+                }
+            });
+
+        }
+
+   
+
+    function fnConfirmationforschedule() {
+        return confirm("Do you want to re-schedule this appointment");
+    }
+
+
+
+    function fnConfirmation(e) {
+        @*var txt;
+        var r = confirm("Do you want to cancel this appointment");
+        if (r == true) {
+            //alert(PatientId);
+            $.ajax({
+                url: '@Url.Action("CreateAppoCancel")' + "?AppointmentId=" + e, //$('#hdnAppointmentId').val(),
+                type: "POST",
+                dataType: "JSON",
+                data: { things: false },
+                success: function (data) {
+                    //$('#ModalReschedule').modal('hide');
+                    // $('#myModal').modal('hide');
+                    alert(data);
+                    //location.reload();
+                    window.location.href = '@Url.Action("Index", "Patient")';
+                    //window.location.href = '@Url.Action("Index", "Patient")?msgfromselfschedule="The appointment has cancelled successfully"';
+
+                },
+                error: function () {
+                    alert("Error occured.");
+                }
+            });
+        } else {
+            txt = "Cancel";
+        }*@
+        $.ajax({
+            url: '@Url.Action("ConfirmForClearPrevCancellationAmount")',
+            type: "POST",
+            dataType: "JSON",
+            data: { things: false },
+            success: function (data) {
+                if (data.flag == "havetopay") {
+                    $('#_duepaymentforCancel').modal();
+                }
+                else if (data.flag = "noneedtopay") {
+                    $.ajax({
+                        url: '@Url.Action("ConfirmForAppliedChargeInCancellation")' + "?AppointmentId=" + e,
+                        type: "POST",
+                        dataType: "JSON",
+                        data: { things: false },
+                        success: function (data) {
+                            if (data.flag == "0") {
+                                //charge not applicable
+                                var txt;
+                                var r = confirm("Do you want to cancel this appointment");
+                                if (r == true) {
+
+
+                                    $.ajax({
+                                        url: '@Url.Action("CreateAppoCancel")' + "?AppointmentId=" + e + "&chargeamount=" + null, //$('#hdnAppointmentId').val(),
+                                        type: "POST",
+                                        dataType: "JSON",
+                                        data: { things: false },
+                                        success: function (data) {
+
+                                            alert(data);
+
+                                            window.location.href = '@Url.Action("Index", "Patient")';
+
+
+                                        },
+                                        error: function () {
+                                            alert("Error occured.");
+                                        }
+                                    });
+                                }
+                                else {
+                                    txt = "Cancel";
+                                }
+
+
+
+                            }
+                            else if (data.flag == "1") {
+                                //charge applicable
+                                var statement = "Do you want to cancel this appointment as charge is applicable now and charge amount is $" + data.chargeamount;
+                                var txt;
+                                var r = confirm(statement);
+                                if (r == true) {
+                                    //charge operation implement with cancel the appo
+
+                                    $.ajax({
+                                        url: '@Url.Action("CreateAppoCancel")' + "?AppointmentId=" + e + "&chargeamount=" + data.chargeamount, //$('#hdnAppointmentId').val(),
+                                        type: "POST",
+                                        dataType: "JSON",
+                                        data: { things: false },
+                                        success: function (data) {
+
+                                            alert(data);
+
+                                            window.location.href = '@Url.Action("Index", "Patient")';
+
+
+                                        },
+                                        error: function () {
+                                            alert("Error occured.");
+                                        }
+                                    });
+                                }
+                                else {
+                                    txt = "Cancel";
+                                }
+                            }
+                            else {
+                                alertify.alert(data.flag).setHeader('AdvancePT Says');
+                            }
+
+
+                        },
+                        error: function () {
+                            alert("Error occured.");
+                        }
+                    });
+                }
+                else {
+                    alertify.alert(data.flag).setHeader('AdvancePT Says')
+                }
+
+            },
+            error: function () {
+                alert("Error occured.");
+            }
+        });
+
+    }
+
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+     
+
+        window.history.forward();
+        //fnisCheckIn();
+
+        var fullDate = new Date();
+        var twoDigitMonth = fullDate.getMonth() + 1 + ""; if (twoDigitMonth.length == 1) twoDigitMonth = "0" + twoDigitMonth;
+        var twoDigitDate = fullDate.getDate() + ""; if (twoDigitDate.length == 1) twoDigitDate = "0" + twoDigitDate;
+        var currentDate = fullDate.getFullYear() + "-" + twoDigitMonth;
+        $(".responsive-calendar").responsiveCalendar({
+            onDayClick: function (events) {
+                // debugger;
+                var thisDayEvent, key;
+                // debugger;
+                key = $(this).data('year') + '-' + addLeadingZero($(this).data('month')) + '-' + addLeadingZero($(this).data('day'));
+                thisDayEvent = events[key];
+                $('#calendar').html("");
+
+                ShowAppoInfoByDate(key);
+                //$('#calendar').append("<div class='" + this.rendering + "' onclick='fngetAppoInfo(this);'>" + this.Appointment_Type + "<br/>" + this.start + "<br/>" + this.end + "<br/>" + this.title + hidden + "</div>");
+                //alert(key);
+                //alert(events);
+                //alert('Day was clicked');
+                //$('#myModal').modal();
+            },
+            //onActiveDayClick: function (events) {
+            //    var thisDayEvent, key;
+            //    debugger;
+            //    key = $(this).data('year') + '-' + addLeadingZero($(this).data('month')) + '-' + addLeadingZero($(this).data('day'));
+            //    thisDayEvent = events[key];
+            //    alert(key);
+            //    $('#myModal').modal();
+            //    $('#myModal .modal-body p').html(key);
+            //    alert(thisDayEvent.doctor);
+            //},
+            onMonthChange: function (events) {
+                AddCurentMonthEvents(this.currentMonth, this.currentYear);
+            },
+            time: currentDate,//'2017-04',
+            // events: ''
+            //"2017-04-30": { "number": 1 },
+            //"2017-04-26": { "number": 1 },
+            //"2017-05-03": { "doctor": 'sudeep' },
+            //"2017-06-12": { "number": 1 },
+
+            // ,
+        });
+        var date = new Date();
+
+        AddCurentMonthEvents(date.getMonth(), date.getFullYear());
+        //$('.responsive-calendar').responsiveCalendar('edit', {
+        //    "2017-06-30": { "number": 5, "badgeClass": "badge-warning", "url": "http://w3widgets.com/responsive-calendar" },
+        //    "2013-04-26": { "number": 1, "badgeClass": "badge-warning", "url": "http://w3widgets.com" },
+        //    "2013-05-03": { "number": 1, "badgeClass": "badge-error" },
+        //    "2013-06-12": {}
+        //})
+
+        //Added on 06-07-2017
+        $("#dvNexOptions").hide();
+
+
+
+
+    });
+    function addLeadingZero(num) {
+        if (num < 10) {
+            return "0" + num;
+        } else {
+            return "" + num;
+        }
+    }
+    function AddCurentMonthEvents(curmonth, curyear) {
+        $.ajax({
+            url: '@Url.Action("GetPatientEvent")' + "?CurrentMonth=" + curmonth + "&CurrentYear=" + curyear,
+            type: "POST",
+            dataType: "JSON",
+            data: { things: false },
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    var date = data[i].Date;
+                    var obj = {};
+                    obj[date] = { "number": 1 };
+                    $('.responsive-calendar').responsiveCalendar('edit', obj);
+
+                }
+            },
+            error: function (error) { alert("Error: " + error); },
+            statusCode: {
+                404: function () {
+                    alert("Page Not Found.");
+                }
+            }
+        });
+    }
+    function ShowAppoInfoByDate(curdate) {
+        var currentTime = new Date()
+        var month = currentTime.getMonth() + 1
+        var day = currentTime.getDate()
+        var year = currentTime.getFullYear()
+
+        var currentTime1 = new Date()
+        var hours = currentTime1.getHours()
+        var minutes = currentTime1.getMinutes()
+
+        //document.write(hours + ":" + minutes + " ")
+
+
+
+        var DateTimeNew = month + "/" + day + "/" + year + " " + hours + ":" + minutes
+
+        $("#btnCheckIn").css("display", "hide");
+        $("#btnCheckOut").css("display", "hide");
+        $.ajax({
+            url: '@Url.Action("GetAppoInfoByDate")' + "?CurrentDate=" + curdate + "&DateTimeNew=" + DateTimeNew,
+            type: "POST",
+            dataType: "JSON",
+            data: { things: false },
+            success: function (result) {
+                //alert(result.CheckInRequest);
+                // alert(result.CheckOutRequest);
+                if (result.CheckInRequest == "no" && result.CheckOutRequest == "no") {
+                    //alert(1);
+                    $("#btnCheckIn").css("display", "hide");
+                    $("#btnCheckOut").css("display", "hide");
+                    //alert("Some error occured!!");
+
+                    //$('#hdnCheckIn').val(result.obj.CheckIn);
+
+                }
+                else {
+                    //alert(2);
+                    if (result.CheckInRequest == "yes") {
+                        //alert(3);
+                        $("#btnCheckIn").show();
+                        $('#hdnCheckIn').val(result.obj.CheckIn);
+                    }
+                    else if (result.CheckInRequest == "no") {
+                        //alert(4);
+                        $("#btnCheckIn").css("display", "hide");
+
+                    }
+
+                    if (result.CheckOutRequest == "yes") {
+                        //alert(5);
+                        $("#btnCheckOut").show();
+                    }
+                    else if (result.CheckOutRequest == "no") {
+                        //alert(6);
+                        $("#btnCheckOut").css("display", "hide");
+
+                    }
+                }
+                $('#myModal').modal();
+                $('#hdnAppointmentId').val(result.obj.Appointment_TypeId);
+                // AppoID = $('#hdnAppointmentId').val();
+
+                $('#PatientName').html(result.obj.PatientName);
+                $('#AppointmentDate').html(result.obj.title);
+                //$('#Resource_Type').html(result.ResourceType);
+                $('#Employee').html(result.obj.Employee + "  (" + result.obj.Resource_Type + ")");
+                $('#Appointment_Type').html(result.obj.Appointment_Type);
+                $('#startTime').html(result.obj.start);
+                $('#endTime').html(result.obj.end);
+
+
+                var rootPath = GetSiteRoot();
+                
+                var path = rootPath + "SchedulePatientForPatient?reschedule=yes&AppointmentID=" + $('#hdnAppointmentId').val(); //"/ptotslp/Patient/SchedulePatientForPatient?reschedule=yes&AppointmentID=" + $('#hdnAppointmentId').val();
+                //var path = "/Patient/SchedulePatientForPatient?reschedule=yes&AppointmentID=" + $('#hdnAppointmentId').val();
+                $("#btnReschedule1").attr("href", path);
+                // $('#Resource_Type').html(data.Resource_Type);
+                //$("#calendar").append("<div>" + "<b>AppointmentDate:</b>  " + data.title + "<br/>" + "<b>Start Time:</b>  " + data.start + "<br/>" + "<b>End Time:</b>  " + data.end + "<br/>" + "<b>PatientName:</b>  " + data.PatientName + "<br/>" + "<b>Appointment Type:</b>  " + data.Appointment_Type + "<br/>" + "<b>Employee Name:</b>  " + data.Employee + "</div>");
+
+                if ($("#btnReScheduleAppointment").val() == 1) {
+                    //alert($("#btnReScheduleAppointment").val());
+                    $("#btnCancelRequest").css("display", "none");
+                    $("#btnReschedule1").css("display", "block");
+
+                }
+                else if ($("#btnCancelAppointment").val() == 2) {
+                    //alert($("#btnCancelRequest").val());
+                    $("#btnCancelRequest").css("display", "block");
+                    $("#btnReschedule1").css("display", "none");
+                }
+                else {
+                    $("#btnReschedule1").css("display", "none");
+                    $("#btnCancelRequest").css("display", "none");
+
+                }
+            },
+            error: function (error) { alert("Error: " + error); },
+            statusCode: {
+                404: function () {
+                    alert("Page Not Found.");
+                }
+            }
+        });
+    }
+
+    function GetSiteRoot() {
+        var rootPath = window.location.protocol + "//" + window.location.host + "/";
+        if (window.location.hostname == "localhost") {
+            var path = window.location.pathname;
+            if (path.indexOf("/") == 0) {
+                path = path.substring(1);
+            }
+            path = path.split("/", 1);
+            if (path != "") {
+                rootPath = rootPath + path + "/";
+            }
+        }
+        return rootPath;
+    }
+</script>
+
+
+
+
+<script>
+
+    function fnHelpemail() {
+
+        $.ajax({
+            url: '@Url.Action("Helpemail")' + "?AppointmentId=" + $('#hdnAppointmentId').val(),
+            type: "POST",
+            dataType: "JSON",
+            data: { things: false },
+            success: function (data) {
+                //$('#ModalReschedule').modal('hide');
+                $('#myModal').modal('hide');
+                var msg = data;
+                alert(msg);
+                //location.reload();
+
+            },
+            error: function () {
+                alert("Error occured.");
+            }
+        });
+
+    }
+    function fnConfirmationCheckIn() {
+
+        $.ajax({
+            url: '@Url.Action("checkin")' + "?CheckIn=" + $('#hdnCheckIn').val() + "&AppointmentId=" + $('#hdnAppointmentId').val(),
+            type: "POST",
+            dataType: "JSON",
+            data: { things: false },
+            success: function (data) {
+                ////// subhankar' work..18_01_2018
+                if (data == "dueofextracharge") {
+                    //$('#myModal').modal('hide');
+                    //$("#btnCheckIn").css("display", "none");
+                    //$("#btnCheckOut").css("display", "block");
+
+                    $('#_duepaymentforRescheduleorCancel').modal();
+                }
+                else {
+                    //previous code..............
+                    //alert(data);
+                    $('#myModal').modal('hide');
+                    $("#btnCheckIn").css("display", "none");
+                    $("#btnCheckOut").css("display", "block");
+                    $('#hdnAppointmentId').val("");
+                    $('#hdnCheckIn').val("");
+
+                    window.setTimeout(function () { window.location.href = "@Url.Action("Logout", "Home")" }, 2000);
+
+                    // alert(data);
+                    //$('#PatientName').html(data.PatientName);
+                    //$('#AppointmentDate').html(data.title);
+                    ////$('#Resource_Type').html(result.ResourceType);
+                    //$('#Employee').html(data.Employee + "  (" + data.Resource_Type + ")");
+                    //$('#Appointment_Type').html(data.Appointment_Type);
+                    //$('#startTime').html(data.start);
+                    //$('#endTime').html(data.end);
+                    // $('#Resource_Type').html(data.Resource_Type);
+                    //$("#calendar").append("<div>" + "<b>AppointmentDate:</b>  " + data.title + "<br/>" + "<b>Start Time:</b>  " + data.start + "<br/>" + "<b>End Time:</b>  " + data.end + "<br/>" + "<b>PatientName:</b>  " + data.PatientName + "<br/>" + "<b>Appointment Type:</b>  " + data.Appointment_Type + "<br/>" + "<b>Employee Name:</b>  " + data.Employee + "</div>");
+
+
+                    ///////////////previous code end
+                }
+
+            },
+            error: function (error) { alert("Error: " + error); },
+            statusCode: {
+                404: function () {
+                    alert("Page Not Found.");
+                }
+            }
+        });
+
+    }
+
+    function fnConfirmationCheckOut() {
+        var currentTime = new Date()
+        var month = currentTime.getMonth() + 1
+        var day = currentTime.getDate()
+        var year = currentTime.getFullYear()
+
+        var currentTime1 = new Date()
+        var hours = currentTime1.getHours()
+        var minutes = currentTime1.getMinutes()
+
+        //document.write(hours + ":" + minutes + " ")
+
+        var DateTimeNew = month + "/" + day + "/" + year + " " + hours + ":" + minutes
+        $.ajax({
+            url: '@Url.Action("checkout")' + "?AppointmentId=" + $('#hdnAppointmentId').val() + "&DateTimeNew=" + DateTimeNew,
+            type: "POST",
+            dataType: "JSON",
+            data: { things: false },
+            success: function (data) {
+                // alert(data);
+                $('#myModal').modal('hide');
+                $("#btnCheckIn").css("display", "hide");
+                $("#btnCheckOut").css("display", "hide");
+                $('#hdnAppointmentId').val("");
+                $('#hdnCheckIn').val("");
+                $("#dvViewExistingAppointment").show();
+                $("#myAppointment").modal('hide');
+                // location.reload();
+
+            },
+            error: function (error) { alert("Error: " + error); },
+            statusCode: {
+                404: function () {
+                    alert("Page Not Found.");
+                }
+            }
+        });
+
+    }
+    $("#btnReschedule").click(function () {
+
+        //alert(11);
+        @*$.ajax({
+            url: '@Url.Action("SchedulePatientForPatient")'+"?Reschedule=yes",
+            type: "POST",
+            dataType: "JSON",
+            data: { things: false },
+            success: function (data) {
+                alert(data);
+                $('#myModal').modal('hide');
+              //  $('#hdnAppointmentId').val("");
+
+            },
+            error: function (error) { alert("Error: " + error); },
+            statusCode: {
+                404: function () {
+                    alert("Page Not Found.");
+                }
+            }
+        });*@
+        //$('#ModalReschedule').modal();
+        //$('#myModal').modal('hide');
+    });
+    $("#btnRescheduleCreate").click(function () {
+        var RescheduleDate = $("#txtRescheduleDate").val();
+        var starttime = $("#txtstarttime").val();
+        var endtime = $("#txtendtime").val();
+        // alert(RescheduleDate);
+        // alert(starttime);
+        // alert(endtime);
+        $.ajax({
+            url: '@Url.Action("CreateAppoReSchedule")' + "?rescheduleDate=" + RescheduleDate + "&starttime=" + starttime + "&endtime=" + endtime + "&AppointmentId=" + $('#hdnAppointmentId').val(),
+            type: "POST",
+            dataType: "JSON",
+            data: { things: false },
+            success: function (data) {
+                $('#ModalReschedule').modal('hide');
+                $('#myModal').modal('hide');
+                $("#txtRescheduleDate").val("");
+                $("#txtstarttime").val("");
+                $("#txtendtime").val("");
+                $('#hdnAppointmentId').val("");
+                // alert(data);
+                //$('#PatientName').html(data.PatientName);
+                //$('#AppointmentDate').html(data.title);
+                ////$('#Resource_Type').html(result.ResourceType);
+                //$('#Employee').html(data.Employee + "  (" + data.Resource_Type + ")");
+                //$('#Appointment_Type').html(data.Appointment_Type);
+                //$('#startTime').html(data.start);
+                //$('#endTime').html(data.end);
+                // $('#Resource_Type').html(data.Resource_Type);
+                //$("#calendar").append("<div>" + "<b>AppointmentDate:</b>  " + data.title + "<br/>" + "<b>Start Time:</b>  " + data.start + "<br/>" + "<b>End Time:</b>  " + data.end + "<br/>" + "<b>PatientName:</b>  " + data.PatientName + "<br/>" + "<b>Appointment Type:</b>  " + data.Appointment_Type + "<br/>" + "<b>Employee Name:</b>  " + data.Employee + "</div>");
+
+            },
+            error: function (error) { alert("Error: " + error); },
+            statusCode: {
+                404: function () {
+                    alert("Page Not Found.");
+                }
+            }
+        });
+    });
+
+
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="PatientConlitionListModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Patient Previous Condition List</h4>
+            </div>
+            <div class="modal-body">
+                <p>Previous Conditions</p>
+                <p>
+                    <div>
+                        <table class="table table-bordered hoverTable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    @*
+                                        <th>Conditon No</th>*@
+                                    <th>Contact Date</th>
+                                    <th>Problem Type</th>
+                                    <th>From When Problem Exists</th>
+                                    <th>&nbsp;</th>
+                                </tr>
+                            </thead>
+                            @{
+                                if (ViewBag.CountPatientConlitionList != null)
+                                {
+                                    int count = 1;
+                                    foreach (var clist in ((List<DataLayer.Models.Condition>
+                                        )ViewBag.CountPatientConlitionList))
+                                    {
+                                        <tr>
+                                            <td>@count</td>
+                                            <td>@clist.Contact_Date.GetExactValue()</td>
+                                            @*
+                                                <td>@clist.PatientCondition_Id</td>*@
+                                            <td>@*@clist.ProblemType*@ @(((ProblrmType)Enum.ToObject(typeof(ProblrmType), (Convert.ToInt32(clist.ProblemType)))).ToCustomString()) </td>
+                                            <td>@clist.FromWhenProblemExist.GetExactValue()</td>
+                                            <td>
+                                                <a href="@Url.Action("patientpreviousconditionprofile", "Patient" , new { patientcondition_id=clist.PatientCondition_Id })">
+                                                    <i class="fa fa-eye" data-toggle="tooltip" title="Show Detail." aria-hidden="true"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        count++;
+                                    }
+                                }
+                            }
+                        </table>
+                    </div>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var _varmsgreachgoal = '@ViewBag.msgreachgoal';
+        if (_varmsgreachgoal != "") {
+            alertify.alert(_varmsgreachgoal).setHeader('AdvancePT Says');
+        }
+        var msg = '@ViewBag.selfschedulemsg';
+        if (msg == "") {
+            fnAppointment();
+            //  alert("ok");
+            //alert('@ViewBag.PatientCondition_Id');
+            @*if ('@ViewBag.PatientCondition_Id' != null && '@ViewBag.PatientCondition_Id' != 0) {
+                $('#PatientConlitionListModal').modal('show');
+            }*@
+
+            // $("#myAppointment").modal('show');
+        }
+        else {
+            alertify.alert(msg).setHeader('AdvancePT Says');
+            $("#dvViewExistingAppointment").show();
+            $("#myAppointment").modal('hide');
+        }
+
+        var _Paymentmsg = '@ViewBag.Paymentmsg';
+        if (_Paymentmsg != "") {
+
+            alertify.alert(_Paymentmsg).setHeader('AdvancePT Says');
+        }
+        var _msgpayamount = '@ViewBag.msgpayamount';
+        if (_msgpayamount != "") {
+
+            alertify.alert(_msgpayamount).setHeader('AdvancePT Says');
+        }
+
+    });
+</script>
+<script>
+    function fnAppointment() {
+        //  alert(PatientPayTran_Id);
+        $.ajax({
+            url: '@Url.Action("Getappointment", "Patient")',
+            type: 'POST',
+            // data: { PatientPayTran: PatientPayTran_Id },
+            success: function (data) {
+                if (data >= "12:00:00") {
+
+                    $("#gdmong").text("Good Afternoon");
+                }
+                else {
+                    $("#gdmong").text("Good morning");
+                }
+                $("#aptime").text(data);
+
+                var start = data;
+                var subtract = '00:10:00';
+
+                s = start.split(':');
+                e = subtract.split(':');
+
+                if (s[1] = "00") {
+                    // alert(s[1]);
+                    d = 60;
+                    min = d - e[1];
+                }
+                else {
+                    min = s[1] - e[1];
+                }
+
+                hour_carry = 0;
+                //if (min < 0) {
+                //    min += 60;
+                //    hour_carry += 1;
+                //}
+                if (e[1] = "00") {
+                    hour = s[0] - 1;
+                }
+                else {
+                    hour = s[0] - e[0]
+                }
+                //hour = s[0] - e[0] - hour_carry;
+                diff = hour + ":" + min + ":" + "00";
+
+                totaldifference = hour + ":" + min;
+
+                // $("#aptime").html(res);
+                var now = new Date(Date.now());
+                //var formatted = now.getHours(); //+ ":" + now.getMinutes() //+ ":" + now.getSeconds();
+                //alert(formatted);
+
+                //alert(now.getHours());
+                //alert(now.getMinutes());
+
+                //alert('Current Hour = ' + now.getHours());
+                //alert('Current Min = ' + now.getMinutes());
+                //alert('Appointment Hour = ' + hour);
+                //alert('Appointment Min = ' + min);
+
+                if (now.getHours() >= hour) {
+                    //55 55    55  02   55 45  55 10
+                    var currentMin = now.getMinutes();
+                    var appointmentMin = min;
+
+                    if (now.getHours() > hour && currentMin < appointmentMin) {
+
+                        currentMin = currentMin + 60;
+                    }
+
+
+                    //alert('currentMin' + currentMin);
+                    //alert('appointmentMin ' + appointmentMin);
+
+
+                    if (currentMin >= appointmentMin) {
+                        //alert("Show Appointment");
+                        //alert($("#ischeckin").val());
+                        if ($("#ischeckin").val() == "True") {
+                            //alert($("#ischeckout").val());
+                            if ($("#ischeckout").val() == "True") {
+                                $("#myAppointment").modal('hide');
+                                $("#dvViewExistingAppointment").show();
+                            }
+                            else {
+                                //alert("ok");
+                                $("#myAppointment").modal('show');
+                            }
+
+                        }
+                        else if ($("#Appointments").val() == 0) {
+                            //alert("ok");
+                            $("#myAppointment").modal('hide');
+                            $("#dvViewExistingAppointment").show();
+
+                        }
+                        else {
+
+                            $("#myAppointment").modal('show');
+                        }
+                    }
+                    else {
+                        $("#dvViewExistingAppointment").show();
+                        $("#myAppointment").modal('hide');
+                    }
+                }
+                else {
+                    $("#dvViewExistingAppointment").show();
+                    $("#myAppointment").modal('hide');
+                }
+
+                //if (formatted >= totaldifference)
+                //{
+
+                //    // $('#aptime').html(data);
+                //    // $("#tblPatientList tbody").html('');
+
+                //}
+
+                //else {
+
+                //    $("#myAppointment").modal('hide');
+                //}
+
+
+            },
+            error: function (msg) {
+            }
+        });
+
+    }
+</script>
+
+<script>
+
+    jQuery(document).ready(function () {
+        jQuery('.accordion-2 .panel-heading-patient').on('click', function () {
+            //alert("rtrt");
+            jQuery('.accordion-2 .panel-heading-patient ').removeClass('active');
+            jQuery(this).addClass('active');
+
+        });
+
+
+
+    });
+
+</script>
+<script>
+
+    jQuery(document).ready(function () {
+        //alert(11);
+        //$("#loadfirsttime").addClass("onlyfirsttime");
+        $("#togglefirsttime").addClass("onlyfirsttime");
+
+
+
+
+    });
+    $("#togglefirsttime").click(function () {
+        //alert(22);
+        $("#togglefirsttime").removeClass("onlyfirsttime");
+        // $("#togglefirsttime").addClass("collapsed");
+        //$('#togglefirsttime').prop('disabled', true);
+
+    });
+    $("#toggleanotherfirsttime").click(function () {
+        //alert(22);
+        $("#togglefirsttime").removeClass("onlyfirsttime");
+        //$("#togglefirsttime").addClass("collapsed");
+        //  $('#togglefirsttime').prop('disabled', true);
+    });
+    $("#toggleanother1firsttime").click(function () {
+        //alert(22);
+        $("#togglefirsttime").removeClass("onlyfirsttime");
+        //$("#togglefirsttime").addClass("collapsed");
+        // $('#togglefirsttime').prop('disabled', true);
+    });
+
+</script>
+
+
+<script>
+    function fnShowTotalamountNew(ptid, ptconid) {
+        //alert(ptid);
+        // alert(ptconid);
+        $("#error_msg").hide();
+        $.ajax({
+            url: '@Url.Action("GetPaymenthistoryforpatient", "Patient")',
+            type: 'POST',
+            data: { patid: ptid, patconid: ptconid },
+            success: function (res) {
+                //alert(res.length);
+                // debugger;
+                if (res.length >= 1) {
+
+                    $("#tblPatientList tbody").html('');
+                    for (var i = 0; i < res.length; i++) {
+                        var re = res[i].split(" ");
+                        var row = "<tr>" +
+                                            //" <td>  " + re[4] + " " + re[5] + "</td>" + " <td>  " + re[1] + "</td>" + "<td>" + re[2] + "  " + re[3] + "</td>" + " <td>  " + re[0] + "</td>" +
+                                              " <td>  " + re[1] + "</td>" + "<td>" + re[2] + "  " + re[3] + "</td>" + " <td>  " + re[0] + "</td>" +
+                                        "</tr>";
+                        $("#tblPatientList tbody").append(row);
+                    }
+                    $("#div_noRecforpayment").hide();
+                }
+                else {
+                    //debugger;
+                    //$("#tblPatientList").html('');
+                    $("#div_noRecforpayment").show();
+                    //$("#tblPatientList tbody").html('');
+                    //$("#tblPatientList tbody").html('<div id="error_msg" style="color:red" >There are no records found</div>');
+                }
+
+            },
+            error: function (msg) {
+            }
+        });
+
+        $('#_Paymenthistory').modal();
+    }
+</script>
+@*<script>
+        var timeout = null;
+        $(document).ready(function () {
+            clearTimeout(timeout);
+            timeout = setTimeout(function () {
+
+                fnShowSessionOutAlert();
+
+            }, 30*60*1000);
+
+        });
+        $(document).on('mousemove', function () {
+
+            clearTimeout(timeout);
+            timeout = setTimeout(function () {
+                fnShowSessionOutAlert();
+
+            },30*60*1000);
+        });
+        function fnShowSessionOutAlert() {
+            var link = "@Url.Action("Logout", "Home", new { Area = "" })";
+            var closable = alertify.alert().setting('closable');
+
+            alertify.alert().setHeader('AdvancePT Says')
+              .setting({
+                  'label': 'OK',
+                  'message': 'The session has been expired, please login again',
+                  'onok': function () { window.location = link; }
+              }).show();
+
+        }
+    </script>*@

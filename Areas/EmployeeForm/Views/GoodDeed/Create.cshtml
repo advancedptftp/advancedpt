@@ -1,0 +1,193 @@
+﻿@model DataLayer.Models.tblTGoodDeedForm
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<section class="bodyinner">
+    <div class="container">
+        <div class="bodyleft">
+           
+            @*<div class="calender"><img src="@Url.Content("~/Images/calender.jpg")" alt="" /></div>
+            <div class="leftaccordian">
+
+       
+
+                    <div class="technology">Employee Forms</div>
+                <div class="thelanguage">
+                    <ul class="accorlist">
+                        <li><a href="@Url.Action("Create", new { Area = "EmployeeForm", Controller = "IncidentForm" })">Incident Report Form</a></li>
+                        <li><a href="@Url.Action("Create", new { Area = "EmployeeForm", Controller = "EmployeePayroll" })">Payroll Addendum Form</a></li>
+                        <li><a href="@Url.Action("Create", new { Area = "EmployeeForm", Controller = "GoodDeed" })">Performance Good Deed Form</a></li>
+                        <li><a href="@Url.Action("Create", new { Area = "EmployeeForm", Controller = "MaintenanceRequestForm" })">Maintenance Request Form</a></li>
+                        <li><a href="@Url.Action("Create", new { Area = "EmployeeForm", Controller = "NewEmpQuestionair" })">New Employee Questionnaire</a></li>
+                        <li><a href="@Url.Action("Create", new { Area = "EmployeeForm", Controller = "BusinessCardOrder" })">Business Card Order Form</a></li>
+                    </ul>
+                </div>
+
+                    <div class="technology">DME Forms</div>
+                    <div class="thelanguage">
+                        <ul class="accorlist">
+                            <li><a href="#">Incident Report Form</a></li>
+                            <li><a href="#">Payroll Addendum Form</a></li>
+                            <li><a href="#">Performance Good Deed Form</a></li>
+                            <li><a href="#">Maintenance Request Form</a></li>
+                            <li><a href="#">New Employee Questionnaire</a></li>
+                            <li><a href="#">Business Card Order Form</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="technology">Clinic Documents</div>
+                    <div class="thelanguage">
+                        <ul class="accorlist">
+                            <li><a href="#">Incident Report Form</a></li>
+                            <li><a href="#">Payroll Addendum Form</a></li>
+                            <li><a href="#">Performance Good Deed Form</a></li>
+                            <li><a href="#">Maintenance Request Form</a></li>
+                            <li><a href="#">New Employee Questionnaire</a></li>
+                            <li><a href="#">Business Card Order Form</a></li>
+                        </ul>
+                    </div>
+
+
+
+
+
+                </div>*@
+            @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+            </div>
+        <div class="bodyright">
+
+            <div class="report-form clearfix">
+                <h2>Performance Good Deed Form</h2>
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+                    
+     @Html.ValidationSummary(true)
+     @Html.Hidden("CreatedOn", DateTime.Now)
+     if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+                <div class="row">
+                    <div class="col-sm-6 col-md-6 form-group">
+                        @Html.Label("Today's Date")
+                        @Html.TextBoxFor(model => model.TodaysDate, new { @class = "form-control datepicker datepicker-bg", style = "width:100%;", @Value = DateTime.Now.ToString("MM/dd/yyyy"), @Readonly = true })
+                        @Html.ValidationMessageFor(model => model.TodaysDate)
+                    </div>
+
+                    <div class="col-sm-6 col-md-6 form-group">
+
+
+                        @Html.Label("Office Location")
+                        @Html.DropDownList("OfficeLocation", String.Empty)
+                        @Html.ValidationMessageFor(model => model.OfficeLocation)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-4 form-group">
+                        @Html.Label("Employee First Name")
+                        @Html.TextBoxFor(model => model.EmpFirstName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.EmpFirstName)
+                    </div>
+                    <div class="col-sm-6 col-md-4 form-group">
+                        @Html.Label("Employee Last Name")
+                        @Html.TextBoxFor(model => model.EmpLastName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.EmpLastName)
+                    </div>
+                    <div class="col-sm-6 col-md-4 form-group">
+                        @Html.Label("Job Title")
+                        @Html.TextBoxFor(model => model.JobTitle, new { @class = "form-control" })
+                        
+                        @Html.ValidationMessageFor(model => model.JobTitle)
+                    </div>
+
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 form-group">
+                        @Html.Label("Provide details of the good deed preformed" )
+                        @Html.TextAreaFor(model => model.GoodDeedPerformed, new { @class = "form-control",@id = "txtdata", @onkeyup = "javascript:ValidateCharactercount(this);", @maxlength = "2000", @autocomplete = "off" })
+                        @Html.ValidationMessageFor(model => model.GoodDeedPerformed)
+                        <div id="divmessage" style="color: green;"></div>  
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-4 form-group">
+                        @Html.Label("Witness First & Last Name")
+                        &nbsp;&nbsp;
+                        @Html.TextBoxFor(model => model.WitnessFirstLastName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.WitnessFirstLastName)
+                    </div>
+                    <div class="col-sm-6 col-md-4 form-group">
+                        @Html.Label("Date When Good Deed Happened")
+                       
+                        @Html.TextBoxFor(model => model.GoodDeedDt, new { @class = "form-control datepicker datepicker-bg", placeholder = "mm/dd/yyyy", style = "width:100%;" })
+                        @Html.ValidationMessageFor(model => model.GoodDeedDt)
+                    </div>
+                    <div class="col-sm-6 col-md-4 form-group">
+                        @Html.Label("Time When Good Deed Happened")
+                        @Html.TextBoxFor(model => model.GoodDeedTm, new { @class ="form-control clockpicker" , @id = "GoodDeedTm" })
+                        @Html.ValidationMessageFor(model => model.GoodDeedTm)
+                        <div id="divmessage" style="color: green;"></div> 
+                    </div>
+
+                </div>
+                <hr>
+
+               
+               
+                <div class="subbutt">
+                    <input type="submit" value="Create" class="btn btn-orange pull-right" />
+                   
+                    <div class="clearfix"></div>
+                </div>
+      <p>@Html.ActionLink("Back to List", "Index")</p>
+}
+            </div>
+
+
+
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</section>
+
+<script>
+    $('#OfficeLocation').addClass('form-control');
+</script>
+
+<script>
+    jQuery('.datepicker').datepicker();
+</script>
+
+<script language="javascript">
+    function ValidateCharactercount(cont) {
+        var len = cont.value.length;
+        var remchars = 2000 - len;
+        if (remchars == 0) {
+            //alert('Maximum Length Is 500 Chars!......');
+            $('#divmessage').css('color', 'red');
+        }
+        else {
+            $('#divmessage').css('color', 'green');
+        }
+        //var id = "#" + cont.id;
+        $("#divmessage").html("Character remaning :" + remchars);
+    }
+</script>
+
+
+
+
+
+
+
+
+
+

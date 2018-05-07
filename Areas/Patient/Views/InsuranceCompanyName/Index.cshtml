@@ -1,0 +1,198 @@
+﻿@model PagedList.IPagedList<DataLayer.Models.tblMPatientInsuranceCompanyName>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<section class="bodyinner2">
+    <div>
+        <p class="pull-right">
+            @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+        </p>
+        @using (Html.BeginForm("Index", "User", FormMethod.Get))
+        {
+
+            <div class="searchsec">
+
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search by Company Name" })
+                <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                <div class="clearfix"></div>
+            </div>
+        }
+        <div class="clearfix"></div>
+    </div>
+    
+
+    <div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+
+                <thead>
+                    <tr>
+
+                        <th>
+                            @{ var classname = "botharrow";}
+                            @if ((ViewBag.CurrentSort == "CompanyName" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                            {
+                                classname = "bottarrow";
+                            }
+                            
+                            @Html.ActionLink("Company Name", "Index", new { sortOrder = "CompanyName", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname })
+
+                        </th>
+                       
+                        <th></th>
+                    </tr>
+
+                </thead>
+
+                @foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.CompanyName)
+        </td>
+     
+        <td>
+
+            <a href="@Url.Action("Edit", "InsuranceCompanyName", new { id = item.InsuranceCompany_Id })">
+                <i class="fa fa-edit" aria-hidden="true"></i>
+            </a>
+
+            <a href="@Url.Action("Delete", "InsuranceCompanyName", new { id = item.InsuranceCompany_Id })">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+            </a>
+        </td>
+
+    </tr>
+}
+            </table>
+        </div>
+        <div>
+            <br />
+            @using (Html.BeginForm("Index", "InsuranceCompanyName", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+            {
+                @Html.DropDownList("PageSize")
+            }
+            <div class="pull-left" style=" padding: 10px;">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+            @{
+                bool? direction = ViewBag.SortDirection;
+                if (direction == null) { direction = false; }
+            }
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                                                          new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction, pagesize = ViewBag.IPageSize }))
+
+        </div>
+    </div>
+
+</section>
+<script>
+    $("#PageSize").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CompanyName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModifiedOn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tblMUser.UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tblMUser1.UserName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.CompanyName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreatedOn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ModifiedOn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tblMUser.UserName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tblMUser1.UserName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.InsuranceCompany_Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.InsuranceCompany_Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.InsuranceCompany_Id })
+        </td>
+    </tr>
+}
+
+</table>*@

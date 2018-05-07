@@ -1,0 +1,188 @@
+﻿@model PagedList.IPagedList<DataLayer.Models.tblTGoodDeedForm>
+@using PagedList.Mvc;
+@using DataLayer;
+@{
+    ViewBag.Title = "Index";
+    var IsApprover = ViewContext.Controller.IsApprover(3);
+}
+<style>
+    .searchsec {
+        width: 561px;
+    }
+</style>
+<center><h2 style="margin-top:20px;">Good Deed Performance List</h2></center>
+
+
+<section class="bodyinner2">
+    <div>
+        <p class="pull-right">
+            @Html.ActionLink("Create New Record", "Create", null, new { @class = "btn btn-primary" })
+        </p>
+        @using (Html.BeginForm("Index", "GoodDeed", FormMethod.Get))
+        {
+            <div class="searchsec">
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search by Employee First Name,Employee Last Name,Job Title" })
+                <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                <div class="clearfix"></div>
+            </div>
+        }
+        <div class="clearfix"></div>
+    </div>
+
+    <div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            @*@Html.DisplayNameFor(model => model.Involved_Person_Name)*@
+                            @Html.DisplayName("Today's Date")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Emloyee First Name")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Emloyee Last Name")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Job Title")
+                        </th>
+                        <th>
+                            @Html.DisplayName("GoodDeed Performed")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Witness Name")
+                        </th>
+                        <th>
+                            @Html.DisplayName("GoodDeed Date")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Approved By")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Approved On")
+                        </th>
+                        <th class="tdList_Edit"></th>
+                        <th class="tdList_Details"></th>
+                        <th class="tdList_PDF"></th>
+                        <th class="tdList_Approve"></th>
+                    </tr>
+
+                </thead>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+
+                        <td>
+                            @*@Html.DisplayFor(modelItem => item.Gender)*@
+                            @*@Html.DisplayFor(modelItem => item.CreatedOn, new { @value = item.CreatedOn.ToString("mm/dd/yyyy") })*@
+                            @*@Html.Label(@item.TodaysDate == null ? "" : @item.TodaysDate.Value.ToString("MM/dd/yyyy"))*@
+                            @Html.Label(@item.TodaysDate.GetExactValue())
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EmpFirstName)
+                        </td>
+                        <td>
+                            @*@Html.DisplayFor(modelItem => item.DateOfOccurance)*@
+                            @Html.DisplayFor(modelItem => item.EmpLastName)
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.JobTitle)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.GoodDeedPerformed)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.WitnessFirstLastName)
+                        </td>
+                        <td>
+
+                            @Html.Label("GoodDeedDt", item.GoodDeedDt == null ? "" : Convert.ToDateTime(item.GoodDeedDt).ToString("MM/dd/yyyy"))
+                        </td>
+                        <td>
+
+                            @if (item.ApprovedBy != null)
+                            {
+                                @item.tblMUser.Name
+                            }
+                        </td>
+                        <td>
+                            @if (item.ApprovedOn != null)
+                            {
+                                @item.ApprovedOn.Value.GetExactValue()
+                            }
+                        </td>
+
+                        <td class="tdList_Edit">
+                            @if (item.ApprovedBy == null)
+                            {
+                                <a href="@Url.Action("Edit", "GoodDeed", new { id = item.GoodDeed_Id })">
+                                    <i class="fa fa-edit" aria-hidden="true"></i>
+                                </a>
+                            }
+                        </td>
+                        <td class="tdList_Details">
+
+                            <a href="@Url.Action("Details", "GoodDeed", new { id = item.GoodDeed_Id })">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                        <td class="tdList_PDF">
+                            <a href="javascript:void(0);" onclick="fnShowDetail(@item.GoodDeed_Id);">
+                                <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                        <td class="tdList_Approve">
+                            @if (item.ApprovedBy == null && IsApprover)
+                            {
+                                @Html.ActionLink("Approve", "Approve", new { id = item.GoodDeed_Id }, new { @class = "btn btn-success" })
+                            }
+
+                        </td>
+                    </tr>
+                }
+
+            </table>
+
+        </div>
+        <div>
+            <br />
+            @using (Html.BeginForm("Index", "GoodDeed", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+            {
+                @Html.DropDownList("PageSize")
+            }
+            @{
+                bool? direction = ViewBag.SortDirection;
+                if (direction == null) { direction = false; }
+            }
+            <div class="pull-left" style=" padding:10px;">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                      new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction }))
+        </div>
+    </div>
+
+</section>
+<script>
+    function fnShowDetail(GoodDeed_Id) {
+        var url = "@Url.Action("GoodDeedForm", "GoodDeed", new { Area = "EmployeeForm" })" + "?id=" + GoodDeed_Id;
+        //fnShowPopupForDetail(url);
+        popupwindow(url, 'GoodDeedForm', 1000, 800);
+    }
+</script>
+
+
+<script>
+    $("#PageSize").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+</script>

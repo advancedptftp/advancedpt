@@ -1,0 +1,1529 @@
+﻿@model DataLayer.Models.PatientAOBInfo
+@using DataLayer;
+@{
+    var dob1 = Model.DOB.GetExactValue();
+    var ssno = Model.Social_Security;
+    ViewBag.Title = "CreatePersonalInfo";
+    var PatientR1 = Model.PatientRelationship;
+    var PatientR2 = Model.PatientRelationship2;
+    var imgurl11 = "";
+    var imgurl12 = "";
+    var Secimgurl21 = "";
+    var Secimgurl22 = "";
+    // var noImg = Url.Content("~/Images/no-image.jpg");
+    // var NoImage = "data:image/jpeg;base64," + Convert.ToBase64String(noImg);
+    if (Model.DocumentFrontPrimay != null)
+    {
+        imgurl11 = "data:image/jpeg;base64," + Convert.ToBase64String(Model.DocumentFrontPrimay);
+    }
+    if (Model.DocumentBackPrimary != null)
+    {
+        imgurl12 = "data:image/png;base64," + Convert.ToBase64String(Model.DocumentBackPrimary);
+    }
+    if (Model.DocumentFrontSecondary != null)
+    {
+        Secimgurl21 = "data:image/png;base64," + Convert.ToBase64String(Model.DocumentFrontSecondary);
+    }
+    if (Model.DocumentBackSecondary != null)
+    {
+        Secimgurl22 = "data:image/png;base64," + Convert.ToBase64String(Model.DocumentBackSecondary);
+    }
+}
+@if (ViewBag.Error != null)
+{
+    Response.Write("<div id=\"loadforscheduleapp\" class=\"loadingdivschedule\"><div class=\"loadingcontainerschedule\"><img src=\"\\../Images/pageloader1.gif\" width=\"200\" height=\"200\" /></div></div>");
+    @Html.Raw(ViewBag.Error)
+}
+<script src="~/Scripts/jquery.uploadPreview.min.js"></script>
+<style type="text/css">
+    /*Secondary Image*/
+    #image-preview11 {
+        width: 100%;
+        height: 180px;
+        position: relative;
+        overflow: hidden;
+        background-color: #ffffff;
+        color: #ecf0f1;
+        background-size: cover;
+        background-size: 100% 100%;
+        cursor: pointer;
+    }
+
+    #image-preview12 {
+        width: 100%;
+        height: 180px;
+        position: relative;
+        overflow: hidden;
+        background-color: #ffffff;
+        color: #ecf0f1;
+        background-size: cover;
+        background-size: 100% 100%;
+        cursor: pointer;
+    }
+
+    .ImagePreviewDisplay11 input {
+        line-height: 200px;
+        font-size: 200px;
+        position: absolute;
+        opacity: 0;
+        z-index: 10;
+        cursor: pointer;
+    }
+
+    .ImagePreviewDisplay12 input {
+        -webkit-appearance: none;
+        cursor: pointer;
+        width: 200px;
+        height: 250px;
+        position: relative;
+        top: -35px;
+    }
+
+
+
+
+
+
+
+
+
+    #image-preview {
+        width: 100%;
+        height: 180px;
+        position: relative;
+        overflow: hidden;
+        background-color: #ffffff;
+        color: #ecf0f1;
+        background-size: cover;
+        background-size: 100% 100%;
+        cursor: pointer;
+    }
+
+    #image-preview1 {
+        width: 100%;
+        height: 180px;
+        position: relative;
+        overflow: hidden;
+        background-color: #ffffff;
+        color: #ecf0f1;
+        background-size: cover;
+        background-size: 100% 100%;
+        cursor: pointer;
+    }
+
+    .ImagePreviewDisplay1 input {
+        line-height: 200px;
+        font-size: 200px;
+        position: absolute;
+        opacity: 0;
+        z-index: 10;
+        cursor: pointer;
+    }
+
+    .ImagePreviewDisplay input {
+        -webkit-appearance: none;
+        cursor: pointer;
+        width: 200px;
+        height: 250px;
+        position: relative;
+        top: -35px;
+    }
+</style>
+<style>
+    .loadingdivschedule {
+        display: block;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 9998;
+        background-color: rgba(0,0,0,.3);
+        -webkit-animation: fade 500ms;
+        -moz-animation: fade 500ms;
+        -o-animation: fade 500ms;
+        animation: fade 500ms;
+    }
+
+    .loadingcontainerschedule {
+        width: 100%;
+        text-align: center;
+        padding-top: 26%;
+    }
+</style>
+<div class="body ">
+    <div class="activationform_fullpage">
+        <div id="loadforscheduleapp" class="loadingdivschedule">
+            <div class="loadingcontainerschedule">
+                <img src="~/Images/pageloader1.gif" width="200" height="200" />
+            </div>
+        </div>
+            <div class="report-form clearfix">
+                @using (Html.BeginForm("PatientAOBInfo", "PatientRegistration", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.HiddenFor(e => e.PatientConditionID)
+                    @Html.HiddenFor(e => e.SignOfPolicyholder)
+                    @*@Html.HiddenFor(e => e.WitnessSignature)*@
+                    @Html.HiddenFor(e => e.ClaimantSignature)
+
+
+                    @Html.ValidationSummary(true)
+                    <h3 style="padding-bottom:15px;">Assignment Of My Benefits</h3>
+                    <div class="clearfix line"></div>
+
+                    <div class="row" id="dvid_1">
+                        <h4 class="subheading">Benefit Info</h4><br />
+                        <div class="col-sm-12 col-md-12 form-group">
+
+                            <div class="headrightcont">
+                                Are there any maximums?
+                            </div>
+                            <br />
+                            <div>
+                                <div class="inlineradio">
+                                    <label class="control control--radio greenbuttradio1">
+                                        <span>YES</span>
+                                        @Html.RadioButtonFor(m => m.visits, Convert.ToInt16(YesNo.Yes).ToString())
+                                        <div class="control__indicator"></div>
+                                    </label>
+
+                                </div>
+                                <div class="inlineradio">
+                                    <label class="control control--radio redbuttradio1">
+                                        <span>NO</span>
+                                        @Html.RadioButtonFor(m => m.visits, Convert.ToInt16(YesNo.No).ToString())
+                                        <div class="control__indicator"></div>
+                                    </label>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.visits)
+                        <div class="" id="dvtt">
+
+                            <div class="col-sm-8 col-md-4 form-group">
+                                <div class="headrightcont">Maximum Number Of Visit: </div>
+                                @Html.TextBoxFor(m => m.number_of_visits, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.number_of_visits)
+                            </div>
+
+                        </div>
+
+                    </div>
+                   
+                    <div class="row" id="dvid_2">
+
+                        @Html.HiddenFor(m => m.Social_Security)
+                        <div class="headrightcont">
+                            <div class="col-sm-12 form-group">
+                                <div class="leftmargin">Social Security Number (SSN)</div>
+
+
+                                <div class="col-sm-6 form-group" style="padding-left:0;">
+                                    <div class="col-sm-2 form-group" style="padding: 0 8px 0 0;">
+                                        @Html.TextBox("Social", "", new { @class = "form-control Percentages", style = " font-size:19px;", @maxlength = 3, onkeyup = "movecursor(this,'Security')" })
+                                    </div>
+                                    <div class="col-sm-1 form-group" style="padding: 0; width: auto; font-size: 34px; padding-top: 7px;">-</div>
+                                    <div class="col-sm-2 form-group" style="padding: 0 8px;">
+                                        @Html.TextBox("Security", "", new { @class = "form-control days", style = " font-size:19px;", @maxlength = 2, onkeyup = "movecursor(this,'Number')" })
+
+                                    </div>
+                                    <div class="col-sm-1 form-group" style="padding: 0; width: auto; font-size: 34px; padding-top: 7px;">-</div>
+                                    <div class="col-sm-3 form-group" style="padding: 0 8px;">
+                                        @Html.TextBox("Number", "", new { @class = "form-control years", style = " font-size:19px;", @maxlength = 4 })
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div id="divssnerror">
+                                    <span style="color:red;"> Enter SSN properly</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                   
+                    <div class="row" id="dvid_3">
+                        <div class="col-sm-12 col-md-6 form-group">
+                            <div class="headrightcont">Insurance Policy 1 Name   </div>
+                            @Html.DropDownList("InsurancePlanID1")
+                           @Html.TextBoxFor(m => m.InsurancePlanID1, new { @class = "form-control", @style = "display: inline;width: 400px;", @id = "txtPatientRelationshipIfOther" })
+                        </div>
+
+                        <div class="col-sm-12 col-md-12 form-group">
+                            <h2>Patient’s Insurance Identification Card:</h2>
+                        </div>
+
+
+                        <div class="col-sm-12 col-md-6 form-group">
+                            <div class="headrightcont">
+                                Front Image:
+                                <div>
+                                    <div id="image-preview" style="width:200px;height:200px;">
+                                    </div>
+                                    <br />
+                                    <input type="file" id="uploadImagesFront" name="uploadImagesFront" accept="image/*" capture="camera" />
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-sm-12 col-md-6 form-group">
+                            <div class="headrightcont">
+                                Back Image:
+                                <div>
+                                    <div id="image-preview1" style="width:200px;height:200px;">
+                                    </div>
+                                    <br />
+                                    <input type="file" id="uploadImagesBack" name="uploadImagesBack" accept="image/*" capture="camera" />
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-sm-12 col-md-12">
+
+                            <div class="radiosec1">
+                                <input id="ChackBoxId" class="checkbox-custom chk1" name="ChackBoxId" type="checkbox">
+                                <label for="ChackBoxId" class="checkbox-custom-label">Skip image upload for now</label>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                    <div class="row" id="dvid_4">
+
+                        <div class="col-sm-8 col-md-4 form-group">
+                            <div class="headrightcont">
+                                Policy #
+                            </div>
+                            @Html.TextBoxFor(m => m.PolicyNumber, new { @class = "form-control", id = "PolicyNumber", @style = "font-size: 24px" })
+                            @Html.ValidationMessageFor(model => model.PolicyNumber)
+                        </div>
+                    </div>
+                    <div class="row" id="dvid_5">
+
+                        <div class="col-sm-8 col-md-4 form-group">
+                            <div class="headrightcont">
+                                Group #
+                            </div>
+                            @Html.TextBoxFor(m => m.GroupNumber, new { @class = "form-control", id = "GroupNumber", @style = "font-size: 24px" })
+                            @Html.ValidationMessageFor(model => model.GroupNumber)
+                        </div>
+                    </div>
+
+                    <div class="row" id="dvid_6">
+
+                        <div class="col-sm-8 col-md-4 form-group">
+                            <div class="headrightcont">
+                                Insurance Company Name
+                            </div>
+                            @Html.TextBoxFor(m => m.InsuranceCompanyName, new { @class = "form-control", id = "InsuranceCompanyName", @style = "font-size: 24px", @readonly = true })
+                            @Html.ValidationMessageFor(model => model.InsuranceCompanyName)
+                        </div>
+                    </div>
+
+
+
+
+
+                    <div class="row" id="dvid_7">
+
+                        <div class="col-sm-12 col-md-6 form-group">
+                            <div class="headrightcont">
+                                What is your deductible amount? $
+                            </div>
+                            @Html.TextBoxFor(m => m.Deductible, new { @class = "applitextfield1", @style = "font-size: 24px, width: 39%;" })
+                            <div>
+                                @Html.ValidationMessageFor(model => model.Deductible)
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 form-group">
+                            <div class="headrightcont">
+                                and coinsurance %
+                            </div>
+                            @Html.TextBoxFor(m => m.CoInsurance, new { @class = "applitextfield1", @style = "font-size: 24px, width: 33%;" })
+                            <div>
+                                (for the services you are seeking)
+                            </div>
+                            @Html.ValidationMessageFor(model => model.CoInsurance)
+                        </div>
+
+                    </div>
+
+                        <div class="row" id="dvid_8">
+
+                            <h4 class="subheading">Is patient insured through someone else's policy?</h4> 
+                            <br />                           
+                            <div>
+                                <div class="inlineradio">
+                                    <label class="control control--radio greenbuttradio1">
+                                        <span>YES</span>
+                                        @Html.RadioButtonFor(m => m.insured, Convert.ToInt16(YesNo.Yes).ToString())
+                                        <div class="control__indicator"></div>
+                                    </label>
+
+                                </div>
+                                <div class="inlineradio">
+                                    <label class="control control--radio redbuttradio1">
+                                        <span>NO</span>
+                                        @Html.RadioButtonFor(m => m.insured, Convert.ToInt16(YesNo.No).ToString())
+                                        <div class="control__indicator"></div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="dvid_9">
+                            <div class="col-sm-12 col-md-4 form-group">
+                                <div class="headrightcont">
+                                    Policy Holder Name
+                                </div>
+                                @Html.TextBoxFor(m => m.HolderName, new { @class = "form-control", id = "HolderName", @style = "font-size: 24px" })
+                                @Html.ValidationMessageFor(model => model.HolderName)
+                            </div>
+                        </div>
+                    
+                    
+                    
+                    
+                    <div class="row" id="dvid_10">
+
+                        <div class="col-sm-12 col-md-3 form-group">
+
+                            <div class="headrightcont">
+                                Date of Birth
+                            </div>
+                            @Html.TextBoxFor(m => m.HolderDOB, new { @class = "form-control HolderDOB1 CustomDateFormat", style = "width:100%,font-size: 24px;", @Value = Model.HolderDOB.GetExactValue(), @id = "HolderDOB", @placeholder = "mm/dd/yyyy" })
+                            @Html.ValidationMessageFor(model => model.HolderDOB)
+                        </div>
+                    </div>
+                    <div class="row" id="dvid_11">
+
+                        <div class="col-sm-12 col-md-3 form-group">
+
+                            <div class="headrightcont">
+                                SSN
+                            </div>
+                            @Html.TextBoxFor(m => m.SSN, new { @class = "form-control SSN_AutoFormat", style = "font-size: 24px;" })
+                            @Html.ValidationMessageFor(model => model.SSN)
+                        </div>
+                    </div>
+
+                    <div class="row" id="dvid_12">
+                        <div class="col-sm-12 col-md-8 form-group">
+
+                            <div class="headrightcont">
+                                Address (if different than Patient)
+                            </div>
+                            @Html.TextAreaFor(m => m.PolicyHolderAddress, new { @class = "form-control", @style = "height:111px;" })
+                            @Html.ValidationMessageFor(model => model.PolicyHolderAddress)
+                        </div>
+                    </div>
+
+                    <div class="row" id="dvid_13">
+                        <div class="col-sm-12 col-md-4 form-group">
+                            <div class="headrightcont">
+                                Relationship to Patient:
+                            </div><br />
+                        </div>
+                        <div class="col-sm-9 col-md-10 form-group">
+                            <div class="inlineradio">
+                                <label class="control control--radio greenbuttradio1">
+                                    <span>Spouse</span>
+                                    @Html.RadioButtonFor(m => m.PatientRelationship, Convert.ToInt16(PatientRelationship.Spouse).ToString())
+                                    <div class="control__indicator"></div>
+                                </label>
+
+                            </div>
+                            <div class="inlineradio">
+                                <label class="control control--radio greenbuttradio1">
+                                    <span>Other</span>
+                                    @Html.RadioButtonFor(m => m.PatientRelationship, Convert.ToInt16(PatientRelationship.Other).ToString())
+                                    <div class="control__indicator"></div>
+                                </label>
+
+                            </div>
+                            @Html.TextBoxFor(m => m.PatientRelationshipIfOther, new { @class = "form-control", @style = "display: inline;width: 400px;" })
+
+
+                        </div>
+                        @Html.ValidationMessageFor(m => m.PatientRelationship)
+                    </div>
+
+                    <div class="row" id="dvid_14">
+                        <div class="col-sm-12 col-md-4 form-group">
+
+                            <div class="headrightcont">
+                                Employer
+                            </div>
+                            @Html.TextBoxFor(m => m.Employer, new { @class = "form-control", style = "font-size: 24px;" })
+                            @Html.ValidationMessageFor(m => m.Employer)
+                        </div>
+                    </div>
+                    <div class="row" id="dvid_15">
+                        <div class="col-sm-12 col-md-4 form-group">
+
+                            <div class="headrightcont">
+                                Phone #
+                            </div>
+                            @Html.TextBoxFor(m => m.EmployerPhone, new { @class = "form-control UsCellFormat", style = "font-size: 24px;" })
+                            @Html.ValidationMessageFor(m => m.EmployerPhone)
+                        </div>
+                    </div>
+                    <div class="row" id="dvid_16">
+                        <div class="col-sm-12 col-md-4 form-group">
+
+                            <div class="headrightcont">
+                                Claim #
+                            </div>
+                            @Html.TextBoxFor(m => m.EmployerClaimNo, new { @class = "form-control", style = "font-size: 24px;" })
+                            @Html.ValidationMessageFor(m => m.EmployerClaimNo)
+                        </div>
+                    </div>
+                    <div class="row" id="dvid_17">
+                        <div class="col-sm-12 col-md-4 form-group">
+
+                            <div class="headrightcont">
+                                Employer Address Line 1
+                            </div>
+                            @Html.TextBoxFor(m => m.EmployerAddressLine1, new { @class = "form-control", style = "font-size: 24px;" })
+                            @Html.ValidationMessageFor(m => m.EmployerAddressLine1)
+                        </div>
+                        <div class="col-sm-12 col-md-4 form-group">
+
+                            <div class="headrightcont">
+                                Employer Address Line 2
+                            </div>
+                            @Html.TextBoxFor(m => m.EmployerAddressLine2, new { @class = "form-control", style = "font-size: 24px;" })
+                            @*@Html.ValidationMessageFor(m => m.EmployerAddressLine2)*@
+                        </div>
+                        <div class="col-sm-12 col-md-4 form-group">
+
+                            <div class="headrightcont">
+                                Employer City
+                            </div>
+                            @Html.TextBoxFor(m => m.EmployerCity, new { @class = "form-control", @style = "font-size: 24px;" })
+                            @Html.ValidationMessageFor(m => m.EmployerCity)
+                        </div>
+                        <div class="col-sm-12 col-md-4 form-group">
+
+                            <div class="headrightcont">
+                                Employer State
+                            </div>
+                            @Html.DropDownList("EmployerState")
+                            @*@Html.TextBoxFor(m => m.EmployerState, new { @class = "form-control" })*@
+                            @Html.ValidationMessageFor(m => m.EmployerState)
+                        </div>
+                        <div class="col-sm-12 col-md-4 form-group">
+
+                            <div class="headrightcont">
+                                Employer Zip Code
+                            </div>
+                            @Html.TextBoxFor(m => m.EmployerZipCode, new { @class = "form-control", @style = "font-size: 24px;" })
+                            @Html.ValidationMessageFor(m => m.EmployerZipCode)
+                        </div>
+                    </div>
+                    
+                    <div class="row" id="dvid_18">
+                        <div class="col-sm-12 col-md-12 form-group add_font_bigger">
+                            I hereby instruct and direct @Html.TextBox("AllInsuranceCompanyName", "", new { @class = "form-control", style = "font-size: 25px;" }) insurance company to
+                            pay by check made out to the “Healthcare Provider” to the right and mailed
+                            to the address on the right (not mine). If my/this current policy prohibits direct
+                            payment to doctor/therapist, I hereby also instruct and direct you to make out
+                            the check to me and mail it to the above address for the professional or medical
+                            expense benefits allowable, and otherwise payable to me under my current in-
+                            surance policy as payment toward the total charges for the professional services
+                            rendered.
+                            @Html.ValidationMessageFor(model => model.AllInsuranceCompanyName)
+                        </div>
+                    </div>
+
+
+                        <div class="row" id="dvid_19">
+                            <div class="col-sm-12 col-md-12 form-group add_font_bigger">
+                                <h3>This is the direct Assignment of my rights and benefits under this policy.</h3>
+                                <label class="containerinput">
+                                    This payment will not exceed my indebtedness to the above-mentioned assignee, and I have agreed to pay, in a current manner, any
+                                    balance of said professional service charges over and above this insurance payment.<br>
+                                    <input type="checkbox" name="IsTerms" id="IsTerms">
+                                    <span class="checkmark"></span>
+                                    </label>
+                                <div id="dvErrMsgTerms" style="display:none;"><span id="span3" style="color:red;">Please accept Terms & Conditions</span></div>
+                            </div>
+                        </div>
+
+                    <div class="row" id="dvid_20">
+                        <h3>Please read and check off each box below to indicate your acknowledgement of the terms of this Assignment of Benefits.</h3>
+                        <div class="col-sm-12 col-md-12 add_font_bigger">
+                            <label class="containerinput">
+                                A photocopy of this Assignment shall be considered as effective and valid as the original.
+                                <input type="checkbox" name="IsPhotocopyValid" id="IsPhotocopyValid">
+                                <span class="checkmark"></span>
+                            </label>
+
+
+                            <div style="height:10px;">
+
+                                @Html.TextBoxFor(model => model.IsPhotocopyValid1, new { @style = "opacity:0;" })
+                            </div>
+
+                            @Html.ValidationMessageFor(model => model.IsPhotocopyValid1)
+                        </div>                       
+
+                        <div class="col-sm-12 col-md-12 add_font_bigger">
+
+                            <label class="containerinput">
+                                I authorize the release of any medical or other information pertinent to my case to any insurance company , adjuster, or attorney involved in this case for the purpose of processing claims and securing payment of benefits.
+                                <input type="checkbox" name="IsAuthorizeForReleaseMedical" id="IsAuthorizeForReleaseMedical">
+                                <span class="checkmark"></span>
+                            </label>
+
+                            <div style="height:10px;">
+                                @Html.TextBoxFor(model => model.IsAuthorizeForReleaseMedical1, new { @style = "opacity:0;" })
+                            </div>
+
+                            @Html.ValidationMessageFor(model => model.IsAuthorizeForReleaseMedical1)
+                        </div>
+
+                        <div class="col-sm-12 col-md-12 add_font_bigger">
+
+                            <label class="containerinput">
+                                I authorize the use of this signature on all insurance submissions.
+                                <input type="checkbox" name="IsAuthorizeForUseTheSignature" id="IsAuthorizeForUseTheSignature">
+                                <span class="checkmark"></span>
+                            </label>
+
+                            <div style="height:10px;">
+                                @Html.TextBoxFor(model => model.IsAuthorizeForUseTheSignature1, new { @style = "opacity:0;" })
+
+                            </div>
+                            <div class="clearfix"></div>
+                            @Html.ValidationMessageFor(model => model.IsAuthorizeForUseTheSignature1)
+
+                        </div>
+
+                        <div class="col-sm-12 col-md-12 add_font_bigger">
+
+                            <label class="containerinput">
+                                I authorize the “Healthcare Provider” named above to deposit checks made in my name.
+                                <input type="checkbox" name="IsAuthorizeForChecks" id="IsAuthorizeForChecks">
+                                <span class="checkmark"></span>
+                            </label>
+
+                            <div style="height:10px;">
+                                @Html.TextBoxFor(model => model.IsAuthorizeForChecks1, new { @style = "opacity:0;" })
+                            </div>
+
+                            @Html.ValidationMessageFor(model => model.IsAuthorizeForChecks1)
+                        </div>
+
+                        <div class="col-sm-12 col-md-12 add_font_bigger">
+
+                            <label class="containerinput">
+                                I authorize the “Healthcare Provider” named above to initiate a complaint to the Insurance Commissioner for any
+                                reason on my behalf.
+                                <input type="checkbox" name="IsAuthorizeForInitiateComplaint" id="IsAuthorizeForInitiateComplaint">
+                                <span class="checkmark"></span>
+                            </label>
+                            <div style="height:10px;">
+                                @Html.TextBoxFor(model => model.IsAuthorizeForInitiateComplaint1, new { @style = "opacity:0;" })
+                            </div>
+
+
+                            @Html.ValidationMessageFor(model => model.IsAuthorizeForInitiateComplaint1)
+                        </div>
+
+
+                        <div class="col-sm-12 col-md-12 add_font_bigger">
+
+                            <label class="containerinput">
+                                I understand that I am financially responsible for all the charges whether or not paid by insurance.
+                                <input type="checkbox" name="IsAuthorizeForFinancialResponsible" id="IsAuthorizeForFinancialResponsible">
+                                <span class="checkmark"></span>
+                            </label>
+                            <div>
+                                @Html.TextBoxFor(model => model.IsAuthorizeForFinancialResponsible1, new { @style = "opacity:0;" })
+
+                            </div>
+
+                            @Html.ValidationMessageFor(model => model.IsAuthorizeForFinancialResponsible1)
+
+                        </div>
+
+                    </div>
+
+
+                    @Html.Partial("_SignPad")
+
+                    <div class="row" id="dvid_21">
+
+                        <div class="col-sm-12 col-md-8 form-group">
+                            <div class="headrightcont">
+                                Signature of Policyholder
+                            </div>
+                            <div></div>
+                            @{var imgurl2 = Url.Content("~/Images/nosignature.png");
+                            if (Model.SignOfPolicyholder != null)
+                            {
+                                imgurl2 = "data:image/png;base64," + Convert.ToBase64String(Model.SignOfPolicyholder);
+                            }
+                            }
+                            <img src="@imgurl2" alt="" class="form-control" id="imgPolicyholderSign" style="width:500px; height:200px;" />
+
+                            <input type="hidden" name="name" value="" id="hdnImageVal2" />
+                            <input type="button" id="btnPolicyholderSign" class="signpppd" onclick="fnShowSignPad('imgPolicyholderSign', 'SignOfPolicyholder', 'PolicyholderSignatureDate')" value="Click To Add Signature" />
+                            <div id="divErrMsg_IMG" style="display:none;"><span id="spanIMG" style="color:red;">Please do the signature</span></div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-8 form-group">
+                            <div class="headrightcont">Date</div>
+                            @Html.TextBoxFor(m => m.PolicyholderSignatureDate, new { @class = "form-control ", @style = "width: 400px;", @readonly = "true", @value = Model.ClaimantSignatureDate.GetExactValue() })
+                        </div>
+
+                    </div>
+
+                    <div class="clearfix line"></div>
+                    @Html.Partial("_PrevNextIntake")
+                    <div class="clearfix"></div>
+
+                }
+            </div>
+        </div>
+</div>
+
+
+
+
+
+<script type="text/javascript">
+    var PatientR1New = '@PatientR1';
+    var PatientR2New = '@PatientR2';
+
+
+
+    $("input[name='PatientRelationship']").click(function () {
+        if ($("input:radio[name='PatientRelationship']:checked").val() == "3") {
+            $("#PatientRelationshipIfOther").css("display", "block");
+        }
+        else {
+            $("#PatientRelationshipIfOther").css("display", "none");
+            $("#PatientRelationshipIfOther").val("");
+        }
+    });
+
+
+    $("input[name='PatientRelationship2']").click(function () {
+        if ($("input:radio[name='PatientRelationship2']:checked").val() == "3") {
+            $("#PatientRelationshipIfOther2").css("display", "block");
+        }
+        else {
+            $("#PatientRelationshipIfOther2").css("display", "none");
+            $("#PatientRelationshipIfOther2").val("");
+        }
+    });
+
+
+    if (PatientR1New == 3) {
+        $("#PatientRelationshipIfOther").css("display", "block");
+    }
+    else {
+        $("#PatientRelationshipIfOther").css("display", "none");
+    }
+
+    if (PatientR2New == 3) {
+        $("#PatientRelationshipIfOther2").css("display", "block");
+    }
+    else {
+        $("#PatientRelationshipIfOther2").css("display", "none");
+    }
+
+
+    __last = 21;
+
+
+    function fnValidate(pos) {
+        var ele = [];
+        if (pos == 1) {
+            ele = ["number_of_visits"];
+        }
+        if (pos == 2) {
+            ele = ["Social_Security"];
+        }
+        if (pos == 3) {
+            ele = ["Name"];
+        }
+        if (pos == 4) {
+            ele = ["PolicyNumber"];
+        }
+        if (pos == 5) {
+            ele = ["GroupNumber"];
+        }
+        if (pos == 6) {
+            ele = ["InsuranceCompanyName"];
+        }
+        if (pos == 7) {
+            ele = ["Deductible", "CoInsurance"];
+        }
+
+        if (pos == 9) {
+            ele = ["HolderName"];
+        }
+        if (pos == 10) {
+            ele = ["HolderDOB"];
+        }
+        if (pos == 11) {
+            ele = ["SSN"];
+        }
+        if (pos == 12) {
+            ele = ["PolicyHolderAddress"];
+        }
+        if (pos == 13) {
+            ele = ["PatientRelationship"];
+        }
+        if (pos == 14) {
+            ele = ["Employer"];
+        }
+        if (pos == 15) {
+            ele = ["EmployerPhone"];
+        }
+        if (pos == 16) {
+            ele = ["EmployerClaimNo"];
+        }
+        if (pos == 17) {
+            ele = ["EmployerAddressLine1", "EmployerCity", "EmployerState", "EmployerZipCode"];
+        }
+        if (pos == 32) {
+            ele = ["AllInsuranceCompanyName"];
+        }
+        return ___validate(ele);
+    }
+
+    function fnNextToShow(pos) {
+        if (pos == 5) {
+            if ($("#InsurancePlanID1 option:selected").text().indexOf('(') > -1) {
+                $("#InsuranceCompanyName").val($("#InsurancePlanID1 option:selected").text().substring(0, $("#InsurancePlanID1 option:selected").text().indexOf('(')));
+            }
+
+
+        }
+        if (pos == 2) {            
+            var Social1 = $("#Social").val();
+            var Security1 = $("#Security").val();
+            var Number1 = $("#Number").val();
+            //if (Social1 == "" || Security1 == "" || Number1 == "") {
+            //    $("#divssnerror").show();
+            //    return pos = 2;
+            //}
+            //else {
+            //    $("#divssnerror").hide();
+            //}
+
+            if (Social1 != " " && Security1 != " " && Number1 != " ") {               
+                $("#Social_Security").val(Social1 + '-' + Security1 + '-' + Number1);
+
+                return 3;
+            }
+            else {
+            }
+            return pos = 3;
+        }        
+        if (pos == 19) {
+            if (!$("#IsTerms").is(':checked')) {
+                $("#dvErrMsgTerms").show();
+                return 19;
+            }
+            else {
+                $("#dvErrMsgTerms").hide();
+                return 20;
+            }
+        }
+        if (pos == 8) {
+            
+            if ($("input:radio[name='insured']:checked").val() == "2") {
+                return 18;
+            }
+            return 9;
+        }
+        if (pos == 6) {
+            $("#AllInsuranceCompanyName").val($("#InsuranceCompanyName").val());
+        }
+        else if (pos == 9) {
+            return 10;
+        }
+        else if (pos == 10) {
+            var HolderDOB1 = $(".HolderDOB1").val();
+            if ($(".HolderDOB1").val() != "") {
+                if ((Math.abs(new Date().getFullYear() - new Date(HolderDOB1).getFullYear())) < 10) {
+                    $(".HolderDOB1").show();
+                    alert("Policy Holder's age should be 10 years or more!!");
+                    $(".HolderDOB1").focus();
+                    return pos;
+
+                }
+            }
+        }       
+        else if (pos == 20) {
+            if (!$("#IsPhotocopyValid").is(':checked'))
+                return 20;
+            else if (!$("#IsAuthorizeForReleaseMedical").is(':checked'))
+                return 20;
+            else if (!$("#IsAuthorizeForUseTheSignature").is(':checked'))
+                return 20;
+            else if (!$("#IsAuthorizeForChecks").is(':checked'))
+                return 20;
+            else if (!$("#IsAuthorizeForInitiateComplaint").is(':checked'))
+                return 20;
+            else if (!$("#IsAuthorizeForFinancialResponsible").is(':checked'))
+                return 20;
+            else {
+                return 21;
+            }
+        }
+        return pos + 1;
+    }
+    function fnTriggerAtEnd() {
+        if ($("#dvid_" + __last).is(':visible')) $('#dvid_subbutt').show();
+        else $('#dvid_subbutt').hide();
+    }
+
+
+    $('#dvid_subbutt').click(function () {
+        if ($('#imgPatientSign').attr('src') == '') {
+            $('#divErrMsg_IMG').show();
+            return false;
+        }
+        else
+            $('#divErrMsg_IMG').hide();
+        $('#loadforscheduleapp').show();
+    });
+
+</script>
+
+
+<script>
+    $("#prsecdry1").click(function () {
+        $("#insuerence1").show();
+        $("#prsecdry2").hide();
+    });
+    $("#prsecdry").click(function () {
+        $("#insuerence1").hide();
+        $("#prsecdry2").hide();
+    });
+</script>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#txtPatientRelationshipIfOther").css("display", "none");
+        $("#divssnerror").hide();
+        $('#loadforscheduleapp').hide();
+        $("#PNumber").hide();
+        $("#insuerence1").hide();
+        if ($("#PatientRelationshipIfOther").val() != "") {
+            $("#PatientRelationshipIfOther").css("display", "block");
+        }
+        else {
+            $("#PatientRelationshipIfOther").css("display", "none");
+        }       
+
+
+        if ($('#IsPhotocopyValid').prop('checked') == true) {
+            $("#IsPhotocopyValid1").val(55);
+        }
+        else {
+            $("#IsPhotocopyValid1").val('');
+        }
+
+        if ($('#IsAuthorizeForReleaseMedical').prop('checked') == true) {
+            $("#IsAuthorizeForReleaseMedical1").val(56);
+        }
+        else {
+            $("#IsAuthorizeForReleaseMedical1").val('');
+        }
+
+
+        if ($('#IsAuthorizeForUseTheSignature').prop('checked') == true) {
+            $("#IsAuthorizeForUseTheSignature1").val(57);
+        }
+        else {
+            $("#IsAuthorizeForUseTheSignature1").val('');
+        }
+
+        if ($('#IsAuthorizeForChecks').prop('checked') == true) {
+            $("#IsAuthorizeForChecks1").val(58);
+        }
+        else {
+            $("#IsAuthorizeForChecks1").val('');
+        }
+        if ($('#IsAuthorizeForInitiateComplaint').prop('checked') == true) {
+            $("#IsAuthorizeForInitiateComplaint1").val(59);
+        }
+        else {
+            $("#IsAuthorizeForInitiateComplaint1").val('');
+        }
+        if ($('#IsAuthorizeForFinancialResponsible').prop('checked') == true) {
+            $("#IsAuthorizeForFinancialResponsible1").val(61);
+        }
+        else {
+            $("#IsAuthorizeForFinancialResponsible1").val('');
+        }
+
+        if ($("#number_of_visits").val() > 0) {
+
+
+            $("input[name='visits'][value=1]").attr("checked", true);
+
+
+            $("#dvtt").show();
+        }
+        else {
+            $("input[name='visits'][value=2]").attr("checked", true);
+            $("#dvtt").hide();
+        }
+
+
+
+        $("#IsPhotocopyValid").click(function () {
+            var isChecked7 = $('#IsPhotocopyValid').prop('checked');
+            if (isChecked7) {
+                $("#IsPhotocopyValid1").val(1)
+
+            }
+            else {
+                $("#IsPhotocopyValid1").val('');
+
+            }
+
+
+        });
+
+        $("#IsAuthorizeForReleaseMedical").click(function () {
+            var isChecked6 = $('#IsAuthorizeForReleaseMedical').prop('checked');
+            if (isChecked6) {
+                $("#IsAuthorizeForReleaseMedical1").val(12)
+
+            }
+            else {
+                $("#IsAuthorizeForReleaseMedical1").val('');
+
+            }
+        });
+        $("#IsAuthorizeForUseTheSignature").click(function () {
+            var isChecked5 = $('#IsAuthorizeForUseTheSignature').prop('checked');
+            if (isChecked5) {
+                $("#IsAuthorizeForUseTheSignature1").val(1)
+
+            }
+            else {
+                $("#IsAuthorizeForUseTheSignature1").val('');
+
+            }
+        });
+        $("#IsAuthorizeForChecks").click(function () {
+            var isChecked4 = $('#IsAuthorizeForChecks').prop('checked');
+            if (isChecked4) {
+                $("#IsAuthorizeForChecks1").val(1)
+
+            }
+            else {
+                $("#IsAuthorizeForChecks1").val('');
+
+            }
+        });
+        $("#IsAuthorizeForInitiateComplaint").click(function () {
+            var isChecked3 = $('#IsAuthorizeForInitiateComplaint').prop('checked');
+            if (isChecked3) {
+                $("#IsAuthorizeForInitiateComplaint1").val(1)
+
+            }
+            else {
+                $("#IsAuthorizeForInitiateComplaint1").val('');
+
+            }
+        });
+        $("#IsAuthorizeForFinancialResponsible").click(function () {
+            var isChecked2 = $('#IsAuthorizeForFinancialResponsible').prop('checked');
+            if (isChecked2) {
+                $("#IsAuthorizeForFinancialResponsible1").val(1)
+
+            }
+            else {
+                $("#IsAuthorizeForFinancialResponsible1").val('');
+
+            }
+        });
+        $("#divssnerrorsecoindery").hide();
+        $("#prsecdry2").hide();
+    });
+
+    $('#EmployerState').addClass('form-control');
+    $('#EmployerState2').addClass('form-control');
+    $('#InsurancePlanID1').addClass('form-controlinsuerance_ddl');
+    $('#InsurancePlanID2').addClass('form-controlinsuerance_ddl');
+
+    $(document).on('change', '#InsurancePlanID1', function () {
+        if ($(this).val() == "4423") {
+            $("#txtPatientRelationshipIfOther").css("display", "block");
+        }
+        else {
+            $("#txtPatientRelationshipIfOther").css("display", "none");
+        }
+    });
+    
+</script>
+
+<script>
+
+    $(document).ready(function () {
+
+        // Opera 8.0+
+        //var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+        // Firefox 1.0+
+        var isFirefox = typeof InstallTrigger !== 'undefined';
+        // Chrome 1+
+        var isChrome = !!window.chrome && !!window.chrome.webstore;
+        // Safari 3.0+ "[object HTMLElementConstructor]"
+        //var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || safari.pushNotification);
+        // Internet Explorer 6-11
+        //var isIE = cc_on!false || !!document.documentMode;
+        // Edge 20+
+        //var isEdge = !isIE && !!window.StyleMedia;
+        // Blink engine detection
+        //var isBlink = (isChrome || isOpera) && !!window.CSS;
+        if (isFirefox) {
+            $("#image-preview").addClass("ImagePreviewDisplay1");
+            $("#image-preview1").addClass("ImagePreviewDisplay1");
+        }
+        else if (isChrome) {
+            $("#image-preview").addClass("ImagePreviewDisplay1");
+            $("#image-preview1").addClass("ImagePreviewDisplay1");
+        }
+        else {
+            $("#image-preview").addClass("ImagePreviewDisplay1");
+            $("#image-preview1").addClass("ImagePreviewDisplay1");
+        }
+        $.uploadPreview({
+            input_field: "#uploadImagesFront",
+            preview_box: "#image-preview",
+
+            no_label: false,
+            success_callback: fnsuccesscallback
+        });
+        $.uploadPreview({
+            input_field: "#uploadImagesBack",
+            preview_box: "#image-preview1",
+
+            no_label: false,
+            success_callback: fnsuccesscallback
+        });
+        $('#image-preview').css('backgroundImage', 'url(' + '@imgurl11' + ')');
+        $('#image-preview1').css('backgroundImage', 'url(' + '@imgurl12' + ')');
+
+        $('#image-preview11').css('backgroundImage', 'url(' + '@Secimgurl21' + ')');
+        $('#image-preview12').css('backgroundImage', 'url(' + '@Secimgurl22' + ')');
+
+        $("#ChackBoxId").click(function () {
+            var isChecked21 = $('#ChackBoxId').prop('checked');
+
+            if (isChecked21) {
+                $('#image-preview').css('backgroundImage', 'url("")');
+                $('#image-preview1').css('backgroundImage', 'url("")');
+            }
+        });
+
+        $("#ChackBoxId1").click(function () {
+            debugger;
+            var isChecked211 = $('#ChackBoxId1').prop('checked');
+
+            if (isChecked211) {
+                $('#image-preview11').css('backgroundImage', 'url("")');
+                $('#image-preview12').css('backgroundImage', 'url("")');
+            }
+        });
+        if (isFirefox) {
+            $("#image-preview11").addClass("ImagePreviewDisplay11");
+            $("#image-preview12").addClass("ImagePreviewDisplay11");
+        }
+        else if (isChrome) {
+            $("#image-preview11").addClass("ImagePreviewDisplay12");
+            $("#image-preview12").addClass("ImagePreviewDisplay12");
+        }
+        else {
+            $("#image-preview11").addClass("ImagePreviewDisplay11");
+            $("#image-preview12").addClass("ImagePreviewDisplay11");
+        }
+        $.uploadPreview({
+            input_field: "#uploadImagesFront1",
+            preview_box: "#image-preview11",
+
+            no_label: false,
+            success_callback: fnsuccesscallback
+        });
+        $.uploadPreview({
+            input_field: "#uploadImagesFrontSecondary",
+            preview_box: "#image-preview12",
+
+            no_label: false,
+            success_callback: fnsuccesscallback
+        });
+    });
+
+    function fnsuccesscallback() {
+    }
+
+
+
+
+    $("#uploadImagesFront1").change(function (e) {
+
+        var data = new FormData();
+        var files = $("#uploadImagesFront1").get(0).files;
+        var isize = files[0].size / 1024;
+        var x = files[0].name.split('.');
+        var fileExt = x[1].toLowerCase();
+        if (fileExt == 'jpg' || fileExt == 'png' || fileExt == 'jpeg') {
+            if (isize <= 2000.00) {
+                if (files.length <= 2000) {
+                    data.append("MyImages", files[0]);
+                }
+            }
+            else {
+                alert('File size should not exceed 2Mb');
+            }
+        }
+        else {
+            alert('Please upload the image in jpeg or png format');
+        }
+    });
+    $("#uploadImagesFrontSecondary").change(function (e) {
+        var data = new FormData();
+        var files = $("#uploadImagesFrontSecondary").get(0).files;
+        var isize = files[0].size / 1024;
+        var x = files[0].name.split('.');
+        var fileExt = x[1].toLowerCase();
+        if (fileExt == 'jpg' || fileExt == 'png' || fileExt == 'jpeg') {
+            if (isize <= 2000.00) {
+                if (files.length <= 2000) {
+                    data.append("MyImages1", files[0]);
+                }
+            }
+            else {
+                alert('File size should not exceed 2Mb');
+            }
+        }
+        else {
+            alert('Please upload the image in jpeg or png format');
+        }
+    });
+    $("#uploadImagesFront").change(function (e) {
+
+
+        var data = new FormData();
+        var files = $("#uploadImagesFront").get(0).files;
+        var isize = files[0].size / 1024;
+        var x = files[0].name.split('.');
+        var fileExt = x[1].toLowerCase();
+        if (fileExt == 'jpg' || fileExt == 'png' || fileExt == 'jpeg') {
+            if (isize <= 2000.00) {
+                if (files.length <= 2000) {
+                    data.append("MyImages", files[0]);
+                }
+            }
+            else {
+                alert('File size should not exceed 2Mb');
+            }
+        }
+        else {
+            alert('Please upload the image in jpeg or png format');
+        }
+    });
+    $("#uploadImagesBack").change(function (e) {
+        var data = new FormData();
+        var files = $("#uploadImagesBack").get(0).files;
+        var isize = files[0].size / 1024;
+        var x = files[0].name.split('.');
+        var fileExt = x[1].toLowerCase();
+        if (fileExt == 'jpg' || fileExt == 'png' || fileExt == 'jpeg') {
+            if (isize <= 2000.00) {
+                if (files.length <= 2000) {
+                    data.append("MyImages1", files[0]);
+                }
+            }
+            else {
+                alert('File size should not exceed 2Mb');
+            }
+        }
+        else {
+            alert('Please upload the image in jpeg or png format');
+        }
+    });
+
+
+
+
+    $("input[name='visits']").click(function () {
+        if ($("input:radio[name='visits']:checked").val() == "1") {
+            $("#dvtt").show();
+        }
+        else if ($("input:radio[name='visits']:checked").val() == "2") {
+            $("#number_of_visits").val("0")
+            $("#dvtt").hide();
+        }
+    });
+
+</script>
+<script type="text/javascript">
+
+    function movecursor(field, nextField) {
+        if (field.value.length >= field.maxLength) {
+            document.getElementById(nextField).focus();
+
+        }
+
+    }
+    $(document).ready(function () {
+
+
+    });
+
+
+    function fn_Month_Validation() {
+        $("#spanA5").text('');
+        $("#divErrMsg_A5").hide();
+
+        //For Month
+        if ($("#month").val() != "") {
+            if ($("#month").val() >= 1 && $("#month").val() <= 12) {
+                for (var i = 1; i <= 9; i++) {
+                    if ($("#month").val() == i) {
+                        $("#month").val("0" + i);
+                    }
+                }
+                $("#spanA5").text('');
+                $("#divErrMsg_A5").hide();
+                $("#date").focus();
+            }
+            else {
+                $("#spanA5").text('Month always 1 - 12');
+                $("#divErrMsg_A5").show();
+                $("#month").val(' ');
+                $("#month").focus();
+            }
+        }
+    }
+
+
+    function fn_Date_Validation() {
+        //For Date
+        $("#spanA5").text('');
+        $("#divErrMsg_A5").hide();
+
+        if ($("#date") != "") {
+            if ($("#date").val() >= 1 && $("#date").val() <= 31) {
+                for (var i = 1; i <= 9; i++) {
+                    if ($("#date").val() == i) {
+                        $("#date").val("0" + i);
+                    }
+                }
+                $("#spanA5").text('');
+                $("#divErrMsg_A5").hide();
+                $("#Year").focus();
+            } else {
+                $("#spanA5").text('Date always 1 - 31');
+                $("#divErrMsg_A5").show();
+                $("#date").val(' ');
+                $("#date").focus();
+            }
+        }
+    }
+
+    function fn_Year_Validation() {
+        //For Year
+        $("#spanA5").text('');
+        $("#divErrMsg_A5").hide();
+
+        if ($("#Year") != null) {
+            if ($("#Year").val() >= 1900 && $("#Year").val() <= 1990) {
+                $("#spanA5").text('');
+                $("#divErrMsg_A5").hide();
+            } else {
+                $("#spanA5").text('Year always 1900 - 1990');
+                $("#divErrMsg_A5").show();
+                $("#Year").val(' ');
+                $("#Year").focus();
+            }
+        }
+    }
+
+    function DOB_Validation() {
+        var pos = "";
+        if ($("#month").val() == "" || $("#date").val() == "" || $("#Year").val() == "") {
+            $("#spanA5").text('');
+            $("#divErrMsg_A5").hide();
+            $("#spanA5").text("Please enter Date of birth");
+            $("#divErrMsg_A5").show();
+            pos = 4;
+        }
+        else {
+            $("#spanA5").text('');
+            $("#divErrMsg_A5").hide();
+
+            if ($("#Year").val() >= 1900 && $("#Year").val() <= 1990) {
+                $("#spanA5").text('');
+                $("#divErrMsg_A5").hide();
+            } else {
+                $("#spanA5").text('Year always 1900 - 1990');
+                $("#divErrMsg_A5").show();
+                $("#Year").val(' ');
+                $("#Year").focus();
+                pos = 4;
+            }
+        }
+        return pos;
+    }
+
+    $("#month").click(function () {
+        $("#spanA5").html("");
+    });
+
+    function fn_Month_Validationsecoindery() {
+        $("#spanA5secoindery").text('');
+        $("#divErrMsg_A5secoindery").hide();
+
+        //For Month
+        if ($("#monthsecoindery").val() != "") {
+            if ($("#monthsecoindery").val() >= 1 && $("#monthsecoindery").val() <= 12) {
+                for (var i = 1; i <= 9; i++) {
+                    if ($("#monthsecoindery").val() == i) {
+                        $("#monthsecoindery").val("0" + i);
+                    }
+                }
+                $("#spanA5secoindery").text('');
+                $("#divErrMsg_A5secoindery").hide();
+                $("#datesecoindery").focus();
+            }
+            else {
+                $("#spanA5secoindery").text('Month always 1 - 12');
+                $("#divErrMsg_A5secoindery").show();
+                $("#monthsecoindery").val(' ');
+                $("#monthsecoindery").focus();
+            }
+        }
+    }
+
+
+    function fn_Date_Validationsecoindery() {
+        //For Date
+        $("#spanA5secoindery").text('');
+        $("#divErrMsg_A5secoindery").hide();
+
+        if ($("#datesecoindery") != "") {
+            if ($("#datesecoindery").val() >= 1 && $("#datesecoindery").val() <= 31) {
+                for (var i = 1; i <= 9; i++) {
+                    if ($("#datesecoindery").val() == i) {
+                        $("#datesecoindery").val("0" + i);
+                    }
+                }
+                $("#spanA5secoindery").text('');
+                $("#divErrMsg_A5secoindery").hide();
+                $("#Yearsecoindery").focus();
+            } else {
+                $("#spanA5secoindery").text('Date always 1 - 31');
+                $("#divErrMsg_A5secoindery").show();
+                $("#datesecoindery").val(' ');
+                $("#datesecoindery").focus();
+            }
+        }
+    }
+
+    function fn_Year_Validationsecoindery() {
+        //For Year
+        $("#spanA5secoindery").text('');
+        $("#divErrMsg_A5secoindery").hide();
+
+        if ($("#Yearsecoindery") != null) {
+            if ($("#Yearsecoindery").val() >= 1900 && $("#Yearsecoindery").val() <= 1990) {
+                $("#spanA5secoindery").text('');
+                $("#divErrMsg_A5secoindery").hide();
+            } else {
+                $("#spanA5secoindery").text('Year always 1900 - 1990');
+                $("#divErrMsg_A5secoindery").show();
+                $("#Yearsecoindery").val(' ');
+                $("#Yearsecoindery").focus();
+            }
+        }
+    }
+
+    function DOB_Validationsecoindery() {
+        var pos = "";
+        if ($("#monthsecoindery").val() == "" || $("#datesecoindery").val() == "" || $("#Yearsecoindery").val() == "") {
+            $("#spanA5secoindery").text('');
+            $("#divErrMsg_A5secoindery").hide();
+            $("#spanA5secoindery").text("Please enter Date of birth");
+            $("#divErrMsg_A5secoindery").show();
+            pos = 26;
+        }
+        else {
+            $("#spanA5secoindery").text('');
+            $("#divErrMsg_A5secoindery").hide();
+
+            if ($("#Yearsecoindery").val() >= 1900 && $("#Yearsecoindery").val() <= 1990) {
+                $("#spanA5secoindery").text('');
+                $("#divErrMsg_A5secoindery").hide();
+            } else {
+                $("#spanA5secoindery").text('Year always 1900 - 1990');
+                $("#divErrMsg_A5secoindery").show();
+                $("#Yearsecoindery").val(' ');
+                $("#Yearsecoindery").focus();
+                pos = 26;
+            }
+        }
+        return pos;
+    }
+
+    $("#monthsecoindery").click(function () {
+        $("#spanA5secoindery").html("");
+    });
+</script>
+<script>
+    
+    $("#HolderName").keypress(function (event) {
+        var inputValue = event.which;
+        // allow letters and whitespaces only.
+        if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
+            event.preventDefault();
+        }
+    });
+    $("#HolderName2").keypress(function (event) {
+        var inputValue = event.which;
+        // allow letters and whitespaces only.
+        if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
+            event.preventDefault();
+        }
+    });
+    $("#Employer2").keypress(function (event) {
+        var inputValue = event.which;
+        // allow letters and whitespaces only.
+        if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
+            event.preventDefault();
+        }
+    });
+    $("#EmployerCity2").keypress(function (event) {
+        var inputValue = event.which;
+        // allow letters and whitespaces only.
+        if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
+            event.preventDefault();
+        }
+    });
+    $('#EmployerZipCode2').keydown(function (e) {
+        if (e.shiftKey || e.ctrlKey || e.altKey) {
+            e.preventDefault();
+        } else {
+            var key = e.keyCode;
+            if (!((key == 8) || (key == 46) || (key >= 35 && key <= 40) || (key >= 48 && key <= 57) || (key >= 96 && key <= 105))) {
+                e.preventDefault();
+            }
+        }
+    });
+</script>
+
+

@@ -1,0 +1,94 @@
+﻿@model DataLayer.Models.TblTDTNKareoCPICodeFees
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="bodyinner">
+    <div class="container">
+        <div class="innerform">
+            <div class="user-form clearfix">
+
+                <h2 class="text-center">CPT Code Fees</h2>
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    if (ViewBag.Error != null)
+                    {
+                        @Html.Raw(ViewBag.Error)
+                    }
+                    <div class="col-sm-12 form-group">
+                        @Html.Label("Insurance Company Name")
+                        @Html.DropDownListFor(model => model.Insuerance_id, (SelectList)ViewBag.insuerancename, "Select Insurance Company", new { @class = "form-control", @onchange="fnCheckValidation()" })
+                        <span id="insuranceValidationMsg" style="color:red"></span>
+                        @Html.ValidationMessageFor(model => model.Insuerance_id)
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        @Html.Label("CPT Code")
+                        @Html.TextBoxFor(model => model.Cpt_code, new {@class = "form-control"})
+                        @Html.ValidationMessageFor(model => model.Cpt_code)
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        @Html.Label("Modifier")
+                        @Html.TextBoxFor(model => model.Modifier, new{@class = "form-control"})
+                        @Html.ValidationMessageFor(model => model.Modifier)
+
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        @Html.Label("Fee")
+                        @Html.TextBoxFor(model => model.Cpt_Fee, new{@class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Cpt_Fee)
+
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        @Html.Label("Description")
+                        @Html.TextBoxFor(model => model.Description, new{ @class= "form-control"})
+                        @Html.ValidationMessageFor(model => model.Description)
+
+                    </div>
+
+                    <div class="subbutt">
+                        <input type="submit" id="btn-submit" value="Create"
+                               class="btn btn-orange pull-right" />
+
+                    </div>
+                    <p>
+
+                        @Html.ActionLink("Back to List", "Index")
+
+                    </p>
+                }
+
+            </div>
+        </div>
+
+        <div class="clearfix"></div>
+    </div>
+</section>
+<script>
+    $("#btn-submit").click(function () {
+       
+        if ($("#Insuerance_id").val() == "" || $("#Insuerance_id").val() == null) {
+            $("#insuranceValidationMsg").text("Please select insurance company name");
+            return false;
+        }
+        else {
+            $("#insuranceValidationMsg").text("");
+            return true;
+        }
+
+    });
+
+    function fnCheckValidation() {
+        if ($("#Insuerance_id").val() == "" || $("#Insuerance_id").val() == null) {
+            $("#insuranceValidationMsg").text("Please select insurance company name");
+            
+        }
+        else {
+            $("#insuranceValidationMsg").text("");
+           
+        }
+    }
+</script>

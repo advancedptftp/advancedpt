@@ -1,0 +1,486 @@
+﻿@model DataLayer.Models.DaliyTreatmentNote
+
+@{
+    ViewBag.Title = "Create";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    string str1 = string.Empty;
+    string str2 = string.Empty;
+}
+<style type="text/css">
+    .SymptomsWidth {
+        width: 330px;
+    }
+
+    #errmsg {
+        color: red;
+    }
+</style>
+
+@*<style type="text/css">
+        .dailyheading {
+            padding: 35px 0 15px 0;
+            border-bottom: 2px solid #797979;
+            font-size: 19px;
+            color: #000;
+            margin-bottom: 35px;
+        }
+
+        .dailyleft {
+            float: left;
+        }
+
+        .dailyright {
+            float: right;
+        }
+
+        .midheading {
+            text-align: center;
+            font-weight: bold;
+            font-size: 22px;
+        }
+
+            .midheading span {
+                color: #f58f22;
+            }
+
+        .pretretment {
+            font-size: 19px;
+            font-weight: bold;
+            color: #f58f22;
+            text-align: center;
+            padding: 0 0 25px 0;
+        }
+
+        .cryheading {
+            position: absolute;
+            left: 25px;
+            top: -21px;
+            background: #f3f2f2;
+            font-size: 20px;
+            font-weight: bold;
+            color: #000;
+            padding: 6px 10px;
+        }
+
+        .carrying {
+            border: 2px solid #ccc;
+            padding: 45px 25px 45px 25px;
+            position: relative;
+        }
+
+            .carrying label {
+                text-align: left !important;
+                font-size: 19px;
+            }
+    </style>*@
+
+<section class="bodyinner">
+    <div class="container">
+
+        <div class="report-form clearfix">
+            @using (Html.BeginForm("Create", "TreatmentNotePostTreatment", FormMethod.Post, new { id = "TreatmentNotePostTreatment", name = "TreatmentNotePostTreatment" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+
+                @Html.HiddenFor(e => e.PreTreatmentNote_Id)
+                @Html.HiddenFor(e => e.Patient_Id)
+                @Html.HiddenFor(e => e.PatientCondition_Id)
+                @Html.HiddenFor(e => e.PatientInsurance_Id)
+                @Html.HiddenFor(e => e.Appointment_Id)
+                @Html.HiddenFor(e => e.CIASubjectiveAffectId)
+                @Html.HiddenFor(e => e.DTN_AffectedOption_Id)
+                @Html.HiddenFor(e => e.OptionValue)
+                @Html.HiddenFor(e => e.CombindFieldsValue)
+                @Html.HiddenFor(e => e.CreatedBy)
+                @Html.HiddenFor(e => e.CreatedOn)
+                @Html.HiddenFor(e => e.ModifiedBy)
+                @Html.HiddenFor(e => e.ModifiedOn)
+
+                if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+
+                <div class="topforn">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="lefttext">
+                                @{
+                if (ViewBag.PatientName != null)
+                {
+                    @ViewBag.PatientName
+                }
+                                }, DOB:
+                                @{
+                if (ViewBag.PatientDOB != null)
+                {
+                    @ViewBag.PatientDOB
+                }
+                                }
+                                <br />
+                                @*Tx Time : 8:00-8:40 PM<br />*@
+                                @*POC: 3/11, ends 02/12/18*@
+
+                                @{
+                string hyfen = "-";
+                string space = " ";
+                string st1 = "Tx Time :";
+
+                if (ViewBag.TreatmentFromTime != null && ViewBag.TreatmentToTime != null)
+                {
+                    @st1 @space @ViewBag.TreatmentFromTime @space @hyfen @space @ViewBag.TreatmentToTime
+                }
+                                }<br />
+
+                                POC:
+                                @{
+                string divideSign = "/";
+                string commaSign = ",";
+                string ends = "ends";
+
+                if (ViewBag.TotalNoofVisitRequired != null && ViewBag.CurrentVisitNo != null && ViewBag.TreatmentEndDate != null)
+                {
+                    @ViewBag.CurrentVisitNo @divideSign @ViewBag.TotalNoofVisitRequired @commaSign @space @ends @space @ViewBag.TreatmentEndDate
+                }
+                <br />
+                if (ViewBag.Date_Of_injury != null)
+                {
+                    string _Date_Of_injury = "Date Of injury : ";
+                    @_Date_Of_injury @ViewBag.Date_Of_injury;
+                }
+                else
+                {
+                    if (ViewBag.SurgeryDate != null)
+                    {
+                        string _SurgeryDate = "SurgeryDate : ";
+                        @_SurgeryDate @ViewBag.SurgeryDate;
+                    }
+                    else
+                    {
+                        if (ViewBag.DateonSet != null)
+                        {
+                            string _DateonSet = "Date onset : ";
+                            @_DateonSet @ViewBag.DateonSet;
+                        }
+                    }
+                }
+                <br />
+                @*if (ViewBag.FromWhenProblemExist != null)
+                {
+                    string _FromWhenProblemExist = "From When Problem Exist : ";
+                    @_FromWhenProblemExist @ViewBag.FromWhenProblemExist;
+                }*@
+                                }
+
+
+                            </div>
+                            <div class="righttext">
+                                @*Sumit Paul, DOB:01/14/74<br />
+                                    Tx Time : 8:00-8:40 PM*@
+                                @{
+                //string str3 = string.Empty;
+                //if (ViewBag.Disease_name != null)
+                //{
+                //    str3 = Convert.ToString(ViewBag.Disease_name);
+                //}
+                //if (ViewBag.BodyPart != null)
+                //{
+                //    str1 = Convert.ToString(ViewBag.BodyPart);
+                //    str2 = str1.First().ToString().ToUpper() + str1.Substring(1);
+                //}
+                string s1 = string.Empty;
+                int pos1 = 0;
+                string icdCode = string.Empty;
+                string disease = string.Empty;
+                string _desc = string.Empty;
+
+                if (ViewBag.IcdCodeWithDisease != null)
+                {
+
+                    foreach (var item in ViewBag.IcdCodeWithDisease)
+                    {
+                        s1 = Convert.ToString(item);
+                        pos1 = s1.IndexOf('_');
+                        icdCode = s1.Substring(0, pos1);
+                        string NewICDCode = icdCode.Insert(3, ".");
+                        disease = s1.Substring(pos1 + 1);
+                        _desc = NewICDCode + commaSign + space + @disease;
+                        <p>@_desc</p>
+                    }
+                }
+                                }
+                                @*@str3<br />*@
+                                Auth: 3/15, ends 03/31/18
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                    </div>
+
+                    <div class="botheadingsec">Daily Treatment Note <span>OBJECTIVE</span></div>
+
+
+                </div>
+
+                <div id="divMain">
+
+                    <div id="div1">
+                        <div class="pretretment">Post-Treatment Note</div>
+                        <div id="divAffectDesc" class="carrying">
+
+                            <script type="text/javascript">
+                                function fn_CreateDynamicDiv() {
+                                    var totalNoDiv = 0;
+                                    var array1 = new Array();
+                                    var a1 = '@ViewBag.AffectsIdswithDesc';
+                                    @*var b1 = '@ViewBag.Options';*@
+                                    var b1 = '@ViewBag.CombindString';
+
+                                    array1 = a1.split("|");
+                                    array2 = b1.split("|");
+
+                                    $("#divAffectDesc").html('');
+                                    var vDynamicHtmlConten = '';
+                                    totalNoDiv = array1.length;
+
+                                    $.each(array1, function (index, value) {
+                                        var pos1 = value.indexOf("_");
+                                        var AffectId = value.substring(1, (pos1 - 1))
+                                        var AffectDesc = value.substring(pos1 + 1);
+                                        //alert(AffectDesc);
+                                        //alert(AffectId);
+
+                                        vDynamicHtmlContent = "<div id='div_" + index + "' class='form-group div_AffetcsOfName'>";
+                                        vDynamicHtmlContent += "<div class='cryheading'>" + AffectDesc + "</div>";
+
+
+                                        $.each(array2, function (index, value) {
+                                            //alert(value);
+                                            var pos2 = value.indexOf("~");
+                                            var pos3 = value.indexOf("$");
+                                            var _affectId = value.substring(1, (pos2 - 1));
+                                            //var optionName = value.substring(pos2 + 1);
+                                            var OptionId = value.substring((pos2 + 1), pos3 );
+                                            //alert("OptionId : " + OptionId);
+                                            var optionName = value.substring(pos3 + 1);
+
+                                            if (AffectId == _affectId) {
+                                                vDynamicHtmlContent += "<label class='col-sm-2 control-label'>" + optionName + "</label>";
+                                                vDynamicHtmlContent += "<div class='col-sm-4 OptionClass'>";
+                                                vDynamicHtmlContent += "<input type='text' id='txt" + AffectId + "_" + OptionId + "' class='form-control OptionValue'>";
+                                                vDynamicHtmlContent += "</div>";
+
+                                                //vDynamicHtmlContent += " <label for='inputPassword3' class='col-sm-2 control-label'>" + optionName + "</label>";
+                                                //vDynamicHtmlContent += "<div class='col-sm-4'>";
+                                                //vDynamicHtmlContent += "<input class='form-control'>";
+                                                //vDynamicHtmlContent += "<div class='col-sm-4'>";
+                                                //vDynamicHtmlContent += "</div>";
+                                            }
+                                        });
+
+
+
+
+                                        vDynamicHtmlContent += "<div class='clearfix'></div>";
+                                        vDynamicHtmlContent += "<div id='divPreviousbtn' style='float:left; padding-left: 15px;'>";
+                                        vDynamicHtmlContent += "<input type='button' id='btnPrev' class='btn btn-primary btn-lg' value='<< Previous' onclick='fn_ShowPreviousDiv(" + totalNoDiv + "," + index + ")' />";
+                                        vDynamicHtmlContent += "</div>";
+                                        vDynamicHtmlContent += "<div id='divNextbtn" + index + "' style='float:right; padding-right: 15px;'>";
+                                        vDynamicHtmlContent += "<input type='button' id='btnNext' name='btnNext__' class='btn btn-primary btn-lg' value='Next >>' onclick='fn_ShowNextDiv(" + totalNoDiv + "," + index + ");' />";
+                                        vDynamicHtmlContent += "</div>";
+
+                                        vDynamicHtmlContent += "</div>";
+                                        vDynamicHtmlContent += "<div class='clearfix'></div>";
+
+
+                                        $('#divAffectDesc').append(vDynamicHtmlContent);
+                                    });
+
+                                    //------------ Hide All Divs Within Same Class Except First One -------------------//
+                                    if ($('.div_AffetcsOfName').length > 1) {
+                                        //alert($('.div_AffetcsOfName').length);
+                                        for (var i = 1; i <= $('.div_AffetcsOfName').length; i++) {
+                                            $("#div_" + i).hide();
+                                        }
+                                    }
+                                    $('#divPreviousbtn').hide();    //Hide Previous Button on load
+                                    $("#divSave").hide();
+                                }
+                            </script>
+
+
+                            @{
+                string[] array1 = new string[] { };
+
+                @*if (ViewBag.AffectsIdswithDesc != null)
+                    {
+                        string a1 = string.Empty;
+                        a1 = ViewBag.AffectsIdswithDesc;
+                        array1 = a1.Split('|');
+                        int pos1 = 0;
+                        int ItemCount = 0;
+                        int cnt = 1;
+                        ItemCount = array1.Count();
+
+                        foreach (string item in array1)
+                        {
+                            pos1 = item.IndexOf('_');
+                            string AffectDesc = string.Empty;
+                            AffectDesc = item.Substring(pos1 + 1);
+
+                            <div id="divAffect_@cnt" class="form-group">
+                                <div class="cryheading">@AffectDesc</div>
+
+                                <label class="col-sm-2 control-label">Weight</label>
+                                <div class="col-sm-4">
+                                    <input class="form-control">
+                                </div>
+
+                                <label for="inputPassword3" class="col-sm-2 control-label">Distance</label>
+                                <div class="col-sm-4">
+                                    <input class="form-control">
+                                </div>
+
+
+                                <div class="clearfix"></div>
+                                <br />
+                                <div class="row" style="float:right">
+                                    <input type="button" id="btnNext" name="btnNext__" class="btn btn-primary btn-lg" value="Next >>" onclick="fn_ShowNextDiv(@cnt);" />
+                                </div>
+                            </div>
+                                    <br />
+                            cnt++;
+
+
+                        }
+                    }*@
+                            }
+
+                            @*<div class="cryheading">Carrying</div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Weight</label>
+                                    <div class="col-sm-4">
+                                        <input class="form-control">
+                                    </div>
+
+                                    <label for="inputPassword3" class="col-sm-2 control-label">Distance</label>
+                                    <div class="col-sm-4">
+                                        <input class="form-control">
+                                    </div>
+
+                                </div>*@
+                        </div>
+                        <div id="divSave" style="float:right">
+                            <input type="submit" id="btnSave" class="btn btn-orange btn-lg" value="Save & Next >>" style="margin-top:20px;" />
+                        </div>
+
+                        @*<div class="clearfix"></div>
+                            <br />
+                            <div class="row" style="float:right">
+                                <input type="button" id="btnNext" name="btnNext__" class="btn btn-primary btn-lg" value="Next >>" />
+                            </div>*@
+
+                    </div>
+
+                </div>
+                @*<div class="clearfix"></div>
+                    <div id="divDTNSaveSubjective" class="row" style="float:right">
+                        <input type="submit" id="btnSave" class="btn btn-orange btn-lg" value="Save & Next To Pre Treatment Measure" />
+                    </div>*@
+                <br /><br /><div class="row">
+                                <a href="@Url.Action("Index", "TreatmentNoteSubjective", new { Area = "DailyTreatmentNote" })">
+                                    <i>Back to List</i>
+                                </a>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Modal -->
+@*@Html.Partial("~/Views/Shared/_SearchPatientPartial.cshtml")*@
+@{Html.RenderPartial("~/Views/Shared/_SearchPatientPartial.cshtml");}
+
+<!-- End Modal -->
+
+<script type="text/javascript">
+
+    var count = 0;
+    $(document).ready(function () {
+        fn_CreateDynamicDiv();
+        //$(".div_AffetcsOfName").each(function () {
+        //    count++;
+        //});
+
+        //alert(count);
+        if ($(".div_AffetcsOfName").length == 1)
+        {
+            $("#btnNext").hide();
+            $("#divSave").show();
+        }
+
+    });
+
+    function fn_ShowNextDiv(totalNoDiv, index) {
+        $('#divPreviousbtn').show();
+        //alert("totalNoDiv : " + totalNoDiv + " " + "Index :" + index);
+        if (totalNoDiv > 1) {
+            var j = 1;
+            for (var i = 0; i < totalNoDiv; i++) {
+                if (i == index) {
+                    //alert("i : " + i + "  " + "index :" + index);
+                    i++;
+                    j = i - 1;
+                    //alert("i: " + i + " " + "j :" + j);
+                    $("#div_" + i).show();
+                    $("#div_" + j).hide();
+                    $("divNextbtn" + i).show();
+
+                    if (i == totalNoDiv - 1) {
+                        //alert(totalNoDiv - 1);
+                        $("#divNextbtn" + i).hide();
+                        $("#divSave").show();
+                    }
+                }
+            }
+        }
+    }
+
+    function fn_ShowPreviousDiv(totalNoDiv, index) {
+        //alert("current index :" + index);
+        $("#divNextbtn").show();
+        $("#divSave").hide();
+
+        if (totalNoDiv > 1) {
+            if (totalNoDiv == (index + 1)) {
+                $("#div_" + (index - 1)).show();
+                $("#div_" + index).hide();
+            }
+        }
+
+        if ((index + 1) > 1) {
+            $("#div_" + (index - 1)).show();
+            $("#div_" + index).hide();
+        }
+
+        if (index <= 1) {
+            $('#divPreviousbtn').hide();
+        }
+    }
+
+    $("#btnSave").click(function () {
+        //alert("ok");
+        $("#PatientInsurance_Id").val('@ViewBag.PatientInsurance_Id');
+        $("#Appointment_Id").val('@ViewBag.Appointment_Id');
+
+        var val2 = '';
+
+        $(".OptionValue").each(function () {
+            var OptionId = $(this).attr("id");
+            val2+=OptionId + "~" + $("#" + OptionId).val()+"|";
+           });
+        //alert(val2);
+        $("#CombindFieldsValue").val(val2);
+    });
+</script>

@@ -1,0 +1,240 @@
+﻿@model DataLayer.Models.tblTTriggerEmail
+
+@{
+    ViewBag.Title = "";
+}
+<style>
+    .selectedRow {
+        background-color: rgba(249, 159, 62, 0.65);
+        color: white;
+    }
+</style>
+
+<section class="bodyinner">
+    <div class="container">
+
+        <div class="report-form clearfix">
+            <h2 class="text-center">Create Trigger Email</h2>
+            @using (Html.BeginForm("Create", "TriggerEmail", FormMethod.Post, new { name = "TriggerEmail", id = "TriggerEmail" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.Hidden("CreatedOn", DateTime.Now)
+                if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+                <div class="row">
+                    <div class="col-sm-10 form-group">
+                        <div class="col-sm-5 form-group">
+                            @Html.Label("Type")
+                            @Html.DropDownListFor(m => m.TemplateType, (SelectList)ViewBag.TemplateType, new { @class = "applitextfield2" })
+                        </div>
+                        <div class="col-sm-5 form-group">
+                            @Html.Label("Trigger On")
+                            @Html.TextBoxFor(model => model.TriggerOn, new { @class = "form-control datetimepicker1 datepicker-bg" })                         
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-11 form-group">
+                        <div class="col-sm-8 form-group">
+                            @Html.Label("To")
+                            @Html.TextBoxFor(model => model.EmailTo, new { @class = "form-control" })
+                        </div>
+                        <div class="col-sm-1 form-group" style="padding-top:25px;">
+                            <!-- Trigger the modal with a button -->
+                            <button type="button" id="btnTo" class="btn btn-info btn-lg PatientEmailSearchModal" data-toggle="modal" data-id="To" data-target="#PatientEmailSearchModal">LookUp</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-11 form-group">
+                        <div class="col-sm-8 form-group">
+                            @Html.Label("CC")
+                            @Html.TextBoxFor(model => model.EmailCC, new { @class = "form-control" })
+                        </div>
+                        <div class="col-sm-1 form-group" style="padding-top:25px;">
+                            <!-- Trigger the modal with a button -->
+                            <button type="button" id="btnCC" class="btn btn-info btn-lg PatientEmailSearchModal" data-id="CC" data-toggle="modal" data-target="#PatientEmailSearchModal">LookUp</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subbutt">
+                    <input type="submit" value="Save" class="btn btn-orange pull-right" />
+
+                </div>
+
+                <p>@Html.ActionLink("Back to List", "Index")</p>
+            }
+        </div>
+
+        <div class="clearfix"></div>
+    </div>
+
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="PatientEmailSearchModal" role="dialog">
+    <div class="modal-dialog modal-lg" style="width:950px;">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="padding-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Search Patient Email ID</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div id="searchPatient">
+                        <div class="row SearchFilterContainer" id="SearchFilterContainer">
+                            <div class="col-sm-6 col-md-3">
+                                <div class=headrightcont>First Name</div>
+                                <input id="txtPatientFirstName" type="text" class="applitextfield2" name="Fname" value="" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class=headrightcont>Last Name</div>
+                                <input id="txtPatientLastName" type="text" class="applitextfield2" name="Lname" value="" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="headrightcont">Phone</div>
+                                <input id="txtPatientPhone" type="text" class="applitextfield2 UsCellFormat" name="Phone" value="" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class=headrightcont>City</div>
+                                <input id="txtPatientCity" type="text" class="applitextfield2" name="City" value="" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class=headrightcont>State</div>
+                                <input id="txtPatientState" type="text" class="applitextfield2" name="State" value="" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="headrightcont">Zip Code</div>
+                                <input id="txtPatientZipCode" type="text" class="applitextfield2" name="ZipCode" value="" maxlength="5" />
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="headrightcont">&nbsp;</div>
+                                <button class="btn btn-success fnSearchForPatient1" onclick="fnSearchForPatient();">Search</button>
+                            </div>
+                        </div>
+                        <div class="SearchResultContainer1">
+                            <table class="table table-bordered table-scroll" id="tblPatientList">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Email</th>
+                                        <th>Mob No</th>
+                                        <th>Home Phone</th>
+                                        <th>Address</th>
+                                    </tr>
+                                </thead>
+                                <tbody> </tbody>
+                            </table>
+
+                            <div id="div_noRecPatient" style="text-align: center; vertical-align: middle; line-height: 38px; display:none;"><label style='color:red'>There no records are found !!</label></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="hdToCC" value="" />
+                <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    var k1 = "";
+    var ccto = "";
+    function fnSearchForPatient() {
+        $.ajax({
+            url: '@Url.Action("SearchForPatient", "TriggerEmail")',
+            type: "POST",
+            data: {
+                FirstName: $('#txtPatientFirstName').val(),
+                LastName: $('#txtPatientLastName').val(),
+                Email: $('#txtPatientEmail').val(),
+                Phone: $('#txtPatientPhone').val(),
+                City: $('#txtPatientCity').val(),
+                State: $('#txtPatientState').val(),
+                ZipCode: $('#txtPatientZipCode').val()
+            },
+            success: function (json) {
+                var count = 1;
+                $("#tblPatientList tbody").html('');
+                for (var i = 0; i < json.length; i++) {
+                    var row = "<tr onclick='fnSelectPatientRow(this);'>" +
+                                        "<td>" + count + "</td>" +
+                                       "<td>" + json[i].First_Name + "</td>" +
+                                        "<td>" + json[i].Last_Name + "</td>" +
+                                        "<td>" + json[i].Email + "</td>" +
+                                        "<td>" + json[i].MobNo + " </td>" +
+                                        "<td>" + json[i].Phone2 + "</td>" +
+                                        "<td> <input type='hidden' name='' value='" + json[i].Patient_Id + "' class='patientID' /><input type='hidden' name='' value='" + json[i].Email + "' class='patientEmail' />" + json[i].Address + "</td>" +
+                                    "</tr>";
+                    $("#tblPatientList tbody").append(row);
+                    count = count + 1;
+                }
+                if (json.length == 0) {
+                    $("#div_noRecPatient").show();
+                    $("#txtPatientName").val("");
+                    $("#Condition_PatientId").val("");
+                }
+            },
+            error: function (msg) {
+            },
+        });
+    }
+
+    function fnShowPatientSearch() {
+        $('#_SearchPatient').modal();
+
+        $('#txtPatientFirstName').val("");
+        $('#txtPatientLastName').val("");
+        $('#txtPatientPhone').val("");
+        $('#txtPatientCity').val("");
+        $('#txtPatientState').val("");
+        $('#txtPatientZipCode').val("");
+    }
+    //For Patient
+    function fnSelectPatientRow(obj) {
+        $("#tblPatientList tbody tr").removeClass('selectedRow');
+        $(obj).addClass('selectedRow');
+        $('#PatientEmailSearchModal').modal('hide');
+        //$("#txtPatientName").val($($(obj).find('td')[0]).html() + " " + $($(obj).find('td')[1]).html());
+        $("#Condition_PatientId").val($($(obj).find('input')[0]).val());
+        //$("#PatientUser_Email").val($($(obj).find('input')[1]).val());
+
+        if ($("#hdToCC").val() == "To") {
+            k1 = k1 + ";" + $($(obj).find('input')[1]).val();
+            $("#EmailTo").val(k1.substr(1));
+
+        }
+        else if ($("#hdToCC").val() == "CC") {
+            ccto = ccto + ";" + $($(obj).find('input')[1]).val();
+            $("#EmailCC").val(ccto.substr(1));
+
+        }
+    }
+
+
+
+</script>
+
+<script type="text/javascript">
+    $(document).on("click", ".PatientEmailSearchModal", function () {
+        var myBookId = $(this).data('id');
+        $("#hdToCC").val(myBookId);
+    });
+
+</script>

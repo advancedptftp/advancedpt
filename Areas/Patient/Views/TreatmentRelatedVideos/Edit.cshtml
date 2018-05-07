@@ -1,0 +1,154 @@
+﻿@model DataLayer.Models.tblTTreatmentRelatedVideo
+@{
+    ViewBag.Title = "";
+}
+<style>
+    .selectedRow {
+        background-color: rgba(249, 159, 62, 0.65);
+        color: white;
+    }
+</style>
+@{
+    string msg = "";
+
+    if (ViewBag.Message != null)
+    {
+        msg = ViewBag.Message;
+    }
+}
+<section class="bodyinner">
+    <div class="container">
+
+        <div class="report-form clearfix">
+            <h2 class="text-center">Treatment Videos</h2>
+            @using (Html.BeginForm("Edit", "TreatmentRelatedVideos", FormMethod.Post, new { enctype = "multipart/form-data", name = "TreatmentRelatedVideos", id = "TreatmentRelatedVideos" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.VideoId)
+                @Html.HiddenFor(model => model.ModifiedBy)
+                @Html.Hidden("ModifiedOn", DateTime.Now)
+                @Html.HiddenFor(model => model.CreatedBy)
+                @Html.Hidden("CreatedOn", DateTime.Now)
+
+                if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+                @*<div class="row">
+                        <div class="col-sm-10 form-group">
+                            <div class="col-sm-5 form-group">
+                                @Html.Label("Upload Video")
+                                <input type="file" name="file" id="file" /><br><br>
+                                <input type="button" id="btnUpload" value="Upload file" />
+                                <br><br>
+                                @ViewBag.Message
+                            </div>
+                        </div>
+
+                    </div>*@
+                <div id="divVideoDisplay">
+                    <div class="row">
+                        <div class="col-sm-12 form-group">
+                            <div class="col-sm-6 form-group">
+                                @Html.Label("Video:")
+                                @*<video id="video_background" poster="images/dmm_background.jpg" controls="controls" preload="true" muted loop>
+                                        <source src="http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4" type="video/mp4">
+                                        <source src="videos/backgroundvideo.webm" type="video/webm">
+                                    </video>*@
+                                <iframe src="@Model.VideoLink" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="divVideoLink">
+                    <div class="row">
+                        <div class="col-sm-11 form-group">
+                            <div class="col-sm-8 form-group">
+                                @Html.Label("Video Link:")
+                                @Html.TextBoxFor(model => model.VideoLink, new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-11 form-group">
+                        <div class="col-sm-8 form-group">
+                            @Html.Label("Video Description")
+                            @Html.TextAreaFor(model => model.VideoDesc, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-11 form-group">
+                        <div class="col-sm-8 form-group">
+                            @Html.Label("Is Active")
+                            @Html.CheckBoxFor(model => model.IsActive, new { @class = "checkbox-inline" })
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="subbutt">
+                    <input type="submit" id="btnSave" value="Save" class="btn btn-orange pull-right" />
+
+                </div>
+
+                <p>@Html.ActionLink("Back to List", "Index")</p>
+            }
+        </div>
+
+        <div class="clearfix"></div>
+    </div>
+</section>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var video = document.getElementById("video_background");
+        video.addEventListener("canplay", function () {
+            setTimeout(function () {
+                video.play();
+            }, 1000);
+        });
+    });
+
+
+</script>
+<script type="text/javascript">
+    $("#btnUpload").click(function () {
+        $('#VideoLink').attr('readonly', true);
+        var formData = new FormData();
+
+        var file = document.getElementById("file").files[0];
+        formData.append("FileUpload", file);
+
+        $.ajax({
+            url: '@Url.Action("Upload", "TreatmentRelatedVideos")',
+            type: 'POST',
+            dataType: 'JSON',
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (res) {
+                if (res != null) {
+                    alert('@msg');
+                    $("#VideoLink").val(res);
+                }
+            },
+            error: function (error) {
+                alert("Error: " + error);
+            },
+            statusCode: {
+                404: function () {
+                    alert("page not found");
+                }
+            }
+
+        });
+    });
+</script>

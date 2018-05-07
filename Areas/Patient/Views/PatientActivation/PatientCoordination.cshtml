@@ -1,0 +1,379 @@
+﻿@model PagedList.IPagedList<DataLayer.Models.PatientListPage>
+@using PagedList.Mvc;
+@using DataLayer;
+@{
+    ViewBag.Title = "PatientIndex";
+    var CanApprovePatient = ViewContext.Controller.CheckAccess(104,PermissionType.All);
+}
+<style>
+    .NewPatient {
+        background-color: rgba(205, 216, 36, 0.3) !important;
+    }
+</style>
+@if (ViewBag.Error != null)
+{
+    <script>
+        alertify.alert('@ViewBag.Error').setHeader('AdvancePT Says');
+    </script>
+
+}
+
+<center><h2 style="margin-top:20px;">Patient List</h2></center>
+<section class="bodyinner2">
+    <div>
+     
+        @using (Html.BeginForm("PatientCoordination", "PatientActivation", FormMethod.Get))
+        {
+            <div class="searchsec">
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search by First Name" })
+                <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                <div class="clearfix"></div>
+            </div>
+        }
+        <div class="clearfix"></div>
+    </div>
+
+    <div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            @{ var classname = "botharrow";}
+                            @if ((ViewBag.CurrentSort == "FirstName" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                            {
+                                classname = "bottarrow";
+                            }
+                            else if ((ViewBag.CurrentSort == "FirstName" && ViewBag.SortDirection == false))
+                            {
+                                classname = "toparrow";
+                            }
+                            @Html.ActionLink("First Name", "PatientCoordination", new { sortOrder = "FirstName", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname })
+
+
+                        </th>
+                        <th>
+                            @{ var classname2 = "botharrow";}
+                            @if ((ViewBag.CurrentSort == "LastName" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                            {
+                                classname2 = "bottarrow";
+                            }
+                            else if ((ViewBag.CurrentSort == "LastName" && ViewBag.SortDirection == false))
+                            {
+                                classname2 = "toparrow";
+                            }
+                            @Html.ActionLink("Last Name", "PatientCoordination", new { sortOrder = "LastName", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname2 })
+
+
+                        </th>
+                        <th>
+                            DOB
+                        </th>
+                     <th>
+                            Mob Number
+                        </th>
+                        <th>
+                            @{ var classname1 = "botharrow";}
+                            @if ((ViewBag.CurrentSort == "CreatedOn" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                            {
+                                classname1 = "bottarrow";
+                            }
+                            else if ((ViewBag.CurrentSort == "CreatedOn" && ViewBag.SortDirection == false))
+                            {
+                                classname1 = "toparrow";
+                            }
+                            @Html.ActionLink("Created On", "PatientCoordination", new { sortOrder = "CreatedOn", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname1 })
+
+
+                        </th>
+                        <th></th>
+                    </tr>
+
+                </thead>
+                @{var NewClass = "";}
+                @foreach (var item in Model)
+                {
+                    //if (!item.IsApproved)
+                    //{
+                    //    NewClass = "NewPatient";
+                    //}
+                    //else
+                    //{
+                    //    NewClass = "";
+                    //}
+                    <tr class="@NewClass">
+                        <th>
+                            @Html.DisplayFor(modelItem => item.FirstName)
+                        </th>
+                        <th>
+                            @Html.DisplayFor(modelItem => item.LastName)
+                        </th>
+                        <th>
+                            @item.DOB.GetExactValue()
+                        </th>
+                        <th>
+                            @Html.DisplayFor(modelItem => item.MobNo)
+                        </th>
+                        <th>
+                            @item.CreatedOn.ToString("MM-dd-yyyy")
+
+                        </th>
+                        <th>
+                           
+                            <a href="javascript:void(0);" class="btn btn-primary" onclick="fnConfirmViewScheduleNew(@item.Patient_Id);" id="btnViewStatus">
+                                View Schedule Status
+                            </a>
+                            <a href="javascript:void(0);" class="btn btn-primary" onclick="fnConfirmCreateScheduleNew(@item.Patient_Id);" id="btnCreateSchedule">
+                                Create Schedule
+                            </a>
+
+                            @*<a href="javascript:void(0);" class="btn btn-primary" onclick="fnConfirmation(@item.Patient_Id);" id="btnApprove">
+                                View & Create Schedule
+                            </a>*@
+                            
+    
+    
+    
+    @*<a href="javascript:void(0);" class="btn btn-primary" onclick="fnConfirmation(@item.Patient_Id);" id="btnApprove">
+                                Upcoming
+                            </a>*@
+                          
+                            @*@if (!item.IsApproved && CanApprovePatient)
+                            {
+                                <a href="javascript:void(0);" onclick="fnShowDetail(@item.Patient_Id);">
+                                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                </a>
+                                <a href="javascript:void(0);" class="btn btn-primary" onclick="fnConfirmation(@item.Patient_Id);" id="btnApprove">
+                                    View
+                                </a>
+                            }*@
+                        </th>
+                    </tr>
+                }
+
+            </table>
+
+        </div>
+        <div>
+            <br />
+            @using (Html.BeginForm("PatientCoordination", "PatientActivation", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+            {
+                @Html.DropDownList("PageSize")
+            }
+            @{
+                bool? direction = ViewBag.SortDirection;
+                if (direction == null) { direction = false; }
+            }
+            <div class="pull-left" style=" padding:10px;">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("PatientCoordination",
+                      new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction }))
+        </div>
+    </div>
+
+</section>
+<!-- Modal -->
+<div class="modal fade" id="PatientconditionsModal" role="dialog">
+    <div class="modal-dialog modal-lg" style="width:1050px;">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="padding-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">View & Create Schedule</h4>
+            </div>
+            <div class="modal-body">
+                
+                    <div id="searchPatient">
+                        
+                        <div class="SearchResultContainer1">
+                            <table class="table table-bordered table-scroll" id="tblPatientConditionsList">
+                                <thead>
+                                    <tr>
+                                        <th style="width:14%">No of records</th>
+                                        @*<th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Email</th>
+                                        <th>Mob No</th>*@
+                                        <th>Patient Problem Details</th>
+                                        <th></th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody> </tbody>
+                            </table>
+
+                            <div id="div_noRecPatient" style="text-align: center; vertical-align: middle; line-height: 38px; display:none;"><label style='color:red'>There no records are found !!</label></div>
+                        </div>
+
+                   
+                </div>
+            </div>
+            <div class="modal-footer">
+               
+                <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- End Modal -->
+<script>
+    $("#PageSize").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+</script>
+<script>
+
+    function fnShowDetail(id) {
+        var url = "@Url.Action("PatientActivation", "PatientActivation", new { Area = "Patient" })" + "?id=" + id;
+        //fnShowPopupForDetail(url);
+        popupwindow(url, 'IncidentForm', 1000, 800);
+    }
+
+    //fnShowEmbededPDF(pdf, $('#dvPDF'));
+    //fnShowPdfInWinPopup(pdf);
+    //fnShowPdfInPopup(pdf, 'show detail for emp');
+
+</script>
+
+<script>
+    function fnConfirmation(PatientId) {
+
+
+        $.ajax({
+
+            url: '@Url.Action("PatientConditions", "PatientActivation")',
+            type: 'POST',
+            //contentType: "application/json; charset=utf-8",
+            dataType: 'JSON',
+            data: { PatientId: PatientId },
+            //cache: false,
+            success: function (result) {
+                // debugger;
+                //alert(result.PatientData[0].PatientCondition_Id);
+                //alert(result.msg);
+
+                if (result.msg == "data") {
+                    var count = 1;
+                    $("#tblPatientConditionsList tbody").html('');
+                    for (var i = 0; i < result.PatientData.length; i++) {
+                        var row = "<tr>" +
+                                            "<td style='width:14%'>" + count + "</td>" +                                            
+                                           "<td>" + result.PatientData[i].ProblemDetail + "</td>" +
+                                            "<td>" + "<input type='button' value='View Schedule Status' class='btn btn-primary' onclick='fnConfirmViewSchedule(" + result.PatientData[i].PatientId + "," + result.PatientData[i].PatientCondition_Id + ");'/>" + "&nbsp;" + "<input type='button' value='Create Schedule' class='btn btn-primary' onclick='fnConfirmCreateSchedule(" + result.PatientData[i].PatientId + "," + result.PatientData[i].PatientCondition_Id + ");'/>" +
+
+                                               "</td>" +
+                                        "</tr>";
+                        $("#tblPatientConditionsList tbody").append(row);
+                        count = count + 1;
+                        $("#PatientconditionsModal").modal('show');
+                    }
+                }
+                else if (result.msg == "nodata") {
+                    alertify.alert("There no records are found!!!").setHeader('AdvancePT Says');
+                }
+                //alert(data);
+            },
+            error: function () {
+                // debugger;
+                alert("Error occured.");
+            }
+        });
+
+
+    }
+    function fnConfirmViewSchedule(patientId, patientCondId) {
+        // alert(obj.);
+       // alert('patientId  ' + patientId);
+       // alert('patientCondId  ' + patientCondId);
+        var txt;
+        var r = confirm("Do you want to see the schedule status?");
+        if (r == true) {
+            window.location.href = '@Url.Action("ViewScheduleStatus", "Calendar", new { @area="PatientSchedule"})?patientId=' + patientId + '&patientCondId=' + patientCondId;
+            @*$.ajax({
+                type: 'POST',
+                url: '@Url.Action("PatientConditions", "PatientActivation")',
+                data: { id: PatientId },
+                //contentType: "application/json; charset=utf-8",
+                //dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    //alert(data);
+                    window.location = '@Url.Action("SchedulePatient", new { Controller = "Calendar", area = "PatientSchedule" })' + "?PatientID=" + PatientId;
+                },
+                error: function () {
+                    alert("Error occured.");
+                }
+            });*@
+
+        } else {
+            txt = "Cancel";
+        }
+    }
+    function fnConfirmViewScheduleNew(patientId) {
+       
+        //var txt;
+        //var r = confirm("Do you want to see the schedule status?");
+        //if (r == true) {
+            window.location.href = '@Url.Action("ViewScheduleStatus", "Calendar", new { @area="PatientSchedule"})?patientId=' + patientId ;
+          
+
+        //    } else {
+        //    txt = "Cancel";
+        //}
+    }
+
+    function fnConfirmCreateSchedule(patientId, patientCondId) {
+     
+        //var txt;
+        //var r = confirm("Do you want to create schedule?");
+        //if (r == true) {
+            window.location.href = '@Url.Action("PatientSelfScheduleByCondition", "Calendar", new { @area = "PatientSchedule" })?patientId=' + patientId + '&patientCondId=' + patientCondId;
+
+           
+
+        //    } else {
+        //    txt = "Cancel";
+        //}
+    }
+    function fnConfirmCreateScheduleNew(patientId) {
+        // alert(obj.);
+        // alert('patientId  ' + patientId);
+        //alert('patientCondId  ' + patientCondId);
+        window.location.href = '@Url.Action("PatientSelfScheduleByCondition", "Calendar", new { @area = "PatientSchedule" })?patientId=' + patientId + '&patientCondIdssNoWork=abc';
+
+        @*var txt;
+        var r = confirm("Do you want to create schedule?");
+        if (r == true) {
+            window.location.href = '@Url.Action("PatientSelfScheduleByCondition", "Calendar", new { @area = "PatientSchedule" })?patientId=' + patientId + '&patientCondIdssNoWork=abc';
+
+          
+
+            } else {
+            txt = "Cancel";
+        }*@
+    }
+</script>
+<script>
+
+    jQuery(document).ready(function () {
+        jQuery('.accordion-2 .panel-heading').on('click', function () {
+            //alert("rtrt");
+            jQuery('.accordion-2 .panel-heading ').removeClass('active');
+            jQuery(this).addClass('active');
+
+        });
+
+
+
+    });
+
+</script>
+

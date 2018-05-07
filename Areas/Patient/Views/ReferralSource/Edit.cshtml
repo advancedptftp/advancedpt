@@ -1,0 +1,89 @@
+﻿@model DataLayer.Models.tblMReferralSource
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+
+<section class="bodyinner">
+    <div class="container">
+        <div class="bodyleft">
+
+            @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+        </div>
+        <div class="bodyright">
+
+            <div class="report-form clearfix">
+                <h2 class="text-center">Edit Referral Source</h2>
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(model => model.ReferralSource_Id)
+                    @Html.HiddenFor(model => model.ModifiedBy)
+                    @Html.Hidden("ModifiedOn", DateTime.Now)
+                    @Html.HiddenFor(model => model.CreatedOn)
+                    @Html.HiddenFor(model => model.CreatedBy)
+                    if (ViewBag.Error != null)
+                    {
+                        @Html.Raw(ViewBag.Error)
+                    }
+                    <div class="row">
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Source Name")
+                            @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Name)
+                        </div>
+                    
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Related Query")
+                            @Html.TextBoxFor(model => model.Related_query, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Related_query)
+                        </div>
+                    </div>
+
+
+                  
+                    <div class="subbutt">
+                        <input type="submit" value="Save" class="btn btn-orange pull-right" />
+
+
+                    </div>
+                    <p>@Html.ActionLink("Back to List", "Index")</p>
+                }
+
+            </div>
+
+
+
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,181 @@
+﻿@model PagedList.IPagedList<DataLayer.Models.tblTPaymtHardShip>
+@using PagedList.Mvc;
+@using DataLayer;
+@{
+    ViewBag.Title = "Payment Hardship";
+    var CanViewPatient = ViewContext.Controller.CheckAccess(103, PermissionType.View);
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //var IsApprover = ViewContext.Controller.IsApprover(15);
+    var IsApprover = true;
+}
+
+<style>
+    .NewPatient {
+        background-color: rgba(205, 216, 36, 0.68) !important;
+    }
+</style>
+
+<center><h2 style="margin-top:20px;">Payment Hardship</h2></center>
+<section class="bodyinner2">
+    <div>
+        <p class="pull-right" style="display:none;">
+            @Html.ActionLink("Create New Record", "Create", null, new { @class = "btn btn-primary" })
+        </p>
+        @using (Html.BeginForm("PaymentHardShipList", "PatientPayment", FormMethod.Get))
+        {
+            <div class="searchsec">
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search by First Name" })
+                <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                <div class="clearfix"></div>
+            </div>
+        }
+        <div class="clearfix"></div>
+    </div>
+
+    <div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            @{ var classname = "botharrow";}
+                            @if ((ViewBag.CurrentSort == "FirstName" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                            {
+                                classname = "bottarrow";
+                            }
+                            else if ((ViewBag.CurrentSort == "FirstName" && ViewBag.SortDirection == false))
+                            {
+                                classname = "toparrow";
+                            }
+                            @Html.ActionLink("First Name", "PatientIndex", new { sortOrder = "FirstName", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname })
+
+
+                        </th>
+                        <th>
+                            @{ var classname2 = "botharrow";}
+                            @if ((ViewBag.CurrentSort == "LastName" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                            {
+                                classname2 = "bottarrow";
+                            }
+                            else if ((ViewBag.CurrentSort == "LastName" && ViewBag.SortDirection == false))
+                            {
+                                classname2 = "toparrow";
+                            }
+                            @Html.ActionLink("Last Name", "PatientIndex", new { sortOrder = "LastName", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname2 })
+                        </th>
+                        <th>
+                            DOB
+                        </th>
+                        <th>
+                            Mobile Number
+                        </th>
+                        <th>
+                            @{ var classname1 = "botharrow";}
+                            @if ((ViewBag.CurrentSort == "CreatedOn" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                            {
+                                classname1 = "bottarrow";
+                            }
+                            else if ((ViewBag.CurrentSort == "CreatedOn" && ViewBag.SortDirection == false))
+                            {
+                                classname1 = "toparrow";
+                            }
+                            @Html.ActionLink("Created On", "PatientIndex", new { sortOrder = "CreatedOn", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname1 })
+                        </th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                @foreach (var item in Model)
+                {
+
+                    <tr>
+                        <th>
+                            @Html.DisplayFor(modelItem => item.strFName)
+                        </th>
+                        <th>
+                            @Html.DisplayFor(modelItem => item.strLName)
+                        </th>
+                        <th>
+                            @item.HardShipDate.GetExactValue()
+                        </th>
+                        <th>
+                            @Html.DisplayFor(modelItem => item.PatientPhoneNo)
+                        </th>
+
+                        <th>
+                            @item.CreatedOn.GetExactValue()
+                        </th>
+                        <th>
+                            <a href="@Url.Action("PatientPaymentDetails", "PatientPayment", new { id = item.HardShipId })">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+                            @if (item.ApprovedBy == false)
+                            {
+                                <a href="@Url.Action("PaymtHardShipEdit", "PatientPayment", new { id = item.HardShipId })">
+                                    <i class="fa fa-edit" aria-hidden="true"></i>
+                                </a>
+                            }
+                            <a href="javascript:void(0);" onclick="fnShowHardshipPdf(@item.HardShipId);" title="AOB.pdf">
+                                <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                            </a>
+                        </th>
+                        <th>
+                            @if (item.ApprovedBy == false && IsApprover)
+                            {
+                                <a href="@Url.Action("PaymtHardShipApproval", "PatientPayment", new { id = item.HardShipId })" class="btn btn-success">Approve</a>
+                            }
+                        </th>
+                    </tr>
+                }
+            </table>
+
+        </div>
+        <div>
+            <br />
+            @using (Html.BeginForm("PaymentHardShipList", "PatientPayment", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+            {
+                @Html.DropDownList("PageSize")
+            }
+            @{
+                bool? direction = ViewBag.SortDirection;
+                if (direction == null) { direction = false; }
+            }
+            <div class="pull-left" style=" padding:10px;">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("PaymentHardShipList",
+                      new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction }))
+        </div>
+    </div>
+
+</section>
+
+
+<script>
+
+   
+    function fnShowHardshipPdf(id) {
+        var url = "@Url.Action("PatHardShipPDf", "PatientPayment", new { Area = "Payment" })" + "?id=" + id;
+        popupwindow(url, 'PatHardShipPDf', 1000, 800);
+    }
+    
+   
+
+</script>
+
+
+
+<script type="text/javascript">
+    $("#PageSize").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+
+    
+
+
+</script>

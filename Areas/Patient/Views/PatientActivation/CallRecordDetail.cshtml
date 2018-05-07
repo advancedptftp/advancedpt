@@ -1,0 +1,58 @@
+﻿@model IEnumerable<DataLayer.Models.tblTPatientCallRecord>
+@using PagedList.Mvc;
+@using DataLayer;
+@{
+    ViewBag.Title = "CallRecordDetail";
+}
+
+@*<h2>Hi</h2>*@
+<div style="padding:0 0 5px 0;" class="table-responsive">
+    <table width="100%" border="0" class="table table-bordered table-striped">
+        <tr>
+
+            <th>
+                @Html.DisplayName("Call Date")
+            </th>
+            <th>
+                @Html.DisplayName("Is Schedule")
+            </th>
+            <th>
+                @Html.DisplayName("Answer Type")
+            </th>
+        </tr>
+
+        @{var count = 0;}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <div class="col-sm-6 col-md-6 form-group">
+                        <div class="col-sm-5 form-control">
+                            @item.CallDate
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="col-sm-6 col-md-6 form-group">
+                        <div class="col-sm-5 form-control">
+                            @item.IsScheduled
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="col-sm-6 col-md-6 form-group">
+                        <div class="col-sm-5 form-control">                            
+                            @(((AnswerType)Enum.ToObject(typeof(AnswerType), (Convert.ToInt32(item.AnswerType)))).ToCustomString())
+                               
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+
+
+
+
+        }
+    </table>
+    </div>  

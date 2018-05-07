@@ -1,0 +1,320 @@
+﻿@{
+    Layout = null;
+}
+
+<script src="~/Scripts/jquery.js"></script>
+<script src="~/Scripts/jquery-ui.js"></script>
+<script src="~/Scripts/moment.js"></script>
+<script src="~/Scripts/fullcalendar.js"></script>
+<link href="~/Content/fullcalendar.css" rel="stylesheet" />
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.1.0/bootstrap.min.js"></script>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/style.css" rel="stylesheet" />
+<link href="~/Content/fonts.css" rel="stylesheet" />
+<link rel="stylesheet" href="~/Content/w3.css">
+
+<style>
+    .fc-slats > table {
+        height: 580px;
+    }
+    .fc-ssrr > table {
+        height: 580px;
+    }
+    .popover-title {
+        display: none;
+    }
+    .fc-time-grid .fc-content-skeleton {
+            top: -2px;
+    }
+</style>
+
+<style type="text/css">
+    .fc-view-container {
+        margin-top: -35px;
+    }
+</style>
+
+@*<div id='calendar'></div>*@
+
+<div id="loading" class="loadingdiv" style="display:none;">
+    <div class="loadingcontainere">
+        <img src="~/Images/pageloader1.gif" width="200" height="200" />
+    </div>
+</div>
+
+<div class="w3-sidebar w3-bar-block w3-card-2 w3-animate-left" style="display:none" id="mySidebar">
+    <button  class="w3-bar-item w3-button w3-large" onclick="w3_close()">
+        &times;
+    </button>
+    <div style="clear:both;"></div>
+    <div id="div1">
+        <div class="row" style="margin:0;">
+            <div class="col-sm-12 form-group">
+                <h3>@Html.Label("Location")</h3>
+                @Html.DropDownList("Location", (SelectList)ViewBag.Location, new { @class = "applitextfield3" })
+            </div>
+        </div>
+    </div>
+
+    <div id="div2">
+        <div class="row" style="margin:0;">
+            <div class="col-sm-12 form-group">
+                <div><h3><strong>Resource</strong></h3></div>
+                <div id="chkResource"></div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<div zclass="w3-main" id="main">
+    <div class="w3-teal" style="height:60px; background-color:#fff !important;">
+        <button style="padding:5px; margin-right:8px; margin-left:8px;" class=" w3-button w3-teal w3-xlarge" onclick="w3_open()">&#9776;</button><a  href="@Url.Action("Index", new { Controller="Home", Area=""})"><img src="@Url.Content("~/Images/logo.png")" title="myadvancedpt.com" alt="" style="width:120px; height:55px;"></a>
+        @*<div class="logo" style="float:left; margin-left:50px;">
+            <a href="@Url.Action("Index", new { Controller="Home", Area=""})"><img src="@Url.Content("~/Images/logo.png")" title="myadvancedpt.com" alt=""></a>
+        </div>*@      
+        
+        <div class="w3-container" style="float:right;">
+            <h1 style="color: #f58f22; font-size: 26px; font-weight: bold; padding-top: 7px; ">Appointment Schedule</h1>
+        </div>
+    </div>
+
+    <div class="w3-container">
+        <div class="row">&nbsp;</div>
+        <div id='calendar'></div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    function w3_open() {
+        document.getElementById("main").style.marginLeft = "28%";
+        document.getElementById("mySidebar").style.width = "28%";
+        document.getElementById("mySidebar").style.display = "block";
+        //document.getElementById("openNav").style.display = 'none';
+    }
+    function w3_close() {
+        document.getElementById("main").style.marginLeft = "0%";
+        document.getElementById("mySidebar").style.display = "none";
+        //document.getElementById("openNav").style.display = "inline-block";
+    }
+</script>
+
+<script>
+    var _resources = [];
+    var _startdate = '';
+    var _enddate = '';
+    var _pageload = true;
+    $(document).ready(function () {
+        _fnGetResource();
+
+        //$('#calendar').fullCalendar({
+        //    header: {
+        //        left: 'prev,next today',
+        //        center: 'title',
+        //        right: 'month,agendaWeek,agendaDay,listMonth'
+        //    },
+        //    minTime: "10:00:00",
+        //    maxTime: "18:00:00",
+        //    defaultView :"agendaWeek",
+        //    editable: false,
+        //    eventLimit: true,
+        //    events: [],
+        //    viewRender: function (view, element) {
+        //        fnRenderEvent(view.start.format(), view.end.format());
+        //    },
+        //});
+        var createFC = function () {
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay,listMonth'
+                },
+                minTime: "09:00:00",
+                maxTime: "18:00:00",
+                defaultView: "agendaWeek",
+                editable: false,
+                // contentHeight: 766, //This fit the content expanding only last row
+                eventLimit: true,
+                slotDuration: '00:30:00',
+                events: [],
+                viewRender: function (view, element) {
+                    //
+                    //if ( _startdate !='' && _enddate !='')
+
+                    _startdate = view.start.format();
+                    _enddate = view.end.format();
+                    if (!_pageload) {
+                        fnRenderEvent(_startdate, _enddate, _resources);
+
+                    }
+
+                },
+                eventMouseover: function (calEvent, jsEvent) {
+
+                    $.ajax({
+                        url: '@Url.Action("GetCalHoverDataTest", "Calendar")' + "?EventID=" + calEvent.id,
+                        type: 'GET',
+                        datatype: 'json',
+                        data: {
+                        },
+                        success: function (result) {
+                            // alert(result);
+                            test = result;
+                            $('#tstsde').html(result);
+                            //return result;//"<div style='width:500px;height:500px;'>sudeep asdfasdf adsfasdfasdf adsfasdf</div>";
+                        },
+                        error: function (e) {
+
+                        }
+                    });
+                },
+
+            });
+        }
+        //addGlobalStyle = function (css) {
+        //    var head, style;
+        //    head = document.getElementsByTagName('head')[0];
+        //    if (!head) { return; }
+        //    style = document.createElement('style');
+        //    style.type = 'text/css';
+        //    style.innerHTML = css;
+        //    head.appendChild(style);
+        //}
+
+        //createFC();
+        //var bottomDifference = 0;
+        //var currentHeight = $(".fc-slats > table").css("height");
+        //var newHeight = parseInt(currentHeight) + bottomDifference;
+        ////$( ".fc-slats > table" ).css( "height", newHeight );
+        //addGlobalStyle(".fc-slats > table {height:" + newHeight + "px}");
+
+
+        $('#calendar').fullCalendar('destroy');
+        createFC();
+    });
+    function fnRenderEvent(start, end, Resourceids) {
+        $('#loading').show();
+        var param = JSON.stringify({
+            'start': start,
+            'end': end,
+            'Resourceids': Resourceids
+        });
+        $.ajax({
+
+            url: '@Url.Action("GetResourceWiseEvent", "Calendar")' ,//+ "?start=" + start + "&end=" + end + "&Resourceids=" + JSON.stringify(Resourceids),
+            contentType: 'application/json; charset=utf-8',
+            datatype: 'json',
+            type: 'POST',
+            data: param,
+            success: function (result) {
+                _pageload = false;
+                $('#loading').hide();
+                $('#calendar').fullCalendar('removeEvents');
+                $(result).each(function () {
+                    delete_null_properties(this, true);
+                    $('#calendar').fullCalendar('renderEvent', this);
+                });
+                $(".fc-event").popover({
+                    html: true,
+                    trigger: "hover",
+                    placement: function (context, source) {
+                        var position = $(source).position();
+                        //alert(position.left);
+                        if (position.left > 515) {
+                            return "left";
+                        }
+
+                        if (position.left < 300) {
+                            return "right";
+                        }
+
+                        if (position.top < 110) {
+                            return "bottom";
+                        }
+
+                        return "top";
+                    }
+   ,
+                    content: function () {
+                        $('#tstsde').remove();
+                        return "<div id='tstsde'>Loading....</div>";
+
+                    }
+                });
+            },
+            error: function (e) {
+
+            }
+        });
+    }
+    function delete_null_properties(test, recurse) {
+        for (var i in test) {
+            if (test[i] === null) {
+                delete test[i];
+            } else if (recurse && typeof test[i] === 'object') {
+                delete_null_properties(test[i], recurse);
+            }
+            if (test[i] && Object.keys(test[i]).length === 0) {
+                delete test[i]
+            }
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    function _fnGetResource(){
+        $.ajax({
+            url: '@Url.Action("GetResource", "Calendar")',
+            type: "POST",
+            dataType: "JSON",
+            data: { Location_Id: $("#Location").val() },
+            success: function (result) {
+                if (result != null) {
+                    if (result.Msg != null) {
+                        alert(result.Msg);
+                    }
+                    else {
+                        _resources = [];
+                        $("#chkResource").empty();
+                        var content="";
+                        for (i in result) {
+                            content += "<div id='chkdiv_" + result[i].Resource_Id + "' class='checksec' style='padding-top:7px; color:#fff;'><input value='" + result[i].Resource_Id + "' type='checkbox' class='chkRes' name='" + result[i].Resource_Id + "' id='chk_" + result[i].Resource_Id + "' checked/>" + "&nbsp;<span>" + result[i].ShortName + "</span></div>";
+                            var item = { Value: result[i].Resource_Id, Text: result[i].ShortName };
+                            _resources.push(item);
+                        }
+                        $('#chkResource').html(content);
+                        BindCheckChange();
+                        fnRenderEvent(_startdate, _enddate, _resources);
+                    }
+                }
+            },
+            error: function (error) {
+                alert("Error: " + error);
+            },
+            statusCode: {
+                404: function () {
+                    alert("page not found");
+                }
+            }
+        });
+    }
+
+    function BindCheckChange() {
+        $(".chkRes").change(function () {
+            _resources = [];
+            $(".chkRes").each(function (index) {
+                var item = { Value: $(this).val(), Text: $(this).next().text() };
+                if ($(this).is(':checked'))
+                    _resources.push(item);
+            });
+            fnRenderEvent(_startdate, _enddate, _resources);
+        });
+    }
+
+    $("#Location").change(function () {
+        _fnGetResource();
+    });
+</script>

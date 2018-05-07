@@ -1,0 +1,130 @@
+﻿@model DataLayer.Models.tblTMaintenanceRequestForm
+
+@{
+    Layout = null;
+}
+@using DataLayer;
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>myadvancedpt.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="favicon.png">
+
+    <!-- Bootstrap core CSS -->
+
+
+</head>
+
+<body>
+
+
+    <div style="width:700px; margin:0 auto; padding:5px 0; font-family:verdana; font-size:13px; color:#333;">
+
+
+        <div style="padding:0 0 20px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="46%">
+                        <h2 style="padding:0; font-size:20px; margin:0;">
+                            Maintenance Request Form<br>
+                            <span style="font-size:15px; font-weight:normal;">Heal At Home Healthcare</span>
+                        </h2>
+                    </td>
+                    <td width="54%"><div style="padding:10px; text-align:center; border:2px dashed #333; font-size:13px; font-weight:bold;">CONFIDENTIAL REPORT: SUBMIT ORIGINAL TO THE DIRECTOR OF NURSING WITHIN 24 HOURS OF INCIDENT. DO NOT SCAN OR COPY.</div></td>
+                </tr>
+            </table>
+
+        </div>
+
+
+        <div style="padding:0 0 5px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="31%" style="padding-right:10px;">
+                        <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.TodaysDate.GetExactValue()</div>
+                        Today’s Date:
+                    </td>
+
+                    <td width="31%" style="padding-right:10px;" valign="top">
+                        <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@ViewBag.Location</div>
+                        Office Location
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <div style="padding:0 0 5px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="31%" style="padding-right:10px;">
+                        <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.EmpFirstName</div>
+                        Employee First Name
+                    </td>
+
+                    <td width="31%" style="padding-right:10px;" valign="top">
+                        <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.EmpLastName</div>
+                        Employee Last Name
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <div style="padding:0 0 5px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="31%" style="padding-right:10px;">
+                        <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">                          
+                        @((DataLayer.MaintenancePriority)Enum.ToObject(typeof(DataLayer.MaintenancePriority), (Convert.ToInt32(Model.Priority))))
+                            
+                        </div>
+                        Priority
+                    </td>
+
+                    <td width="31%" style="padding-right:10px;" valign="top"></td>
+                </tr>
+            </table>
+
+        </div>
+        <div style="padding:0 0 5px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="31%" style="padding-right:10px;">
+                        <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.DescItemRequired</div>
+                        Describe item requiring repair or maintenence below:
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>
+
+
+
+@*<script>
+    jQuery('.datepicker').datepicker();
+</script>
+<script>
+    $(document).ready(function () {
+
+        alert('ok');
+        var selTypeText = $("#Priority option:selected").text();
+        alert(selTypeText);
+
+        $('#OfficeLocation').addClass('form-control');
+        $("#OfficeLocation").attr("disabled", "disabled");
+        $('#Priority').addClass('form-control');
+        $("#Priority").attr("disabled", "disabled");
+    });
+
+</script>
+<script>
+    $("#btnApprove").click(function () {
+        $("#OfficeLocation").prop("disabled", false);
+        $("#Priority").prop("disabled", false);
+    });
+</script>*@

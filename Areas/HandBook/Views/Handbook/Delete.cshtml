@@ -1,0 +1,94 @@
+﻿@model DataLayer.Models.tblTHandBook
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<section class="bodyinner">
+    <div class="container">
+        <div class="bodyleft">
+
+
+            @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+        </div>
+        <div class="bodyright">
+
+            <div class="report-form clearfix">
+
+
+
+
+                @using (Html.BeginForm("Delete", "Handbook", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+
+
+
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(model => model.HandBook_Id)
+
+                    <div class="row">
+                        <div class="col-sm-6 col-md-4 form-group">
+
+                            @Html.Label("Page Title")
+                            @Html.TextBoxFor(model => model.PageTitle, new { @class = "form-control", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(model => model.PageTitle)
+                        </div>
+
+                        <div class="col-sm-6 col-md-4 form-group">
+
+
+                            @Html.Label("Chapter")
+                            @Html.DropDownList("Chapter", String.Empty)
+                            @Html.ValidationMessageFor(model => model.Chapter)
+                        </div>
+
+                        <div class="col-sm-6 col-md-4 form-group">
+
+                            @Html.Label("Page No")
+                            @Html.TextBoxFor(model => model.PageNo, new { @class = "form-control",@readonly = "readonly" })
+                            @Html.ValidationMessageFor(model => model.PageNo)
+                        </div>
+                    </div>
+                    
+                    <div class="subbutt">
+                        <input type="submit" value="Delete" class="btn btn-orange pull-right" />
+
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <p>@Html.ActionLink("Back to List", "Index")</p>
+                }
+            </div>
+
+
+
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</section>
+
+<style>
+    fieldset.scheduler-border {
+        border: 1px groove #ddd !important;
+        padding: 0 1.4em 1.4em 1.4em !important;
+        margin: 0 0 1.5em 0 !important;
+        -webkit-box-shadow: 0px 0px 0px 0px #000;
+        box-shadow: 0px 0px 0px 0px #000;
+    }
+
+    legend.scheduler-border {
+        width: inherit; /* Or auto */
+        padding: 0 10px; /* To give a bit of padding on the left and right */
+        border-bottom: none;
+    }
+</style>
+<script>
+    $('#Chapter').addClass('form-control');
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#Chapter').attr("disabled", "disabled");
+    });
+</script>

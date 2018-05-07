@@ -1,0 +1,163 @@
+﻿@{
+
+    System.Data.DataTable dtAvailableDateandTime = (System.Data.DataTable)ViewBag.AvailableDateandTime;
+    int intCount = 1;
+    int count = 1;
+    int intTotalRecordCount = dtAvailableDateandTime.Rows.Count;
+
+    string strOldAppdate = string.Empty;
+    string ConditionId = "";
+    string PatientId = "";
+    string CreatedBy = "";
+    if (ViewBag.conId != null)
+    {
+        ConditionId = Convert.ToString(ViewBag.conId);
+    }
+    else
+    {
+        ConditionId = "0";
+    }
+
+    if (ViewBag.PatId != null)
+    {
+        PatientId = Convert.ToString(ViewBag.PatId);
+    }
+    else
+    {
+        PatientId = "0";
+    }
+    if (ViewBag.createdby != null)
+    {
+        CreatedBy = Convert.ToString(ViewBag.createdby);
+    }
+    else
+    {
+        CreatedBy = "0";
+    }
+
+
+
+}
+<div id="div_SelfScheduleHeaderContent" class="headrightcont" style="font-weight: bold; padding-left: 6px; padding-bottom: 35px;">
+    Your plan is for <span id="lbl_DaysPerWeek"/>&nbsp;<span id="lbl_DaysPerWeek1" /> per week.  You have <span id="lbl_AppoRemain" />&nbsp;<span id="lbl_AppoRemain1" /> remaining.  You've achieved <span id="lbl_GoalPercentage" />% of your main goal.  Please select one of the available times for each day listed below:
+</div>
+<div>
+
+    <div class="row outbox">
+        
+        @foreach (System.Data.DataRow dr in dtAvailableDateandTime.Rows)
+        {
+           if (strOldAppdate == string.Empty)
+            {
+
+                @:<div class="col-sm-4">
+                @:<div class="innerbo">
+            }
+            else if (dr["appodate"] != null && dr["AppoDate"].ToString() != strOldAppdate)
+            {
+                @:<div class="clearfix"></div>
+                @:</div>
+                @:</div>
+                @:<div class="col-sm-4">
+                @:<div class="innerbo">
+            }
+            if (dr["appodate"] != null)
+            {
+                if (strOldAppdate == string.Empty || dr["AppoDate"].ToString() != strOldAppdate)
+                {
+                    var FormattedDate = String.Format("{0:MMMM d yyyy}", dr["appodate"]);
+                    <p class="dayname"><strong>@dr["_DayName"], @FormattedDate</strong></p>
+                }
+            }
+            
+            var Var_SlotStart = dr["SlotStart"].ToString().Substring(0, dr["SlotStart"].ToString().Length - 3);
+            var Var_SlotEnd = dr["SlotEnd"].ToString().Substring(0, dr["SlotEnd"].ToString().Length - 3);
+            <div class="checks">
+                @*<div class="radio">
+                        <label>
+                            <input type="radio" name='optionsRadios_@dr["appodate"]' id="optionsRadios_@count" value="option1">
+                            @Var_SlotStart - @Var_SlotEnd
+
+                        </label>
+                        <input type="hidden" value="@dr["AppoDate"]" id="hdnAppoDate_@count" />
+                        <input type="hidden" value="@dr["SlotStart"]" id="hdnSlotStart_@count" />
+                        <input type="hidden" value="@dr["SlotEnd"]" id="hdnSlotEnd_@count" />
+                        <input type="hidden" value="@PatientId" id="hdnPatientId_@count" />
+                        <input type="hidden" value="@ConditionId" id="hdnPatientConditionId_@count" />
+                        <input type="hidden" value="@dr["Resource_Id"]" id="hdnResource_Id_@count" />
+                        <input type="hidden" value="@dr["AppointmentType"]" id="hdnAppointmentType_@count" />
+                        <input type="hidden" value="@dr["EmployeeId"]" id="hdnEmployeeId_@count" />
+                        <input type="hidden" value="@CreatedBy" id="hdnCreatedBy_@count" />
+
+                    </div>*@
+                <div class="radio-tile-group selfscudileradio">
+                    <div class="input-container radio">
+                        <input type="radio" name='optionsRadios_@dr["appodate"]' id="optionsRadios_@count" value="option1" class="radio-button">
+                        <div class="radio-tile">
+                            <label class="radio-tile-label">@Var_SlotStart - @Var_SlotEnd</label>
+                        </div>
+                        <input type="hidden" value="@dr["AppoDate"]" id="hdnAppoDate_@count" />
+                        <input type="hidden" value="@dr["SlotStart"]" id="hdnSlotStart_@count" />
+                        <input type="hidden" value="@dr["SlotEnd"]" id="hdnSlotEnd_@count" />
+                        <input type="hidden" value="@PatientId" id="hdnPatientId_@count" />
+                        <input type="hidden" value="@ConditionId" id="hdnPatientConditionId_@count" />
+                        <input type="hidden" value="@dr["Resource_Id"]" id="hdnResource_Id_@count" />
+                        <input type="hidden" value="@dr["AppointmentType"]" id="hdnAppointmentType_@count" />
+                        <input type="hidden" value="@dr["EmployeeId"]" id="hdnEmployeeId_@count" />
+                        <input type="hidden" value="@CreatedBy" id="hdnCreatedBy_@count" />
+                    </div>
+                </div>
+            </div>
+            if (intCount == intTotalRecordCount)
+            {
+                @:<div class="clearfix"></div>
+                    @:</div>
+                    @:</div>
+            }
+
+            strOldAppdate = dr["AppoDate"].ToString();
+            intCount++;
+            count++;
+        }
+
+
+
+    </div>
+    <input type="hidden" id="hdn_No_Visit_Per_Week"  />
+    <input type="hidden" id="hdn_RemainingAppo" />
+    <input type="hidden" id="hdn_goalPercentageNew" />
+    <input type="hidden" id="hdn_Rescheduleheader" />
+    <input type="hidden" id="hdn_visitperweek" />
+    @*<div><input type="button" id="btnnextoption" value="Go for next priority" onclick="functionnextoptionByPriority();" /></div>
+    <div><input type="button" id="btnnextoptionbydate" value="Save & Go for next week" onclick="GetAvailableSlotByDate('Nextdatewise');" /></div>*@
+    @*<div><input type="button" id="btnsaveandexit" value="Save & Exit" onclick="GetAvailableSlotByDate();" /></div>*@
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        @*var remainappo = '@ViewBag.RemainingAppo';
+        var remainappoInt = parseInt(remainappo);*@
+        //alert(remainappoInt);
+        //if (remainappoInt < 0)
+        //{
+        //    alert("inside");
+        //    $("#hdn_RemainingAppo").val('0');
+        //    $("#hdn_goalPercentageNew").val('100');
+
+        //} else {
+
+        $("#hdn_RemainingAppo").val('@ViewBag.RemainingAppo');
+        $("#hdn_goalPercentageNew").val('@ViewBag.goalPercentageNew');
+        //}
+
+        $("#hdn_No_Visit_Per_Week").val('@ViewBag.TotalNoOfVisitsPerWeekNeededNew');
+        // alert($("#hdn_RemainingAppo").val());
+        $("#hdn_Rescheduleheader").val('@ViewBag.fromdatewisesearch');
+
+        $("#hdn_visitperweek").val('@ViewBag.visitperweek');
+        //alert($("#hdn_Rescheduleheader").val());
+
+    });
+</script>
+

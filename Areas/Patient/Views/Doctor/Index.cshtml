@@ -1,0 +1,198 @@
+﻿
+@model PagedList.IPagedList<DataLayer.Models.tblMDoctor>
+@using DataLayer;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Index";
+}
+<style>
+    .SortHeader {
+        color: #fff;
+    }
+
+    .sortorderasc {
+        color: black;
+    }
+
+    .sortorderdesc {
+        color: green;
+    }
+
+    .searchsec {
+        width: 350px;
+    }
+</style>
+<center><h2 style="margin-top:20px;">Physician List</h2></center>
+@*<h2>Index</h2>*@
+
+@*<p>
+        @Html.ActionLink("Create New", "Create")
+    </p>*@
+
+<section class="bodyinner2">
+    <div>
+        <p class="pull-right">
+            @Html.ActionLink("Create New Record", "Create", null, new { @class = "btn btn-primary" })
+        </p>
+        @using (Html.BeginForm("Index", "Doctor", FormMethod.Get))
+        {
+            <div class="searchsec">
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search here ..." })
+                <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                <div class="clearfix"></div>
+            </div>
+        }
+        <div class="clearfix"></div>
+    </div>
+
+    <div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+
+                        <th>
+                            @{ var classname = "botharrow";}
+                            @if ((ViewBag.CurrentSort == "First_Name" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                            {
+                                classname = "bottarrow";
+                            }
+                            else if ((ViewBag.CurrentSort == "First_Name" && ViewBag.SortDirection == false))
+                            {
+                                classname = "toparrow";
+                            }
+                            @Html.ActionLink("First Name", "Index", new { sortOrder = "First_Name", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname })
+
+                        </th>
+                        <th>
+                            @Html.DisplayName("Last Name")
+                        </th>
+                       
+                        <th>
+                            @Html.DisplayName("Phone")
+                        </th>
+
+                        @*<th>
+                            @Html.DisplayName("City")
+                        </th>
+                        <th>
+                            @Html.DisplayName("State")
+                        </th>
+                        <th>
+                            @Html.DisplayName("ZipCode")
+                        </th>*@
+
+                        <th></th>
+                        <th></th>
+                    </tr>
+
+                </thead>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.First_Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Last_Name)
+                        </td>
+                        @*<td>
+                            @Html.DisplayFor(modelItem => item.DoctorType)
+                        </td>*@
+                        @*<td>
+                            @Html.DisplayFor(modelItem => item.NPI_No)
+                        </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Phone1)
+                        </td>
+
+                        @*<td>
+                            @Html.DisplayFor(modelItem => item.City)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.State)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ZipCode)
+                        </td>*@
+
+
+                        @*<td>*@
+
+                        @*@if (item.DMEForm_Status_Id != null && item.DMEForm_Status_Id < 9 && lStatus.Contains(item.DMEForm_Status_Id.Value + 1))
+                            {*@
+                        @*<a href="@Url.Action("Create", "Doctor", new { id = item.Doctor_Id })">
+                                <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                            </a>*@
+
+                        @*}
+                            else if(item.DMEForm_Status_Id==9){*@
+                        @*<a href="@Url.Action("Create", "PurchaseOrder", new { DME_Id = item.KneeBraceFusionLigamentForm_Id, DMEType = "L1845" })">
+                                    <i class="fa fa-angle-double-up" aria-hidden="true"></i>
+                                </a>
+                            @*}*@
+                        @*</td>*@
+                        @*@if (item.DMEForm_Status_Id == 9) {
+                                <td>&nbsp;</td>}
+                            else {*@
+                        <td>
+                            @*@if (item.DMEForm_Status_Id != null && ((item.DMEForm_Status_Id == 1 && item.CreatedBy == currentuserid) || (item.DMEForm_Status_Id != 1 && item.ModifiedBy == currentuserid)))
+                                {*@
+                            <a href="@Url.Action("Edit", "Doctor", new { id = item.Doctor_Id })">
+                                <i class="fa fa-edit" aria-hidden="true"></i>
+                            </a>
+                            @*}*@
+                        </td>
+                        @*}*@
+                        <td>
+                            <a href="@Url.Action("Details", "Doctor", new { id = item.Doctor_Id })">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+                        </td>
+
+                    </tr>
+                }
+
+            </table>
+
+        </div>
+        <div>
+            <br />
+            @using (Html.BeginForm("Index", "Doctor", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+            {
+                @Html.DropDownList("PageSize")
+            }
+            @{
+                bool? direction = ViewBag.SortDirection;
+                if (direction == null) { direction = false; }
+            }
+            <div class="pull-left" style=" padding:10px;">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                      new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction }))
+        </div>
+    </div>
+
+</section>
+
+<script>
+    function fnShowDetail(Doctor_Id) {
+        var url = "@Url.Action("Doctor", "Doctor", new { Area = "Patient" })" + "?id=" + Doctor_Id;
+        //fnShowPopupForDetail(url);
+        popupwindow(url, 'Doctor', 1000, 800);
+    }
+</script>
+
+<script>
+    $("#PageSize").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+</script>
+

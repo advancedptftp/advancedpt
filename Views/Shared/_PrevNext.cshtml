@@ -1,0 +1,173 @@
+﻿<div class="dvPrevNext">
+    <input type="button" name="name" value="Previous" id="btnPrev" onclick="__fnPrev();" class="btn btn-primary btn-lg nxtprevbtn" style="color:white;" />
+
+    <input id="btnNext" type="button" name="name" value="Next" onclick="__fnNext();" class="btn btn-primary pull-right btn-lg nxtprevbtn" style="color:white;" />
+    <div id="dvid_subbutt" class="subbutt pull-right" style="display:none; padding-top:0;">
+
+        <button type="submit" class="btn btn-orange pull-right">Save</button>
+        <div class="clearfix"></div>
+    </div>
+    <input type="hidden" id="hdnPercentage" name="hdnPercentage" />
+    @{
+        if(ViewBag.Percentage != null)
+        {
+            <script type="text/javascript">
+                $("#hdnPercentage").val(@ViewBag.Percentage);
+            </script>
+        }
+    }
+    @*<input type="submit" name="name" value="Update" id="dvid_subbutt" class="btn btn-orange pull-right btn-lg" style="display:none" />*@
+    <div id="nxtprevloading" class="loadingdiv">
+        <div class="loadingcontainere">
+            <img src="~/Images/pageloader1.gif" width="200" height="200" />
+        </div>
+    </div>
+</div>
+<style>
+    .loadingdiv{
+    display: block;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 9998;
+    background-color: rgba(0,0,0,.3);
+    -webkit-animation: fade 500ms;
+    -moz-animation: fade 500ms;
+    -o-animation: fade 500ms;
+    animation: fade 500ms;
+    }
+    .loadingcontainere{
+            width: 100%;
+    text-align: center;
+    padding-top: 26%;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        //alert("parital view  " + $("#hdnPercentage").val());
+        setTimeout(function () { $('#nxtprevloading').hide(); }, 500);
+        __fnHideAll(); $("#dvid_1").show();
+        __fnShowHideNextPrev();
+        $('form').submit(function () { return __allowsubmit; });
+        if (__progressbarcontainer != "") {
+            $('#' + __progressbarcontainer).html($('#__progressbar').html());
+        }
+    });
+    var __progressbarcontainer = '';
+    var __allowsubmit = false;
+    var __pageload = true;
+    var __last = 0;
+    var __curpos = 1;
+    var __navigated = [];
+    var __percentage = 0;
+    __navigated.push(1);
+
+    function __fnNext() {
+            if (fnValidate(__curpos)) {
+                __fnHideAll();
+                var nextdivtoshow = fnNextToShow(__curpos);
+                $('#hdnDivID').val(nextdivtoshow);
+                $("#dvid_" + (nextdivtoshow)).show();
+                if (__curpos != nextdivtoshow)
+                    __navigated.push(nextdivtoshow);
+                __curpos = nextdivtoshow;
+                __fnShowHideNextPrev();
+            }
+
+          
+    }
+    function __fnPrev() {
+        if ($('#hdnTempID').val() != undefined) {
+            $("#dvid_" + (__curpos)).find('input[type=radio]').prop('checked', false);
+            $("#dvid_" + (__curpos)).find('input[type=checkbox]').prop('checked', false);
+            for (var __num = 28; __num <= 100; __num++) {
+                $("#dvid_" + (__num)).find('input[type=text]').val('');
+            }
+        }
+        if (__navigated.length > 1) {
+            __fnHideAll();
+            var index = __navigated.indexOf(__curpos);
+            __navigated.splice(index, 1);
+            var last = __navigated[__navigated.length - 1];
+            $('#hdnDivID').val(last);
+            $("#dvid_" + (last)).show();            
+            __curpos = last;
+            __fnShowHideNextPrev();            
+        }
+    }
+    function __fnShowHideNextPrev() {
+        //alert('__fnShowHideNextPrev');
+        if (__last == __curpos) {
+            $("#btnNext").hide();
+            __allowsubmit = true;
+        }
+        else {
+            $("#btnNext").show();
+            __allowsubmit = false;
+        }
+        if (__navigated.length > 1)
+            $("#btnPrev").show();
+        else
+            $("#btnPrev").hide();
+        var funcname = 'fnTriggerAtEnd';
+        if (typeof window[funcname] === 'function') {
+            window[funcname]();
+        }
+        calculateprogress();
+    }
+    function ___validate(elementstocheck) {
+        $('form').submit();
+        var validator = $('form').validate();
+        for (var i = 0; i < validator.errorList.length; i++) {
+            for (var j = 0; j < elementstocheck.length; j++) {
+                if (validator.errorList[i].element.id == elementstocheck[j] || validator.errorList[i].element.id.indexOf("_"+elementstocheck[j]))
+                    return false;
+            }
+        }
+        $('.field-validation-error span').remove();
+        $('.input-validation-error').removeClass('input-validation-error');
+        return true;
+    }
+    function __fnHideAll() {
+        for (var i = 1; i <= __last; i++) {
+
+            $("#dvid_" + i).hide();
+        }
+    }
+    function calculateprogress() {
+        //alert("hiii");
+        var persentage = Math.round((__curpos / __last) * 100);
+        //Get the percentage from the registration status
+        //alert($("#hdnPercentage").val());
+        //if ($("#hdnPercentage").val() != "") {
+        //    persentage = $("#hdnPercentage").val();
+        //}
+        //End
+        $(".progress-bar").css('width', persentage+"%");
+        $(".progress-bar").html(persentage + "%");
+        $(".progress-bar").removeClass('progress-bar-warning');
+        $(".progress-bar").removeClass('progress-bar-danger');
+        $(".progress-bar").removeClass('progress-bar-success');
+        if (persentage < 30) {
+            $(".progress-bar").addClass('progress-bar-danger');
+        }
+        else if (persentage < 80) {
+            $(".progress-bar").addClass('progress-bar-warning');
+        }
+        else {
+            $(".progress-bar").addClass('progress-bar-success');
+        }
+    }
+</script>
+<script>
+    
+   
+
+</script>
+<div id="__progressbar" style="display:none" class="col-xs-12 col-sm-12 progress-container">
+    <div class="progress progress-striped active">
+        <div id="__processbar" class="progress-bar progress-bar-success" style="width:0%">0%</div>
+    </div>
+</div>

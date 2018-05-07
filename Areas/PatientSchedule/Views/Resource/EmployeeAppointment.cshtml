@@ -1,0 +1,217 @@
+﻿@model PagedList.IPagedList<DataLayer.Models.EmployeeAppointmentTypes>
+@using DataLayer;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Index";
+}
+<style>
+    .SortHeader {
+        color: #fff;
+    }
+
+    .sortorderasc {
+        color: black;
+    }
+
+    .sortorderdesc {
+        color: green;
+    }
+
+    .searchsec {
+        width: 350px;
+    }
+</style>
+<center><h2 style="margin-top:20px;">Resource Setup List</h2></center>
+<section class="bodyinner2">
+
+    <div>
+        <p class="pull-right">
+            @Html.ActionLink("Create New Record", "CreateAppintmentType", null, new { @class = "btn btn-primary" })
+        </p>
+        @{
+            bool? direction = ViewBag.SortDirection;
+            if (direction == null) { direction = false; }
+        }
+
+        @using (Html.BeginForm("EmployeeAppointment", "Resource", FormMethod.Get))
+        {
+            <div class="searchsec">
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search by First Name.." })
+                <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                <div class="clearfix"></div>
+            </div>
+        }
+        <div class="clearfix"></div>
+
+
+    </div>
+
+    <div>
+        <div class="table-responsive">
+
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+
+                        <th>
+                            @{ var classname = "botharrow";}
+                            @if ((ViewBag.CurrentSort == "Location" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                            {
+                                classname = "bottarrow";
+                            }
+                            else if ((ViewBag.CurrentSort == "Location" && ViewBag.SortDirection == false))
+                            {
+                                classname = "toparrow";
+                            }
+                            @Html.ActionLink("Location", "EmployeeAppointment", new { sortOrder = "Location", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname })
+                            @*@Html.DisplayName("Resource Type")*@
+                        </th>
+                        <th>
+                            @{ var classname1 = "botharrow";}
+                            @if ((ViewBag.CurrentSort == "EmployeeType" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                            {
+                                classname1 = "bottarrow";
+                            }
+                            else if ((ViewBag.CurrentSort == "EmployeeType" && ViewBag.SortDirection == false))
+                            {
+                                classname1 = "toparrow";
+                            }
+                            @Html.ActionLink("Employee Type", "EmployeeAppointment", new { sortOrder = "EmployeeType", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname1 })
+
+                        </th>
+                        <th>
+                            @{ var classname2 = "botharrow";}
+                            @if ((ViewBag.CurrentSort == "EmployeeName" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                            {
+                                classname2 = "bottarrow";
+                            }
+                            else if ((ViewBag.CurrentSort == "EmployeeName" && ViewBag.SortDirection == false))
+                            {
+                                classname2 = "toparrow";
+                            }
+                            @Html.ActionLink("Employee Name", "EmployeeAppointment", new { sortOrder = "EmployeeName", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname2 })
+
+                        </th>
+
+                        <th>
+                            @Html.DisplayName("Appointment Types")
+                        </th>
+                        <th>Shift Start</th>
+                        <th>Shift End</th>
+                        <th>Lunch Start</th>
+                        <th>Lunch End</th>
+
+                        <th>Is Active</th>
+
+                        <th></th>
+                        <th></th>
+                    </tr>
+
+                </thead>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            
+
+                            @Html.DisplayFor(m => item.LocationName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Emp_Type_Name) 
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EmployeeName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AppointmentTypeNames)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ShiftStart)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ShiftEnd)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LunchStart)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LunchEnd)
+                        </td>
+                        
+
+                        <td align="center">
+                            @*@Html.DisplayFor(modelItem => item.IsActive)*@
+                            @if (item.IsActive == true)
+                            {<label class="fa fa-unlock" style="color: #0f68e6; "></label> }
+                            else
+                            {<label class="fa fa-lock" style="color: #eb1923;"></label> }
+                        </td>
+                        @*<td>
+                    @Html.DisplayFor(modelItem => item.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.State)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ZipCode)
+                </td>*@
+
+
+                        @*<td>*@
+
+                        @*@if (item.DMEForm_Status_Id != null && item.DMEForm_Status_Id < 9 && lStatus.Contains(item.DMEForm_Status_Id.Value + 1))
+                {*@
+                        @*<a href="@Url.Action("Create", "Doctor", new { id = item.Doctor_Id })">
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </a>*@
+
+                        @*}
+                else if(item.DMEForm_Status_Id==9){*@
+                        @*<a href="@Url.Action("Create", "PurchaseOrder", new { DME_Id = item.KneeBraceFusionLigamentForm_Id, DMEType = "L1845" })">
+                        <i class="fa fa-angle-double-up" aria-hidden="true"></i>
+                    </a>
+                @*}*@
+                        @*</td>*@
+                        @*@if (item.DMEForm_Status_Id == 9) {
+                    <td>&nbsp;</td>}
+                else {*@
+                        <td>
+                            @*@if (item.DMEForm_Status_Id != null && ((item.DMEForm_Status_Id == 1 && item.CreatedBy == currentuserid) || (item.DMEForm_Status_Id != 1 && item.ModifiedBy == currentuserid)))
+                    {*@
+                            <a href="@Url.Action("EmpAppTypeEdit", "Resource", new { id = item.EmpAppmntType_Id })">
+                                <i class="fa fa-edit" aria-hidden="true"></i>
+                            </a>
+                            @*}*@
+                        </td>
+                        @*}*@
+                        <td>
+                            <a href="@Url.Action("EmpAppTypeDetails", "Resource", new { id = item.EmpAppmntType_Id })">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+                        </td>
+
+                    </tr>
+                }
+
+                
+            </table>
+        </div>
+        <div>
+            <br />
+            @using (Html.BeginForm("EmployeeAppointment", "Resource", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+            {
+                @Html.DropDownList("PageSize")
+            }
+            <div class="pull-left" style=" padding:-2px;">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("EmployeeAppointment",
+                      new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction }))
+        </div>
+        
+    </div>
+
+
+
+</section>

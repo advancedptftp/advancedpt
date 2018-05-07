@@ -1,0 +1,123 @@
+﻿@model PagedList.IPagedList<DataLayer.Models.tblTPaymentFeeSlipDetail>
+@using PagedList.Mvc;
+@using DataLayer;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<center><h2 style="margin-top:20px;">Fee Slip</h2></center>
+
+<section class="bodyinner2">
+    <div>
+        <p class="pull-right">
+            @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+
+        </p>
+        @using (Html.BeginForm("Index", "PaymentFeeSlip", FormMethod.Get))
+        {
+
+            <div class="searchsec">
+
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search by Service" })
+                <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                <div class="clearfix"></div>
+            </div>
+        }
+        <div class="clearfix"></div>
+    </div>
+
+
+    <div>
+        <div class="table-responsive">
+
+            <table class="table table-bordered table-striped">
+
+                <thead>
+                    <tr>
+
+                        <th>Unit</th>
+                        <th>CPT Code</th>
+                        <th>Service</th>
+                        <th>Billed/PIP/Auto/Lien</th>
+                        <th>Aetna Cigna OON</th>
+                        <th>Tricare/VA ChampVA</th>
+                        <th>Blue Cross</th>
+                        <th>Other</th>
+                        <th>MC</th>
+                        <th></th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Unit)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CPTCode)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Service)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Billed_PIP_Auto_Lien)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Aetna_Cigna_OON)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Tricare_VA_ChampVA)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Blue_Cross)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Other)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MC)
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Edit", "PaymentFeeSlip", new { id = item.FeeSlipDetailsId })">
+                                    <i class="fa fa-edit" aria-hidden="true"></i>
+                                </a>
+                                &nbsp;&nbsp;
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+        <div>
+            <br />
+            @using (Html.BeginForm("Index", "PaymentFeeSlip", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+            {
+                @Html.DropDownList("PageSize")
+            }
+            @{
+                bool? direction = ViewBag.SortDirection;
+                if (direction == null) { direction = false; }
+            }
+            <div class="pull-left" style=" padding:10px;">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                      new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction }))
+        </div>
+    </div>
+
+</section>
+
+<script>
+    $("#PageSize").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+</script>

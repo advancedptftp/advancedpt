@@ -1,0 +1,158 @@
+﻿@*@model IEnumerable<DataLayer.Models.tblTPurchaseOrder>*@
+@model PagedList.IPagedList<DataLayer.Models.tblTPurchaseOrder>
+@using PagedList.Mvc;
+@using DataLayer;
+@{
+    ViewBag.Title = "Index";
+    var currentuserid = ViewContext.Controller.CurrentUserID();
+}
+
+
+<center><h2 style="margin-top:20px;">Purchase Order List</h2></center>
+@*<h2>Index</h2>*@
+<section class="bodyinner2">
+    @*<div>
+
+        @using (Html.BeginForm("Index", "PuchaseOrder", FormMethod.Get))
+        {
+            <div class="searchsec">
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search here ..." })
+                <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                <div class="clearfix"></div>
+            </div>
+        }
+        <div class="clearfix"></div>
+    </div>*@
+
+    <div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayName("PO #")
+                        </th>
+                        <th>
+                            @Html.DisplayName("PO Date")
+                        </th>
+                        <th>
+                            @Html.DisplayName("DME Form Code")
+                        </th>
+                        
+                        <th>
+                            @Html.DisplayName("Item Name")
+                        </th>
+                        <th>
+
+                        </th>
+
+                        <th>
+
+                        </th>
+                        <th>
+
+                        </th>
+                    </tr>
+
+                </thead>
+                    @if(Model != null)
+                    { 
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                               @item.PO_No
+                            </td>
+                            <td>
+                                @if (item.PO_Date != null)
+                                {
+                                    @item.PO_Date.GetExactValue();
+                                }
+                               
+                            </td>
+                           
+                           <td>
+                               @item.tblTItemDetail.DMEForm_Code
+                           </td>
+                            <td>
+                                @item.tblTItemDetail.Item_Name
+                            </td>
+                            <td>
+                               @if (item.CreatedBy == currentuserid) { 
+                                    <a href="@Url.Action("Edit", "PurchaseOrder", new { id = item.PO_Id })">
+                                        <i class="fa fa-edit" aria-hidden="true"></i>
+                                    </a>
+                               }
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Details", "PurchaseOrder", new { id = item.PO_Id })">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                            <td class="tdList_PDF">
+                                <a href="javascript:void(0);" onclick="fnShowDetail(@item.PO_Id);">
+                                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+               
+                    }
+            </table>
+
+        </div>
+        <div>
+            <br />
+            @using (Html.BeginForm("Index", "PurchaseOrder", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+            {
+                @Html.DropDownList("PageSize")
+            }
+            @{
+                bool? direction = ViewBag.SortDirection;
+                if (direction == null) { direction = false; }
+            }
+            <div class="pull-left" style=" padding:10px;">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                      new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction }))
+        </div>
+    </div>
+
+</section>
+<script>
+    function fnShowDetail(PO_Id) {
+        var url = "@Url.Action("PurchaseOrderPdf", "PurchaseOrder")" + "?id=" + PO_Id;
+        //fnShowPopupForDetail(url);
+        popupwindow(url, 'PurchaseOrder', 1000, 800);
+    }
+</script>
+
+<script>
+    $("#PageSize").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+    $(document).ready(function () {
+
+        if ('@ViewBag.Allow' == '1') {
+
+            RedirectToAnotherAction();
+        }
+    });
+</script>
+<script type="text/javascript">
+
+    function RedirectToAnotherAction() {
+        var hdnval = '@ViewBag.id';
+        //alert(hdnval);
+        var url = '@Url.Action("PurchaseOrderPdf", "PurchaseOrder")?id=' + hdnval;
+        //window.location.href = url
+        popupwindow(url, 'PurchaseOrder', 1000, 800);
+    }
+
+</script>

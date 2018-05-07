@@ -1,0 +1,114 @@
+﻿@model IEnumerable<DataLayer.Models.tblTPatientResponseReferral>
+@using DataLayer;
+@{
+    ViewBag.Title = "Patient Response Referral Index";
+    var currentuserid = ViewContext.Controller.CurrentUserID();
+    var lStatus = ViewContext.Controller.DmePermittedStatusList(8);
+}
+<style>
+    .notscheduled {
+        color: #8a6d3b !important;
+        background-color: #fcf8e3 !important;
+        border-color: #faebcc !important;
+    }
+
+    .scheduled {
+        color: #3c763d !important;
+        background-color: #dff0d8 !important;
+        border-color: #d6e9c6 !important;
+    }
+</style>
+<h2><center>Patient Response Referral List<center></h2>
+
+<section class="bodyinner2">
+    <div>
+        @*<p class="pull-right">
+                @Html.ActionLink("Create New Record", "Create1", null, new { @class = "btn btn-primary" })
+            </p>*@
+        @using (Html.BeginForm("ResponseReferralIndex", "PatientActivation", FormMethod.Get))
+        {
+            @*<div class="searchsec">
+                    @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search by Patient Name" })
+                    <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                    <div class="clearfix"></div>
+                </div>*@
+        }
+        <div class="clearfix"></div>
+    </div>
+
+    <div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayName("Doctor Name")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Patient Name")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Faxed On")
+                        </th>
+                        <th>
+
+                        </th>
+
+                        <th>
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+                @{var rowclass = "alert alert-success";}
+                @foreach (var item in Model)
+                {
+                    { if (item.tblTPatientCondition.ScheduledDateTime != null) { rowclass = "scheduled"; } else { rowclass = "notscheduled"; } }
+                    <tr class="@rowclass">
+                        <td>
+                            @(item.tblMDoctor.First_Name + " " + item.tblMDoctor.First_Name)
+                        </td>
+
+                        <td>
+                            @(item.tblMPatient.FirstName + " " + item.tblMPatient.LastName)
+                        </td>
+                        <td>
+                            @if (item.FaxedOn != null)
+                            {
+                                @item.FaxedOn.GetExactValue()
+                            }
+                        </td>
+                        @if (item.FaxedOn != null)
+                        {
+                            <td>&nbsp;</td> }
+                        else
+                        {
+                            <td>
+                                <a href="@Url.Action("PatientResponseReferralCreate", "PatientActivation", new { id = item.PatientResponseReferral_Id })">
+                                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                </a>
+
+                            </td>
+                        }
+                        <td class="tdList_PDF">
+                            <a href="javascript:void(0);" onclick="fnShowDetail(@item.PatientResponseReferral_Id);">
+                                <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+
+            </table>
+
+        </div>
+    </div>
+
+</section>
+<script>
+    function fnShowDetail(PatientResponseReferral_Id) {
+        var url = "@Url.Action("PatientResponseReferralPDF_Form", "PatientActivation")" + "?id=" + PatientResponseReferral_Id;
+        //fnShowPopupForDetail(url);
+        popupwindow(url, 'Referense Form', 1000, 800);
+    }
+</script>

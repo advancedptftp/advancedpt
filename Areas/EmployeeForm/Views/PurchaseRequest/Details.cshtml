@@ -1,0 +1,381 @@
+﻿@model DataLayer.Models.PurchaseRequestDetails
+@{
+    ViewBag.Title = "Purchase Request";
+
+}
+
+
+<section class="bodyinner">
+
+    <div class="bodyleft">
+
+
+        @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+    </div>
+    <div class="bodyright">
+
+
+        <div class="report-form clearfix">
+            <h2>Purchasing Requistion Form  <span>(INTERNAL USE ONLY-NOT A VALID ORDER)</span></h2>
+
+            @using (Html.BeginForm("Index", "PurchaseRequest", FormMethod.Post, new { name = "Edit1", id = "Edit1" }))
+            {
+                @Html.AntiForgeryToken()
+                if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+
+                @Html.HiddenFor(m => m.PR.PR_Id)
+                @Html.HiddenFor(m => m.PR.PR_No)
+                @Html.HiddenFor(m => m.PR.PR_Date)
+
+                <div class="row">
+
+                    <div class="col-sm-6 col-md-6 form-group">
+                        <h3>Vendor</h3>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 form-group">
+                                <label for="date">Vendor Name</label>
+                                @Html.DropDownListFor(m => m.PR.Vendor_Id, (SelectList)ViewBag.VendorID, new { @class = "form-control", @disabled = "disabled", @id = "vendorId" })
+                            </div>
+                            <div id="dvVendorDetails" class="col-sm-12 col-md-12 form-group">
+                                <span id="spanVendorDetails"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6 form-group">
+                        <h3>Ship To</h3>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 form-group">
+                                <label for="date">Location </label>
+                                @Html.DropDownListFor(m => m.PR.Shipping_Id, (SelectList)ViewBag.Shipping_Location, new { @class = "form-control", @disabled = "disabled" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @Html.HiddenFor(e => e.PR.PR_Id)
+                <div class="bluebox">
+                    <h3>Competitive pricing information (Including Delivery)</h3>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="whitebox">
+
+                                <div class="p_bot08">
+                                    <table width="100%" border="0">
+                                        <tr>
+                                            <td>Total price Quoted</td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.PR.TotalPriceQuoted_1, new { @class = "applitextfield1", @style = "width:100%; margin:0;", @disabled = "disabled" })
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </div>
+                                <div class="p_bot08">
+                                    <table width="100%" border="0">
+                                        <tr>
+                                            <td>Name</td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.PR.Name_1, new { @class = "applitextfield1", @style = "width:100%; margin:0;", @disabled = "disabled" })
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </div>
+                                <div class="p_bot08">
+                                    <table width="100%" border="0">
+                                        <tr>
+                                            <td>Contact</td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.PR.Contact_1, new { @class = "applitextfield1", @style = "width:100%; margin:0;", @disabled = "disabled" })
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </div>
+                                <div class="p_bot08">
+                                    <table width="100%" border="0">
+                                        <tr>
+                                            <td>Phone Number</td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.PR.Phone_1, new { @class = "applitextfield1", @style = "width:100%; margin:0;", @disabled = "disabled" })
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="whitebox">
+
+                                <div class="p_bot08">
+                                    <table width="100%" border="0">
+                                        <tr>
+                                            <td>Total price Quoted</td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.PR.TotalPriceQuoted_2, new { @class = "applitextfield1", @style = "width:100%; margin:0;", @disabled = "disabled" })
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </div>
+                                <div class="p_bot08">
+                                    <table width="100%" border="0">
+                                        <tr>
+                                            <td>Name</td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.PR.Name_2, new { @class = "applitextfield1", @style = "width:100%; margin:0;", @disabled = "disabled" })
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </div>
+                                <div class="p_bot08">
+                                    <table width="100%" border="0">
+                                        <tr>
+                                            <td>Contact</td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.PR.Contact_2, new { @class = "applitextfield1", @style = "width:100%; margin:0;", @disabled = "disabled" })
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </div>
+                                <div class="p_bot08">
+                                    <table width="100%" border="0">
+                                        <tr>
+                                            <td>Phone Number</td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.PR.Phone_2, new { @class = "applitextfield1", @style = "width:100%; margin:0;", @disabled = "disabled" })
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="whitebox">
+
+                                <div class="p_bot08">
+                                    <table width="100%" border="0">
+                                        <tr>
+                                            <td>Total price Quoted</td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.PR.TotalPriceQuoted_3, new { @class = "applitextfield1", @style = "width:100%; margin:0;", @disabled = "disabled" })
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </div>
+                                <div class="p_bot08">
+                                    <table width="100%" border="0">
+                                        <tr>
+                                            <td>Name</td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.PR.Name_3, new { @class = "applitextfield1", @style = "width:100%; margin:0;", @disabled = "disabled" })
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </div>
+                                <div class="p_bot08">
+                                    <table width="100%" border="0">
+                                        <tr>
+                                            <td>Contact</td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.PR.Contact_3, new { @class = "applitextfield1", @style = "width:100%; margin:0;", @disabled = "disabled" })
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </div>
+                                <div class="p_bot08">
+                                    <table width="100%" border="0">
+                                        <tr>
+                                            <td>Phone Number</td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.PR.Phone_3, new { @class = "applitextfield1", @style = "width:100%; margin:0;", @disabled = "disabled" })
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script type="text/javascript">
+                    var counter = 0;
+                </script>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th width="22%">Item</th>
+                                <th width="10%">Quantity</th>
+                                <th width="10%">Unit of Measure</th>
+                                <th width="31%">Description</th>
+                                <th width="11%">Unit Price</th>
+                                <th width="11%">Line Price</th>
+                                
+                            </tr>
+                        </thead>
+
+
+                        <tbody id="tbody_Item">
+
+
+                            @for (int i = 0; i < Model.ItemDetails.Count; i++)
+                            {
+
+                                <tr id="tr_0">
+                                    <td>
+                                        @Html.TextBoxFor(m => m.ItemDetails[i].Item_Name, new { @class = "form-control", @style = "width:98%;", @disabled = "disabled" })
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(m => m.ItemDetails[i].Item_Qty, new { @class = "form-control", @style = "width:80px;", @disabled = "disabled" })
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(m => m.ItemDetails[i].Measure_Unit, new { @class = "form-control", @style = "width:80px;", @disabled = "disabled" })
+                                    </td>
+                                    <td>
+                                        @Html.TextAreaFor(m => m.ItemDetails[i].Item_Desc, new { @class = "form-control", @style = "height:65px;", @disabled = "disabled" })
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(m => m.ItemDetails[i].Unit_Price, new { @class = "form-control", @style = "width:80px;", @disabled = "disabled" })
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(m => m.ItemDetails[i].Line_Total_Price, new { @class = "form-control", @style = "width:80px;", @disabled = "disabled" })
+                                    </td>
+                                    
+                                </tr>
+
+
+                                <script> counter += 1; </script>
+
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="subbutt">
+
+                    <button type="submit" class="btn btn-orange pull-right">Back</button>
+                </div>
+
+            }
+        </div>
+
+
+
+
+    </div>
+
+    <div class="clearfix"></div>
+
+
+
+</section>
+
+<script type="text/javascript">
+    $(function () {
+        $("#addRows").click(function () {
+
+            $("#tbody_Item").append("<tr id='tr_" + counter + "' ><th><input class='form-control' id='ItemDetails_" + counter + "__Item_Name ' type='text' style='width:98%;'></th>" +
+                "<th><input class='form-control' id='ItemDetails_" + counter + "__Item_Qty' type='text' style='width:80px;'></th>" +
+                "<th><input class='form-control' id='ItemDetails_" + counter + "__Measure_Unit' type='text' style='width:80px;'></th>" +
+                "<th><textarea id='ItemDetails_" + counter + "__Item_Desc' class='form-control' style='height:65px;'></textarea></th>" +
+                "<th><input class='form-control' id='ItemDetails_" + counter + "__Unit_Price' type='text' style='width:80px;'></th>" +
+                "<th><input class='form-control' id='ItemDetails_" + counter + "__Line_Total_Price' type='text' style='width:80px;'></th>" +
+                "<th style='text-align:center;'><a href='#' onclick='removeRow(" + counter + ")'><i class='fa fa-minus-square' aria-hidden='true'></i></a>" +
+                "<input type='hidden' id='ItemDetails_" + counter + "__ItemDetails_Id'  value='' class='icdidForICD' /></th></tr>")
+
+            counter++;
+        });
+    });
+
+    function removeRow(cnt) {
+        $("#tr_" + cnt).remove();
+        counter--;
+    }
+
+    $(document).ready(function () {
+
+        $("#dvVendorDetails").hide();
+        var ddlVendor = $('#vendorId');
+        var vendrId = ddlVendor.val();
+
+        $('#vendorId').change(function () {
+            vendrId = this.value;
+            //alert(this.value);
+            LoadVendor(vendrId);
+        });
+
+        LoadVendor(vendrId);
+
+
+    });
+
+
+
+
+    function LoadVendor(vendorID) {
+        //alert(vendorID);
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetVendorDetails", "PurchaseRequest")',
+            data: "{'id':'" + vendorID + "'}",
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                //alert(data);
+                $("#dvVendorDetails").show();
+
+                $.each(data, function (index, element) {
+                    $("#spanVendorDetails").html("");
+
+                    $("#spanVendorDetails").append(
+                          '<p> <label for="date"> Street Address: </label> ' + element.Street_Address + '</p>'
+                         + '<p> <label for="date"> City: </label> ' + element.City + '</p>'
+                         + '<p> <label for="date"> State: </label> ' + element.State + '</p>'
+                         + '<p> <label for="date"> ZIP Code: </label> ' + element.ZIP_Code + '</p>'
+                         + '<p> <label for="date"> Phone: </label> ' + element.Phone + '</p>'
+                         + '<p> <label for="date"> Customer ID: </label> ' + element.Customer_ID + '</p>'
+                        )
+                });
+
+
+                //$.each(data.target, function (index, value) {
+                //    alert(index + ': ' + value.Street_Address);
+                //});
+            },
+            error: function () {
+                alert("Failed to load Item");
+            }
+        });
+
+    }
+</script>

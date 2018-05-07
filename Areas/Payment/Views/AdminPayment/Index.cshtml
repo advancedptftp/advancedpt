@@ -1,0 +1,353 @@
+﻿@model PagedList.IPagedList<DataLayer.Models.tblTPaymtPatient>
+@using DataLayer;
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+    decimal decAmmount = 0;
+    decimal decTotalAmoutToPay = 0;
+    decimal decAdvancePaidAmount = 0;
+    decimal DueAmount = 0;
+}
+<link href="/Content/semantic.css" rel="stylesheet">
+@if (ViewBag.Error != null)
+{
+    <script>
+        alertify.alert('@ViewBag.Error').setHeader('AdvancePT Says');
+    </script>
+
+}
+<section class="bodyinner2">
+    <div>
+        @*<p class="pull-right">
+                @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+            </p>*@
+
+        @{
+            bool? direction = ViewBag.SortDirection;
+            if (direction == null) { direction = false; }
+        }
+        @using (Html.BeginForm("Index", "User", FormMethod.Get))
+        {
+
+            <div class="searchsec">
+
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search by.." })
+                <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                <div class="clearfix"></div>
+            </div>
+        }
+        <div class="clearfix"></div>
+    </div>
+
+    <div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+
+                        <th>
+
+                            @Html.DisplayName("Patient name")
+                        </th>
+                        @*<th>
+                                @Html.DisplayName("Payment Date")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Total Amout To Pay")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Paid Ammount")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Reshedule Ammount")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Cancellation Ammount")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Due Ammount")
+                            </th>*@
+
+                        <th>
+                            @Html.DisplayName("Location")
+                        </th>
+
+
+
+
+                        <th width="200px">Go for payment</th>
+
+                    </tr>
+
+                </thead>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+
+                        <td onclick="fnShowTotalamount(@item.PatientPayTran_Id)">
+
+                            @Html.DisplayFor(modelItem => item.tblMPatient.FirstName) @Html.DisplayFor(modelItem => item.tblMPatient.LastName)
+
+                        </td>
+
+
+                        <td onclick="fnShowTotalamount(@item.PatientPayTran_Id)">
+                            @Html.DisplayFor(modelItem => item.tblMLocation.Location_Name)
+                        </td>
+
+
+                        @if (item.DueAmount ==null)
+                        {
+                            item.DueAmount =Convert.ToDecimal(0);
+                        }
+                        @if (item.DueAmount.Value != 0)
+                        {
+                            <td>
+                                <a href="@Url.Action("Create", "AdminPayment", new { id = item.PatientPayTran_Id })">
+                                    <i class="fa fa-credit-card" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+
+
+
+                    </tr>
+                }
+
+            </table>
+
+        </div>
+        <div>
+            <br />
+            @using (Html.BeginForm("Index", "Resource", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+            {
+                @Html.DropDownList("PageSize")
+            }
+            <div class="pull-left" style=" padding:10px;">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                      new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction }))
+        </div>
+    </div>
+
+</section>
+<div class="modal fade" id="_Paymenthistory" role="dialog">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="padding-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 id="headingSearchPatient" class="modal-title">Payment History</h3>
+            </div>
+            <div class="modal-body" style="width:95%; padding-left:60px;">
+                <div>
+                    <div id="searchPatient">
+
+
+
+                        <div class="totalpayableanddue" style="padding-bottom: 15px; position: relative; left: -17px; font-weight: bold">Total Payable : $<span id="span_TotalAmountPayable"></span></div>
+
+
+
+                        <div class="totalpayableanddue" style="padding-bottom: 15px; position: relative; left: -17px; font-weight: bold">Total Reschedule Charge : $<span id="span_TotalRescheduleamount"></span></div>
+
+
+
+
+                        <div class="totalpayableanddue" style="padding-bottom: 15px; position: relative; left: -17px; font-weight: bold">Total Cancellation Charge : $<span id="span_TotalcancelAmount"></span></div>
+
+
+
+
+
+                        <div class="totalpayableanddue" style="padding-bottom: 15px; position: relative; left: -17px; font-weight: bold">Total No. Of Reschedule : <span id="span_Noofreschedule"></span></div>
+
+
+
+
+
+                        <div class="totalpayableanddue" style="padding-bottom: 15px; position: relative; left: -17px; font-weight: bold">Total No. Of Cancellation : <span id="span_Noofcancellation"></span></div>
+
+
+
+
+
+                        <div class="row SearchFilterContainer" id="SearchFilterContainer">
+                            <table class="table table-fixed" id="tblPatientList" style="width: 95%; padding-left: 60px;">
+                                <thead>
+                                    <tr>
+                                        <th>Patient Name</th>
+                                        <th>Transaction Date</th>
+                                        <th>Transaction Time</th>
+                                        <th>Amount Paid</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody> </tbody>
+                            </table>
+
+                        </div>
+                        <div id="div_noRec" style="text-align: center; vertical-align: middle; line-height: 38px; padding-bottom: 22px; display: none;"><label style='color:red'>There are no records found !!</label></div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="padding:35px;">
+                    <div class="totalpayableanddue" style="text-align: left; font-weight: bold">
+                        Total Dues : $<span id="span_DueAmount"></span>
+
+
+                        <a id="proced_extrapayment" class="procedbuttNew" href="#" style="display:none">
+                            Proceed to pay
+                        </a>
+
+
+
+
+                    </div>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    @*<button id="btnPatientSave" type="button" class="btn btn-primary">Save</button>*@
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+@*<script>
+        function fnShowDetail(Doctor_Id) {
+            var url = "@Url.Action("Doctor", "Resource", new { Area = "Patient" })" + "?id=" + Doctor_Id;
+            //fnShowPopupForDetail(url);
+            popupwindow(url, 'Doctor', 1000, 800);
+        }
+    </script>*@
+<script>
+    $("#PageSize").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+    function fnShowTotalamount(PatientPayTran_Id) {
+
+        //  alert(PatientPayTran_Id);
+        $.ajax({
+            url: '@Url.Action("GetPaymenthistory", "AdminPayment")',
+            type: 'POST',
+            data: { PatientPayTran: PatientPayTran_Id },
+            success: function (res) {
+                //alert(res.patpaymenthistory.length);
+                $("#tblPatientList tbody").html('');
+                if (res.patpaymenthistory.length > 0) {
+                    for (var i = 0; i < res.patpaymenthistory.length; i++) {
+                        var re = res.patpaymenthistory[i].split(" ");
+                        var row = "<tr>" +
+                                            " <td>  " + re[4] + " " + re[5] + "</td>" + " <td>  " + re[1] + "</td>" + "<td>" + re[2] + "  " + re[3] + "</td>" + " <td>  " + re[0] + "</td>" +
+                                            //" <td>  " + re[1] + "</td>" + "<td>" + re[2] + "  " + re[3] + "</td>" + " <td>  " + re[0] + "</td>" +
+                                        "</tr>";
+                        $("#tblPatientList tbody").append(row);
+                    }
+                    $("#div_noRec").hide();
+                }
+                else {
+                    // alert(1);
+                    $("#div_noRec").show();
+                }
+
+                //alert("TotalAmountPayable :" + res.TotalAmountPayable);
+                //alert("TotalRescheduleamount :" + res.TotalRescheduleamount);
+                //alert("TotalcancelAmount :" + res.TotalcancelAmount);
+                //alert("Noofreschedule :" + res.Noofreschedule);
+                //alert("Noofcancellation :" + res.Noofcancellation);
+                //alert("DueAmount :" + res.DueAmount);
+                //alert("procedtopay :" + res.procedtopay);
+                if (res.TotalAmountPayable != 0 && res.TotalAmountPayable != "" && res.TotalAmountPayable != null) {
+                    $("#span_TotalAmountPayable").text(res.TotalAmountPayable);
+
+                }
+                else {
+                    $("#span_TotalAmountPayable").text(0);
+                }
+
+
+                if (res.TotalRescheduleamount != 0 && res.TotalRescheduleamount != "" && res.TotalRescheduleamount != null) {
+                    $("#span_TotalRescheduleamount").text(res.TotalRescheduleamount);
+
+                }
+                else {
+                    $("#span_TotalRescheduleamount").text(0);
+                }
+
+                if (res.TotalcancelAmount != 0 && res.TotalcancelAmount != "" && res.TotalcancelAmount != null) {
+                    $("#span_TotalcancelAmount").text(res.TotalcancelAmount);
+
+                }
+                else {
+                    $("#span_TotalcancelAmount").text(0);
+                }
+                if (res.Noofreschedule != 0 && res.Noofreschedule != "" && res.Noofreschedule != null) {
+                    $("#span_Noofreschedule").text(res.Noofreschedule);
+
+                }
+                else {
+                    $("#span_Noofreschedule").text(0);
+                }
+                if (res.Noofcancellation != 0 && res.Noofcancellation != "" && res.Noofcancellation != null) {
+                    $("#span_Noofcancellation").text(res.Noofcancellation);
+
+                }
+                else {
+                    $("#span_Noofcancellation").text(0);
+                }
+
+                $("#span_DueAmount").text(res.DueAmount);
+
+                element = document.getElementById('proced_extrapayment');
+
+                if (res.procedtopay === "yes") {
+                    var vhref = "Payment_AdminPayment/Create/" + PatientPayTran_Id;
+                    $("#proced_extrapayment").attr('href', vhref);
+                    element.style.display = "";
+
+                }
+                else {
+                    element.style.display = "none";
+                }
+
+
+
+
+
+
+            },
+            error: function (msg) {
+            }
+        });
+
+        $('#_Paymenthistory').modal();
+
+    }
+</script>
+
+@*<script>
+        //$("#tblPatientList").on('click', 'tr', function (e) {
+        //    alert(1);
+        //    alert($(this).attr('id'));
+        //});
+        //$(document).on("click", "#tblpatientpayment tr", function (e) {
+        //    alert(this.id);
+        //});
+        function functionpatientpaymentTr(e)
+        {
+            alert(e);
+        }
+    </script>*@

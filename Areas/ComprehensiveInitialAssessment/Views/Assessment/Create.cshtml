@@ -1,0 +1,302 @@
+﻿@model DataLayer.Models.CIA
+@using System.Data
+
+@{
+    ViewBag.Title = "Create";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    //DataTable dt1 = new DataTable();
+    DataTable dt2 = new DataTable();
+
+    string SubjectiveAffect_Id_with_PercentageAssist_list_Current = string.Empty;
+    string[] Complain_Desc = new string[] { };
+    string ComplainDesc = (string)ViewData["Complain_Desc"];
+    Complain_Desc = ComplainDesc.Split(',');
+
+    //if (ViewBag.ObjectiveOption != null)
+    //{
+    //    dt1 = (DataTable)ViewBag.ObjectiveOption;
+    //}
+    if (ViewBag.Affect_Desc != null)
+    {
+        dt2 = (DataTable)ViewBag.Affect_Desc;
+    }
+    
+    //if(Session["SubjectiveAffect_Id_with_PercentageAssist_list_Current"]!=null){
+    //    SubjectiveAffect_Id_with_PercentageAssist_list_Current = Session["SubjectiveAffect_Id_with_PercentageAssist_list_Current"].ToString();
+    //    string Id = SubjectiveAffect_Id_with_PercentageAssist_list_Current.Substring(0, 1);
+    //    int IndexoF1 = SubjectiveAffect_Id_with_PercentageAssist_list_Current.IndexOf('|');
+    //    int IndexoF2 = SubjectiveAffect_Id_with_PercentageAssist_list_Current.IndexOf('%');
+    //    int diff = IndexoF2 - IndexoF1;
+    //    string PercentageVal = SubjectiveAffect_Id_with_PercentageAssist_list_Current.Substring(IndexoF1 + 1, diff - 1);
+    //    SubjectiveAffect_Id_with_PercentageAssist_list_Current = Id + "_" + PercentageVal;
+        
+    //}
+    
+    string AssessmentReptDesc = string.Empty;
+}
+<script type="text/javascript">
+    var Patient_Id = '@Session["Patient_Id"]'.toString();
+    var PatientCondition_Id = '@Session["PatientCondition_Id"]'.toString();
+</script>
+
+
+@*<style>
+        .selectedRow {
+            background-color: rgba(249, 159, 62, 0.65);
+            color: white;
+        }
+    </style>
+    <style type="text/css">
+        .table-fixed thead {
+            width: 97%;
+        }
+
+        .table-fixed tbody {
+            height: 230px;
+            overflow-y: auto;
+            width: 100%;
+        }
+
+        .table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
+            display: block;
+        }
+
+            .table-fixed tbody td, .table-fixed thead > tr > th {
+                float: left;
+                border-bottom-width: 0;
+            }
+    </style>
+    <style>
+        .loadingdivschedule {
+            display: block;
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 9998;
+            background-color: rgba(0,0,0,.3);
+            -webkit-animation: fade 500ms;
+            -moz-animation: fade 500ms;
+            -o-animation: fade 500ms;
+            animation: fade 500ms;
+        }
+
+        .loadingcontainerschedule {
+            width: 100%;
+            text-align: center;
+            padding-top: 26%;
+        }
+    </style>*@
+
+@*<section class="bodyinner">
+    <div class="container">*@
+
+<div class="report-form clearfix">
+    <h2 class="text-center">Comprehensive Initial Assessment</h2>
+    @using (Html.BeginForm("Create", "Assessment", FormMethod.Post, new { id = "Create", name = "Create" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(e => e.CreatedBy)
+        @Html.HiddenFor(e => e.CreatedOn)
+        @Html.HiddenFor(e => e.ModifiedBy)
+        @Html.HiddenFor(e => e.ModifiedOn)
+        @Html.HiddenFor(e => e.Assessment_Id)
+        @Html.HiddenFor(e => e.Patient_Id)
+        @Html.HiddenFor(e => e.Subjective_Id)
+        @Html.HiddenFor(e => e.Objective_Id)
+        @Html.HiddenFor(e => e.AssessmentReptDesc)
+
+
+        if (ViewBag.Error != null)
+        {
+            @Html.Raw(ViewBag.Error)
+        }
+
+        <div class="topforn">
+            <div class="row">
+                <div class="col-sm-12">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="22%"><h3><strong>Assessment</strong></h3></td>
+                            <td width="78%"></td>
+                        </tr>
+                    </table>
+
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="20%"><h4><strong>Patient Name:</strong></h4></td>
+                            <td width="35%">
+                                @Html.TextBoxFor(m => m.PatientName, new { @class = "form-control", @readonly = true, @style = "font-size:24px;" })
+
+
+                            </td>
+                            <td width="45%"><div class="col-sm-1 form-group" style="padding-top:25px;"></div></td>
+                        </tr>
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+        
+        <div id="dvid_1" class="fieldpar" style="background: #f8f8f8;">
+
+            <div class="inlinetext fontlarge" style="line-height: 54px;">
+                Patient presents with impaired
+                @{
+        AssessmentReptDesc += "Patient presents with impaired ";
+        //AssessmentReptDesc += @ViewBag.Complain_Desc;
+                }
+                @{
+        int cnt = 1;
+        int count = Complain_Desc.Count();
+                }
+                @foreach (var item in Complain_Desc)
+                {
+                    if (cnt == count)
+                    {
+                        AssessmentReptDesc += @item.ToString() + " ";
+                        <span id="@item.ToString()" class="newfield valid txt ObjectiveOption">@item.ToString()</span>
+                    }
+                    else
+                    {
+                        AssessmentReptDesc += @item.ToString() + ", ";
+                        <span id="@item.ToString()" class="newfield valid txt ObjectiveOption">@item.ToString(),</span>
+                    }
+                    cnt++;
+                }
+
+
+                all of which adversely affect patient ability to perform
+
+
+                @if (dt2 != null & dt2.Rows.Count > 0)
+                {
+                    AssessmentReptDesc += "all of which adversely affect patient ability to perform ";
+                    int j = 1;
+
+                    foreach (DataRow dr2 in dt2.Rows)
+                    {
+                        if (j < dt2.Rows.Count)
+                        {
+                            AssessmentReptDesc += dr2["Affect_Desc"].ToString() + ", ".TrimEnd(',');
+                            <span id="@dr2["Affect_Desc"].ToString()" class="newfield valid txt ObjectiveOption">@dr2["Affect_Desc"].ToString(),</span>
+                        }
+                        else if (j >= dt2.Rows.Count)
+                        {
+                            AssessmentReptDesc += dr2["Affect_Desc"].ToString() + " ";
+                            <span id="@dr2["Affect_Desc"].ToString()" class="newfield valid txt ObjectiveOption">@dr2["Affect_Desc"].ToString()</span>
+
+                        }
+                        j++;
+                    }
+                    AssessmentReptDesc += "patient will benefit from skilled physical therapy treatment ";
+                    AssessmentReptDesc += ViewBag.NoOfVisitsPerWeekNeeded;
+                    AssessmentReptDesc += " time(s) per week for ";
+                    AssessmentReptDesc += ViewBag.NoOfWeeksToAchieveGoal;
+                    AssessmentReptDesc += " week(s) in order to address above - noted deficits and to return patient to ";
+                    AssessmentReptDesc += "prior level of function.";
+                }
+
+
+                patient will benefit from skilled physical therapy treatment @ViewBag.NoOfVisitsPerWeekNeeded time(s) per week for @ViewBag.NoOfWeeksToAchieveGoal week(s) in
+                order to address above noted deficits and to return patient to
+
+                @*@{
+        if (ViewBag.PerformIndipendentWithAssist != null)
+        {
+            AssessmentReptDesc += ViewBag.PerformIndipendentWithAssist + " ";
+            AssessmentReptDesc += "prior level of function.";
+            <span class="newfield">@ViewBag.PerformIndipendentWithAssist</span>
+        }
+        else
+        {
+            AssessmentReptDesc += "prior level of function.";
+        }
+                }*@
+
+                prior level of function.
+            </div>
+
+
+            <div style="float:right">
+                <input type="submit" id="btnSave" class="btn btn-orange btn-lg" value="Save" />
+            </div>
+
+            @*<div style="float:left">
+                    <input type="button" id="btnBackToObjective" class="btn btn-orange btn-lg" value="<< Back To Objective" />
+                </div>*@
+            <div class="row">               
+                <a href="@Url.Action("PatientCurrentLevelofAffectedAreas", "Assessment", new { id = SubjectiveAffect_Id_with_PercentageAssist_list_Current })" style="padding-left:15px;"><span class="btn btn-primary btn-lg">Previous</span> </a>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row" style="padding-top:10px;">
+                @*@Html.ActionLink("Back to list", "Index", new { id = "btnCreateLink" })*@
+                <a href="@Url.Action("Index", "Subjective")" style="padding-left:15px;"><span class="btn btn-primary btn-lg">Back to list</span> </a>
+            </div>
+        </div>
+    }
+</div>
+@*</div>
+    </section>*@
+
+<!-- Modal -->
+@*@Html.Partial("~/Views/Shared/_SearchPatientPartial.cshtml")*@
+@{Html.RenderPartial("~/Views/Shared/_SearchPatientPartial.cshtml");}
+
+<!-- End Modal -->
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        if ('@ViewBag.PatientName' != null) {
+            $("#PatientName").val('@ViewBag.PatientName');
+        }
+    });
+
+    $("#btnSave").click(function () {
+
+        //------Check Patient TextBox Is Empty Or Not-------//
+        if ($("#PatientName").val().length == 0) {
+            alertify.alert("Please enter the patient name").setHeader('AdvancePT Says');
+            return false;
+        }
+        else {
+            $("#AssessmentReptDesc").val('@AssessmentReptDesc');
+        }
+    });
+
+    $("#btnReset").click(function () {
+        $("#tblPatientList tbody").html('');            // Clear the table body
+    });
+
+    @*//------ Back To Objection Part For Edit --------//
+    $("#btnBackToObjective").click(function () {
+        window.location.href = '@Url.Action("Create1", "Objective")?Patient_Id=' + Patient_Id + "&PatientCondition_Id=" + PatientCondition_Id + "&Flag=" + 1;
+    });*@
+</script>
+<style type="text/css">
+    .backToListButton {
+  font: bold 11px Arial;
+  text-decoration: none;
+  background-color: #EEEEEE;
+  color: #333333;
+  padding: 2px 6px 2px 6px;
+  border-top: 1px solid #CCCCCC;
+  border-right: 1px solid #333333;
+  border-bottom: 1px solid #333333;
+  border-left: 1px solid #CCCCCC;
+  width:120px;
+  height:50px;
+}
+</style>

@@ -1,0 +1,333 @@
+﻿@model DataLayer.Models.tblTIncidentForm
+
+@{
+    ViewBag.Title = "About";
+    int count = 0;
+}
+<script>
+    $(document).ready(function () {
+        if ($('#WasPhysicianNotified').is(":checked")) {
+
+            $('#PhysicianName').attr("disabled", false);
+            $('#Notified_DateTime').attr("disabled", false);
+            $('#PhysicianName').val('');
+            $('#Notified_DateTime').val('');
+        }
+        else {
+            $('#PhysicianName').val('');
+            $('#Notified_DateTime').val('');
+            $('#PhysicianName').attr("disabled", "disabled");
+            $('#Notified_DateTime').attr("disabled", "disabled");
+        }
+    });
+</script>
+<section class="bodyinner">
+    @using (Html.BeginForm("Create", "IncidentForm", FormMethod.Post, new { name = "Create", id = "Create" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="bodyleft">
+            <div class="select-style">
+
+                @Html.DropDownList("Location_Id")
+            </div>
+
+            @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+        </div>
+        <div class="bodyright">
+
+
+            <div class="report-form clearfix">
+                <h2>Incident report Form<span></span></h2>
+                <div class="confident">
+                    CONFIDENTIAL REPORT: 
+                </div>
+                @Html.HiddenFor(e => e.IncidentEvent_Id)
+                
+                @if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+                <div class="row">
+                    <div class="col-sm-6 col-md-3 form-group">
+                        <label>Name of Person Involved</label>
+                        @Html.TextBoxFor(m => m.Involved_Person_Name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Involved_Person_Name)
+                    </div>
+                    <div class="col-sm-6 col-md-3 form-group">
+                        <label for="date">
+                            Date:
+                        </label>
+                        @Html.TextBoxFor(m => m.CreatedOn, new { @class = "form-control", style = "width:100%;", @Value = DateTime.Now.ToString("MM/dd/yyyy"), @Readonly = true })
+                        @Html.ValidationMessageFor(m => m.CreatedOn)
+                    </div>
+
+                    <div class="col-sm-6 col-md-3 form-group">
+                        <label>
+                            MR# (if applicable)
+                            &nbsp;&nbsp;
+                        </label>
+                        @Html.TextBoxFor(m => m.MR_, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.MR_)
+                    </div>
+
+                    <div class="col-sm-6 col-md-3 form-group">
+                        <label for="location-incident">Gender:<br /></label><br>
+
+                        <label class="radio-inline">@Html.RadioButtonFor(m => m.Gender, "M")Male</label>
+                        <label class="radio-inline">@Html.RadioButtonFor(m => m.Gender, "F")Female</label>
+                        @Html.ValidationMessageFor(m => m.Gender)
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6 col-md-3 form-group">
+                        <label>Street Address of Occurrence</label>
+                        @Html.TextBoxFor(m => m.Street_Address, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Street_Address)
+                    </div>
+                    <div class="col-sm-6 col-md-3 form-group">
+                        <label>
+                            City
+                            &nbsp;&nbsp;
+                        </label>
+                        @Html.TextBoxFor(m => m.City, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.City)
+                    </div>
+                    <div class="col-sm-6 col-md-3 form-group">
+                        <label>
+                            State
+                            &nbsp;&nbsp;
+                        </label>
+                        @Html.TextBoxFor(m => m.State, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.State)
+                    </div>
+                    <div class="col-sm-6 col-md-3 form-group">
+                        <label>
+                            Zip Code
+                            &nbsp;&nbsp;
+                        </label>
+                        @Html.TextBoxFor(m => m.Zip_Code, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Zip_Code)
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-sm-6 col-md-3 form-group">
+                        <label for="date">Date of Occurrence :</label>
+                        @*<input name="date" type="text" class="form-control datepicker datepicker-bg" placeholder="mm/dd/yyyy" style="width:100%;">*@
+                        @Html.TextBoxFor(m => m.DateOfOccurance, new { @class = "form-control datepicker datepicker-bg DenyAdvanceDateSelection", placeholder = "mm/dd/yyyy", style = "width:100%;", @Readonly = true })
+                        @Html.ValidationMessageFor(m => m.DateOfOccurance)
+                    </div>
+                    <div class="col-sm-6 col-md-3 form-group ">
+                        <label for="date">
+                            Time of Incident
+                            &nbsp;&nbsp;
+                        </label>
+
+                        @Html.TextBoxFor(m => m.TimeOfIncident, new { @class = "form-control clockpicker", @id = "TimeOfIncident" })
+                        @Html.ValidationMessageFor(m => m.TimeOfIncident)
+                    </div>
+                
+
+                    <div class="col-sm-12 col-md-6 form-group">
+                        <label>
+                            Person Completing Report
+                            &nbsp;&nbsp;
+                        </label>
+                        @Html.TextBoxFor(m => m.Person_Completing_Report, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Person_Completing_Report)
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+
+                    <div class="col-sm-6 col-md-3 form-group">
+                        <label for="date">Was a Physician Notified?</label>
+                        <div class="checjtick">
+                            <label class="checkbox-inline">
+                                <label class="radio-inline">@Html.RadioButtonFor(m => m.WasPhysicianNotified, true, new { @onclick = "javascript:PhysicianNotified(this);" })Yes</label>
+                                <label class="radio-inline">@Html.RadioButtonFor(m => m.WasPhysicianNotified, false, new { @checked = true, @onclick = "javascript:PhysicianNotified(this);" })No</label>
+                            </label>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-6 col-md-3 form-group">
+                        <label for="date">
+                            Physician Name:
+                            &nbsp;&nbsp;
+                        </label>
+
+                        @Html.TextBoxFor(m => m.PhysicianName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.PhysicianName)
+                    </div>
+                    <div class="col-sm-12 col-md-6 form-group">
+                        <label>
+                            Date & Time they were notified:
+                            &nbsp;&nbsp;
+                        </label>
+                        @Html.TextBoxFor(m => m.Notified_DateTime, new { @class = "form-control datetimepicker datepicker-bg", style = "width:60%;", @Value = DateTime.Now.ToString("MM/dd/yyyy"), @Readonly = true })
+                        @Html.ValidationMessageFor(m => m.Notified_DateTime)
+                    </div> 
+
+
+
+                    
+                </div>
+
+                <hr>
+
+                <h3>Check Applicable Event:</h3>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table width="100%" style="width: 90%; margin: 20px;">
+                            @{ var odd = true; }
+                            @foreach (var item in ViewBag.IncidentEvent_Id)
+                            {
+
+                                if (odd)
+                                {
+                                                             @:   <tr>
+                                        <td>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" id="@item.Value" class="chk" name="@item.Text" value="@item.Value" />@item.Text
+                                            </label><br />
+                                        </td>
+
+                                }
+                                else
+                                {
+                                    <td>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" id="@item.Value" name="@item.Text" class="chk" value="@item.Value" />@item.Text
+                                        </label><br />
+                                    </td>
+                                    @:                     </tr>
+                                                            }
+
+                                odd = !odd;
+                            }
+
+
+
+                        </table>
+
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12 form-group">
+                        @Html.DisplayName("Describe  the event, effects, outcome and potential risk issue (name equipment, drug, procedure, treatment, etc)")
+                        <br />
+                        <div class="col-sm-12 form-group">
+
+                            @Html.TextAreaFor(m => m.Event_Desc, new { @class = "form-control", @id = "txtdata", @onkeyup = "javascript:ValidateCharactercount(this);", @maxlength = "500", @autocomplete = "off" })
+                            @Html.ValidationMessageFor(m => m.Event_Desc)
+                            <div id="divmessage" style="color: green;"></div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+                <div class="subbutt">
+                    <button type="submit" value="Create" class="btn btn-orange pull-right">Submit</button>
+                </div>
+
+            </div>
+
+
+
+
+        </div>
+        <div class="clearfix"></div>
+    }
+</section>
+<script>
+    $(document).ready(function () {
+        var selected = $("#IncidentEvent_Id").val();
+        if (selected) {
+            var chkArray = selected.split(',');
+            for (var i = 0; i < chkArray.length; i++) {
+                $('input#' + chkArray[i]).attr('checked', 'true');
+            }
+        }
+        PhysicianNotified();
+        $("#WasPhysicianNotified").change(function () {
+            PhysicianNotified();
+        })
+    });
+    $("#Create").submit(function () {
+        getValueUsingClass();
+    })
+    function getValueUsingClass() {
+
+        var chkArray = [];
+        $(".chk:checked").each(function () {
+            chkArray.push($(this).val());
+        });
+        var selected;
+        selected = chkArray.join(',') + ",";
+        if (selected.length > 1) {
+            selected = selected.substring(0, selected.length - 1);
+            $("#IncidentEvent_Id").val(selected);
+        }
+        else {
+            alert("Please check at least one of the checkbox");
+            return false;
+        }
+    }
+
+    //function PhysicianNotified() {
+    //    if($('#WasPhysicianNotified').is(":checked"))
+    //    {
+    //        $('#PhysicianName').removeAttr('readonly');
+    //        $('#Notified_DateTime').removeAttr('readonly');
+    //    }
+    //    else
+    //    {
+    //        $('#PhysicianName').attr('readonly', 'readonly');
+    //        $('#Notified_DateTime').attr('readonly', 'readonly');
+    //        $('#PhysicianName').val('');
+    //        $('#Notified_DateTime').val('');
+    //    }
+    //}
+
+    function PhysicianNotified() {
+      
+        if ($('#WasPhysicianNotified').is(":checked")) {
+
+            $('#PhysicianName').attr("disabled", false);
+            $('#Notified_DateTime').attr("disabled", false);
+            $('#PhysicianName').val('');
+            $('#Notified_DateTime').val('');
+        }
+        else {
+            $('#PhysicianName').val('');
+            $('#Notified_DateTime').val('');
+            $('#PhysicianName').attr("disabled", "disabled");
+            $('#Notified_DateTime').attr("disabled", "disabled");
+        }
+    }
+</script>
+
+
+<script language="javascript">
+    function ValidateCharactercount(cont) {
+        var len = cont.value.length;
+        var remchars = 500 - len;
+        if (remchars == 0) {
+            //alert('Maximum Length Is 500 Chars!......');
+            $('#divmessage').css('color', 'red');
+        }
+        else {
+            $('#divmessage').css('color', 'green');
+        }
+        //var id = "#" + cont.id;
+        $("#divmessage").html("Character remaning :" + remchars);
+    }
+</script>

@@ -1,0 +1,132 @@
+﻿@model DataLayer.Models.DMEOfficeStaffOrderSpinomedIVTLSOForm
+@using DataLayer;
+
+@{
+    ViewBag.Title = "Spinomed IV TLSO Order Form";
+}
+
+<section class="bodyinner">
+
+
+    <div class="bodyleft">
+
+
+        @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+    </div>
+    <div class="bodyright">
+
+        <div class="report-form clearfix">
+            <h2>Spinomed IV TLSO Order Form: In Stock HCPCS Code: L0456</h2>
+            <div class="p_bot15"><strong>*MEDICARE PATIENTS: DO NOT PROCEED IF THEY HAVE BEEN ISSUED A ‘BACK BRACE’IN THE PAST 5 YEARS.</strong></div>
+
+            <hr>
+            @using (Html.BeginForm("Create3", "SpinomedIVTLSOForm", FormMethod.Post, new { name = "OfficeStaffMC_TLSO_Step3", id = "OfficeStaffMC_TLSO_Step3" }))
+            {
+
+                <div id="dvFirst">
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(e => e.Order.DMEForm_Id)
+                    @Html.HiddenFor(e => e.Order.DMEOfficeStaffOrder_Id)
+                    @Html.HiddenFor(e => e.Order.DMEFormCode)
+                    @Html.HiddenFor(e => e.Order.CreatedOn)
+
+
+                    @if (ViewBag.Error != null)
+                    {
+                        @Html.Raw(ViewBag.Error)
+                    }
+
+                    <div id="dvOrder" class="todo_inner">
+
+                        <div class="outerf">
+                            <div class="stepheading"><strong>3. Office Staff </strong> <i>order</i></div>
+                            <div class="hiddenform">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12 form-group">
+                                        <label class="checkbox-inline">
+
+                                            @Html.CheckBoxFor(e => e.Order.IsFaxLOMN, new { @class = "checkbox-inline", @onclick = "fnMedicalNecessity(this,'" + @Model.Order.DMEForm_Id + "');" })
+                                            Fax Letter of Med.Nec.
+                                            <span id="IsFaxLOMN" class="validateMsg"></span>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-3 p_top10">Date</div>
+                                            <div class="col-sm-5">
+                                                @Html.TextBoxFor(m => m.Order.FaxLOMN_Date, new { @class = "form-control datepicker datepicker-bg", @placeholder = "MM/dd/YYYY", style = "width:100%;", @Value = @Model.Order.FaxLOMN_Date.GetExactValue() })
+                                                <span id="FaxLOMN_Date" class="validateMsg"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="subbutt">
+                                    @*<button type="button" class="btn btn-primary pull-left" onclick="GotoMC()">Back</button>*@
+                                    <button type="submit" class="btn btn-orange pull-right" onclick="return validateinputs();">Submit</button>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+
+
+                </div>
+            }
+        </div>
+
+        <div class="clearfix"></div>
+
+    </div>
+
+</section>
+
+<script>
+    function fnMedicalNecessity(obj, SpinomedIVTLSOForm_Id) {
+        if ($(obj).is(":checked")) {
+            var url = "@Url.Action("MedicalNecessityPDF", "SpinomedIVTLSOForm", new { Area = "DmeForm" })" + "?id=" + SpinomedIVTLSOForm_Id;
+            //fnShowPopupForDetail(url);
+            popupwindow(url, 'Medical Necessity', 1000, 800);
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+      
+        $('#Order_FaxLOMN_Date').datepicker('setEndDate', new Date());
+        $("#Order_IsFaxLOMN").focus();
+        $('#FaxLOMN_Date').hide();
+        $('#IsFaxLOMN').hide();
+    });
+    
+    function validateinputs() {
+      
+        var Fax_Date = document.getElementById("Order_FaxLOMN_Date");
+        var IsFax = document.getElementById("Order_IsFaxLOMN");
+       
+        if (!IsFax.checked) {
+           
+            $('#IsFaxLOMN').text("Please checked the checkbox");
+            $('#IsFaxLOMN').show();
+            //IsFax.focus();
+            return false;
+        }
+        else {
+            $('#IsFaxLOMN').hide();
+        }
+
+        if (Fax_Date != undefined) {
+            if (Fax_Date.value == null || Fax_Date.value == "" || Fax_Date.value == '') {
+                $('#FaxLOMN_Date').text("Please enter date.");
+                $('#FaxLOMN_Date').show();
+                Fax_Date.focus();
+                return false;
+            }
+            else {
+                $('#FaxLOMN_Date').hide();
+            }
+        }
+        //return false;
+    }
+</script>

@@ -1,0 +1,783 @@
+﻿@model DataLayer.Models.InitialAssessment
+@using DataLayer;
+@{
+    //ViewBag.Title = "Pre examination questionnare";
+    ViewBag.Title = "Comprehensive Initial Assessment";
+}
+@if (ViewBag.Error != null)
+{
+    @Html.Raw(ViewBag.Error)
+}
+<section class="bodyinner">
+    <div class="container ">
+
+        <div class="body ">
+            <div class="activationform_fullpage">
+                <div class="report-form clearfix">
+                    @using (Html.BeginForm("InitialAssessment", "PTExam", FormMethod.Post, new { name = "PTExam", id = "PTExam" }))
+                    {
+                        @Html.HiddenFor(e => e.PatientConditionId)
+
+
+                        @Html.ValidationSummary(true)
+                        @Html.HiddenFor(e => e.Patient_Id)
+                        @Html.HiddenFor(e => e.PatientPTExam_Id)
+
+                        <div id="div_personalInfo">
+                            @*<h3 style="padding-bottom:15px;">Pre-Examination Questionnaire:</h3>*@
+                            <h3 style="padding-bottom:15px;">Comprehensive Initial Assessment</h3>
+                            @*<div class="clearfix line"></div>*@
+                            <div class="pull-right">
+                                <a href="#" class="btn btn-primary" aria-hidden="true" onclick="fnShowDetailPTExam(@Model.PatientConditionId)">Pre Exam Detail</a>
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <div class="clearfix line"></div>
+
+                            <div class="row" id="dvid_1">
+                                <div class="col-sm-12 col-md-12 form-group">
+
+                                    <div class="row">
+
+                                        <div class="col-sm-12 col-md-12">
+                                            <div class="headrightcont">
+                                                <label>Things You <strong>SHOULD NOT DO:</strong></label>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+
+
+
+                                    <script>
+                                        var counterRestrictedToDo = 0;
+                                    </script>
+                                    <div id="PatientRestrictedToDo">
+                                        @for (int i = 0; i < Model.ListofRestrictedToDo.Count; i++)
+                                        {
+                                            <div class="row preexamin" id="divRestrictedToDo_@i">
+
+                                                <div class="col-sm-11 col-md-11">
+
+
+                                                    @Html.TextAreaFor(m => m.ListofRestrictedToDo[i].RestrictedToDoName, new { @class = "applitextfield2" })
+                                                    @Html.ValidationMessageFor(model => model.ListofRestrictedToDo[i].RestrictedToDoName)
+
+                                                    @Html.HiddenFor(m => m.ListofRestrictedToDo[i].RestrictedToDo_ID)
+                                                    @Html.HiddenFor(m => m.ListofRestrictedToDo[i].PTExam_Id)
+
+                                                </div>
+
+
+
+
+                                                <div class="col-sm-1 col-md-1 form-group">
+                                                    <button class="addbutt" type="button" style="margin-top:0;" title="Remove New Conditions" onclick='removeRowRestrictedToDo("@i")'>
+
+                                                        <i class="fa fa-remove" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+
+
+
+                                            </div>
+
+                                            <script>
+                                                counterRestrictedToDo += 1;
+                                            </script>
+                                        }
+                                    </div>
+
+                                    <div class="clearfix"></div>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class=headrightcont>
+                                                <button id="btnaddanotherRestrictedToDo" type="submit" class="btn btn-orange">Add </button>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class=headrightcont>
+                                                @*<button type="submit" class="btn btn-orange">I’m done entering surgeries</button>*@
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+                            <div id="dvid_2">
+                                <div class="col-sm-12 col-md-12 form-group">
+                                    <div class="row">
+                                        <div class="headrightcont">
+                                            <label>Things You<strong> SHOULD DO:</strong></label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-sm-6 col-md-6 headrightcont">
+                                            @*<div class="col-sm-3">
+                                                @Html.CheckBoxFor(m => m.IsRest, new { @class = "checkbox-inline" }) &nbsp; &nbsp;Rest
+                                            </div>*@
+                                            <div class="col-sm-3">
+                                                <label class="containerinput">
+
+                                                    <input type="checkbox" name="IsRest" id="IsRest">
+                                                    <span class="checkmark"></span>
+                                                    Rest
+                                                </label>
+                                            </div>
+                                                <div class="col-sm-3">
+                                                    @Html.TextBoxFor(m => m.Rest, new { @class = "applitextfield2", @Style = "width: 150px;" })
+                                                </div>
+
+
+                                            </div>
+                                        <div class="col-sm-6 col-md-6 headrightcont">
+                                            @*<div class="col-sm-3">
+                                                @Html.CheckBoxFor(m => m.IsIce, new { @class = "checkbox-inline" }) &nbsp; &nbsp;Ice
+                                            </div>*@
+                                            <div class="col-sm-3">
+                                                <label class="containerinput">
+
+                                                    <input type="checkbox" name="IsIce" id="IsIce">
+                                                    <span class="checkmark"></span>
+                                                    Ice
+                                                </label>
+                                            </div>
+                                                <div class="col-sm-3">
+                                                    @Html.TextBoxFor(m => m.Ice, new { @class = "applitextfield2", @Style = "width: 150px;" })
+                                                </div>
+
+
+                                            </div>
+                                        <div class="col-sm-6 col-md-6 headrightcont">
+                                            @*<div class="col-sm-3">
+                                                @Html.CheckBoxFor(m => m.IsHeat, new { @class = "checkbox-inline" })&nbsp; &nbsp;Heat
+                                            </div>*@
+                                            <div class="col-sm-3">
+                                                <label class="containerinput">
+
+                                                    <input type="checkbox" name="IsHeat" id="IsHeat">
+                                                    <span class="checkmark"></span>
+                                                    Heat
+                                                </label>
+                                            </div>
+                                                <div class="col-sm-3">
+                                                    @Html.TextBoxFor(m => m.Heat, new { @class = "applitextfield2", @Style = "width: 150px;" })
+                                                </div>
+
+
+                                            </div>
+
+                                        <div class="col-sm-6 col-md-6 headrightcont">
+                                            @*<div class="col-sm-3">
+                                                @Html.CheckBoxFor(m => m.IsCold_Laser_AddOn, new { @class = "checkbox-inline" })&nbsp; &nbsp;Cold Laser Add-On
+                                            </div>*@
+                                            <div class="col-sm-3">
+                                                <label class="containerinput">
+
+                                                    <input type="checkbox" name="IsCold_Laser_AddOn" id="IsCold_Laser_AddOn">
+                                                    <span class="checkmark"></span>
+                                                    Cold Laser Add-On
+                                                </label>
+                                            </div>
+                                                <div class="col-sm-3">
+                                                    @Html.TextBoxFor(m => m.ColdLaser, new { @class = "applitextfield2", @Style = "width: 150px;" })
+                                                </div>
+
+
+                                            </div>
+                                        <div class="col-sm-6 col-md-6 headrightcont">
+                                            @*<div class="col-sm-3">
+                                                @Html.CheckBoxFor(m => m.IsMassage_AddOn, new { @class = "checkbox-inline" })&nbsp; &nbsp;Massage Add-On
+                                            </div>*@
+                                            <div class="col-sm-3">
+                                                <label class="containerinput">
+
+                                                    <input type="checkbox" name="IsMassage_AddOn" id="IsMassage_AddOn">
+                                                    <span class="checkmark"></span>
+                                                    Massage Add-On
+                                                </label>
+                                            </div>
+                                                <div class="col-sm-3">
+                                                    @Html.TextBoxFor(m => m.Massage, new { @class = "applitextfield2", @Style = "width: 150px;" })
+                                                </div>
+
+
+                                            </div>
+                                        <div class="col-sm-6 col-md-6 headrightcont">
+                                            @*<div class="col-sm-3">
+                                                @Html.CheckBoxFor(m => m.IsPersonal_Training, new { @class = "checkbox-inline" })&nbsp; &nbsp;Personal Training
+                                            </div>*@
+                                            <div class="col-sm-3">
+                                                <label class="containerinput">
+
+                                                    <input type="checkbox" name="IsPersonal_Training" id="IsPersonal_Training">
+                                                    <span class="checkmark"></span>
+                                                    Personal Training
+                                                </label>
+                                            </div>
+                                                <div class="col-sm-3">
+                                                    &nbsp;
+                                                </div>
+                                            </div>
+                                       
+
+                                    </div>
+                                    <div class=headrightcont><strong> Ice & heat packs are available at the front desk</strong></div>
+                                </div>
+                            </div>
+
+                            <div class="row" id="dvid_3">
+                                <div class="col-sm-12 col-md-12 form-group">
+
+                                    <div class="row">
+
+                                        <div class="col-sm-12 col-md-12">
+                                            <div class="headrightcont">
+                                                <label>You Would<strong> BENEFIT FROM:</strong></label>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+
+
+
+                                    <script>
+                                        var counterPatientExercis = 0;
+                                    </script>
+                                    <div id="PatientPatientExercis">
+                                        @for (int i = 0; i < Model.ListofPatientExercis.Count; i++)
+                                        {
+                                            <div class="row preexamin" id="divPatientExercis_@i">
+
+                                                <div class="col-sm-11 col-md-11">
+
+
+                                                    @Html.TextAreaFor(m => m.ListofPatientExercis[i].PatientExercises, new { @class = "applitextfield2" })
+                                                    @Html.ValidationMessageFor(model => model.ListofPatientExercis[i].PatientExercises)
+
+                                                    @Html.HiddenFor(m => m.ListofPatientExercis[i].PatientExercises)
+                                                    @Html.HiddenFor(m => m.ListofPatientExercis[i].PTExam_Id)
+
+                                                </div>
+
+
+
+
+                                                <div class="col-sm-1 col-md-1 form-group">
+                                                    <button class="addbutt" type="button" style="margin-top:0;" title="Remove New Conditions" onclick='removeRowPatientExercis("@i")'>
+
+                                                        <i class="fa fa-remove" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+
+
+
+                                            </div>
+
+                                            <script>
+                                                counterPatientExercis += 1;
+                                            </script>
+                                        }
+                                    </div>
+
+                                    <div class="clearfix"></div>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class=headrightcont>
+                                                <button id="btnaddanotherPatientExercis" type="submit" class="btn btn-orange">Add </button>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class=headrightcont>
+                                                @*<button type="submit" class="btn btn-orange">I’m done entering surgeries</button>*@
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+                            <div id="dvid_4">
+                                <div class="col-sm-12 col-md-12 form-group">
+                                    <div class="row">
+                                        <div class="headrightcont">
+                                            <label>You Would<strong> BENEFIT FROM:</strong></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 headrightcont">
+                                        <label class="containerinput">
+
+                                            <input type="checkbox" name="IsKnee_Arthritis_Brace" id="IsKnee_Arthritis_Brace">
+                                            <span class="checkmark"></span>
+                                            Knee Arthritis Brace
+                                        </label>
+                                        @*@Html.CheckBoxFor(m => m.IsKnee_Arthritis_Brace, new { @class = "checkbox-inline" })&nbsp; &nbsp;Knee Arthritis Brace*@
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 headrightcont">
+                                        <label class="containerinput">
+
+                                            <input type="checkbox" name="IsKnee_Ligament_Brace" id="IsKnee_Ligament_Brace">
+                                            <span class="checkmark"></span>
+                                            Knee Ligament Brace
+                                        </label>
+                                        @*@Html.CheckBoxFor(m => m.IsKnee_Ligament_Brace, new { @class = "checkbox-inline" })&nbsp; &nbsp;Knee Ligament Brace*@
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 headrightcont">
+                                        <label class="containerinput">
+
+                                            <input type="checkbox" name="IsLowBack_Pain_Support" id="IsLowBack_Pain_Support">
+                                            <span class="checkmark"></span>
+                                            Low Back Pain Support
+                                        </label>
+                                        @*@Html.CheckBoxFor(m => m.IsLowBack_Pain_Support, new { @class = "checkbox-inline" })&nbsp; &nbsp;Low Back Pain Support*@
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 headrightcont">
+                                        <label class="containerinput">
+
+                                            <input type="checkbox" name="IsUpperBack_Postural_Correction" id="IsUpperBack_Postural_Correction">
+                                            <span class="checkmark"></span>
+                                            Upper Back Postural Correction
+                                        </label>
+                                        @*@Html.CheckBoxFor(m => m.IsUpperBack_Postural_Correction, new { @class = "checkbox-inline" })&nbsp; &nbsp;Upper Back Postural Correction*@
+                                    </div>
+                                    <div class="col-sm-4 col-md-5 headrightcont">
+                                        <label class="containerinput">
+
+                                            <input type="checkbox" name="IsApplicable_Your_Conditions" id="IsApplicable_Your_Conditions">
+                                            <span class="checkmark"></span>
+                                            None of these are Applicable to your Conditions
+                                        </label>
+                                        @*@Html.CheckBoxFor(m => m.IsApplicable_Your_Conditions, new { @class = "checkbox-inline" }) &nbsp; &nbsp;None of these are Applicable to your Conditions*@
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="dvid_5">
+                                <div class="col-sm-12 col-md-12 form-group">
+                                    <div class="row">
+                                        <div class="headrightcont">
+                                            <div class=headrightcont><label><strong>Treatment Plan:</strong></label></div>
+                                        </div>
+                                    </div>
+                                    <div class="headrightcont">
+                                        <div class=headrightcont>Patient Goals:</div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 headrightcont" style="padding-left: 0;">
+
+                                        @Html.TextAreaFor(m => m.PatientGoals, new { @class = "applitextfield2" })
+                                    </div>
+                                   
+                                </div>
+                                @Html.ValidationMessageFor(model => model.PatientGoals)
+                            </div>
+                            <div id="dvid_6">
+                                <div class="col-sm-12 col-md-12 form-group">
+                                    <div class="row">
+                                        <div class="headrightcont">
+                                            <div class=headrightcont><label><strong>Treatment Plan:</strong></label></div>
+                                        </div>
+                                    </div>
+                                    <div class="headrightcont">
+                                        <div class=headrightcont>Physical Therapy Goals:</div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 headrightcont" style="padding-left: 0;">
+
+                                        @Html.TextAreaFor(m => m.PhysicalTherapyGoals, new { @class = "applitextfield2" })
+                                    </div>
+                                  
+                                </div>
+                                @Html.ValidationMessageFor(model => model.PhysicalTherapyGoals)
+                            </div>
+                            <div id="dvid_7">
+                                <div class="col-sm-7 col-md-7 form-group">
+                                    <div class="row">
+                                        <div class="headrightcont">
+                                            <div class=headrightcont><label><strong>Treatment Plan:</strong></label></div>
+                                        </div>
+                                    </div>
+
+                                   
+
+                                    <div class="col-sm-5 col-md-5">
+                                        <div style="width:800px;">
+                                            Number of Weeks Needed to Achieve Goals:
+                                            @Html.TextBoxFor(m => m.NoOfWeeksToAchieveGoal, new { @class = "applitextfield2", maxlength = "3", @style = "width:52px; padding-left:0px;", @onblur = "fn_ZeroCheck2();" })
+                                        </div>
+                                        <div style="width:800px;">
+                                            @Html.ValidationMessageFor(model => model.NoOfWeeksToAchieveGoal)
+                                            @*<span id="errmsg2" style="color:red;"></span>*@
+                                            <div id="divErr2"></div>
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="dvid_8">
+                                <div class="col-sm-8 col-md-8 form-group">
+                                    <div class="row">
+                                        <div class="headrightcont">
+                                            <div class=headrightcont><label><strong>Treatment Plan:</strong></label></div>
+                                        </div>
+                                        <div class="col-sm-5 col-md-5">
+                                            <div style="width:800px;">
+                                                Number of Visits Per Week Needed to Achieve Goals:
+                                                @Html.TextBoxFor(m => m.NoOfVisitsPerWeekNeeded,  new { @class = "applitextfield2", maxlength = "3", @style = "width:52px; padding-left:0px;", @onblur = "fn_ZeroCheck2();" })
+                                            </div>
+                                            <div style="width:800px;">
+                                                @Html.ValidationMessageFor(model => model.NoOfVisitsPerWeekNeeded)
+                                                @*<span id="errmsg2" style="color:red;"></span>*@
+                                                <div id="divErr2"></div>
+
+                                            </div>
+                                        
+                                           
+                                        </div>
+                                    </div>
+
+                                    
+
+                                </div>
+                            </div>
+                            <div id="dvid_9">
+                                <div class="col-sm-7 col-md-7 form-group">
+                                    <div class="row">
+                                        <div class="headrightcont">
+                                            <div class=headrightcont><label><strong>Treatment Plan:</strong></label></div>
+                                        </div>
+                                    </div>
+
+                                    @*<div class="col-sm-5 col-md-5 headrightcont">
+                                        <div class=headrightcont>Total Number of Visits Needed to Achieve Goals:</div>
+                                        @Html.TextBoxFor(m => m.TotalNoOfVisitNeeded, new { @class = "applitextfield2", @readonly = "readonly",@style="width: 52px" })
+                                    </div>*@
+                                    <div class="col-sm-5 col-md-5">
+                                        <div style="width:800px;">
+                                            Total Number of Visits Needed to Achieve Goals:
+                                            @Html.TextBoxFor(m => m.TotalNoOfVisitNeeded, new { @class = "applitextfield2", maxlength = "3", @style = "width:52px; padding-left:0px;", @onblur = "fn_ZeroCheck2();" })
+                                        </div>
+                                        <div style="width:800px;">
+                                            @Html.ValidationMessageFor(model => model.TotalNoOfVisitNeeded)
+                                            @*<span id="errmsg2" style="color:red;"></span>*@
+                                            <div id="divErr2"></div>
+
+                                        </div>
+
+
+                                    </div>
+
+
+                                   
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="clearfix line"></div>
+                        <div>
+
+                            @Html.Partial("_PrevNext")
+                           
+                        </div>
+                       
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    //Surgery
+
+    (function ($) {
+        /* Source:
+        http://www.johnculviner.com/post/2011/11/16/ClearReset-MVC-3-Form-and-Unobtrusive-jQuery-Client-Validation.aspx
+        */
+
+        $.fn.resetValidation = function () {
+            var $form = this.closest('form');
+
+            //reset jQuery Validate's internals
+            $form.validate().resetForm();
+
+            //reset unobtrusive validation summary, if it exists
+            $form.find("[data-valmsg-summary=true]")
+            .removeClass("validation-summary-errors")
+            .addClass("validation-summary-valid")
+            .find("ul").empty();
+
+            //reset unobtrusive field level, if it exists
+            $form.find("[data-valmsg-replace]")
+            .removeClass("field-validation-error")
+            .addClass("field-validation-valid")
+            .empty();
+
+            return $form;
+        };
+    })(jQuery);
+
+
+
+
+
+
+    //PatientRestrictedToDo
+    var divInnerRestrictedToDo;
+    $("#btnaddanotherRestrictedToDo").click(function () {
+
+
+
+        divInnerRestrictedToDo = '<div class="row preexamin" id="divRestrictedToDo_' + counterRestrictedToDo + '">' +
+
+        '<div class="col-sm-11 col-md-11">' +
+
+
+                '<textarea class="applitextfield2" cols="20" id="ListofRestrictedToDo_' + counterRestrictedToDo + '__RestrictedToDoName" name="ListofRestrictedToDo[' + counterRestrictedToDo + '].RestrictedToDoName" rows="2"></textarea>' +
+                '<span class="field-validation-valid" data-valmsg-for="ListofRestrictedToDo[' + counterRestrictedToDo + '].RestrictedToDoName" data-valmsg-replace="true"></span>' +
+
+                '<input data-val="true" data-val-number="The field RestrictedToDo_ID must be a number." data-val-required="The RestrictedToDo_ID field is required." id="ListofRestrictedToDo_' + counterRestrictedToDo + '__RestrictedToDo_ID" name="ListofRestrictedToDo[' + counterRestrictedToDo + '].RestrictedToDo_ID" type="hidden" value="0">' +
+                '<input data-val="true" data-val-number="The field PTExam_Id must be a number." id="ListofRestrictedToDo_' + counterRestrictedToDo + '__PTExam_Id" name="ListofRestrictedToDo[' + counterRestrictedToDo + '].PTExam_Id" type="hidden" value="">' +
+
+        '</div>' +
+
+        '<div class="col-sm-1 col-md-1 form-group">' +
+            '<button class="addbutt" type="button" style="margin-top:0;" title="Remove New Conditions" onclick="removeRowRestrictedToDo(' + counterRestrictedToDo + ')">' +
+
+                '<i class="fa fa-remove" aria-hidden="true"></i>' +
+            '</button>' +
+        '</div>' +
+
+
+
+    '</div>';
+
+        $("#PatientRestrictedToDo").append(divInnerRestrictedToDo);
+
+        counterRestrictedToDo++;
+
+    });
+    function removeRowRestrictedToDo(cntRestrictedToDo) {
+
+        var newCnt1 = 0;
+        for (var i = cntRestrictedToDo ; i < counterRestrictedToDo; i++) {
+            newCnt1 = parseInt(i) + 1;
+
+            $("#ListofRestrictedToDo_" + i + "__RestrictedToDoName").val($("#ListofRestrictedToDo_" + newCnt1 + "__RestrictedToDoName").val());
+            $("#ListofRestrictedToDo_" + i + "__RestrictedToDo_ID").val($("#ListofRestrictedToDo_" + newCnt1 + "__RestrictedToDo_ID").val());
+            $("#ListofRestrictedToDo_" + i + "__PTExam_Id").val($("#ListofRestrictedToDo_" + newCnt1 + "__PTExam_Id").val());
+        }
+
+        var newCnt = counterRestrictedToDo - 1;
+
+        $("#divRestrictedToDo_" + newCnt).remove();
+        counterRestrictedToDo--;
+
+    }
+
+    //patientexercise
+    var divInnerPatientExercis;
+    $("#btnaddanotherPatientExercis").click(function () {
+
+
+
+        divInnerPatientExercis = '<div class="row preexamin" id="divPatientExercis_' + counterPatientExercis + '">' +
+
+                                                '<div class="col-sm-11 col-md-11">' +
+
+
+                                                    '<textarea class="applitextfield2" cols="20" id="ListofPatientExercis_' + counterPatientExercis + '__PatientExercises" name="ListofPatientExercis[' + counterPatientExercis + '].PatientExercises" rows="2"></textarea>' +
+                                                    '<span class="field-validation-valid" data-valmsg-for="ListofPatientExercis[' + counterPatientExercis + '].PatientExercises" data-valmsg-replace="true"></span>' +
+
+                                                    '<input id="ListofPatientExercis_' + counterPatientExercis + '__PatientExercises" name="ListofPatientExercis[' + counterPatientExercis + '].PatientExercises" type="hidden" value="">' +
+                                                    '<input data-val="true" data-val-number="The field PTExam_Id must be a number." id="ListofPatientExercis_' + counterPatientExercis + '__PTExam_Id" name="ListofPatientExercis[' + counterPatientExercis + '].PTExam_Id" type="hidden" value="">' +
+
+                                                '</div>' +
+
+
+
+
+                                                '<div class="col-sm-1 col-md-1 form-group">' +
+                                                    '<button class="addbutt" type="button" style="margin-top:0;" title="Remove New Conditions" onclick="removeRowPatientExercis(' + counterPatientExercis + ')">' +
+
+                                                        '<i class="fa fa-remove" aria-hidden="true"></i>' +
+                                                    '</button>' +
+                                                '</div>' +
+
+
+
+                                            '</div>';
+
+        $("#PatientPatientExercis").append(divInnerPatientExercis);
+
+        counterPatientExercis++;
+
+    });
+    function removeRowPatientExercis(cntPatientExercis) {
+
+        var newCnt1 = 0;
+        for (var i = cntPatientExercis ; i < counterPatientExercis; i++) {
+            newCnt1 = parseInt(i) + 1;
+
+            $("#ListofPatientExercis_" + i + "__PatientExercises").val($("#ListofPatientExercis_" + newCnt1 + "__PatientExercises").val());
+            $("#ListofPatientExercis_" + i + "__PatientExercises_Id").val($("#ListofPatientExercis_" + newCnt1 + "__PatientExercises_Id").val());
+            $("#ListofPatientExercis_" + i + "__PTExam_Id").val($("#ListofPatientExercis_" + newCnt1 + "__PTExam_Id").val());
+        }
+
+        var newCnt = counterPatientExercis - 1;
+
+        $("#divPatientExercis_" + newCnt).remove();
+        counterPatientExercis--;
+
+    }
+
+</script>
+
+<script type="text/javascript">
+    $('#MostEffectedEveryDayActivity').addClass('applitextfield2');
+    __last = 9;
+
+    function fnValidate(pos) {
+        var ele = [];
+
+        if (pos == 1) {
+            ele = ["PatientGoals"];
+        }
+        else if (pos == 2) {
+            ele = ["PhysicalTherapyGoals"];
+        }
+        else if (pos == 3) {
+            ele = ["NoOfVisitsPerWeekNeeded"];
+        }
+        else if (pos == 4) {
+            ele = ["NoOfWeeksToAchieveGoal"];
+        }
+        else if (pos == 5) {
+            ele = ["TotalNoOfVisitNeeded"];
+        }
+        else if (pos == 7) {
+            ele = ["NoOfVisitsPerWeekNeeded"];
+        }
+        else if (pos == 8) {
+
+            ele = ["NoOfVisitsPerWeekNeeded"];
+
+
+        }
+        else if (pos == 10) {
+            ele = ["guarantees8"];
+        }
+        return ___validate(ele);
+    }
+
+    function fnNextToShow(pos) {
+        if (pos == 8) {
+            $('#TotalNoOfVisitNeeded').val($('#NoOfVisitsPerWeekNeeded').val() * $('#NoOfWeeksToAchieveGoal').val())
+            //alert($('#TotalNoOfVisitNeeded').val())
+        }
+
+        return pos + 1;
+    }
+    function fnTriggerAtEnd() {
+        if ($("#dvid_" + __last).is(':visible')) $('#dvid_subbutt').show();
+        else $('#dvid_subbutt').hide();
+    }
+</script>
+<script>
+    function fnShowDetailPTExam(id) {
+        var url = "@Url.Action("DetailFullPage", "PTExam", new { Area = "Patient" })" + "?id=" + id;
+        popupwindow(url, 'Pre Examination', "toolbar=no,scrollbars=yes,menubar=no,resizable=yes,status=no,width=800,height=1000,dependent=yes");
+    }
+</script>
+
+
+<script>
+
+    $(document).ready(function () {
+
+        $("#NoOfVisitsPerWeekNeeded").val(@ViewBag.NoOfVisitsPerWeekNeeded);
+        $("#NoOfWeeksToAchieveGoal").val(@ViewBag.NoOfWeeksToAchieveGoal);
+        $("#TotalNoOfVisitNeeded").val(@ViewBag.TotalNoOfVisitNeeded);
+
+        $("#NoOfVisitsPerWeekNeeded").keypress(function (e) {
+
+            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+
+                $("#errmsg").html("Please enter No. Of Visits Per Week Needed").show().fadeOut("slow");
+                return false;
+            }
+            else if (e.which == 48) {
+                //alert("Zero should not be allowed");
+                $("#errmsg1").html("Zero should not be allowed").show().fadeOut("slow");
+                return false;
+            }
+            
+        });
+        $("#NoOfWeeksToAchieveGoal").keypress(function (e) {
+
+            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+
+                $("#errmsg").html("Please enter No. Of Visits Per Week Needed").show().fadeOut("slow");
+                return false;
+            }
+            else if (e.which == 48) {
+                //alert("Zero should not be allowed");
+                $("#errmsg2").html("Zero should not be allowed").show().fadeOut("slow");
+                return false;
+            }
+        });
+    });
+</script>
+
+
+<script type="text/javascript">
+    //---- Check Zero onBlur -----//
+    function fn_ZeroCheck1() {
+        if ($("#NoOfWeeksToAchieveGoal").val() == 0) {
+            $("#divErr1").html("<span style='color:red;'>Zero not allowed</span>");
+            return false;
+        }
+        else {
+            $("#divErr1").html("");
+        }
+    }
+
+    function fn_ZeroCheck2() {
+        if ($("#NoOfWeeksToAchieveGoal").val() == 0) {
+            $("#divErr2").html("<span style='color:red;'>Zero not allowed</span>");
+            return false;
+        }
+        else {
+            $("#divErr2").html("");
+        }
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+

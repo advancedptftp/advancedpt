@@ -1,0 +1,1754 @@
+﻿@model DataLayer.Models.SpinomedIVTLSOFormDetail
+@{
+    Layout = null;
+}
+@using DataLayer;
+<script>
+    var zipcodes = "";
+    var zipcodesdesh = "";
+    var zip = "";
+    zip = '@Model.SpinomedIVTLSOForm.tblMPatient.ZipCode';
+</script>
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>myadvancedpt.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="favicon.png">
+
+    <!-- Bootstrap core CSS -->
+
+    <script src="~/Scripts/jquery.js"></script>
+    <script src="~/Scripts/jquery.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            alert(zip.toString().length);
+            var checklength = zip.toString().length;
+
+
+            var check2 = new Array();
+            var check3 = new Array();
+            //var allValid2 = true;
+            //var str2 = document.mainform.checkOK2.value;
+            for (i = 0; i < checklength; i++) {
+                ch1 = zip.charAt(i);
+                //for (j = 0; j < checkOK2.length; j++)
+                //    if (ch1 == checkOK2.charAt(j))
+                //        break;
+                //if (j == checkOK2.length) {
+                //    allValid2 = false;
+                //    break;
+                if (i < 5) {
+
+                    check2.push(+ch1);
+
+                }
+                else {
+                    check3.push(+ch1);
+                }
+
+                // alert(check2);
+                // alert(check2);
+                // }
+            }
+
+            var zipcodefinal = check2.concat(check3);
+            var zipsplit = zipcodefinal.splice(',');
+            for (i = 0; i < checklength; i++) {
+                if (i < 5) {
+                    zipcodes = zipcodes + zipsplit[i];
+                }
+                else {
+                    if (checklength > 4) {
+                        zipcodesdesh = zipcodesdesh + zipsplit[i];
+                    }
+
+                }
+
+            }
+            //alert(zipcodes + "-" + zipcodesdesh);
+            if (zipcodesdesh == "") {
+                $("#zipcodess").text(zipcodes);
+                $("#zipcodessdd").text(zipcodes);
+                $("#zipcodessddsss").text(zipcodes);
+            }
+            else {
+                $("#zipcodess").text(zipcodes + "-" + zipcodesdesh);
+                $("#zipcodessdd").text(zipcodes + "-" + zipcodesdesh);
+                $("#zipcodessddsss").text(zipcodes + "-" + zipcodesdesh);
+            }
+            //alert(zipcodes + "-" + zipcodesdesh);
+            //$("#zipcodess").text(zipcodes + "-" + zipcodesdesh);
+            //$("#zipcodessdd").text(zipcodes + "-" + zipcodesdesh);
+            //$("#zipcodessddsss").text(zipcodes + "-" + zipcodesdesh);
+
+        })
+
+    </script>
+</head>
+
+<body>
+
+
+    <div style="width:90%; margin:5px auto; padding:100px 10px; font-family:verdana; font-size:20px; color:#000;">
+
+
+        <div style="padding:0 0 17px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    @*<td style="text-align:center;">
+                            <img src="~/Images/advance-logo1.png" />
+                        </td>*@
+
+                    <td width="25%" style="text-align:center; padding-top:27px;">
+                        <span>
+                            @{
+                                var imgurl51 = "";
+                                if (ViewBag.AdvanceptLogo != null)
+                                {
+                                    imgurl51 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.AdvanceptLogo);
+                                }
+                            }
+                            <img src="@imgurl51" alt="Alternate Text" id="imgWitnessSignature" />
+                        </span>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td style="text-align:center;">
+                        <h2 style="font-size:30px; color:#1e1d1d;">BENEFICIARY CHECKLIST</h2>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+
+
+
+        <div style="padding:3px 0 10px 0;">
+            <table border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td valign="top" width="93%" style="padding-bottom:7px;">Patient Name:<span style="width:340px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:0px; ">@Model.SpinomedIVTLSOForm.tblMPatient.FirstName  @Model.SpinomedIVTLSOForm.tblMPatient.LastName</span></td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" width="93%" style="padding-bottom:7px;">Medicare Number:<span style="width:340px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:0px; ">@Model.MCPreApproval.PatientMCNo</span></td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+
+        </div>
+
+
+
+        <div style="padding:3px 0 10px 0;">
+            <table border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td valign="top" width="93%">
+                            <strong style="font-size:15px;  display:block;">STAFF PLEASE INITIAL ALL BELOW AND HAVE PATIENT SIGN AT THE BOTTOM:</strong>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div style="padding:60px 0 10px 0;">
+            <table border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td valign="top" width="93%" style="padding-bottom:0px;">
+                            <span>
+                                @{var imgurl41 = "";
+                                if (Model.Paperwork.TherapistSignature != null)
+                                {
+                                    imgurl41 = "data:image/png;base64," + Convert.ToBase64String(Model.Paperwork.TherapistSignature);
+                                }
+                                }
+                                <img src="@imgurl41" alt="Alternate Text" id="imgWitnessSignature" style="width: 200px; height: 50px; margin:0 10px 0 10px; display:inline-block; border-left:none; border-right:none; border-top:none;" />
+                            </span>  <span>Called Medicare to verify eligibility</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" width="93%" style="padding-bottom:0px;">
+                            <span>
+                                @{var imgurl42 = "";
+                                if (Model.Paperwork.TherapistSignature != null)
+                                {
+                                    imgurl42 = "data:image/png;base64," + Convert.ToBase64String(Model.Paperwork.TherapistSignature);
+                                }
+                                <img src="@imgurl42" alt="Alternate Text" id="imgWitnessSignature" style="width: 200px; height: 50px; margin: 0 10px 0 10px; display: inline-block;  border-left: none; border-right: none; border-top: none;" />
+                                }
+                            </span> <span>HIPAA privacy policy</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" width="93%" style="padding-bottom:0px;">
+                            <span>
+                                @{var imgurl43 = "";
+                                if (Model.Paperwork.TherapistSignature != null)
+                                {
+                                    imgurl43 = "data:image/png;base64," + Convert.ToBase64String(Model.Paperwork.TherapistSignature);
+                                }
+                                <img src="@imgurl43" alt="Alternate Text" id="imgWitnessSignature" style="width: 200px; height: 50px; margin: 0 10px 0 10px; display: inline-block;border-left: none; border-right: none; border-top: none; " />
+                                }
+                            </span>  <span >Equipment warranty policy</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" width="93%" style="padding-bottom:0px;">
+                            <span>
+                                @{var imgurl44 = "";
+                                if (Model.Paperwork.TherapistSignature != null)
+                                {
+                                    imgurl44 = "data:image/png;base64," + Convert.ToBase64String(Model.Paperwork.TherapistSignature);
+                                }
+                                <img src="@imgurl44" alt="Alternate Text" id="imgWitnessSignature" style="width: 200px; height: 50px; margin: 0 10px 0 10px; display: inline-block; border-left: none; border-right: none; border-top: none; " />
+                                }
+                            </span> <span > Protocol for resolving complaints</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" width="93%" style="padding-bottom:0px;">
+                            <span>
+                                @{var imgurl45 = "";
+                                if (Model.Paperwork.TherapistSignature != null)
+                                {
+                                    imgurl45 = "data:image/png;base64," + Convert.ToBase64String(Model.Paperwork.TherapistSignature);
+                                }
+                                <img src="@imgurl45" alt="Alternate Text" id="imgWitnessSignature" style="width: 200px; height: 50px; margin: 0 10px 0 10px; display: inline-block;  border-left: none; border-right: none; border-top: none; " />
+                                }
+                            </span>  <span > Supplier standards </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" width="93%" style="padding-bottom:0px;">
+                            <span>
+                                @{var imgurl46 = "";
+                                if (Model.Paperwork.TherapistSignature != null)
+                                {
+                                    imgurl46 = "data:image/png;base64," + Convert.ToBase64String(Model.Paperwork.TherapistSignature);
+                                }
+                                <img src="@imgurl46" alt="Alternate Text" id="imgWitnessSignature" style="width: 200px; height: 50px; margin: 0 10px 0 10px; display: inline-block; border-left: none; border-right: none; border-top: none; " />
+                                }
+                            </span>  <span> Assignment of benefits </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" width="93%" style="padding-bottom:0px;">
+                            <span>
+                                @{var imgurl47 = "";
+                                if (Model.Paperwork.TherapistSignature != null)
+                                {
+                                    imgurl47 = "data:image/png;base64," + Convert.ToBase64String(Model.Paperwork.TherapistSignature);
+                                }
+                                <img src="@imgurl47" alt="Alternate Text" id="imgWitnessSignature" style="width: 200px; height: 50px; margin: 0 10px 0 10px; display: inline-block; border-left: none; border-right: none; border-top: none; font-weight:bold; " />
+                                }
+                            </span>  <span > Delivery ticket </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" width="93%" style="padding-bottom:0px;">
+                            <span>
+                                @{var imgurl48 = "";
+                                if (Model.Paperwork.TherapistSignature != null)
+                                {
+                                    imgurl48 = "data:image/png;base64," + Convert.ToBase64String(Model.Paperwork.TherapistSignature);
+                                }
+                                <img src="@imgurl48" alt="Alternate Text" id="imgWitnessSignature" style="width: 200px; height: 50px; margin: 0 10px 0 10px; display: inline-block; border-left: none; border-right: none; border-top: none;  " />
+                                }
+                            </span>  <span >Instructed on use </span>
+                        </td>
+                    </tr>
+                    @*<tr>
+                            <td valign="top" width="93%" style="padding-bottom:2px;">
+
+                            </td>
+                        </tr>*@
+                </tbody>
+            </table>
+
+        </div>
+
+        <div style="padding:0 0 0px 0;">
+            <table width="100%" border="0">
+                <tbody>
+                    <tr>
+                        <td style="padding-right:10px;" width="67%">
+                            <div>
+                                I have received and understand the above information.
+                                @*style="padding:8px 0 8px 0;"*@
+                                @*Convert.ToBase64String(@Model.Paperwork.PatientSignature);*@
+                                @{var imgurl3 = "";
+                                if (Model.Paperwork.PatientSignature != null)
+                                {
+                                    imgurl3 = "data:image/png;base64," + Convert.ToBase64String(Model.Paperwork.PatientSignature);
+                                }
+                                }
+                                <img src="@imgurl3" alt="Alternate Text" id="imgWitnessSignature" style="width: 200px; height: 80px; " />
+                            </div>
+                            @*<div><img src="~/Images/advance-logo1.png" /></div>*@
+                            Patient's Signature
+                        </td>
+                        <td style="padding-right:10px; vertical-align:bottom;" width="33%" valign="top">
+                            <div style="border-bottom:1px solid #333; margin-bottom:20px; min-height:20px;">@Model.Paperwork.PatientSignatureDateTime.GetExactValue()</div>
+                            Date
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+
+        <div style="text-align: center; padding:450px 0 100px 0; color: #000"><strong>1202 SW 17th Street, #201-229, Ocala, FL  34471 </strong></div>
+
+
+        <div style="padding:25px 0 17px 0;">
+            <table width="100%" border="0">
+                <tbody>
+                    <tr>
+                        <td width="25%" style="text-align:center;">
+                            <span>
+                                @{
+                                    var imgurl52 = "";
+                                    if (ViewBag.AdvanceptLogo != null)
+                                    {
+                                        imgurl52 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.AdvanceptLogo);
+                                    }
+                                }
+                                <img src="@imgurl52" alt="Alternate Text" id="imgWitnessSignature" />
+                            </span>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;">
+                            Assignment of Benefits, Release of Information Authorization <br>
+                            and Insurance Coverage Disclosure
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div style="padding:3px 0 5px 0; font-size:18px; border-bottom:1px solid #000;">
+            <table width="100%" border="0">
+                <tbody>
+                    <tr>
+                        <td style="padding-bottom:0px;" width="93%" valign="top">Patient/Customer Name: <span style="width: 340px; margin: 0 5px 0 5px; display: inline-block; border-bottom: 1px solid #ccc; border-left: none; border-right: none; border-top: none; padding-bottom: 0px; ">@Model.SpinomedIVTLSOForm.tblMPatient.FirstName  @Model.SpinomedIVTLSOForm.tblMPatient.LastName</span></td>
+                    </tr>
+
+                    <tr>
+                        <td style="padding-bottom:0px;" width="93%" valign="top">Street Address: <span style="width: 440px; margin: 0 5px 0 5px; display: inline-block; border-bottom: 1px solid #ccc; border-left: none; border-right: none; border-top: none; padding-bottom: 0px; ">@Model.SpinomedIVTLSOForm.tblMPatient.AddressLine1</span></td>
+                    </tr>
+
+                    <tr>
+                        <td width="93%" valign="top">City: <span style="width:200px; margin:0 5px 0 5px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:5px; border-top:none; padding-bottom:0px; ">@Model.SpinomedIVTLSOForm.tblMPatient.City</span>State: <span style="width:90px; margin:0 5px 0 5px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:0px; ">@Model.SpinomedIVTLSOForm.tblMPatient.tblMState.StateName</span> Zip Code: <span style="width:120px; margin:0 5px 0 5px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:0px; " id="zipcodess"></span></td>
+                    </tr>
+
+                    <tr>
+                        <td style="padding-bottom:0px; padding-top:0px;" width="93%" valign="top">Social Security Number: <span style="width: 150px; margin: 0 5px 0 5px; display: inline-block; border-bottom: 1px solid #ccc; border-left: none; border-right: none; border-top: none; padding-bottom: 0px; ">@Model.SpinomedIVTLSOForm.tblMPatient.Social_Security</span></td>
+                    </tr>
+
+                    <tr>
+                        <td style="padding-bottom:0px; " width="93%" valign="top">Home Telephone Number: <span style="width: 150px; margin: 0 5px 0 5px; display: inline-block; border-bottom: 1px solid #ccc; border-left: none; border-right: none; border-top: none; padding-bottom: 0px; ">@Model.SpinomedIVTLSOForm.tblMPatient.Phone2</span> </td>
+                    </tr>
+
+                    <tr>
+                        <td style="padding-bottom:0px; " width="100%" valign="top">Other Telephone Number: <span style="width: 200px; margin: 0 5px 0 5px; display: inline-block; border-bottom: 1px solid #ccc; border-left: none; border-right: none; border-top: none; padding-bottom: 0px; ">@Model.SpinomedIVTLSOForm.tblMPatient.Phone3</span></td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+        <div style="font-size:17px">
+            <div style="padding:0px 0; color:#000; font-weight:bold;">
+                By signing and dating this form, I hereby grant authorization for the following to ADVANCED PHYSICAL THERAPY OF CENTRAL FLORIDA, INC., a medical service, equipment and supply provider and their agents assigns:
+            </div>
+
+            <div style="padding-left: 20px;"><p> a. To be granted and accept assignment of payments for Medicare, Medicaid, Medicare Supplemental or other medical insurance benefits for services, equipment and/or supplies furnished to me.</p></div>
+
+            <div style="padding-left: 20px;"><p> b. To submit claims or invoices to Medicare, Medicaid, or my other medical insurer(s), directly on my behalf, for services, equipment and/or supplies furnished to me.</></div>
+
+            <div style="padding-left: 20px;"><p> c. To release my medical information or other pertinent information to Medicare, Medicaid, Medicare Supplemental, or other insurer or their agent or assigns.</p></div>
+
+            <div style="padding-left: 20px;"><p> d. To request, receive, and maintain in their files, medical or other information necessary to process my orders, submit claims, receive payment and comply with applicable rules, guidelines, regulations, and laws governing the services, equipment and/or supplies furnished to me.</p></div>
+
+            <div style="padding-left: 20px;"><p> e. To contact me by telephone or mail regarding services, equipment and/or suppliers.</p></div>
+            <div style="padding-left: 20px;  border-bottom: 1px solid #000;"><p> f. To bill me directly for approved amounts not covered by Medicare, Medicaid, Medicare Supplemental or other medical insurance benefits.</p></div>
+        </div>
+        <div style="padding-bottom: 2px; border-top: 1px solid #000; "><p> This authorization/release form covers all services and supplies provided to me by ADVANCED PHYSICAL THERAPY OF CENTRAL FLORIDA, INC. including the following equipment:</p></div>
+
+        <div style="border-bottom:1px solid #000; padding-bottom:2px;">Spinomed IV TLSO
+</div>
+
+        <table width="100%" border="0" style="font-size:13px;">
+            <tbody>
+                <tr>
+                    <td style="padding-bottom:2px; padding-top:2px;" width="93%" valign="top">
+                        I have read, understand, and agree with the information on this authorization/release form.
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-right: 5px; margin: 0 10px 0 10px;" valign="top">
+                        <div style="padding: 2px 0 2px 0; border-bottom: 1px solid #333; margin-bottom: 5px; padding-bottom: 30px; width: 350px;">
+                            @{var imgurl4 = "";
+                            if (Model.Paperwork.PatientSignature != null)
+                            {
+                                imgurl4 = "data:image/png;base64," + Convert.ToBase64String(Model.Paperwork.PatientSignature);
+                            }
+                            }
+                            <img src="@imgurl4" alt="Alternate Text" id="imgWitnessSignature" style="width: 200px; height: 40px; border-bottom:none; " />
+                        </div>
+                        Patient/Customer Signature
+                    </td>
+                    <td style="padding-right: 10px; vertical-align: bottom; margin: 0 5px 0 5px; padding-bottom:30px; padding-top:60px;" width="400px" valign="bottom">
+                        <div style="border-bottom:1px solid #333; margin-bottom:8px;">@Model.Paperwork.PatientSignatureDateTime</div>
+                        Date Signed
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-right: 10px; margin: 0 10px 0 10px; padding-bottom: 30px; padding-top:30px; " valign="top">
+                        <div style=" border-bottom:1px solid #333; margin-bottom:5px;  width:400px;"></div>
+                        If other than Patient/ Customer *
+                    </td>
+                    <td style="padding-right: 10px; margin: 0 10px 0 10px; padding-bottom: 30px; padding-top: 40px; " valign="top">
+                        <div style=" border-bottom: 1px solid #333; margin-bottom: 5px; width: 400px;"></div>
+                        Date Signed
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-right: 10px; margin: 0 10px 0 10px; padding-bottom: 30px; " valign="top">
+                        <div style=" border-bottom: 1px solid #333; margin-bottom: 5px; width: 400px; ">@Model.SpinomedIVTLSOForm.tblMPatient.FirstName  @Model.SpinomedIVTLSOForm.tblMPatient.LastName</div>
+                        Print Name
+                    </td>
+                    <td style="padding-right: 10px; margin: 0 10px 0 10px; padding-bottom: 30px; " valign="top">
+                        <div style="padding: 0px 0px 0; border-bottom: 1px solid #333; margin-bottom: 5px; width: 400px;">@Model.SpinomedIVTLSOForm.tblMPatient.Phone2</div>
+                        Telephone Number
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-right: 10px; padding-bottom: 30px;" valign="top">
+                        <div style="padding:0px 0 0px 0; border-bottom:1px solid #333; margin-bottom:5px;  width:350px;">@Model.SpinomedIVTLSOForm.tblMPatient.AddressLine1</div>
+                        Street Address
+                    </td>
+                    <td style="padding-right: 10px; padding-bottom: 30px; " valign="top">
+                        <div style="padding: 0px 0 0px 0; border-bottom: 1px solid #333; margin-bottom: 5px; width: 400px; ">@Model.SpinomedIVTLSOForm.tblMPatient.City ,@Model.SpinomedIVTLSOForm.tblMPatient.tblMState.StateName ,<span style="width:120px; margin:0 5px 0 5px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:0px; " id="zipcodessddsss"></span></div>
+                        City, State, Zip Code
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        <table width="100%" border="0">
+            <tbody>
+                <tr>
+                    <td style="padding-top:0px;">* Relationship to Patient/Customer:</td>
+                </tr>
+                <tr>
+                    <td style="padding-bottom:0px;" width="93%" valign="top">
+                        <span style="width:80px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:7px; "></span>Authorized Caregiver
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-bottom:0px;" width="93%" valign="top">
+                        <span style="width:80px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:7px; "></span>Authorized Family Member
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-bottom:0px;" width="93%" valign="top">
+                        <span style="width:80px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:7px; "></span>Other, please describe:<span style="width:280px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:7px; "></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="text-align:center;  color:#000;padding-top:60px;"><strong>1202 SW 17th Street, #201-229, Ocala, FL  34471</strong></div>
+
+
+
+        <table>
+            <tr>
+                <td style="height:300px;"></td>
+            </tr>
+        </table>
+
+
+        <table width="100%" border="0">
+            <tbody>
+                <tr>
+                    <td width="25%" style="text-align:center;">
+                        <span>
+                            @{
+                                var imgurl53 = "";
+                                if (ViewBag.AdvanceptLogo != null)
+                                {
+                                    imgurl53 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.AdvanceptLogo);
+                                }
+                            }
+                            <img src="@imgurl53" alt="Alternate Text" id="imgWitnessSignature" />
+                        </span>
+                    </td>
+
+
+
+                </tr>
+                <tr>
+                    <td style="text-align:left; border-bottom:3px solid #000; padding-bottom:5px;">
+                        Advanced Physical Therapy of Central Florida, Inc. <br>5036 SE 110th Street<br>
+                        Belleview, FL 34420<br> Phone:352-693-3378 Fax:888-758-9645
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+
+        <table width="100%" border="0">
+            <tbody>
+
+
+
+                <tr>
+                    <td width="99%" valign="top" style="padding-top:20px ; padding-bottom:3px; ">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td width="12%">First Name: </td>
+                                <td width="22%"><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; border-right:none; border-top:none; padding-top:0px; padding-bottom:0px; ">@Model.SpinomedIVTLSOForm.tblMPatient.FirstName</div></td>
+                                <td width="8%">Middle: </td>
+                                <td width="25%"><div style="height: 30px; border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; "></div></td>
+                                <td width="5%">Last:</td>
+                                <td width="29%"><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; border-right:none; border-top:none; padding-top:0px; padding-bottom:0px; ">@Model.SpinomedIVTLSOForm.tblMPatient.LastName</div></td>
+                            </tr>
+                        </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td width="99%" valign="top" style="padding-bottom:0px;">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td width="7%">Address:</td>
+                                <td width="93%"><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; border-right:none; border-top:none; padding-top:0px; padding-bottom:0px; ">@Model.SpinomedIVTLSOForm.tblMPatient.AddressLine1</div></td>
+
+                            </tr>
+                        </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td width="99%" valign="top" style="padding-bottom:0px; ">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td width="5%">City: </td>
+                                <td width="28%"><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; border-right:none; border-top:none; padding-top:0px; padding-bottom:0px; margin-bottom:8px">@Model.SpinomedIVTLSOForm.tblMPatient.City</div></td>
+                                <td width="5%">State: </td>
+                                <td width="27%"><div style=" border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; margin-bottom: 8px; ">@Model.SpinomedIVTLSOForm.tblMPatient.tblMState.StateName</div></td>
+                                <td width="10%">Zip Code: </td>
+                                <td width="29%"><span style="width:120px; margin:0 5px 0 5px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none; padding-bottom:0px; " id="zipcodessdd"></span></td>
+                            </tr>
+                        </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td width="99%" valign="top" style="padding-bottom:8px; ">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+
+                                <td width="8%">Phone#:</td>
+                                <td width="22%"><div style="height: 30px; border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; margin-bottom: 8px; ">@Model.SpinomedIVTLSOForm.tblMPatient.Phone2</div></td>
+                                <td width="8%">Alt. Ph#:</td>
+                                <td width="45%"><div style="height: 30px; border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; margin-bottom: 8px; ">@Model.SpinomedIVTLSOForm.tblMPatient.Phone3</div></td>
+                            </tr>
+                        </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td width="99%" valign="top" style="padding-bottom:0px; ">
+                        <table width="100%%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td width="5%">Sex:</td>
+                                @if (Model.SpinomedIVTLSOForm.tblMPatient.Gender == "M")
+                                {
+
+                                    <td width="25%"><div style="height: 30px; border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; margin-bottom: 8px; ">Male</div></td>
+                                }
+                                else
+                                {
+
+                                    <td width="25%"><div style="height: 30px; border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; margin-bottom: 8px; ">Female</div></td>
+                                }
+
+                                <td width="5%">Height: </td>
+                                <td width="25%"><div style=" border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 23px; padding-bottom: 0px; margin-bottom: 8px;"></div></td>
+                                <td width="5%">Weight:</td>
+                                <td width="12%"><div style=" border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 23px; padding-bottom: 0px; margin-bottom: 8px; "></div></td>
+                                <td width="7%">lbs.:</td>
+                            </tr>
+                        </table>
+
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td width="99%" valign="top" style="padding-bottom:0px; ">
+                        <table width="100%%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+
+                                <td width="5%">
+                                    Date of Birth:
+                                </td>
+                                <td width="12%"><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; border-right:none; border-top:none; padding-top:0px; padding-bottom:0px; margin-bottom:8px;">@Model.SpinomedIVTLSOForm.tblMPatient.DOB.GetExactValue()</div></td>
+
+                                <td width="6%">Social Security #:</td>
+                                <td width="12%"><div style=" border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; margin-bottom: 8px;">@Model.SpinomedIVTLSOForm.tblMPatient.Social_Security</div></td>
+
+                            </tr>
+                        </table>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td width="99%" valign="top" style="padding-bottom:0px; ">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+
+                                <td width="5%">Medicare#:</td>
+                                <td width="27%"><div style=" border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 23px; padding-bottom: 0px; margin-bottom: 8px; "></div></td>
+                                <td width="5%">Medicaid#:</td>
+                                <td width="27%"><div style=" border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 23px; padding-bottom: 0px; margin-bottom: 8px; "></div></td>
+                            </tr>
+                        </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td width="99%" valign="top" style="padding-bottom:0px;">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td width="30%">Commercial / Supp. Insurance:</td>
+                                <td width="70%"><div style="height: 30px; border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; "></div></td>
+
+                            </tr>
+                        </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td width="99%" valign="top" style="padding-bottom:0px; ">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+
+                                <td width="7%">Policy#:</td>
+                                <td width="23%"><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; border-right:none; border-top:none; padding-top:23px; padding-bottom:0px; "></div></td>
+                                <td width="7%">Group#:</td>
+                                <td width="43%"><div style="height: 30px; border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; "></div></td>
+                            </tr>
+                        </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td width="99%" valign="top" style="padding-bottom:0px;">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td width="7%">Address:</td>
+                                <td width="93%"><div style="height: 30px; border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; "></div></td>
+
+                            </tr>
+                        </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td width="99%" valign="top" style="padding-bottom:0px; ">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td width="5%">City: </td>
+                                <td width="30%"><div style="height: 30px; border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; "></div></td>
+                                <td width="5%">State: </td>
+                                <td width="27%"><div style="height: 30px; border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; "></div></td>
+                                <td width="5%">Zip: </td>
+                                <td width="30%"><div style="height: 30px; border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; "></div></td>
+                            </tr>
+                        </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td width="99%" valign="top" style="padding-bottom:0px;">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td width="8%">Phone#:</td>
+                                <td width="92%"><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; border-right:none; border-top:none; padding-top:23px; padding-bottom:0px; "></div></td>
+
+                            </tr>
+                        </table>
+
+
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td width="99%" valign="top" style="padding-bottom:30px;">
+
+                        @*<table width="48%" border="0" cellspacing="0" cellpadding="0" style="float:left;">
+                    <tr>
+                        <td colspan="2" style="padding-bottom:7px; text-align:center">Diagnosis </td>
+                    </tr>
+                    <tr>
+                        <td width="6%">1. </td>
+                        <td width="94%"><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; margin-bottom:7px; border-right:none; border-top:none; padding-top:10px; padding-bottom:7px; "></div></td>
+                    </tr>
+                    <tr>
+                        <td>2. </td>
+                        <td width="94%"><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; margin-bottom:7px; border-right:none; border-top:none; padding-top:10px; padding-bottom:7px; "></div></td>
+
+                    </tr>
+                    <tr>
+                        <td>3. </td>
+                        <td width="94%"><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; margin-bottom:7px; border-right:none; border-top:none; padding-top:10px; padding-bottom:7px; "></div></td>
+
+                    </tr>
+                    <tr>
+                        <td>4. </td>
+                        <td width="94%"><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; margin-bottom:7px; border-right:none; border-top:none; padding-top:10px; padding-bottom:7px; "></div></td>
+
+                    </tr>
+                    <tr>
+                        <td>5. </td>
+                        <td width="94%"><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; margin-bottom:7px; border-right:none; border-top:none; padding-top:10px; padding-bottom:7px; "></div></td>
+
+                    </tr>
+                </table>*@
+                        <table width="100%" border="0">
+                            <tr>
+                                <td width="69%" style="padding-right:15px;">
+                                    Diagnosis<br />
+                                    <div style="padding:7px 0 7px 0; margin-bottom:0px; min-height:18px;">
+                                        <div id="dvDiagnosis">
+                                            <script>
+                                                var counter = 0;
+                                            </script>
+                                            @for (int i = 0; i < Model.DMEDiognosis.Count; i++)
+                                            {
+                                                if (i == 0)
+                                                {
+
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-5 form-group" style=" border-bottom: 1px solid #333; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; ">
+
+                                                            1. @Model.DMEDiognosis[i].Diagnosis_Desc
+                                                        </div>
+
+
+                                                    </div>
+                                                }
+                                                else if (i == 1)
+                                                {
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-5 form-group" style=" border-bottom: 1px solid #333; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; ">
+
+                                                            2. @Model.DMEDiognosis[i].Diagnosis_Desc
+                                                        </div>
+
+
+                                                    </div>
+                                                }
+                                                else if (i == 2)
+                                                {
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-5 form-group" style=" border-bottom: 1px solid #333; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; ">
+
+                                                            3. @Model.DMEDiognosis[i].Diagnosis_Desc
+                                                        </div>
+
+
+                                                    </div>
+                                                }
+                                                else if (i == 3)
+                                                {
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-5 form-group" style=" border-bottom: 1px solid #333; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; ">
+
+                                                            4. @Model.DMEDiognosis[i].Diagnosis_Desc
+                                                        </div>
+
+
+                                                    </div>
+                                                }
+                                                else if (i == 4)
+                                                {
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-5 form-group" style=" border-bottom: 1px solid #333; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; ">
+
+                                                            5. @Model.DMEDiognosis[i].Diagnosis_Desc
+                                                        </div>
+
+
+                                                    </div>
+                                                }
+                                                else if (i == 5)
+                                                {
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-5 form-group" style=" border-bottom: 1px solid #333; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; ">
+
+                                                            6. @Model.DMEDiognosis[i].Diagnosis_Desc
+                                                        </div>
+
+
+                                                    </div>
+                                                }
+                                                else if (i == 6)
+                                                {
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-5 form-group" style=" border-bottom: 1px solid #333; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; ">
+
+                                                            7. @Model.DMEDiognosis[i].Diagnosis_Desc
+                                                        </div>
+
+
+                                                    </div>
+                                                }
+                                                else if (i == 7)
+                                                {
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-5 form-group" style=" border-bottom: 1px solid #333; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; ">
+
+                                                            8. @Model.DMEDiognosis[i].Diagnosis_Desc
+                                                        </div>
+
+
+                                                    </div>
+                                                }
+                                                else if (i == 8)
+                                                {
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-5 form-group" style=" border-bottom: 1px solid #333; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; ">
+
+                                                            9. @Model.DMEDiognosis[i].Diagnosis_Desc
+                                                        </div>
+
+
+                                                    </div>
+                                                }
+                                                else if (i == 9)
+                                                {
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-md-5 form-group" style=" border-bottom: 1px solid #333; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; ">
+
+                                                            10. @Model.DMEDiognosis[i].Diagnosis_Desc
+                                                        </div>
+
+
+                                                    </div>
+                                                }
+                                                <script>
+                                                    counter += 1;
+                                                </script>
+                                            }
+
+                                        </div>
+                                    </div>
+                                </td>
+                                <td width="31%">
+                                    ICD-10 Code<br>
+                                    <div style="padding:7px 0 7px 0; margin-bottom:0px; min-height:18px;">
+                                        @*<div style="padding:7px 0 7px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:18px;">*@
+                                        <div id="dvDiagnosis">
+                                            <script>
+                                                var counter = 0;
+                                            </script>
+                                            @for (int i = 0; i < Model.DMEDiognosis.Count; i++)
+                                            {
+                                                if (i == 0)
+                                                {
+                                                    <div class="row">
+
+                                                        <div class="col-sm-4 col-md-5 form-group" style=" border-bottom: 1px solid #333; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; ">
+
+                                                            @Model.DMEDiognosis[i].ICD10Code
+                                                        </div>
+
+                                                    </div>
+                                                }
+                                                else if (i == 1)
+                                                {
+                                                    <div class="row">
+
+                                                        <div class="col-sm-4 col-md-5 form-group" style=" border-bottom: 1px solid #333; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; ">
+
+                                                            @Model.DMEDiognosis[i].ICD10Code
+                                                        </div>
+
+                                                    </div>
+                                                }
+                                                if (i == 2)
+                                                {
+                                                    <div class="row">
+
+                                                        <div class="col-sm-4 col-md-5 form-group" style=" border-bottom: 1px solid #333; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; ">
+
+                                                            @Model.DMEDiognosis[i].ICD10Code
+                                                        </div>
+
+                                                    </div>
+                                                }
+                                                if (i == 3)
+                                                {
+                                                    <div class="row">
+
+                                                        <div class="col-sm-4 col-md-5 form-group" style=" border-bottom: 1px solid #333; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; ">
+
+                                                            @Model.DMEDiognosis[i].ICD10Code
+                                                        </div>
+
+                                                    </div>
+                                                }
+                                                if (i == 4)
+                                                {
+                                                    <div class="row">
+
+                                                        <div class="col-sm-4 col-md-5 form-group" style=" border-bottom: 1px solid #333; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; ">
+
+                                                            @Model.DMEDiognosis[i].ICD10Code
+                                                        </div>
+
+                                                    </div>
+                                                }
+                                                if (i == 5)
+                                                {
+                                                    <div class="row">
+
+                                                        <div class="col-sm-4 col-md-5 form-group" style=" border-bottom: 1px solid #333; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; ">
+
+                                                            @Model.DMEDiognosis[i].ICD10Code
+                                                        </div>
+
+                                                    </div>
+                                                }
+                                                if (i == 6)
+                                                {
+                                                    <div class="row">
+
+                                                        <div class="col-sm-4 col-md-5 form-group" style=" border-bottom: 1px solid #333; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; ">
+
+                                                            @Model.DMEDiognosis[i].ICD10Code
+                                                        </div>
+
+                                                    </div>
+                                                }
+                                                if (i == 7)
+                                                {
+                                                    <div class="row">
+
+                                                        <div class="col-sm-4 col-md-5 form-group" style=" border-bottom: 1px solid #333; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; ">
+
+                                                            @Model.DMEDiognosis[i].ICD10Code
+                                                        </div>
+
+                                                    </div>
+                                                }
+                                                if (i == 8)
+                                                {
+                                                    <div class="row">
+
+                                                        <div class="col-sm-4 col-md-5 form-group" style=" border-bottom: 1px solid #333; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; ">
+
+                                                            @Model.DMEDiognosis[i].ICD10Code
+                                                        </div>
+
+                                                    </div>
+                                                }
+                                                if (i == 9)
+                                                {
+                                                    <div class="row">
+
+                                                        <div class="col-sm-4 col-md-5 form-group" style=" border-bottom: 1px solid #333; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; ">
+
+                                                            @Model.DMEDiognosis[i].ICD10Code
+                                                        </div>
+
+                                                    </div>
+                                                }
+                                                <script>
+                                                    counter += 1;
+                                                </script>
+                                            }
+
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        @*<table width="50%%" border="0" cellspacing="0" cellpadding="0" style="float:left;">
+                    <tr>
+                        <td colspan="2" style="padding-bottom:7px; text-align:center">Codes </td>
+                    </tr>
+                    <tr>
+                    <tr>
+                        <td width="5%">&nbsp;</td>
+                        <td width="95%"><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; margin-bottom:7px; border-right:none; border-top:none; padding-top:10px; padding-bottom:7px; "></div></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td width="95%"><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; margin-bottom:7px; border-right:none; border-top:none; padding-top:10px; padding-bottom:7px; "></div></td>
+
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td width="95%"><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; margin-bottom:7px; border-right:none; border-top:none; padding-top:10px; padding-bottom:7px; "></div></td>
+
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td width="95%"><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; margin-bottom:7px; border-right:none; border-top:none; padding-top:10px; padding-bottom:7px; "></div></td>
+
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td width="95%"><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; margin-bottom:7px; border-right:none; border-top:none; padding-top:10px; padding-bottom:7px; "></div></td>
+
+                    </tr>
+                </table>*@
+
+                    </td>
+                </tr>
+                @*</tr>*@
+                <tr>
+                    <td width="99%" valign="top" style="padding-bottom:0px; ">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+
+                                <td width="5%">M.D.</td>
+                                <td width="47%"><div style="height: 30px; border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; "></div></td>
+                                <td width="5%">Phone:</td>
+                                <td width="43%"><div style="height: 30px; border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; "></div></td>
+                            </tr>
+                        </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td width="99%" valign="top" style="padding-bottom:0px;">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td width="7%">Address: </td>
+                                <td width="93%"><div style="height: 30px; border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; "></div></td>
+
+                            </tr>
+                        </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td width="99%" valign="top" style="padding-bottom:0px; ">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td width="5%">City:</td>
+                                <td width="30%"><div style="height: 30px; border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; "></div></td>
+                                <td width="5%">State:</td>
+                                <td width="28%"><div style="height: 30px; border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; "></div></td>
+                                <td width="5%">Zip:</td>
+                                <td width="30%"><div style="height: 30px; border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; "></div></td>
+                            </tr>
+                        </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td width="99%" valign="top" style="padding-bottom:0px; ">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+
+                                <td width="5%">UPIN:</td>
+                                <td width="47%"><div style="height: 30px; border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; "></div></td>
+                                <td width="5%">NPI: </td>
+                                <td width="46%"><div style="height: 30px; border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; border-right: none; border-top: none; padding-top: 0px; padding-bottom: 0px; "></div></td>
+                            </tr>
+                        </table>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td width="99%" valign="top" style="padding-bottom:0px;padding-top:30px; ">
+                        <table width="100%%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td style="padding-bottom:20px;">
+                                    <table width="100%%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td><strong>Equipment Delivered (including Description)</strong></td>
+                                            <td>
+                                                <table>
+                                                    <tr>
+                                                        <td><strong>HCPCS Code +</strong></td>
+                                                        <td><strong>Modifier</strong></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>L0456</td>
+                                                        <td>Null</td>
+                                                    </tr>
+                                                </table>
+
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table width="100%%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>Qty.</td>
+                                            <td>Manuf.</td>
+                                            <td>Model</td>
+                                            <td>Serial#</td>
+                                            <td>Size</td>
+                                        </tr>
+                                        <tr>
+                                            <td><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; margin-bottom:7px; border-right:none; border-top:none; padding-top:10px; padding-bottom:7px; min-height:20px; ">@Model.tblTItemDetails.Item_Qty</div></td>
+
+                                            <td><div style=" border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; margin-bottom: 7px; border-right: none; border-top: none; padding-top: 10px; padding-bottom: 7px; min-height: 20px;">Medi USA</div></td>
+
+                                            <td><div style=" border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; margin-bottom: 7px; border-right: none; border-top: none; padding-top: 10px; padding-bottom: 7px; min-height: 20px;">Spinomed IV TLSO</div></td>
+                                            <td><div style=" border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; margin-bottom: 7px; border-right: none; border-top: none; padding-top: 10px; padding-bottom: 7px; min-height: 20px;">N/A</div></td>
+                                            @if (Model.SpinomedIVTLSOForm.TLSOFittingSize_Id == 1)
+                                            {
+                                                    <td>
+                                                        <div style=" border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; margin-bottom: 7px; border-right: none; border-top: none; padding-top: 10px; padding-bottom: 7px; min-height: 20px;">
+                                                            X-Small
+                                                        </div>
+                                                    </td>
+                                            }
+                                            else if (Model.SpinomedIVTLSOForm.TLSOFittingSize_Id == 2)
+                                            {
+                                                    <td><div style=" border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; margin-bottom: 7px; border-right: none; border-top: none; padding-top: 10px; padding-bottom: 7px; min-height: 20px;">Small</div></td>
+                                            }
+                                            else if (Model.SpinomedIVTLSOForm.TLSOFittingSize_Id == 3)
+                                            {
+                                                    <td><div style=" border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; margin-bottom: 7px; border-right: none; border-top: none; padding-top: 10px; padding-bottom: 7px; min-height: 20px;">Medium</div></td>
+                                            }
+                                            else if (Model.SpinomedIVTLSOForm.TLSOFittingSize_Id == 4)
+                                            {
+                                                    <td><div style=" border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; margin-bottom: 7px; border-right: none; border-top: none; padding-top: 10px; padding-bottom: 7px; min-height: 20px;">Large</div></td>
+                                            }
+                                            else if (Model.SpinomedIVTLSOForm.TLSOFittingSize_Id == 5)
+                                            {
+                                                    <td><div style=" border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; margin-bottom: 7px; border-right: none; border-top: none; padding-top: 10px; padding-bottom: 7px; min-height: 20px;">X - Large</div></td>
+                                            }
+                                        </tr>
+                                        <tr>
+                                            <td><div style=" border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; margin-bottom: 7px; border-right: none; border-top: none; padding-top: 10px; padding-bottom: 7px; min-height: 20px; "></div></td>
+                                            <td><div style=" border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; margin-bottom: 7px; border-right: none; border-top: none; padding-top: 10px; padding-bottom: 7px; min-height: 20px;"></div></td>
+                                            <td><div style=" border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; margin-bottom: 7px; border-right: none; border-top: none; padding-top: 10px; padding-bottom: 7px; min-height: 20px;"></div></td>
+                                            <td><div style=" border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; margin-bottom: 7px; border-right: none; border-top: none; padding-top: 10px; padding-bottom: 7px; min-height: 20px;"></div></td>
+                                            <td><div style=" border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; margin-bottom: 7px; border-right: none; border-top: none; padding-top: 10px; padding-bottom: 7px; min-height: 20px;"></div></td>
+                                        </tr>
+                                        <tr>
+                                            <td><div style=" border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; margin-bottom: 7px; border-right: none; border-top: none; padding-top: 10px; padding-bottom: 7px; min-height: 20px;"></div></td>
+                                            <td><div style=" border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; margin-bottom: 7px; border-right: none; border-top: none; padding-top: 10px; padding-bottom: 7px; min-height: 20px;"></div></td>
+                                            <td><div style=" border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; margin-bottom: 7px; border-right: none; border-top: none; padding-top: 10px; padding-bottom: 7px; min-height: 20px;"></div></td>
+                                            <td><div style=" border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; margin-bottom: 7px; border-right: none; border-top: none; padding-top: 10px; padding-bottom: 7px; min-height: 20px;"></div></td>
+                                            <td><div style=" border-bottom: 1px solid #ccc; margin-right: 5px; border-left: none; margin-bottom: 7px; border-right: none; border-top: none; padding-top: 10px; padding-bottom: 7px; min-height: 20px;"></div></td>
+                                        </tr>
+                                        <tr>
+                                            <td><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; margin-bottom:7px; border-right:none; border-top:none; padding-top:10px; padding-bottom:7px; "></div></td>
+                                            <td><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; margin-bottom:7px; border-right:none; border-top:none; padding-top:10px; padding-bottom:7px; "></div></td>
+                                            <td><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; margin-bottom:7px; border-right:none; border-top:none; padding-top:10px; padding-bottom:7px; "></div></td>
+                                            <td><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; margin-bottom:7px; border-right:none; border-top:none; padding-top:10px; padding-bottom:7px; "></div></td>
+                                            <td><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; margin-bottom:7px; border-right:none; border-top:none; padding-top:10px; padding-bottom:7px; "></div></td>
+                                        </tr>
+                                        <tr>
+                                            <td><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; margin-bottom:7px; border-right:none; border-top:none; padding-top:10px; padding-bottom:7px; "></div></td>
+                                            <td><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; margin-bottom:7px; border-right:none; border-top:none; padding-top:10px; padding-bottom:7px; "></div></td>
+                                            <td><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; margin-bottom:7px; border-right:none; border-top:none; padding-top:10px; padding-bottom:7px; "></div></td>
+                                            <td><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; margin-bottom:7px; border-right:none; border-top:none; padding-top:10px; padding-bottom:7px; "></div></td>
+                                            <td><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; margin-bottom:7px; border-right:none; border-top:none; padding-top:10px; padding-bottom:7px; "></div></td>
+                                        </tr>
+                                        <tr>
+                                            <td><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; margin-bottom:7px; border-right:none; border-top:none; padding-top:10px; padding-bottom:7px; "></div></td>
+                                            <td><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; margin-bottom:7px; border-right:none; border-top:none; padding-top:10px; padding-bottom:7px; "></div></td>
+                                            <td><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; margin-bottom:7px; border-right:none; border-top:none; padding-top:10px; padding-bottom:7px; "></div></td>
+                                            <td><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; margin-bottom:7px; border-right:none; border-top:none; padding-top:10px; padding-bottom:7px; "></div></td>
+                                            <td><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; margin-bottom:7px; border-right:none; border-top:none; padding-top:10px; padding-bottom:7px; "></div></td>
+                                        </tr>
+                                    </table>
+
+                                </td>
+
+                            </tr>
+                        </table>
+
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td width="99%" valign="top" style="padding-bottom:20px; ">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+
+                                <td width="13%">Received By: </td>
+                                <td width="36%">
+                                    <div style=" margin-right:5px; border-left:none; border-right:none; border-top:none; padding-top:6px; padding-bottom:7px; ">
+                                        @{var imgurl33 = "";
+                                          if (Model.Paperwork.PatientSignature != null)
+                                          {
+                                              imgurl33 = "data:image/png;base64," + Convert.ToBase64String(Model.Paperwork.PatientSignature);
+                                          }
+                                        }
+                                        <img src="@imgurl33" alt="Alternate Text" id="imgWitnessSignature" style="width: 200px; height: 80px; " />
+                                    </div>
+                                </td>
+                                <td width="6%">Date: </td>
+                                <td width="45%"><div style=" border-bottom:1px solid #ccc; margin-right:5px; border-left:none; border-right:none; border-top:none; padding-top:6px; padding-bottom:7px; ">@Model.Paperwork.PatientSignatureDateTime</div></td>
+                            </tr>
+                        </table>
+
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="text-align: center; padding: 130px 0 25px 0; color: #000"><strong>1202 SW 17th Street, #201-229, Ocala, FL  34471</strong></div>
+
+
+
+        <table>
+            <tr>
+                <td style="height:100px;"></td>
+            </tr>
+        </table>
+
+
+        <div style="font-size:17px;">
+            <table width="100%" border="0">
+                <tbody>
+
+                    <tr>
+                        <td style="text-align:center; font-size:21px; padding-bottom:10px;">
+                            Advanced Physical Therapy of Central Florida, Inc.<br>
+                            <strong>Statement of Privacy Notice</strong><br>
+                            <p style="font-size:14px; margin:0; font-style:italic;">Effective June 1, 2003</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-bottom:4px; padding-left:40px; padding-right:40px;">THIS NOTICE DESCRIBES HOW MEDICAL INFORMATION ABOUT YOU MAY BE USED AND DISCLOSED AND HOW YOU CAN GET ACCESS TO THIS INFORMATION. PLEASE REVIEW IT CAREFULLY.</td>
+                    </tr>
+                    <tr>
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td>
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td style="width:50%;">
+                                                <p style="padding-bottom:8px;margin:0;">We may disclose your health care information to other healthcare professionals within our practice for the purpose of treatment, payment or healthcare operations.</p>
+
+                                                <p style="padding-bottom: 8px; margin: 0;">We may disclose your health information to your insurance provider for the purpose of payment or health care operations.</p>
+
+                                                <p style="padding-bottom: 8px; margin: 0;">We may disclose your health information as necessary to comply with State Workers' Compensation Laws.</p>
+
+                                                <p style="padding-bottom: 8px; margin: 0;">We may disclose your health information to notify or assist in notifying a family member, or another person responsible for your care about your medical condition or in the event of an emergency or of your death.</p>
+
+                                                <p style="padding-bottom: 8px; margin: 0;">As required by law, we may disclose your health information to public health authorities for purposes related to: preventing or controlling disease, injury or disability, reporting child abuse or neglect, reporting domestic violence, reporting to the Food and Drug Administration problems with products and reactions to medications, and reporting disease or infection exposure.</p>
+
+                                                <p style="padding-bottom: 8px; margin: 0;">We may disclose your health information in the course of any administrative or judicial proceeding.</p>
+
+                                                <p style="padding-bottom: 8px; margin: 0;">We may disclose your health information to a law enforcement official for purposes such as identifying or locating a suspect, fugitive, material witness or missing person, complying with a court order or subpoena, and other law enforcement purposes.</p>
+
+                                                <p style="padding-bottom: 8px; margin: 0;">We may disclose your health information to coroners or medical examiners.</p>
+
+                                                <p style="padding-bottom: 8px; margin: 0;">We may disclose your health information to organizations involved in procuring, banking, or transplanting organs and tissues.</p>
+
+                                                <p style="padding-bottom: 8px; margin: 0;">We may disclose your health information to researchers conducting research that has been approved by an Institutional Review Board.</p>
+
+                                                <p style="padding-bottom: 8px; margin: 0;">It may be necessary to disclose your health information to appropriate persons in order to prevent or lessen a serious and imminent threat to the health or safety of a particular person or to the general public.</p>
+
+                                                <p style="padding-bottom: 8px; margin: 0;">We may disclose your health information for military, national security, prisoner and government benefits purposes.</p>
+
+                                                <p style="padding-bottom: 8px; margin: 0;">We may leave a message on an automated answering device or person answering the phone for the purposes of scheduling appointments. No personal health information will be disclosed during this recording or message other than the date and time of your scheduled appointment along with a request to call our office if you need to cancel or reschedule your appointment."</p>
+
+                                                <p style="padding-bottom:8px;margin:0;">We may contact you by phone, mail, or email. "It is our practice to participate in charitable and marketing events to raise awareness, food donations, gifts, money, etc. During these times, we may send you a letter, post card, invitation or call your home to invite you to participate in the charitable activity.</p>
+
+
+                                                <p style="padding-bottom:0px;margin:0;">In the event that we are sold or merged with another organization, your health information/record will become the property of the new owner.</p>
+
+                                                <ul>
+                                                    <li style="padding-left: 8px; padding-top: 2px; margin: 0; padding-bottom: 8px; list-style-type:disc;">
+
+
+                                                        You have the right to request restrictions on certain uses and disclosures of your health information. Please be advised, however, that we are not required to agree to the restriction that you requested.
+                                                    </li>
+
+                                                    <li style="padding-left: 8px; padding-top: 2px; margin: 0; padding-bottom: 8px; list-style-type:disc;">
+                                                        You have the right to have your health information received
+                                                        or communicated through an alternative method or sent to an alternative location other than the usual method of communication or delivery, upon your request.
+                                                    </li>
+
+
+                                                </ul>
+                                            </td>
+
+                                            <td valign="top" style="width:50%; padding-left:25px;">
+
+
+                                                <ul>
+                                                    <li style="padding-left: 8px; padding-top: 2px; margin: 0; padding-bottom: 8px; list-style-type:disc;">
+                                                        You have the right to inspect and copy your health
+                                                        information.
+                                                    </li>
+                                                    <li style="padding-left: 8px; padding-top: 2px; margin: 0; padding-bottom: 8px; list-style-type:disc;">
+                                                        You have a right to request that we amend your protected
+                                                        health information. Please be advised, however, that we are not required to agree to amend your protected health information. If your request to amend your health information has been denied, you will be provided with an explanation of our denial reason(s) and information about how you can disagree with the denial.
+                                                    </li>
+
+                                                    <li style="padding-left: 8px; padding-top: 2px; margin: 0; padding-bottom: 8px; list-style-type:disc;">
+                                                        You have a right to receive an accounting of disclosures of
+                                                        your protected health information made by us.
+                                                    </li>
+
+                                                    <li style="padding-left: 8px; padding-top: 2px; margin: 0; padding-bottom: 8px; list-style-type:disc;"> You have a right to a paper copy of this Notice of Privacy Practices at any time upon request.</li>
+                                                </ul>
+
+                                                <p style="padding-bottom:8px;margin:0;"> We reserve the right to amend this Notice of Privacy Practices at any time in the future, and will make the new provisions effective for all information that it maintains. Until such amendment is made, we are required by law to comply with this Notice.</p>
+
+                                                <p style="padding-bottom:8px;margin:0;"> We are required by law to maintain the privacy of your health information and to provide you with notice of its legal duties and privacy practices with respect to your health information. If you have questions about any part of this notice or if you want more information about your privacy rights, please contact us by calling this office at (352) 693-3378, EXT 5. If our Privacy Officer is not available, you may make an appointment for a personal conference in person or by telephone within 2 working days.</p>
+
+                                                <p style="padding-bottom:12px;margin:0;"> Complaints about your Privacy rights, or how we have handled your health information should be directed to our Privacy Officer by calling this office at (352) 693-3378, EXT 5. If our Privacy Officer is not available, you may make an appointment for a personal conference in person or by telephone within 2 working days.</p>
+
+                                                <p style="padding-bottom:8px;margin:0;"> If you are not satisfied with the manner in which this office handles your complaint, you may submit a formal complaint to:
+                                                <p style="padding-left:40px; text-align:left">
+                                                    DHHS, Office of Civil Rights<br>
+                                                    200 Independence Avenue, S.W.<br>
+                                                    Room 509F HHH Building<br>
+                                                    Washington, DC 20201
+                                                </p>
+                                                </p>
+
+                                                <p style="padding-bottom:3px;margin:0;"> I have read the Privacy Notice and understand my rights contained in the notice.</p>
+
+                                                <p style="padding-bottom:30px;margin:0;"> By way of my signature, I provide Advanced Physical Therapy of Central Florida, Inc. with my authorization and consent to use and disclosed my protected health care information for the purposes of treatment, payment and health care operations as described in the Privacy Notice</p>
+
+                                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                    <tr>
+                                                        <td><div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px; width:350px;">@Model.SpinomedIVTLSOForm.tblMPatient.FirstName @Model.SpinomedIVTLSOForm.tblMPatient.LastName</div>       Patient's Name (print)</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px; ">
+                                                                @{var imgurl6 = "";
+                                                                  if (Model.Paperwork.PatientSignature != null)
+                                                                  {
+                                                                      imgurl6 = "data:image/png;base64," + Convert.ToBase64String(Model.Paperwork.PatientSignature);
+                                                                  }
+                                                                }
+                                                                <img src="@imgurl6" alt="Alternate Text" id="imgWitnessSignature" style="width: 200px; height: 40px; " />
+                                                                @Model.Paperwork.PatientSignatureDateTime
+                                                            </div> <table><tr><td width="80%">Patient's Signature </td><td>&nbsp;</td><td width="20%">Date</td></tr></table>
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <div style="padding:5px 0 4px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:0px; ">
+                                                                @{var imgurl50 = "";
+                                                                  if (Model.Paperwork.TherapistSignature != null)
+                                                                  {
+                                                                      imgurl50 = "data:image/png;base64," + Convert.ToBase64String(Model.Paperwork.TherapistSignature);
+                                                                  }
+                                                                }
+                                                                <img src="@imgurl50" alt="Alternate Text" id="imgWitnessSignature" style="width: 200px; height: 40px; border-bottom:none; " />
+                                                                @Model.Paperwork.TherapistSignatureDatetime
+                                                            </div> <table><tr><td width="80%">Authorized Facility Signature </td><td>&nbsp;</td><td width="20%">Date</td></tr></table>
+                                                        </td>
+
+                                                    </tr>
+                                                </table>
+
+                                            </td>
+                                        </tr>
+
+                                    </table>
+
+                                </td>
+
+                            </tr>
+                        </table>
+
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <table>
+            <tr>
+                <td style="height:80px;"></td>
+            </tr>
+        </table>
+
+        @*<div style="padding: 40px 0; font-size: 17px; ">
+            <table width="100%" border="0">
+                <tbody>
+
+                    <tr>
+                        <td style="text-align:center; font-size:21px; padding-bottom:10px;">
+                            Advanced Physical Therapy of Central Florida, Inc.<br>
+                            <strong>Statement of Privacy Notice</strong><br>
+                            <p style="font-size:14px; margin:0; font-style:italic;">Effective June 1, 2003</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-bottom:4px; padding-left:40px; padding-right:40px;">THIS NOTICE DESCRIBES HOW MEDICAL INFORMATION ABOUT YOU MAY BE USED AND DISCLOSED AND HOW YOU CAN GET ACCESS TO THIS INFORMATION. PLEASE REVIEW IT CAREFULLY.</td>
+                    </tr>
+                    <tr>
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td>
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td style="width:50%;">
+                                                <p style="padding-bottom:8px;margin:0;">We may disclose your health care information to other healthcare professionals within our practice for the purpose of treatment, payment or healthcare operations.</p>
+
+                                                <p style="padding-bottom: 8px; margin: 0;">We may disclose your health information to your insurance provider for the purpose of payment or health care operations.</p>
+
+                                                <p style="padding-bottom: 8px; margin: 0;">We may disclose your health information as necessary to comply with State Workers' Compensation Laws.</p>
+
+                                                <p style="padding-bottom: 8px; margin: 0;">We may disclose your health information to notify or assist in notifying a family member, or another person responsible for your care about your medical condition or in the event of an emergency or of your death.</p>
+
+                                                <p style="padding-bottom: 8px; margin: 0;">As required by law, we may disclose your health information to public health authorities for purposes related to: preventing or controlling disease, injury or disability, reporting child abuse or neglect, reporting domestic violence, reporting to the Food and Drug Administration problems with products and reactions to medications, and reporting disease or infection exposure.</p>
+
+                                                <p style="padding-bottom: 8px; margin: 0;">We may disclose your health information in the course of any administrative or judicial proceeding.</p>
+
+                                                <p style="padding-bottom: 8px; margin: 0;">We may disclose your health information to a law enforcement official for purposes such as identifying or locating a suspect, fugitive, material witness or missing person, complying with a court order or subpoena, and other law enforcement purposes.</p>
+
+                                                <p style="padding-bottom: 8px; margin: 0;">We may disclose your health information to coroners or medical examiners.</p>
+
+                                                <p style="padding-bottom:8px;margin:0;">We may disclose your health information to organizations involved in procuring, banking, or transplanting organs and tissues.</p>
+
+                                                <p style="padding-bottom:8px;margin:0;">We may disclose your health information to researchers conducting research that has been approved by an Institutional Review Board.</p>
+
+                                                <p style="padding-bottom: 8px; margin: 0;">It may be necessary to disclose your health information to appropriate persons in order to prevent or lessen a serious and imminent threat to the health or safety of a particular person or to the general public.</p>
+
+                                                <p style="padding-bottom: 8px; margin: 0;">We may disclose your health information for military, national security, prisoner and government benefits purposes.</p>
+
+                                                <p style="padding-bottom: 8px; margin: 0;">We may leave a message on an automated answering device or person answering the phone for the purposes of scheduling appointments. No personal health information will be disclosed during this recording or message other than the date and time of your scheduled appointment along with a request to call our office if you need to cancel or reschedule your appointment."</p>
+
+                                                <p style="padding-bottom:8px;margin:0;">We may contact you by phone, mail, or email. "It is our practice to participate in charitable and marketing events to raise awareness, food donations, gifts, money, etc. During these times, we may send you a letter, post card, invitation or call your home to invite you to participate in the charitable activity.</p>
+
+
+                                                <p style="padding-bottom:0px;margin:0;">In the event that we are sold or merged with another organization, your health information/record will become the property of the new owner.</p>
+
+                                                <ul>
+                                                    <li style="padding-left: 8px; padding-top: 2px; margin: 0; padding-bottom: 8px; list-style-type:disc;">
+
+
+                                                        You have the right to request restrictions on certain uses and disclosures of your health information. Please be advised, however, that we are not required to agree to the restriction that you requested.
+                                                    </li>
+
+                                                    <li style="padding-left: 8px; padding-top: 2px; margin: 0; padding-bottom: 8px; list-style-type:disc;">
+                                                        You have the right to have your health information received
+                                                        or communicated through an alternative method or sent to an alternative location other than the usual method of communication or delivery, upon your request.
+                                                    </li>
+
+
+                                                </ul>
+
+
+                                            </td>
+
+                                            <td valign="top" style="width:50%; padding-left:25px;">
+
+
+
+
+
+
+                                                <ul>
+                                                    <li style="padding-left: 8px; padding-top: 2px; margin: 0; padding-bottom: 8px; list-style-type:disc;">
+                                                        You have the right to inspect and copy your health
+                                                        information.
+                                                    </li>
+                                                    <li style="padding-left: 8px; padding-top: 2px; margin: 0; padding-bottom: 8px; list-style-type:disc;">
+                                                        You have a right to request that we amend your protected
+                                                        health information. Please be advised, however, that we are not required to agree to amend your protected health information. If your request to amend your health information has been denied, you will be provided with an explanation of our denial reason(s) and information about how you can disagree with the denial.
+                                                    </li>
+
+                                                    <li style="padding-left: 8px; padding-top: 2px; margin: 0; padding-bottom: 8px; list-style-type:disc;">
+                                                        You have a right to receive an accounting of disclosures of
+                                                        your protected health information made by us.
+                                                    </li>
+
+                                                    <li style="padding-left: 8px; padding-top: 2px; margin: 0; padding-bottom: 8px; list-style-type:disc;"> You have a right to a paper copy of this Notice of Privacy Practices at any time upon request.</li>
+                                                </ul>
+
+
+
+
+
+
+
+                                                <p style="padding-bottom:8px;margin:0;"> We reserve the right to amend this Notice of Privacy Practices at any time in the future, and will make the new provisions effective for all information that it maintains. Until such amendment is made, we are required by law to comply with this Notice.</p>
+
+                                                <p style="padding-bottom:8px;margin:0;"> We are required by law to maintain the privacy of your health information and to provide you with notice of its legal duties and privacy practices with respect to your health information. If you have questions about any part of this notice or if you want more information about your privacy rights, please contact us by calling this office at (352) 693-3378, EXT 5. If our Privacy Officer is not available, you may make an appointment for a personal conference in person or by telephone within 2 working days.</p>
+
+                                                <p style="padding-bottom:12px;margin:0;"> Complaints about your Privacy rights, or how we have handled your health information should be directed to our Privacy Officer by calling this office at (352) 693-3378, EXT 5. If our Privacy Officer is not available, you may make an appointment for a personal conference in person or by telephone within 2 working days.</p>
+
+                                                <p style="padding-bottom:8px;margin:0;"> If you are not satisfied with the manner in which this office handles your complaint, you may submit a formal complaint to:
+                                                <p style="padding-left:40px; text-align:left">
+                                                    DHHS, Office of Civil Rights<br>
+                                                    200 Independence Avenue, S.W.<br>
+                                                    Room 509F HHH Building<br>
+                                                    Washington, DC 20201
+                                                </p>
+                                                </p>
+
+                                                <p style="padding-bottom:3px;margin:0;"> I have read the Privacy Notice and understand my rights contained in the notice.</p>
+
+                                                <p style="padding-bottom:30px;margin:0;"> By way of my signature, I provide Advanced Physical Therapy of Central Florida, Inc. with my authorization and consent to use and disclosed my protected health care information for the purposes of treatment, payment and health care operations as described in the Privacy Notice</p>
+
+                                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                    <tr>
+                                                        <td><div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px; width:350px;">@Model.SpinomedIVTLSOForm.tblMPatient.FirstName @Model.SpinomedIVTLSOForm.tblMPatient.LastName</div>       Patient's Name (print)</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px; ">
+                                                                @{var imgurl61 = "";
+                                                                if (Model.Paperwork.PatientSignature != null)
+                                                                {
+                                                                    imgurl61 = "data:image/png;base64," + Convert.ToBase64String(Model.Paperwork.PatientSignature);
+                                                                }
+                                                                }
+                                                                <img src="@imgurl61" alt="Alternate Text" id="imgWitnessSignature" style="width: 200px; height: 40px; " />
+                                                                @Model.Paperwork.CreatedOn
+                                                            </div> <table><tr><td width="80%">Patient's Signature </td><td>&nbsp;</td><td width="20%">Date</td></tr></table>
+
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <div style="padding:5px 0 4px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:0px; ">
+                                                                @{var imgurl49 = "";
+                                                                if (Model.Paperwork.TherapistSignature != null)
+                                                                {
+                                                                    imgurl49 = "data:image/png;base64," + Convert.ToBase64String(Model.Paperwork.TherapistSignature);
+                                                                }
+                                                                }
+                                                                <img src="@imgurl49" alt="Alternate Text" id="imgWitnessSignature" style="width: 200px; height: 40px; border-bottom:none; " />
+                                                                @Model.Paperwork.CreatedOn
+                                                            </div>
+                                                            <table><tr><td width="80%">Authorized Facility Signature </td><td>&nbsp;</td><td width="20%">Date</td></tr></table>
+                                                        </td>
+
+                                                    </tr>
+                                                </table>
+
+                                            </td>
+                                        </tr>
+
+                                    </table>
+
+                                </td>
+
+                            </tr>
+                        </table>
+
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>*@
+
+
+        <table>
+            <tr>
+                <td style="height:200px;"></td>
+            </tr>
+        </table>
+
+
+        <div style="padding:20px 0 17px 0; font-size:22px;">
+            <table width="100%" border="0">
+                <tbody>
+
+                    <tr>
+                        <td width="25%" style="text-align:center;">
+                            <span>
+                                @{
+                                    var imgurl59 = "";
+                                    if (ViewBag.AdvanceptLogo != null)
+                                    {
+                                        imgurl59 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.AdvanceptLogo);
+                                    }
+                                }
+                                <img src="@imgurl59" alt="Alternate Text" id="imgWitnessSignature" />
+                            </span>
+                        </td>
+
+
+
+                    </tr>
+
+
+
+                    <tr>
+                        <td style="text-align:center;">
+                            <h2 style="font-size: 20px">
+                                PROTOCOL FOR RESOLVING COMPLAINTS FROM
+                                MEDICARE BENEFICIARIES
+                            </h2>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p style="padding-bottom:20px;">The patient has the right to freely voice grievances and recommend changes in care or service without fear of reprisal or unreasonable interruption of services. Service, equipment, and billing complaints will be communicated to management and upper management. These complaints will be documented in the Medicare Beneficiaries Complaint Log, and completed forms will include the patient's name, address, telephone number and health insurance claim number, a summary of the complaint, the date it was received, the name of the person receiving the complaint, and a summary of the actions taken to resolve the complaint.</p>
+
+                            <p style="padding-bottom:20px;">All complaints will be handled in a professional manner. All logged complaints will be investigated, acted upon, and responded to in writing or by telephone by a manager within a reasonable amount of time after the receipt of the complaint. If there is no satisfactory resolution of the complaint, the next level of management will be notified progressively and up to the president or owner of the company.</p>
+
+                            <p style="padding-bottom:20px;">The patient will be informed of this complaint resolution protocol at the time of setup of service.</p>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;"><h2 style="font-size: 20px">EQUIPMENT WARRANTY INFORMATION FORM</h2></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p style="padding-bottom:20px;">Every product sold or rented by our company carries a 1-year manufacturer's warranty. ADVANCED PHYSICAL THERAPY OF CENTRAL FLORIDA, INC. will notify all Medicare beneficiaries of the warranty coverage, and will honor all warranties under applicable law.</p>
+
+                            <p style="padding-bottom:20px;">ADVANCED PHYSICAL THERAPY OF CENTRAL FLORIDA, INC. will repair or replace, free of charge, Medicare-covered equipment that is under warranty. In addition, an owner's manual with warranty information will be provided to beneficiaries for all medical equipment where this manual is available.</p>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div style="text-align:center; padding:650px 0 25px 0; color:#000"><strong>1202 SW 17th Street, #201-229, Ocala, FL  34471</strong></div>
+
+
+        <table>
+            <tr>
+                <td style="height:225px;"></td>
+            </tr>
+        </table>
+
+        <div style=" font-size:16px;">
+
+            <table width="100%" border="0">
+                <tbody>
+
+                    <tr>
+                        <td style="text-align:center; padding-bottom:10px;">
+                            <h2 style="margin:0; font-size:22px;  "><u>MEDICARE DMEPOS SUPPLIER STANDARDS</u></h2>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <b style="padding: 0 3px; margin: 10px 0;"> &nbsp; &nbsp;  &nbsp;  Note: This is an abbreviated version of the supplier standards every Medicare DMEPOS supplier must meet in order &nbsp; &nbsp;  &nbsp;  &nbsp;  &nbsp; to obtain and</b><b>
+                                retain their billing privileges. These standards, in their entirety, are listed in 42 C.F.R. 424.57(c).
+                            </b>
+                        </td>
+                    </tr>
+
+                    <tr style="font-size:17px;">
+                        <td>
+                            <p style="padding-bottom:0px; margin:8px 0;">1. &nbsp; A supplier must be in compliance with all applicable Federal and State licensure and regulatory requirements.</p>
+
+                            <p style="padding-bottom: 0px; margin: 8px 0; ">2. &nbsp; A supplier must provide complete and accurate information on the DMEPOS supplier application. Any changes to this information must be reported to the National Supplier Clearinghouse within 30 days.</p>
+
+                            <p style="padding-bottom: 0px; margin: 8px 0; ">3. &nbsp; An authorized individual (one whose signature is binding) must sign the application for billing privileges.</p>
+
+                            <p style="padding-bottom: 0px; margin: 8px 0; ">4. &nbsp; A supplier must fill orders from its own inventory, or must contract with other companies for the purchase of items necessary to fill the order. A supplier may not contract with any entity that is currently excluded from the Medicare program, any State health care programs, or from any other Federal procurement or non procurement programs.</p>
+
+                            <p style="padding-bottom: 0px; margin: 8px 0; ">5. &nbsp; A supplier must advise beneficiaries that they may rent or purchase inexpensive or routinely purchased durable medical equipment. and of the purchase option for capped rental equipment.</p>
+
+                            <p style="padding-bottom: 0px; margin: 8px 0; ">6. &nbsp; A supplier must notify beneficiaries of warranty coverage and honor all warranties under applicable State law, and repair or replace free of charge Medicare covered items that are under warranty.</p>
+
+                            <p style="padding-bottom: 0px; margin: 8px 0; ">7. &nbsp; A supplier must maintain a physical facility on an appropriate site.</p>
+
+                            <p style="padding-bottom: 0px; margin: 8px 0; ">8. &nbsp; A supplier must permit CMS, or its agents to conduct on-site inspections to ascertain the supplier's compliance with these standards. The supplier location must be accessible to beneficiaries during reasonable business hours, and must maintain a visible sign and posted hours of operation.</p>
+
+                            <p style="padding-bottom: 0px; margin: 8px 0; ">9. &nbsp; A supplier must maintain a primary business telephone fisted under the name of the business in a local directory or a toll free number available through directory assistance. The exclusive use of a beeper, answering machine or cell phone is prohibited.</p>
+
+                            <p style="padding-bottom: 0px; margin: 8px 0; ">10. &nbsp; A supplier must have comprehensive liability insurance in the amount of at least $300,000 that covers both the supplier's place of business and all customers and employees of the supplier. If the supplier manufactures its own items, this insurance must also cover product liability and completed operations.</p>
+
+                            <p style="padding-bottom: 0px; margin: 8px 0; ">11. &nbsp; A supplier must agree not to initiate telephone contact with beneficiaries, with a few exceptions allowed. This standard prohibits suppliers from calling beneficiaries in order to solicit new business.</p>
+
+                            <p style="padding-bottom: 0px; margin: 8px 0; ">12. &nbsp; A supplier is responsible for delivery and must instruct beneficiaries on use of Medicare covered items, and maintain proof of delivery.</p>
+
+                            <p style="padding-bottom: 0px; margin: 8px 0; ">13. &nbsp; A supplier must answer questions and respond to complaints of beneficiaries, and maintain documentation of such contacts.</p>
+
+                            <p style="padding-bottom: 0px; margin: 8px 0; ">14. &nbsp; A supplier must maintain and replace at no charge or repair directly, or through a service contract with another company, Medicare-covered items it has rented to beneficiaries.</p>
+
+                            <p style="padding-bottom: 0px; margin: 8px 0; ">15. &nbsp; A supplier must accept returns of substandard (less than full quality for the particular item) or unsuitable items (inappropriate for the beneficiary at the time it was fitted and rented or sold) from beneficiaries.</p>
+
+                            <p style="padding-bottom: 0px; margin: 8px 0; ">16. &nbsp; A supplier must disclose these supplier standards to each beneficiary to whom it supplies a Medicare-covered item.</p>
+
+                            <p style="padding-bottom: 0px; margin: 8px 0; ">17. &nbsp; A supplier must disclose to the government any person having ownership, financial, or control interest in the supplier.</p>
+
+                            <p style="padding-bottom: 0px; margin: 8px 0; ">18. &nbsp; A supplier must not convey or reassign a supplier number; i.e., the supplier may not sell or allow another entity to use its Medicare billing number.</p>
+
+                            <p style="padding-bottom: 0px; margin: 8px 0; ">19. &nbsp; A supplier must have a complaint resolution protocol established to address beneficiary complaints that relate to these standards. A record of these complaints must be maintained at the physical facility.</p>
+
+                            <p style="padding-bottom: 0px; margin: 8px 0; ">20. &nbsp; Complaint records must include: the name, address, telephone number and health insurance claim number of the beneficiary, a summary of the complaint, and any actions taken to resolve it.</p>
+
+                            <p style="padding-bottom: 0px; margin: 8px 0; ">21. &nbsp; A supplier must agree to furnish CMS any information required by the Medicare statute and implementing regulations.</p>
+
+                            <p style="padding-bottom: 0px; margin: 8px 0; ">22. &nbsp; All suppliers must be accredited by a CMS-approved accreditation organization in order to receive and retain a supplier billing number. The accreditation must indicate the specific products and services, for which the supplier is accredited in order for the supplier to receive payment of those specific products and services (except for certain exempt pharmaceuticals).</p>
+
+                            <p style="padding-bottom: 0px; margin: 8px 0; ">23. &nbsp; All suppliers must notify their accreditation organization when a new DMEPOS location is opened.</p>
+
+                            <p style="padding-bottom: 0px; margin: 8px 0; ">24. &nbsp; All supplier locations, whether owned or subcontracted, must meet the DMEPOS quality standards and be separately accredited in order to bill Medicare.</p>
+
+                            <p style="padding-bottom: 0px; margin: 8px 0; ">25. &nbsp; All suppliers must disclose upon enrollment all products and services, including the addition of new product lines for which they are seeking accreditation.</p>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="border-top:1px solid #000; padding-bottom:10px; text-align:center; padding-top:5px; margin-top:80px;">
+            <p>
+                <span style="font-weight:bold;">Palmetto GBA </span><br>
+                National Supplier Clearinghouse<br>
+                P.O. Box 500142 • Columbia, South Carolina • 29202-3142 • (866) 2384652<br>
+                <span style="font-size:17px; font-weight:bold; font-style:italic;">A CMS Contracted Intermediary and Carrier</span>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

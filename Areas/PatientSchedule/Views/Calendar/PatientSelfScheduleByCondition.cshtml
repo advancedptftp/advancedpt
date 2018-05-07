@@ -1,0 +1,1107 @@
+﻿
+@{
+    ViewBag.Title = "PatientSelfScheduleByCondition";
+}
+
+
+<style>
+    .innerbo {
+        padding: 12px;
+        background: #f3f3f3;
+        margin: 12px 5px;
+        font-size: 16px;
+    }
+</style>
+<style>
+    .loadingdivAvailSlot {
+        display: block;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 9998;
+        background-color: rgba(0,0,0,.3);
+        -webkit-animation: fade 500ms;
+        -moz-animation: fade 500ms;
+        -o-animation: fade 500ms;
+        animation: fade 500ms;
+    }
+
+    .loadingcontainerAvailSlot {
+        width: 100%;
+        text-align: center;
+        padding-top: 26%;
+    }
+</style>
+<section class="selfscheduleheader">
+
+
+    <div class="activationform_fullpage">
+        @using (Html.BeginForm())
+        {
+              
+                    @Html.Hidden("patientId")
+                    @Html.Hidden("patientCondId")
+            <div class="report-form clearfix">
+                <h2 id="h2schedule"></h2>
+
+                <div class="topforn">
+
+                </div>
+
+                <div id="dvid_1" class="inlinetext">
+
+                    <div>
+                        Which is better, mornings or afternoons?
+
+
+                    </div>
+                    <div style="padding-top:25px;">
+                        @*<div class="headrightcont">
+
+                                <div class="p_left15" style="padding-top:20px;">
+                                    <div>
+                                        <label class="radio-inline">
+                                            @Html.RadioButton("rbSession", "1", new { @class = "radioCare", @id = "rbsession" }) Mornings
+                                        </label>
+                                    </div>
+                                    <label class="radio-inline">
+                                        @Html.RadioButton("rbSession", "2", new { @class = "radioCare", @id = "rbsession" }) Afternoons
+                                    </label>
+                                </div>
+
+
+                            </div>*@
+
+                        <div class="radio-tile-group">
+                            <div class="input-container">
+                                <input type="radio" name='rbSession' id="rbSession" value="1" class="radio-button">
+                                <div class="radio-tile">
+                                    <label class="radio-tile-label">Morning</label>
+                                </div>
+
+                            </div>
+                            <div class="input-container">
+                                <input type="radio" name='rbSession' id="rbSession" value="2" class="radio-button">
+                                <div class="radio-tile">
+                                    <label class="radio-tile-label">Afternoon</label>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+
+
+
+                        <div class="clearfix"></div>
+                        <div class="subbutt" id="btn_div1">
+
+                            <input type="button" id="_btnnext" value="Next" class="btn btn-primary pull-right" style="color:white" />
+
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+                </div>
+                <div id="dvid_2" class="inlinetext">
+
+                    <div id="availableslot">
+
+
+                    </div>
+                    <div class="subbutt" id="btn_div2">
+
+                        <input type="button" id="btnResetForReschedule" value="Reset" class="btn btn-primary pull-left" style="color:white" onclick="GetAvailableSlotByDate('nextReschedule');" />
+                        <input type="button" id="btnReset" value="Reset" class="btn btn-primary pull-left" style="color:white" onclick="GetAvailableSlotByDate('next');" />
+                        <input type="button" class="btn btn-primary pull-left" id="btnnextoption" value="Next Availability" onclick="functionnextoptionByPriority();" />
+                        <input type="button" class="btn btn-primary pull-left" id="btnnextoptionbydate" value="Save & Next Week" onclick="GetAvailableSlotByDate('Nextdatewise');" />
+                        <input type="button" class="btn btn-primary pull-left" id="btnnextoptionbydateforReschd" value="Next Week" onclick="GetAvailableSlotByDate('NextdatewiseReschedule');" />
+                        <input type="button" id="_btnSave" value="Save & Exit" class="btn btn-orange pull-right" style="color:white" />
+                        <input type="button" id="_btnSaveForReschedule" value="Save & Exit" class="btn btn-orange pull-right" style="color:white" />
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="clearfix">
+                    <br />
+                </div>
+                <div>
+                    @Html.ActionLink("Back to List", "PatientCoordination", new { @controller = "PatientActivation", @area = "Patient" })
+                </div>
+
+                @*@Html.Partial("_PrevNext")*@
+
+                @*<div id="dvid_subbutt" class="subbutt" style="display:none">
+
+                        <button type="submit" class="btn btn-orange pull-right">Submit</button>
+                        <div class="clearfix"></div>
+                    </div>*@
+
+
+
+            </div>
+
+
+        }
+    </div>
+
+</section>
+<div id="loadforAvailSlot" class="loadingdivAvailSlot">
+    <div class="loadingcontainerAvailSlot">
+        <img src="~/Images/pageloader1.gif" width="200" height="200" />
+    </div>
+</div>
+<script>
+    $("#_btnprev").click(function () {
+        DeleteFromSearchTableByCondition();
+    });
+    $("#_btnSave").click(function () {
+        SaveDataToAppoTableByCondition();
+    });
+    $("#_btnSaveForReschedule").click(function () {
+        SaveDataToAppoTableForReschedule();
+
+    });
+    //__last = 2;
+    //function fnValidate(pos) {
+
+    //    return true;
+    //}
+
+    //function fnNextToShow(pos) {
+
+    //    //alert('pos === ' + pos);
+    //    if (pos == 1)
+    //    {
+    //        //alert($("input[type='radio'][name='rbSession']:checked").val());
+    //        if ($("input[type='radio'][name='rbSession']:checked").val() == undefined) {
+    //            //alert("fdfdfdsf");
+    //            alert("Choose any one option!!");
+    //            return pos;
+
+    //        }
+    //        else {
+    //            //alert("Ok");
+    //            GetAvailableSlot();
+    //            pos = pos + 1;
+    //            return pos;
+    //        }
+    //    }
+
+    //}
+
+
+    //function fnTriggerAtEnd() {
+    //    if ($("#dvid_" + __last).is(':visible')) $('#dvid_subbutt').show();
+    //    else $('#dvid_subbutt').hide();
+    //}
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        //alert("okk");
+        $("#loadforAvailSlot").hide();
+
+        $("#dvid_1").hide();
+        $("#dvid_2").show();
+        $("#btn_div1").hide();
+        $("#btn_div2").show();
+        //$("#_btnprev").hide();
+        //$("#_btnnext").show();
+        //$("#_btnSave").hide();
+        if ('@ViewBag.patientIDByCondition' != "") {
+            $("#patientId").val('@ViewBag.patientIDByCondition');
+        }
+        if ('@ViewBag.patientCondIdByCondition' != "") {
+            $("#patientCondId").val('@ViewBag.patientCondIdByCondition');
+            //alert($("#patientCondId").val());
+
+        }
+        var ForReschedeule = '@ViewBag.ForReschedule';
+        if (ForReschedeule != "") {
+            //alert(11);
+            $("#btnnextoptionbydate").hide();
+            $("#btnnextoptionbydateforReschd").show();
+
+            $("#btnReset").hide();
+            $("#btnResetForReschedule").show();
+
+            $("#_btnSave").hide();
+            $("#_btnSaveForReschedule").show();
+            GetAvailableSlotByDate("nextReschedule");
+        }
+        else {
+            $("#btnnextoptionbydate").show();
+            $("#btnnextoptionbydateforReschd").hide();
+
+            $("#btnResetForReschedule").hide();
+            $("#btnReset").show();
+
+            $("#_btnSave").show();
+            $("#_btnSaveForReschedule").hide();
+            GetAvailableSlotByDate("next");
+        };
+        //alert($("#patientId").val());
+        //alert($("#patientCondId").val());
+    });
+    $("#_btnprev").click(function () {
+
+        //$("#dvid_1").html("");
+        //$("#dvid_2").html("");
+
+        $("#dvid_1").show();
+        $("#dvid_2").hide();
+        $("#btn_div1").show();
+        $("#btn_div2").hide();
+        //$("#dvid_1").show();
+        //$("#dvid_2").hide();
+        //$("#_btnprev").hide();
+        //$("#_btnnext").show();
+        //$("#_btnSave").hide();
+
+    });
+
+    $("#_btnnext").click(function () {
+        //alert(11);
+
+
+
+        if ($("input[type='radio'][name='rbSession']:checked").val() == undefined) {
+
+            alert("Choose any one option!!");
+            $("#dvid_1").show();
+            $("#dvid_2").hide();
+            $("#btn_div1").show();
+            $("#btn_div2").hide();
+
+        }
+        else {
+
+            GetAvailableSlotByDate("next");
+            $("#dvid_1").hide();
+            $("#dvid_2").show();
+            $("#btn_div1").hide();
+            $("#btn_div2").show();
+
+        }
+    });
+    function functionnextoptionByPriority() {
+        var PatIDCondition = $("#patientId").val();
+        var ConIdCondition = $("#patientCondId").val();
+        //alert($("input[type='radio'][name='rbSession']:checked").val());
+        //for partial view(Prioritybase)
+        $("#loadforAvailSlot").show();
+        // var session1 = $("input[type='radio'][name='rbSession']:checked").val();
+        $.ajax({
+            url: '@Url.Action("_SelfSchedulePartialByProrityByCondition", "Calendar", new { @area = "PatientSchedule" })',
+            type: "GET",
+            //dataType: "JSON",
+            data: { PatIDCondition: PatIDCondition, ConIdCondition: ConIdCondition },
+            success: function (success) {
+
+                $("#loadforAvailSlot").hide();
+                //alert(success.indexOf('innerbo'));
+                if (success.indexOf('innerbo') != -1) {
+                    $("#availableslot").html("");
+                    $("#availableslot").html(success);
+
+
+                    $("#lbl_DaysPerWeek").text($("#hdn_No_Visit_Per_Week").val());
+                    if ($("#hdn_No_Visit_Per_Week").val() == 'Zero' || $("#hdn_No_Visit_Per_Week").val() == 'One') {
+                        $("#lbl_DaysPerWeek1").text('time');
+                    }
+                    else {
+                        $("#lbl_DaysPerWeek1").text('times');
+                    }
+                    $("#lbl_AppoRemain").text($("#hdn_RemainingAppo").val());
+                    if ($("#hdn_RemainingAppo").val() == '0' || $("#hdn_RemainingAppo").val() == '1') {
+                        $("#lbl_AppoRemain1").text('appointment');
+                    }
+                    else {
+                        $("#lbl_AppoRemain1").text('appointments');
+                    }
+                    $("#lbl_GoalPercentage").text($("#hdn_goalPercentageNew").val());
+                    if ($("#h2schedule").text() == "Reschedule") {
+                        //alert(1);
+                        $("#div_SelfScheduleHeaderContent").hide();
+                    }
+                    else {
+                        $("#div_SelfScheduleHeaderContent").show();
+                    }
+                }
+                else {
+                    $("#availableslot").html("");
+                    $("#availableslot").html('<span id="spannorecords" style="color:red;font-size: 31px;font-weight: bold;width: 100%;display: block;text-align: center;padding-bottom: 187px;padding-top: 58px;">There no records are found!!</span>');
+                }
+
+            },
+            error: function (error) {
+                $("#loadforAvailSlot").hide();
+                alert("Error1: " + error);
+            },
+            statusCode: {
+                404: function () {
+                    $("#loadforAvailSlot").hide();
+                    alert("Page Not Found.");
+                }
+            }
+        });
+    }
+    function GetAvailableSlotByDate(fromdatewisesearch) {
+        var PatIDCondition = $("#patientId").val();
+        var ConIdCondition = $("#patientCondId").val();
+        //alert(1);
+        // debugger;
+        var str = "";
+        var __AppoTable = [];
+        var intcount = 1;
+        if (fromdatewisesearch == "Nextdatewise") {
+            // alert(fromdatewisesearch+1);
+            //with save
+            $(".radio").each(function () {
+
+                var d = new Date();
+                var month = d.getMonth() + 1;
+                var day = d.getDate();
+                var GetDate = (month < 10 ? '0' : '') + month + '/' + (day < 10 ? '0' : '') + day + '/' + d.getFullYear();
+
+                if ($('#optionsRadios_' + intcount).is(':checked')) {
+                    //alert("it's checked");
+                    //alert($(".radio").children("#hdnAppoDate_" + intcount).val());
+                    var RowObj = {};
+
+                    RowObj['AppointmentDate'] = $(".radio").children("#hdnAppoDate_" + intcount).val();
+                    RowObj['FromTime'] = $(".radio").children("#hdnSlotStart_" + intcount).val();
+                    RowObj['ToTime'] = $(".radio").children("#hdnSlotEnd_" + intcount).val();
+                    RowObj['PatientID'] = $(".radio").children("#hdnPatientId_" + intcount).val();
+                    RowObj['PatientConditionId'] = $(".radio").children("#hdnPatientConditionId_" + intcount).val();
+                    RowObj['ResourceID'] = $(".radio").children("#hdnResource_Id_" + intcount).val();
+                    RowObj['AppointmentType'] = $(".radio").children("#hdnAppointmentType_" + intcount).val();
+                    RowObj['EmployeeID'] = $(".radio").children("#hdnEmployeeId_" + intcount).val();
+                    RowObj['CreatedOn'] = GetDate;
+                    RowObj['CreatedBy'] = $(".radio").children("#hdnCreatedBy_" + intcount).val();
+
+                    __AppoTable.push(RowObj);
+                }
+
+                intcount = intcount + 1;
+
+
+            })
+
+            //for checking the remainingappo vs choose option as it will not return -(minus) appo remaining
+            if (__AppoTable != "") {
+               
+                var RemApp = parseInt($('#lbl_AppoRemain').text());
+                //alert(__AppoTable.length);
+                //alert($('#lbl_AppoRemain').text());
+                if (RemApp >= __AppoTable.length) {
+
+                }
+                else {
+                    alertify.alert("Please choose option(s) as per remaining appointment(s)!!!").setHeader('AdvancePT Says');
+                    return false;
+                }
+
+            }
+
+            if (__AppoTable == "") {
+                if ($('#spannorecords').length) {
+                    //span is available ......only check available slot
+
+                    $("#loadforAvailSlot").show();
+
+                    //var session1 = $("input[type='radio'][name='rbSession']:checked").val();
+
+                    $.ajax({
+                        url: '@Url.Action("_SelfSchedulePartialByDateByCondition", "Calendar", new { @area="PatientSchedule"})',
+                        type: "POST",
+                        data: JSON.stringify({ data: __AppoTable, fromdatewisesearch: fromdatewisesearch, PatIDCondition: PatIDCondition, ConIdCondition: ConIdCondition }),
+                        cache: 'false',
+                        contentType: 'application/json',
+                        //dataType: "html",
+
+                        success: function (success) {
+                            if (success.TotalNoOfVisitsPerWeekNeededNew != undefined) {
+                                $("#lbl_DaysPerWeek").text(success.TotalNoOfVisitsPerWeekNeededNew);
+                            }
+                            if (success.TotalNoOfVisitsPerWeekNeededNew == 'Zero' || success.TotalNoOfVisitsPerWeekNeededNew == 'One') {
+                                $("#lbl_DaysPerWeek1").text('time');
+                            }
+                            else {
+                                $("#lbl_DaysPerWeek1").text('times');
+                            }
+                            if (success.RemainingAppo != undefined) {
+                                $("#lbl_AppoRemain").text(success.RemainingAppo);
+                            }
+                            if (success.RemainingAppo == '0' || success.RemainingAppo == '1') {
+                                $("#lbl_AppoRemain1").text('appointment');
+                            }
+                            else {
+                                $("#lbl_AppoRemain1").text('appointments');
+                            }
+                            if (success.goalPercentageNew != undefined) {
+                                $("#lbl_GoalPercentage").text(success.goalPercentageNew);
+                            }
+                            //alert($("#hdn_No_Visit_Per_Week").val());
+                            // alert(success);
+                            $("#loadforAvailSlot").hide();
+                            //alert(success.indexOf('innerbo'));
+                            if (success.success == "reachgoal") {
+                                //alertify.alert("You have already reached your goal!!").setHeader('AdvancePT Says');
+                                // window.location.href = '@Url.Action("Index", "Patient")?msgreachgoal="You have reached your goal"';
+                                window.location.href = '../Home/Index?msgreachgoal="You have reached your goal"';
+
+                            }
+                            else if (success.success == "Nodata") {
+                                $("#availableslot").html("");
+                                //$("#availableslot").html('<span id="spannorecords" style="color:red">There no records are found!!</span>');
+                                $("#availableslot").html('<span id="spannorecords" style="color:red;font-size: 31px;font-weight: bold;width: 100%;display: block;text-align: center;padding-bottom: 187px;padding-top: 58px;">There no records are found!!</span>');
+
+                            }
+                            else if (success.success == "payamount") {
+                                window.location.href = '../Home/Index?msg="Please pay amount for next appointment"';
+                                @*window.location.href = '@Url.Action("Index", "Patient")?msgpayamount="Please pay amount for next appointment"';*@
+                            }
+                            else {
+                                $("#availableslot").html("");
+                                $("#availableslot").html(success);
+
+                                $("#lbl_DaysPerWeek").text($("#hdn_No_Visit_Per_Week").val());
+                                if ($("#hdn_No_Visit_Per_Week").val() == 'Zero' || $("#hdn_No_Visit_Per_Week").val() == 'One') {
+                                    $("#lbl_DaysPerWeek1").text('time');
+                                }
+                                else {
+                                    $("#lbl_DaysPerWeek1").text('times');
+                                }
+                                $("#lbl_AppoRemain").text($("#hdn_RemainingAppo").val());
+                                if ($("#hdn_RemainingAppo").val() == '0' || $("#hdn_RemainingAppo").val() == '1') {
+                                    $("#lbl_AppoRemain1").text('appointment');
+                                }
+                                else {
+                                    $("#lbl_AppoRemain1").text('appointments');
+                                }
+                                $("#lbl_GoalPercentage").text($("#hdn_goalPercentageNew").val());
+                            }
+                            //for check schedule header
+
+                            if ($("#hdn_Rescheduleheader").val() != "" && $("#hdn_Rescheduleheader").val() != null) {
+                                if (($("#hdn_Rescheduleheader").val() == "nextReschedule") || ($("#hdn_Rescheduleheader").val() == "NextdatewiseReschedule")) {
+                                    $("#h2schedule").text("Reschedule");
+                                }
+                                else {
+                                    $("#h2schedule").text("Schedule");
+                                }
+                            }
+                            else {
+                                $("#h2schedule").text("Schedule");
+                            }
+
+                        },
+                        error: function (error) {
+
+                            $("#loadforAvailSlot").hide();
+                            alert("ErrorMsg: " + error);
+                        },
+                        statusCode: {
+                            404: function () {
+                                $("#loadforAvailSlot").hide();
+                                alert("Page Not Found.");
+                            }
+                        }
+                    });
+
+
+                } else {
+                    //span is not available
+                    alertify.alert("Please choose any one option(s)!!").setHeader('AdvancePT Says');
+                    return;
+                }
+
+
+
+            }
+
+            else {
+
+                // alert(__AppoTable);
+                $("#loadforAvailSlot").show();
+
+                // var session1 = $("input[type='radio'][name='rbSession']:checked").val();
+                $.ajax({
+                    url: '@Url.Action("_SelfSchedulePartialByDateByCondition", "Calendar", new { @area="PatientSchedule"})',
+
+
+                    type: "POST",
+                    data: JSON.stringify({ data: __AppoTable, fromdatewisesearch: fromdatewisesearch, PatIDCondition: PatIDCondition, ConIdCondition: ConIdCondition }),
+                    cache: 'false',
+                    contentType: 'application/json',
+                    //dataType: "html",
+
+                    success: function (success) {
+                        if (success.TotalNoOfVisitsPerWeekNeededNew != undefined) {
+                            $("#lbl_DaysPerWeek").text(success.TotalNoOfVisitsPerWeekNeededNew);
+                        }
+                        if (success.TotalNoOfVisitsPerWeekNeededNew == 'Zero' || success.TotalNoOfVisitsPerWeekNeededNew == 'One') {
+                            $("#lbl_DaysPerWeek1").text('time');
+                        }
+                        else {
+                            $("#lbl_DaysPerWeek1").text('times');
+                        }
+                        if (success.RemainingAppo != undefined) {
+                            $("#lbl_AppoRemain").text(success.RemainingAppo);
+                        }
+                        if (success.RemainingAppo == '0' || success.RemainingAppo == '1') {
+                            $("#lbl_AppoRemain1").text('appointment');
+                        }
+                        else {
+                            $("#lbl_AppoRemain1").text('appointments');
+                        }
+                        if (success.goalPercentageNew != undefined) {
+                            $("#lbl_GoalPercentage").text(success.goalPercentageNew);
+                        }
+                        // alert($("#hdn_No_Visit_Per_Week").val());
+                        //alert(success);
+                        $("#loadforAvailSlot").hide();
+                        //alert(success.indexOf('innerbo'));
+                        if (success.success == "reachgoal") {
+                            //alertify.alert("You have already reached your goal!!").setHeader('AdvancePT Says');
+                            // window.location.href = '@Url.Action("Index", "Patient")?msgreachgoal="You have reached your goal"';
+
+                            window.location.href = '../Home/Index?msgreachgoal="You have reached your goal"';
+
+                        }
+                        else if (success.success == "Nodata") {
+                            $("#availableslot").html("");
+                            //$("#availableslot").html('<span id="spannorecords" style="color:red">There no records are found!!</span>');
+                            $("#availableslot").html('<span id="spannorecords" style="color:red;font-size: 31px;font-weight: bold;width: 100%;display: block;text-align: center;padding-bottom: 187px;padding-top: 58px;">There no records are found!!</span>');
+
+                        }
+                        else if (success.success == "payamount") {
+                            window.location.href = '../Home/Index?msg="Please pay amount for next appointment"';
+                            @*window.location.href = '@Url.Action("Index", "Patient")?msgpayamount="Please pay amount for next appointment"';*@
+                        }
+                        else {
+                            $("#availableslot").html("");
+                            $("#availableslot").html(success);
+
+                            $("#lbl_DaysPerWeek").text($("#hdn_No_Visit_Per_Week").val());
+                            if ($("#hdn_No_Visit_Per_Week").val() == 'Zero' || $("#hdn_No_Visit_Per_Week").val() == 'One') {
+                                $("#lbl_DaysPerWeek1").text('time');
+                            }
+                            else {
+                                $("#lbl_DaysPerWeek1").text('times');
+                            }
+                            $("#lbl_AppoRemain").text($("#hdn_RemainingAppo").val());
+                            if ($("#hdn_RemainingAppo").val() == '0' || $("#hdn_RemainingAppo").val() == '1') {
+                                $("#lbl_AppoRemain1").text('appointment');
+                            }
+                            else {
+                                $("#lbl_AppoRemain1").text('appointments');
+                            }
+                            $("#lbl_GoalPercentage").text($("#hdn_goalPercentageNew").val());
+                        }
+
+                        //for check schedule header
+
+                        if ($("#hdn_Rescheduleheader").val() != "" && $("#hdn_Rescheduleheader").val() != null) {
+                            if (($("#hdn_Rescheduleheader").val() == "nextReschedule") || ($("#hdn_Rescheduleheader").val() == "NextdatewiseReschedule")) {
+                                $("#h2schedule").text("Reschedule");
+                            }
+                            else {
+                                $("#h2schedule").text("Schedule");
+                            }
+                        }
+                        else {
+                            $("#h2schedule").text("Schedule");
+                        }
+
+                    },
+                    error: function (error) {
+
+                        $("#loadforAvailSlot").hide();
+                        alert("ErrorMsg: " + error);
+                    },
+                    statusCode: {
+                        404: function () {
+                            $("#loadforAvailSlot").hide();
+                            alert("Page Not Found.");
+                        }
+                    }
+                });
+            }
+        }
+        else if (fromdatewisesearch == "next") {
+            //  alert(fromdatewisesearch + 2);
+            //without save
+            $("#loadforAvailSlot").show();
+
+            // var session1 = $("input[type='radio'][name='rbSession']:checked").val();
+            $.ajax({
+                url: '@Url.Action("_SelfSchedulePartialByDateByCondition", "Calendar", new { @area="PatientSchedule"})',
+
+
+                type: "POST",
+                data: JSON.stringify({ data: __AppoTable, fromdatewisesearch: fromdatewisesearch, PatIDCondition: PatIDCondition, ConIdCondition: ConIdCondition }),
+                cache: 'false',
+                contentType: 'application/json',
+                // dataType: "html",
+                success: function (success) {
+                    if (success.TotalNoOfVisitsPerWeekNeededNew != undefined) {
+                        $("#lbl_DaysPerWeek").text(success.TotalNoOfVisitsPerWeekNeededNew);
+                    }
+                    if (success.TotalNoOfVisitsPerWeekNeededNew == 'Zero' || success.TotalNoOfVisitsPerWeekNeededNew == 'One') {
+                        $("#lbl_DaysPerWeek1").text('time');
+                    }
+                    else {
+                        $("#lbl_DaysPerWeek1").text('times');
+                    }
+                    if (success.RemainingAppo != undefined) {
+                        $("#lbl_AppoRemain").text(success.RemainingAppo);
+                    }
+                    if (success.RemainingAppo == '0' || success.RemainingAppo == '1') {
+                        $("#lbl_AppoRemain1").text('appointment');
+                    }
+                    else {
+                        $("#lbl_AppoRemain1").text('appointments');
+                    }
+                    if (success.goalPercentageNew != undefined) {
+                        $("#lbl_GoalPercentage").text(success.goalPercentageNew);
+                    }
+                    // alert(success.success);
+                    $("#loadforAvailSlot").hide();
+                    //alert(success.indexOf('innerbo'));
+                    //if (success.indexOf('innerbo') != -1) {
+                    if (success.success == "reachgoal") {
+                        //alertify.alert("You have already reached your goal!!").setHeader('AdvancePT Says');
+                        // window.location.href = '@Url.Action("Index", "Patient")?msgreachgoal="You have reached your goal"';
+                        window.location.href = '../Home/Index?msgreachgoal="You have reached your goal"';
+
+                    }
+                    else if (success.success == "Nodata") {
+                        $("#availableslot").html("");
+                        //$("#availableslot").html('<span id="spannorecords" style="color:red">There no records are found!!</span>');
+                        $("#availableslot").html('<span id="spannorecords" style="color:red;font-size: 31px;font-weight: bold;width: 100%;display: block;text-align: center;padding-bottom: 187px;padding-top: 58px;">There no records are found!!</span>');
+
+                    }
+                    else if (success.success == "payamount") {
+                        window.location.href = '../Home/Index?msg="Please pay amount for next appointment"';
+                        @*window.location.href = '@Url.Action("Index", "Patient")?msgpayamount="Please pay amount for next appointment"';*@
+                            }
+                    else {
+                        $("#availableslot").html("");
+                        $("#availableslot").html(success);
+
+                        $("#lbl_DaysPerWeek").text($("#hdn_No_Visit_Per_Week").val());
+                        if ($("#hdn_No_Visit_Per_Week").val() == 'Zero' || $("#hdn_No_Visit_Per_Week").val() == 'One') {
+                            $("#lbl_DaysPerWeek1").text('time');
+                        }
+                        else {
+                            $("#lbl_DaysPerWeek1").text('times');
+                        }
+                        $("#lbl_AppoRemain").text($("#hdn_RemainingAppo").val());
+                        if ($("#hdn_RemainingAppo").val() == '0' || $("#hdn_RemainingAppo").val() == '1') {
+                            $("#lbl_AppoRemain1").text('appointment');
+                        }
+                        else {
+                            $("#lbl_AppoRemain1").text('appointments');
+                        }
+                        $("#lbl_GoalPercentage").text($("#hdn_goalPercentageNew").val());
+
+                    }
+                    //for check schedule header
+                    //alert($("#hdn_Rescheduleheader").val());
+                    if ($("#h2schedule").text() == "Reschedule") {
+
+                        $("#h2schedule").text("Reschedule");
+
+
+                    }
+                    else {
+                        // alert(2);
+                        $("#h2schedule").text("Schedule");
+                    }
+
+                },
+                error: function (request, ststus, error) {
+
+                    $("#loadforAvailSlot").hide();
+                    //alert("ErrorMsg11_responseText: " + request.responseText);
+                    //alert("ErrorMsg11_State: " + error.State);
+                    //alert("ErrorMsg11_Status: " + error.Status);
+
+                },
+                statusCode: {
+                    404: function () {
+                        $("#loadforAvailSlot").hide();
+                        alert("Page Not Found.");
+                    }
+                }
+            });
+        }
+        else {
+            // alert(1);
+            //without save and for Re Schedule
+            $("#loadforAvailSlot").show();
+
+           // var session1 = $("input[type='radio'][name='rbSession']:checked").val();
+            $.ajax({
+                url: '@Url.Action("_SelfSchedulePartialByDateByCondition", "Calendar", new { @area="PatientSchedule"})',
+                type: "POST",
+                data: JSON.stringify({ data: __AppoTable, fromdatewisesearch: fromdatewisesearch, PatIDCondition: PatIDCondition, ConIdCondition: ConIdCondition }),
+                cache: 'false',
+                contentType: 'application/json',
+                // dataType: "html",
+                success: function (success) {
+                    $("#loadforAvailSlot").hide();
+                    @*if (success.TotalNoOfVisitsPerWeekNeededNew != undefined) {
+                        $("#lbl_DaysPerWeek").text(success.TotalNoOfVisitsPerWeekNeededNew);
+                    }
+                    if (success.TotalNoOfVisitsPerWeekNeededNew == 'Zero' || success.TotalNoOfVisitsPerWeekNeededNew == 'One') {
+                        $("#lbl_DaysPerWeek1").text('time');
+                    }
+                    else {
+                        $("#lbl_DaysPerWeek1").text('times');
+                    }
+                    if (success.RemainingAppo != undefined) {
+                        $("#lbl_AppoRemain").text(success.RemainingAppo);
+                    }
+                    if (success.RemainingAppo == '0' || success.RemainingAppo == '1') {
+                        $("#lbl_AppoRemain1").text('appointment');
+                    }
+                    else {
+                        $("#lbl_AppoRemain1").text('appointments');
+                    }
+                    if (success.goalPercentageNew != undefined) {
+                        $("#lbl_GoalPercentage").text(success.goalPercentageNew);
+                    }
+                    // alert(success.success);
+                    $("#loadforAvailSlot").hide();
+                    //alert(success.indexOf('innerbo'));
+                    //if (success.indexOf('innerbo') != -1) {
+                    if (success.success == "reachgoal") {
+                        //alertify.alert("You have already reached your goal!!").setHeader('AdvancePT Says');
+                        window.location.href = '@Url.Action("Index", "Patient")?msgreachgoal="You have reached your goal"';
+                    }
+                    else if (success.success == "Nodata") {
+                        $("#availableslot").html("");
+                        //$("#availableslot").html('<span id="spannorecords" style="color:red">There are no records found</span>');
+                        $("#availableslot").html('<span id="spannorecords" style="color:red;font-size: 31px;font-weight: bold;width: 100%;display: block;text-align: center;padding-bottom: 187px;padding-top: 58px;">There are no records found</span>');
+
+                    }
+                    else if (success.success == "payamount") {
+                        window.location.href = '@Url.Action("Index", "Patient")?msgpayamount="Please pay amount for next appointment"';
+                    }
+                    else {
+                        //alertify.alert("Your appointment(s) has been scheduled").setHeader('AdvancePT Says');
+                        //$("#availableslot").html("");
+                        //$("#availableslot").html(success);
+
+                        //$("#lbl_DaysPerWeek").text($("#hdn_No_Visit_Per_Week").val());
+                        //if ($("#hdn_No_Visit_Per_Week").val() == 'Zero' || $("#hdn_No_Visit_Per_Week").val() == 'One') {
+                        //    $("#lbl_DaysPerWeek1").text('time');
+                        //}
+                        //else {
+                        //    $("#lbl_DaysPerWeek1").text('times');
+                        //}
+                        //$("#lbl_AppoRemain").text($("#hdn_RemainingAppo").val());
+                        //if ($("#hdn_RemainingAppo").val() == '0' || $("#hdn_RemainingAppo").val() == '1') {
+                        //    $("#lbl_AppoRemain1").text('appointment');
+                        //}
+                        //else {
+                        //    $("#lbl_AppoRemain1").text('appointments');
+                        //}
+                        //$("#lbl_GoalPercentage").text($("#hdn_goalPercentageNew").val());
+                        //$("#div_SelfScheduleHeaderContent").hide();
+                    }*@
+                    $("#availableslot").html("");
+                    $("#availableslot").html(success);
+
+                    $("#lbl_DaysPerWeek").text($("#hdn_No_Visit_Per_Week").val());
+                    if ($("#hdn_No_Visit_Per_Week").val() == 'Zero' || $("#hdn_No_Visit_Per_Week").val() == 'One') {
+                        $("#lbl_DaysPerWeek1").text('time');
+                    }
+                    else {
+                        $("#lbl_DaysPerWeek1").text('times');
+                    }
+                    $("#lbl_AppoRemain").text($("#hdn_RemainingAppo").val());
+                    if ($("#hdn_RemainingAppo").val() == '0' || $("#hdn_RemainingAppo").val() == '1') {
+                        $("#lbl_AppoRemain1").text('appointment');
+                    }
+                    else {
+                        $("#lbl_AppoRemain1").text('appointments');
+                    }
+                    $("#lbl_GoalPercentage").text($("#hdn_goalPercentageNew").val());
+                    $("#div_SelfScheduleHeaderContent").hide();
+                    //for check schedule header
+
+                    if ($("#hdn_Rescheduleheader").val() != "" && $("#hdn_Rescheduleheader").val() != null) {
+                        if (($("#hdn_Rescheduleheader").val() == "nextReschedule") || ($("#hdn_Rescheduleheader").val() == "NextdatewiseReschedule")) {
+                            $("#h2schedule").text("Reschedule");
+                        }
+                        else {
+                            $("#h2schedule").text("Schedule");
+                        }
+                    }
+                    else {
+                        $("#h2schedule").text("Schedule");
+                    }
+                },
+                error: function (request, ststus, error) {
+
+                    $("#loadforAvailSlot").hide();
+                    //alert("ErrorMsg11_responseText: " + request.responseText);
+                    //alert("ErrorMsg11_State: " + error.State);
+                    //alert("ErrorMsg11_Status: " + error.Status);
+
+                },
+                statusCode: {
+                    404: function () {
+                        $("#loadforAvailSlot").hide();
+                        alert("Page Not Found.");
+                    }
+                }
+            });
+        }
+    }
+    function GetPatientShedule() {
+        //alert("ok");
+        $.ajax({
+            url: "@Url.Action("GetPatientschedule", "Patient")",
+            type: "POST",
+            dataType: "JSON",
+            data: { PId: $('#PatientId').val() },
+            success: function (data) {
+                //$('#myModal').modal();
+                $('#TotalAmoutToPay').val(data.TotalAmoutToPay);
+                $('#AdvancePaidAmount').val(data.AdvancePaidAmount);
+                $('#DueAmount').val(data.DueAmount);
+                $('#PaidAmount').val(data.DueAmount);
+                $('#NoOfInstallments').val(0);
+
+            },
+            error: function (error) { alert("Error: " + error); },
+            statusCode: {
+                404: function () {
+                    alert("Page Not Found.");
+                }
+            }
+        });
+
+    }
+
+    function DeleteFromSearchTableByCondition() {
+        var PatIDCondition = $("#patientId").val();
+        var ConIdCondition = $("#patientCondId").val();
+        //alert("ok");
+        $.ajax({
+            url: "@Url.Action("DeleteFromSearchTableByCondition", "Calendar", new { @area = "PatientSchedule" })",
+            type: "POST",
+            dataType: "JSON",
+            data: { PatIDCondition: PatIDCondition, ConIdCondition: ConIdCondition },
+            //data: { PId: $('#PatientId').val() },
+            success: function (data) {
+                //alert(data.Msg);
+
+            },
+            error: function (error) { alert("Error: " + error); },
+            statusCode: {
+                404: function () {
+                    alert("Page Not Found.");
+                }
+            }
+        });
+
+    }
+    function SaveDataToAppoTableForReschedule() {
+
+
+        var str = "";
+        var __AppoTable = [];
+        var intcount = 1;
+        $(".radio").each(function () {
+
+            var d = new Date();
+            var month = d.getMonth() + 1;
+            var day = d.getDate();
+            var GetDate = (month < 10 ? '0' : '') + month + '/' + (day < 10 ? '0' : '') + day + '/' + d.getFullYear();
+
+            if ($('#optionsRadios_' + intcount).is(':checked')) {
+                //alert("it's checked");
+                //alert($(".radio").children("#hdnAppoDate_" + intcount).val());
+                var RowObj = {};
+
+                RowObj['AppointmentDate'] = $(".radio").children("#hdnAppoDate_" + intcount).val();
+                RowObj['FromTime'] = $(".radio").children("#hdnSlotStart_" + intcount).val();
+                RowObj['ToTime'] = $(".radio").children("#hdnSlotEnd_" + intcount).val();
+                RowObj['PatientID'] = $(".radio").children("#hdnPatientId_" + intcount).val();
+                RowObj['PatientConditionId'] = $(".radio").children("#hdnPatientConditionId_" + intcount).val();
+                RowObj['ResourceID'] = $(".radio").children("#hdnResource_Id_" + intcount).val();
+                RowObj['AppointmentType'] = $(".radio").children("#hdnAppointmentType_" + intcount).val();
+                RowObj['EmployeeID'] = $(".radio").children("#hdnEmployeeId_" + intcount).val();
+                RowObj['CreatedOn'] = GetDate;
+                RowObj['CreatedBy'] = $(".radio").children("#hdnCreatedBy_" + intcount).val();
+
+                __AppoTable.push(RowObj);
+            }
+
+
+            intcount = intcount + 1;
+
+
+        })
+
+
+
+        if (__AppoTable == "") {
+            alertify.alert("Please choose any one option(s)!!").setHeader('AdvancePT Says');
+            return;
+        }
+        else {
+
+            $.ajax({
+                url: "@Url.Action("SaveDatatoAppoTableForReschedule", "Patient")",
+                type: "POST",
+            data: JSON.stringify(__AppoTable),
+            cache: 'false',
+            contentType: 'application/json',
+            dataType: "json",
+            success: function (data) {
+                if (data.Msg != "nodata") {
+
+                    // alertify.alert("All appointments are processed successfully").setHeader('AdvancePT Says');
+                    window.location.href = '@Url.Action("Index", "Patient")?msgfromselfschedule="Your appointment is rescheduled successfully"';
+                }
+                else if (data.Msg == "nodata") {
+                    alertify.alert("Please choose any one option(s)!!").setHeader('AdvancePT Says');
+                }
+                else {
+                    alertify.alert("Some error occured!!").setHeader('AdvancePT Says');
+                }
+
+            },
+            error: function (error) { alert("Error: " + error); },
+            statusCode: {
+                404: function () {
+                    alert("Page Not Found.");
+                }
+            }
+        });
+    }
+
+    }
+    function SaveDataToAppoTableByCondition() {
+
+
+        var str = "";
+        var __AppoTable = [];
+        var intcount = 1;
+        $(".radio").each(function () {
+
+            var d = new Date();
+            var month = d.getMonth() + 1;
+            var day = d.getDate();
+            var GetDate = (month < 10 ? '0' : '') + month + '/' + (day < 10 ? '0' : '') + day + '/' + d.getFullYear();
+
+            if ($('#optionsRadios_' + intcount).is(':checked')) {
+                //alert("it's checked");
+                //alert($(".radio").children("#hdnAppoDate_" + intcount).val());
+                var RowObj = {};
+
+                RowObj['AppointmentDate'] = $(".radio").children("#hdnAppoDate_" + intcount).val();
+                RowObj['FromTime'] = $(".radio").children("#hdnSlotStart_" + intcount).val();
+                RowObj['ToTime'] = $(".radio").children("#hdnSlotEnd_" + intcount).val();
+                RowObj['PatientID'] = $(".radio").children("#hdnPatientId_" + intcount).val();
+                RowObj['PatientConditionId'] = $(".radio").children("#hdnPatientConditionId_" + intcount).val();
+                RowObj['ResourceID'] = $(".radio").children("#hdnResource_Id_" + intcount).val();
+                RowObj['AppointmentType'] = $(".radio").children("#hdnAppointmentType_" + intcount).val();
+                RowObj['EmployeeID'] = $(".radio").children("#hdnEmployeeId_" + intcount).val();
+                RowObj['CreatedOn'] = GetDate;
+                RowObj['CreatedBy'] = $(".radio").children("#hdnCreatedBy_" + intcount).val();
+
+                __AppoTable.push(RowObj);
+            }
+            //var a = $(".radio").children("#hdnAppoDate_" + intcount).val();
+            //var a1 = $(".radio").children("#hdnSlotStart_" + intcount).val();
+            //var a2 = $(".radio").children("#hdnSlotEnd_" + intcount).val();
+            //var a3 = $(".radio").children("#hdnPatientId_" + intcount).val();
+            //var a4 = $(".radio").children("#hdnPatientConditionId_" + intcount).val();
+            //var a5 = $(".radio").children("#hdnResource_Id_" + intcount).val();
+            //var a6 = $(".radio").children("#hdnAppointmentType_" + intcount).val();
+            //var a7 = $(".radio").children("#hdnEmployeeId_" + intcount).val();
+            //alert(a);
+            //alert(a1);
+            //alert(a2);
+            //alert(a3);
+            //alert(a4);
+            //alert(a5);
+            //alert(a6);
+            //alert(a7);
+            intcount = intcount + 1;
+
+
+        })
+
+        //for checking the remainingappo vs choose option as it will not return -(minus) appo remaining
+        if (__AppoTable != "") {
+
+            var RemApp = parseInt($('#lbl_AppoRemain').text());
+            //alert(__AppoTable.length);
+            //alert($('#lbl_AppoRemain').text());
+            if (RemApp >= __AppoTable.length) {
+
+            }
+            else {
+                alertify.alert("Please choose option(s) as per remaining appointment(s)!!!").setHeader('AdvancePT Says');
+                return false;
+            }
+
+        }
+        if (__AppoTable == "") {
+            alertify.alert("Please choose any one option(s)!!").setHeader('AdvancePT Says');
+            return;
+        }
+        else {
+            $.ajax({
+                url: "@Url.Action("SaveDatatoAppoTableByCondition", "Calendar", new { @area = "PatientSchedule" })",
+                type: "POST",
+                data: JSON.stringify(__AppoTable),
+                cache: 'false',
+                contentType: 'application/json',
+                dataType: "json",
+                success: function (data) {
+                    if (data.Msg != "nodata") {
+
+                        // alertify.alert("All appointments are processed successfully").setHeader('AdvancePT Says');
+                        //window.location.href = '@Url.Action("Index", "Home")?msgfromselfschedule="The appointment(s) are processed successfully"';
+                        window.location.href = '../Home/Index?msgfromselfschedule="Your appointment(s) are scheduled successfully"';
+
+                    }
+                    else if (data.Msg == "nodata") {
+                        alertify.alert("Please choose any one option(s)!!").setHeader('AdvancePT Says');
+                    }
+                    else {
+                        alertify.alert("Some error occured!!").setHeader('AdvancePT Says');
+                    }
+
+                },
+                error: function (error) { alert("Error: " + error); },
+                statusCode: {
+                    404: function () {
+                        alert("Page Not Found.");
+                    }
+                }
+            });
+        }
+
+    }
+</script>
+
+
+

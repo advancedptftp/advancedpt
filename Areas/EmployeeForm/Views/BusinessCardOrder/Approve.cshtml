@@ -1,0 +1,148 @@
+﻿@model DataLayer.Models.tblTBusinessCardOrder
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+
+
+<section class="bodyinner">
+    <div class="container">
+@using (Html.BeginForm())
+                {
+        <div class="bodyleft">
+           
+            @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+        </div>
+        <div class="bodyright">
+
+            <div class="report-form clearfix">
+                <h2>Business Card Order Form</h2>
+                
+                    
+                    @Html.AntiForgeryToken()
+
+                    @Html.ValidationSummary(true)
+
+                    @Html.HiddenFor(model => model.CardOrder_Id)
+                @Html.HiddenFor(model => model.ModifiedBy)
+                @Html.Hidden("ModifiedOn", DateTime.Now)
+                    @Html.HiddenFor(model => model.CreatedOn)
+                    @Html.HiddenFor(model => model.CreatedBy)
+
+                @if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+
+                    <div class="clearfix"></div>
+
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6 form-group">
+                            @Html.Label("Employee First Name")
+                            @Html.TextBoxFor(model => model.EmpFirstName, new { @class = "form-control" ,@readonly = "readonly"})
+                            @Html.ValidationMessageFor(model => model.EmpFirstName)
+                        </div>
+                        <div class="col-sm-6 col-md-6 form-group">
+                            @Html.Label("Employee Last Name")
+                            @Html.TextBoxFor(model => model.EmpLastName, new { @class = "form-control", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(model => model.EmpLastName)
+                        </div>
+                    </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-6 form-group">
+                        @Html.Label("Credential")
+                        @Html.DropDownList("Credentials", String.Empty)
+
+                    </div>
+                    <div class="col-sm-6 col-md-6 form-group">
+                        @Html.Label("Position ")
+                        @Html.DropDownList("PositionTitle", String.Empty)
+
+                    </div>
+
+                </div>
+                   
+                <div class="row">
+                    <div class="col-sm-6 col-md-6 form-group">
+                        @Html.Label("Email")
+                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.Email)
+                        
+                        
+                    </div>
+                    <div class="col-sm-6 col-md-6 form-group">
+                        <label for="date">Company You Work For </label>
+                        @Html.DropDownList("CompanyId")
+                        @Html.ValidationMessageFor(model => model.CompanyId)
+                    </div>
+                    </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-6 form-group">
+                        @Html.Label("Phone Number Extension  ")
+                        @Html.DropDownListFor(m => m.PhoneExt, from DataLayer.BusinessPhExtansion state in Enum.GetValues(typeof(DataLayer.BusinessPhExtansion))
+                                                               select new SelectListItem() { Text = state.ToString().Replace("_", " "), Value = state.ToString() })
+
+                    </div>
+                    <div class="col-sm-6 col-md-6 form-group">
+                        @Html.Label("Office To Be Shipped To   ")
+
+                        @Html.DropDownList("OfficeLocation", String.Empty)
+                        @Html.ValidationMessageFor(model => model.OfficeLocation)
+                    </div>
+
+                </div>
+
+
+                    @*<div class="subbutt">
+
+                        <input type="submit" value="Approve" class="btn btn-orange pull-right" id="btnapprov" />
+                        <div class="clearfix"></div>
+                    </div>*@
+                <div class="subbutt">
+                    @if (Model.ApprovedBy == null)
+                    {
+                        <button type="submit" onclick="return validateInputs()" class="btn btn-orange pull-right" id="btnApprove">Approve</button>
+                    }
+                </div>
+                    <p>@Html.ActionLink("Back to List", "Index")</p>
+
+            </div>
+
+
+
+        </div>
+}
+        </div>
+    
+</section>
+
+     <script>
+         $('#Credentials').addClass('form-control'); $('#Credentials').attr('disabled', 'disabled')
+</script>
+<script>
+    $('#CompanyId').addClass('form-control'); $('#CompanyId').attr('disabled', 'disabled')
+</script>
+<script>
+    $('#OfficeLocation').addClass('form-control'); $('#OfficeLocation').attr('disabled', 'disabled')
+</script>
+<script>
+    $('#PhoneExt').addClass('form-control'); $('#PhoneExt').attr('disabled', 'disabled')
+</script>
+<script>
+    $('#PositionTitle').addClass('form-control'); $('#PositionTitle').attr('disabled', 'disabled')
+</script>
+<script>
+    jQuery('.datepicker').datepicker();
+</script>
+<script>
+    $("#btnApprove").click(function () {
+        $('#OfficeLocation').prop('disabled', false);
+        $('#Credentials').prop('disabled', false);
+        $('#CompanyId').prop('disabled', false);
+        $('#PhoneExt').prop('disabled', false);
+        $('#PositionTitle').prop('disabled', false);
+    });
+</script>
+
+

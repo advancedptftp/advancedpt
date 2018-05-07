@@ -1,0 +1,70 @@
+﻿@model IEnumerable<DataLayer.Models.tblTCIAAssessment>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModifiedOn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tblMPatient.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tblMUser.UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tblMUser1.UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tblTCIAObjective.ICD_Codes)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tblTCIASubjective.ComplainsIds)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreatedOn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ModifiedOn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tblMPatient.FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tblMUser.UserName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tblMUser1.UserName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tblTCIAObjective.ICD_Codes)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tblTCIASubjective.ComplainsIds)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Assessment_Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Assessment_Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Assessment_Id })
+        </td>
+    </tr>
+}
+
+</table>

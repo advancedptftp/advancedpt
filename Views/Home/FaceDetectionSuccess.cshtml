@@ -1,0 +1,54 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    @*<meta name="viewport" content="width=device-width" />*@
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="http://karmickproduction.com/designer/advanced/html/favicon.png">
+    <link href="~/Content/style1.css" rel="stylesheet" />
+    <link href="~/fonts/fonts.css" rel="stylesheet" />
+    <title>FaceDetectionSuccess</title>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery.mask.js"></script>
+
+</head>
+@using (Html.BeginForm("FaceDetectionSuccess", "Home", FormMethod.Post, new { @class = "login" }))
+{
+
+    <body>
+        <div class="logo"><img src="~/Images/logo.png" alt="" /></div>
+        @*<div class="enrollbutt">
+            <input type="button" class="enrollbu" value="Enroll Your Face" />
+            <div class="ortext">OR</div>
+
+        </div>*@
+        <div class="maintext">
+            Please provide your
+            <span>Social Security Number</span>
+        </div>
+        
+        <input type="text" id="SecurityNumber" name="SecurityNumber" class="imputfield PassFormate">
+        <input type="submit" class="okbutt" value="OK">
+       <br />
+        @if (ViewBag.Error != null)
+        {
+            <span style="color:red; font-size:50px;">@ViewBag.Error</span>
+        }
+    </body>
+    
+}
+</html>
+<script>
+    $(document).ready(function () {
+        $('.PassFormate').mask('000-00-0000');
+            //,{
+            //'translation': {
+            //    A: { pattern: /[A-Za-z0-9]/ }
+            //}
+        //});
+    });    
+</script>

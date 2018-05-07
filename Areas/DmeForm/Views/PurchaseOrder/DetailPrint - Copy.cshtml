@@ -1,0 +1,212 @@
+﻿@model DataLayer.Models.PurchaseOrderDetails
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>myadvancedpt.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="favicon.png">
+
+    <!-- Bootstrap core CSS -->
+
+
+</head>
+
+<body>
+
+
+    <div style="width:700px; margin:0 auto; padding:5px 0; font-family:verdana; font-size:13px; color:#333;">
+
+
+        <div style="padding:0 0 10px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="37%">
+                        <h2 style="padding:0; font-size:18px; margin:0;">
+                            PURCHASE ORDER <br>
+                        </h2>
+                    </td>
+                    <td width="63%">
+
+                        @*<table width="100%" border="0">
+                            <tr>
+                                <td>
+                                    <input type="checkbox">&nbsp;@ViewBag.Location_Name <br>
+
+                                </td>
+
+                            </tr>
+                        </table>*@
+
+
+
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <div style="padding:0 0 10px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="23%">
+                        <img style="display:none;" src="http://expert-dotnet-developers.com/ptotslp/Images/logo.png" style="width:150px;" alt="" />
+                        <span style="color:blue;">
+                            Advanced Physical Therapy of Central Florida, Inc.<br/>
+                            8585 SW Highway 200, Unit 8<br />
+                            Ocala, FL  34481
+                        </span>
+                    </td>
+                    <td width="37%" style="vertical-align:top;">
+                        <table width="100%" border="0">
+                            <tr>
+                                <td width="12%"><img style="display:none;" src="@Url.Content("~/images/vendor_pic.jpg")" alt="" /></td>
+                                <td width="88%">
+                                    <div style="padding:0px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:14px;">
+                                        @ViewBag.Vendor_Name
+                                    </div>
+                                    <div style="padding:0px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:14px;">
+                                        @ViewBag.Street_Address
+                                    </div>
+                                    <div style="padding:0px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:14px;">
+                                        @ViewBag.VendorState
+                                    </div>
+                                    <div style="padding:0px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:14px;">
+                                        @ViewBag.VendorCity
+                                    </div>
+                                    <div style="padding:0px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:14px;">
+                                        @ViewBag.ZIP_Code
+                                    </div>
+                                    
+                                </td>
+                            </tr>
+                        </table>
+
+                    </td>
+                    <td width="40%" style="vertical-align:top; padding-left:10px;">
+                        <table width="100%" border="0">
+                            <tr>
+                                <td width="12%"><img style="display:none;" src="@Url.Content("~/images/shiftto.jpg")" alt="" /></td>
+                                <td width="88%">
+                                        @if (!String.IsNullOrEmpty(ViewBag.Shipping_Name))
+                                    {
+                                    <div style="padding:0px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:14px;">
+                                        @ViewBag.Shipping_Name
+                                    </div>
+                                        }
+                                    @if (!String.IsNullOrEmpty(ViewBag.StreetAddress))
+                                    {
+                                        <div style="padding:0px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:14px;">
+                                        @ViewBag.StreetAddress
+                                    </div>
+                                    <div style="padding:0px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:14px;">
+                                        @ViewBag.State
+                                    </div>
+                                    <div style="padding:0px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:14px;">
+                                        @ViewBag.City
+                                    </div>
+                                    <div style="padding:0px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:14px;">
+                                        @ViewBag.ZIP_Code1
+                                    </div>
+                                    }
+                                    
+
+                                </td>
+                            </tr>
+                        </table>
+
+
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+
+
+
+
+
+        <div style="padding:0 0 5px 0;">
+            <table border="0" width="100%">
+                <tbody>
+                    @for (int i = 0; i < Model.ItemDetails.Count; i++)
+                    {
+                        <tr>
+                            <td style="padding-right:10px;" width="32%">
+                                <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">
+                                    @Html.DisplayFor(m => m.ItemDetails[i].Item_Name, new { @class = "applitextfield1", @style = "width:100%; margin:0;" })
+                                </div>
+                                Item
+                            </td>
+                            <td style="padding-right:10px;" width="37%">
+                                <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">
+                                    @Html.DisplayFor(m => m.ItemDetails[i].Item_Qty, new { @class = "applitextfield1", @style = "width:100%; margin:0;" })
+                                </div>
+                                Quantity
+                            </td>
+                            @*<td style="padding-right:10px;" width="31%" valign="top">
+                                <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">
+                                    @Html.DisplayFor(m => m.ItemDetails[i].Measure_Unit, new { @class = "applitextfield1", @style = "width:100%; margin:0;" })
+                                </div>
+                                Unit of Measure
+                            </td>*@
+                        </tr>
+                        <script> counter += 1; </script>
+
+                    }
+                </tbody>
+            </table>
+
+        </div>
+        <div style="padding:0 0 5px 0;">
+            <table border="0" width="100%">
+                <tbody>
+                    @for (int i = 0; i < Model.ItemDetails.Count; i++)
+                    {
+                        <tr>
+
+
+                            <td style="padding-right:10px;" width="31%" valign="top">
+                                <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">
+                                    @Html.DisplayFor(m => m.ItemDetails[i].Item_Desc, new { @class = "applitextfield1", @style = "width:100%; margin:0;" })
+                                </div>
+                                Description
+                            </td>
+                        </tr>
+                        <script> counter += 1; </script>
+
+                    }
+                </tbody>
+            </table>
+
+        </div>
+        <div style="padding:0 0 5px 0;">
+            <table border="0" width="100%">
+                <tbody>
+                    @for (int i = 0; i < Model.ItemDetails.Count; i++)
+                    {
+                        <tr>
+                            <td style="padding-right:10px;" width="37%">
+                                <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">
+                                    @Html.DisplayFor(m => m.ItemDetails[i].Unit_Price, new { @class = "applitextfield1", @style = "width:100%; margin:0;" })
+                                </div>
+                                Unit Price
+                            </td>
+                            <td style="padding-right:10px;" width="31%" valign="top">
+                                <div style="padding:8px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">
+                                    @Html.DisplayFor(m => m.ItemDetails[i].Line_Total_Price, new { @class = "applitextfield1", @style = "width:100%; margin:0;" })
+                                </div>
+                                Extended Price
+                            </td>
+                        </tr>
+                        <script> counter += 1; </script>
+
+                    }
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

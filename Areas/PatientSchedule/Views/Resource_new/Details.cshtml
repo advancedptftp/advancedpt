@@ -1,0 +1,1158 @@
+﻿@model DataLayer.Models.tblMPatSchdResource_New
+@using DataLayer
+@{
+    ViewBag.Title = "Create";
+    //var _SStart = Model.ShiftStart;
+    //var _SEnd = Model.ShiftEnd;
+    //var _LunchSt = Model.LunchStart;
+    //var _LunchE = Model.LunchEnd;
+    //var _ClientMinute = Model.MassageClientMinute;
+}
+
+
+<style>
+    #slider-range, #SlideMax {
+        width: 400px;
+    }
+
+    #slider-range, #time, #SlideMax, table {
+        margin: 10px;
+        display: block;
+    }
+
+    #slider-range1, #SlideMax1 {
+        width: 400px;
+    }
+
+    #slider-range1, #time1, #SlideMax1, table {
+        margin: 10px;
+        display: block;
+    }
+</style>
+
+<section class="bodyinner">
+    <div class="container">
+        @*<div class="bodyleft">
+
+                @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+            </div>*@
+        @*<div class="bodyright">*@
+
+        <div class="report-form clearfix">
+            <h2 class="text-center">Resource Details</h2>
+            <br /><br />
+            @using (Html.BeginForm("Details", "Resource_new", FormMethod.Post, new { name = "Resource", id = "Resource" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+
+                if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+                <div class="row">
+                    @*@Html.HiddenFor(e => e.Resource1AppointmentType)*@
+                    @Html.HiddenFor(e => e.AppointmentType)
+                    @Html.HiddenFor(e => e.Location)
+                    @Html.HiddenFor(e => e.Resource1)
+                    @Html.HiddenFor(e => e.Resource2)
+
+                    @Html.HiddenFor(e => e.Resource_Id)
+                    @Html.HiddenFor(e => e.CreatedBy)
+                    @Html.HiddenFor(e => e.CreatedOn)
+
+
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <div class="col-sm-12 form-group">
+                            <div class="col-sm-6 form-group">
+                                @Html.Label("Location")
+                                @Html.DropDownList("Location1", ViewBag.Location as SelectList, new { @class = "form-control", @disabled = "disabled" })
+                                @*@Html.DropDownListFor(e => e.Location, (SelectList)ViewBag.Location, new { @class = "form-control", @disabled = "disabled" })*@
+                            </div>
+                            <div class="col-sm-7 form-group">
+                                @Html.Label("Appointment Types")
+                                @Html.DropDownList("AppointmentTypes", ViewBag.AppointmentType as SelectList, new { @class = "form-control", @disabled = "disabled" })
+                                @* @Html.DropDownList("Appointment Types")*@
+                            </div>
+
+                            <div class="col-sm-7 form-group">
+                                @Html.Label("Resource")
+                                @Html.DropDownListFor(m => m.ResourceType, from Resource Resou in Enum.GetValues(typeof(Resource))
+                                                                           select new SelectListItem() { Text = Resou.ToCustomString(), Value = ((int)Resou).ToCustomString() }, new { @class = "form-control", @disabled = "disabled" })
+                                <span id="Resou" class="validateMsg"></span>
+                            </div>
+                            <div class="col-sm-7 form-group">
+                                <div class="headrightcont" id="TECH"></div>
+                                <div class="headrightcont" id="PT"></div>
+                                <div class="headrightcont" id="PTA"></div>
+                                <div class="headrightcont" id="LMT"></div>
+                                <div class="headrightcont" id="PersonalTrainerOnly"></div>
+                                @Html.DropDownList("Resource22", null, new { @class = "form-control", @disabled = "disabled" })
+
+                                <span id="Res_ource1" class="validateMsg"></span>
+                                <span id="Res_ource1msg" class="validateMsg"></span>
+                            </div>
+
+                            <div class="col-sm-7 form-group">
+                                <div class="headrightcont" id="PTA1"></div>
+                                <div class="headrightcont" id="PT1"></div>
+                                @Html.DropDownList("Resource11", null, new { @class = "form-control", @disabled = "disabled" })
+                                @*<select id="Resource1"></select>*@
+                                @*@Html.DropDownListFor(m => m.Resource1, from Resource Resou in Enum.GetValues(typeof(Resource))
+                                    select new SelectListItem() { Text = Resou.ToCustomString(), Value = ((int)Resou).ToCustomString() }, new { @class = "form-control" })*@
+                                @*@Html.DropDownListFor(m => m.Resource2, from Resource Resou in Enum.GetValues(typeof(Resource))
+                                    select new SelectListItem() { Text = Resou.ToCustomString(), Value = ((int)Resou).ToCustomString() }, new { @class = "form-control" })*@
+
+                                @*@Html.DropDownListFor(m => m.tblMUser.Password, from Resource Resou in Enum.GetValues(typeof(Resource))
+                                    select new SelectListItem() { Text = Resou.ToCustomString(), Value = ((int)Resou).ToCustomString() }, new { @class = "form-control" })*@
+
+                                @*<span id="Res_ource" class="validateMsg"></span>*@
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-sm-12 col-md-12 form-group">
+                            <div class="row">
+                                <div class="col-sm-6 form-group">
+                                    @Html.Label("Is Active")
+                                    @Html.CheckBoxFor(model => model.IsActive, new { @class = "checkbox-inline", @checked = true, @disabled = "disabled" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-12 form-group">
+                            <div class="col-sm-6 form-group" id="PatientVisit">
+
+                                <label>Maximum Number of Patient Visit</label>
+                                @Html.TextBoxFor(m => m.MaxNoPatientVisit, new { @class = "form-control", @disabled = "disabled" })
+                            </div>
+                            <div class="col-sm-6 form-group" id="ShortName1">
+
+                                <label>Short Name</label>
+                                @Html.TextBoxFor(m => m.ShortName, new { @class = "form-control", @disabled = "disabled" })
+                            </div>
+                        </div>
+
+                        <span id="visit" style="color:red">Please Enter Maximum Number of Patient Visit </span>
+                        <div style="clear:both;"></div>
+
+                    </div>
+
+                </div>
+
+                @*<div class="subbutt">
+                    <input type="submit" onclick="return validateInputs()" value="Save" class="btn btn-orange pull-right" />
+
+                </div>*@
+                <p>@Html.ActionLink("Back to List", "Index")</p>
+            }
+        </div>
+
+        @*</div>*@
+        <div class="clearfix"></div>
+    </div>
+</section>
+<script type="text/javascript">
+    function validateInputs() {
+        var flag = true;
+        var Resource_Type = document.getElementById("ResourceType");
+        var Resource_1 = document.getElementById("Resource11");
+        var Resource_2 = document.getElementById("Resource22");
+        var Resource1Appointment = document.getElementById("#Resource1AppointmentType");
+        //var MassageClientMinute = document.getElementById("#MassageClientMinute");
+        //var minutes = document.getElementById("#minutes");
+        //alert($("#Client").text(totalhours));
+        //alert($("#Client").val());
+        //var t1 = $("#Client").val();
+        //alert($("#MassageClientMinute1").val());
+        //if ($("#MassageClientMinute1").val() > $("#Client").text(totalhours)) {
+        //    alert('ok');
+
+        //    return false;
+        //}
+        if (Resource_Type.value == 0) {
+
+            $("#Resou").show();
+            $("#Resou").text("Please Select Resource type");
+            Resource_Type.focus();
+            flag = false;
+        }
+        else {
+            $("#Resou").hide();
+            $("#Resou").text("");
+        }
+        if (Resource_1.value == 0 && Resource_Type.value != 0) {
+
+            $("#Res_ource").show();
+            $("#Res_ource").text("Please Select Resource");
+            Res_ource.focus();
+            flag = false;
+        }
+        else {
+            $("#Res_ource").hide();
+            $("#Res_ource").text("");
+        }
+        if (Resource_Type.value == 2 && Resource_2.value == 0) {
+
+            $("#Res_ource1").show();
+            $("#Res_ource1").text("Please Select Tech");
+            Res_ource1.focus();
+            flag = false;
+        }
+        else {
+            $("#Res_ource1").hide();
+            $("#Res_ource1").text("");
+        }
+        if (Resource_Type.value == 4 && Resource_2.value == 0) {
+            // alert("ok");
+            $("#Res_ource1msg").show();
+            $("#Res_ource1msg").text("Please Select Tech");
+            Res_ource1.focus();
+            flag = false;
+        }
+        else {
+            $("#Res_ource1msg").hide();
+            $("#Res_ource1msg").text("");
+        }
+        //if (MassageClientMinute.value > minutes.value)  {
+        //    alert("ok");
+        //    $("#MassageC").show();
+        //    $("#MassageC").text("Please Select Tech");
+        //    MassageC.focus();
+        //    flag = false;
+        //}
+        //else {
+        //    $("#MassageC").hide();
+        //    $("#MassageC").text("");
+        //}
+        if (Resource_Type.value == 1) {
+            // alert($("#MaxNoPatientVisit").val());
+
+            if ($("#MaxNoPatientVisit").val() == "") {
+                $("#visit").show();
+                flag = false;
+            }
+        }
+        else {
+            $("#visit").hide();
+        }
+
+        if (Resource_Type.value == 4 || Resource_Type.value == 2) {
+            //alert($("#Resource2AppointmentType").val());
+            getValueUsingClasses1()
+            if ($("#Resource2AppointmentType").val() == "") {
+                // alert("ok")
+                flag = false;
+            }
+        }
+
+        return flag;
+    }
+</script>
+
+
+
+
+<script>
+
+    //$("#Resource").submit(function () {
+    //    return getValueUsingClass();
+    //    getValueUsingClasses();
+
+    //})
+
+    function fnGetRelatedQuestion() {
+
+        $('#Resource22').html("");
+        $('#Resource11').html("");
+
+        debugger;
+        var _ResourceTypeVal = $('#ResourceType').val();
+        var _EmployeeTypeVal1, _EmployeeTypeVal2;
+        if (_ResourceTypeVal == 1) //PT Only
+        {
+            _EmployeeTypeVal1 = 1;
+        }
+        if (_ResourceTypeVal == 2) //PT and Tech Only
+        {
+            _EmployeeTypeVal1 = 1;
+            _EmployeeTypeVal2 = 3;
+        }
+        if (_ResourceTypeVal == 3) //PTA Only
+        {
+            _EmployeeTypeVal1 = 2;
+
+        }
+        if (_ResourceTypeVal == 4) //PTA and Tech Only
+        {
+            _EmployeeTypeVal1 = 2;
+            _EmployeeTypeVal2 = 3;
+        }
+        if (_ResourceTypeVal == 5) //LMT Only
+        {
+            _EmployeeTypeVal1 = 4;
+
+        }
+        if (_ResourceTypeVal == 6) //Personal Trainer Only
+        {
+            _EmployeeTypeVal1 = 5;
+
+        }
+
+        //alert(_EmployeeTypeVal2);
+
+
+
+        if (_EmployeeTypeVal2 == null) {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetResource", "Resource_new")',
+                datatype: "Json",
+                data: { EmpType: _EmployeeTypeVal1, AppointmentId: $('#AppointmentTypes').val(), LocationId: $('#Location').val() },
+                success: function (data) {
+                    var items = '<option value="0">Select a Employee name</option>';
+                    $.each(data, function (i, Related_query) {
+
+                        items += "<option value='" + Related_query.id + "'>" + Related_query.firstname + ' ' + Related_query.Last_Name + "</option>";
+
+                    });
+                    //alert(items);
+                    $('#Resource22').html(items);
+
+                }
+
+            });
+        }
+        else {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetResource", "Resource_new")',
+                datatype: "Json",
+                data: { EmpType: _EmployeeTypeVal1, AppointmentId: $('#AppointmentTypes').val(), LocationId: $('#Location').val() },
+                success: function (data) {
+                    var items = '<option value="0">Select a Employee name</option>';
+                    $.each(data, function (i, Related_query) {
+
+                        items += "<option value='" + Related_query.id + "'>" + Related_query.firstname + ' ' + Related_query.Last_Name + "</option>";
+
+                    });
+                    //alert(items);
+                    $('#Resource11').html(items);
+
+                }
+
+            });
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetResource", "Resource_new")',
+                datatype: "Json",
+                data: { EmpType: _EmployeeTypeVal2, AppointmentId: $('#AppointmentTypes').val(), LocationId: $('#Location').val() },
+                success: function (data) {
+                    var items = '<option value="0">Select a Employee name</option>';
+                    $.each(data, function (i, Related_query) {
+
+                        items += "<option value='" + Related_query.id + "'>" + Related_query.firstname + ' ' + Related_query.Last_Name + "</option>";
+
+                    });
+                    //alert(items);
+                    $('#Resource22').html(items);
+                }
+
+            });
+        }
+
+    }
+
+    $(function () {
+        // $('#Resource1').html("");
+
+        debugger;
+        //fnGetRelatedQuestion();
+
+        var Resource1Id = $("#Resource1").val();
+        var Resource2Id = $("#Resource2").val();
+        var ApptypeId = $("#AppointmentType").val();
+        var LocationId = $("#Location").val();
+
+        $('#AppointmentTypes').val(ApptypeId).attr("selected", "selected");
+        $('#Location1').val(LocationId).attr("selected", "selected");
+
+
+        //alert('Resource1Id ' + ' ' + Resource1Id + ' ');
+        //alert('Resource2Id ' + ' ' + Resource2Id + ' ');
+
+
+        if (Resource1Id != null) {
+            $("#Resource11").val(Resource1Id).find("option[value=" + Resource1Id + "]").attr('selected', true);
+        }
+        if (Resource2Id != null) {
+            if (Resource2Id != "")
+                {
+                $("#Resource22").val(Resource2Id).find("option[value=" + Resource2Id + "]").attr('selected', true);
+            }
+        }
+
+
+        if ($("#ResourceType").val() == 2) {
+
+            document.getElementById("TECH").innerHTML = "Select tech";
+            document.getElementById("PT1").innerHTML = "Select P.T";
+            $("#Resource11").show();
+            $("#Resource22").show();
+            $("#TECH").show();
+            $("#PT1").show();
+            $("#PT").hide();
+            $("#PTA").hide();
+            $("#PTA1").hide();
+            $("#LMT").hide();
+            $("#Personal_Trainer").hide();
+            $("#PatientVisit").hide();
+            $("#PersonalTrainerOnly").hide();
+
+        }
+        else if ($("#ResourceType").val() == 1) {
+
+            document.getElementById("PT").innerHTML = "Select P.T";
+
+            $("#Resource22").show();
+            $("#Resource11").hide();
+            $("#TECH").hide();
+            $("#PT").show();
+            $("#PT1").hide();
+            $("#PTA1").hide();
+            $("#PTA").hide();
+            $("#LMT").hide();
+            $("#PatientVisit").show();
+            $("#Personal_Trainer").hide();
+            $("#PersonalTrainerOnly").hide();
+        }
+        else if ($("#ResourceType").val() == 3) {
+
+            document.getElementById("PTA").innerHTML = "Select P.T.A";
+            $("#Resource22").show();
+            $("#Resource11").hide();
+            $("#TECH").hide();
+            $("#PTA").show();
+            $("#PT1").hide();
+            $("#PTA1").hide();
+            $("#PT").hide();
+            $("#LMT").hide();
+            $("#PatientVisit").hide();
+            $("#PersonalTrainerOnly").hide();
+        }
+        else if ($("#ResourceType").val() == 4) {
+
+            document.getElementById("PTA1").innerHTML = "Select P.T.A";
+            document.getElementById("TECH").innerHTML = "Select tech";
+            $("#Resource11").show();
+            $("#Resource22").show();
+            $("#PT").hide();
+            $("#TECH").show();
+            $("#PTA1").show();
+            $("#PT").hide();
+            $("#PT1").hide();
+            $("#PTA").hide();
+            $("#LMT").hide();
+            $("#PatientVisit").hide();
+            $("#PersonalTrainerOnly").hide();
+        }
+        else if ($("#ResourceType").val() == 5) {
+
+            document.getElementById("LMT").innerHTML = "Select L.M.T";
+            $("#Resource22").show();
+            $("#Resource11").hide();
+            $("#PT").hide();
+            $("#TECH").hide();
+            $("#PT1").hide();
+            $("#PTA1").hide();
+            $("#PTA").hide();
+            $("#LMT").show();
+            $("#PatientVisit").hide();
+            $("#PersonalTrainerOnly").hide();
+
+        }
+        else if ($("#ResourceType").val() == 6) {
+
+            document.getElementById("PersonalTrainerOnly").innerHTML = "Select Personal Trainer Only";
+            $("#Resource22").show();
+            $("#Resource11").hide();
+            $("#PT").hide();
+            $("#TECH").hide();
+            $("#PT1").hide();
+            $("#PTA1").hide();
+            $("#PTA").hide();
+            $("#LMT").hide();
+            $("#PersonalTrainerOnly").show();
+            $("#PatientVisit").hide();
+        }
+        $("#visit").hide();
+    });
+
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        //// fnGetRelatedQuestion();
+        //// fnGetRelatedQuestion1();
+
+        debugger;
+        if ($("#ResourceType").val() == 2) {
+
+            document.getElementById("TECH").innerHTML = "Select tech";
+            document.getElementById("PT1").innerHTML = "Select P.T";
+            $("#Resource11").show();
+            $("#Resource22").show();
+            $("#TECH").show();
+            $("#PT1").show();
+            $("#PT").hide();
+            $("#PTA").hide();
+            $("#PTA1").hide();
+            $("#LMT").hide();
+            $("#Personal_Trainer").hide();
+            $("#PatientVisit").hide();
+            $("#PersonalTrainerOnly").hide();
+
+        }
+        else if ($("#ResourceType").val() == 1) {
+
+            document.getElementById("PT").innerHTML = "Select P.T";
+
+            $("#Resource22").show();
+            $("#Resource11").hide();
+            $("#TECH").hide();
+            $("#PT").show();
+            $("#PT1").hide();
+            $("#PTA1").hide();
+            $("#PTA").hide();
+            $("#LMT").hide();
+            $("#PatientVisit").show();
+            $("#Personal_Trainer").hide();
+            $("#PersonalTrainerOnly").hide();
+        }
+        else if ($("#ResourceType").val() == 3) {
+
+            document.getElementById("PTA").innerHTML = "Select P.T.A";
+            $("#Resource22").show();
+            $("#Resource11").hide();
+            $("#TECH").hide();
+            $("#PTA").show();
+            $("#PT1").hide();
+            $("#PTA1").hide();
+            $("#PT").hide();
+            $("#LMT").hide();
+            $("#PatientVisit").hide();
+            $("#PersonalTrainerOnly").hide();
+        }
+        else if ($("#ResourceType").val() == 4) {
+
+            document.getElementById("PTA1").innerHTML = "Select P.T.A";
+            document.getElementById("TECH").innerHTML = "Select tech";
+            $("#Resource11").show();
+            $("#Resource22").show();
+            $("#PT").hide();
+            $("#TECH").show();
+            $("#PTA1").show();
+            $("#PT").hide();
+            $("#PT1").hide();
+            $("#PTA").hide();
+            $("#LMT").hide();
+            $("#PatientVisit").hide();
+            $("#PersonalTrainerOnly").hide();
+        }
+        else if ($("#ResourceType").val() == 5) {
+
+            document.getElementById("LMT").innerHTML = "Select L.M.T";
+            $("#Resource22").show();
+            $("#Resource11").hide();
+            $("#PT").hide();
+            $("#TECH").hide();
+            $("#PT1").hide();
+            $("#PTA1").hide();
+            $("#PTA").hide();
+            $("#LMT").show();
+            $("#PatientVisit").hide();
+            $("#PersonalTrainerOnly").hide();
+
+        }
+        else if ($("#ResourceType").val() == 6) {
+
+            document.getElementById("PersonalTrainerOnly").innerHTML = "Select Personal Trainer Only";
+            $("#Resource22").show();
+            $("#Resource11").hide();
+            $("#PT").hide();
+            $("#TECH").hide();
+            $("#PT1").hide();
+            $("#PTA1").hide();
+            $("#PTA").hide();
+            $("#LMT").hide();
+            $("#PersonalTrainerOnly").show();
+            $("#PatientVisit").hide();
+        }
+        $("#visit").hide();
+        //debugger;
+        fnGetRelatedQuestion();
+
+        ////fnSetResource();
+
+
+    });
+</script>
+
+<script>
+
+
+    var startTime;
+    var endTime;
+    var val0;
+    var val1;
+    var val3;
+    var val4;
+
+    $("#slider-range").slider({
+        range: true, min: 0, max: 1440, values: [540, 1020], step: 1, slide: slideTime, change: checkMax
+    });
+
+    function SetLunchTime() {
+        // alert('inside SetLunchTime');
+
+        //val0 = $("#slider-range1").slider("values", 0);
+        //val1 = $("#slider-range").slider("values", 1);
+        //minutes0 = parseInt(val0 % 60, 10);
+        //hours0 = parseInt(val0 / 60 % 24, 10);
+        //minutes1 = parseInt(val1 % 60, 10);
+        //hours1 = parseInt(val1 / 60 % 24, 10);
+        //startTime1 = getTime1(hours0, minutes0);
+        //endTime1 = getTime1(hours1, minutes1);
+        //$("#ModifiedOn").val(startTime1 + ' - ' + endTime1);
+
+        //alert(val1);
+        $("#slider-range1").slider({
+            range: true, min: val0, max: val1, values: [540, 1020], step: 1, slide: SetLunchSlideTime, change: checkMax1
+        });
+    }
+
+    function SetLunchSlideTime() {
+        val3 = $("#slider-range1").slider("values", 0),
+        val4 = $("#slider-range1").slider("values", 1),
+          minutes0 = parseInt(val3 % 60, 10),
+          hours0 = parseInt(val3 / 60 % 24, 10),
+          minutes1 = parseInt(val4 % 60, 10),
+          hours1 = parseInt(val4 / 60 % 24, 10);
+        startTime1 = getTime1(hours0, minutes0);
+        endTime1 = getTime1(hours1, minutes1);
+        star1 = getTime3(hours0, minutes0);
+        end1 = getTime3(hours1, minutes1);
+        //$("#tblMEmployee_Address1").val(startTime1);
+        //$("#tblMEmployee_Address2").val(endTime1);
+        //$("#LunchStart").val(star1);
+        //$("#LunchEnd").val(end1);
+        $("#LunchStart").val(star1);
+        $("#LunchEnd").val(end1);
+        $("#LunchStart").attr('value', star1);
+        $("#LunchEnd").attr('value', end1);
+    }
+
+    function TestOnTextChange(obj) {
+        $('#' + obj.id).attr('value', $('#' + obj.id).val());
+    }
+    //$("#slider-range").change(function () {
+
+    //    val0 = $("#slider-range").slider("values", 0);
+    //    val1 = $("#slider-range").slider("values", 1);
+    //    alert('val' + val0);
+
+    //    var minutes0 = parseInt(val0 % 60, 10),
+    //     hours0 = parseInt(val0 / 60 % 24, 10),
+    //     minutes1 = parseInt(val1 % 60, 10),
+    //     hours1 = parseInt(val1 / 60 % 24, 10);
+    //    startTime = getTime(hours0, minutes0);
+    //    endTime = getTime(hours1, minutes1);
+    //    $("#time").val(startTime);
+    //    $("#ModifiedBy").val(endTime);
+
+    //    console.log(startTime);
+    //    console.log(endTime);
+
+
+    //});
+
+    function slideTime(event, ui) {
+        val0 = $("#slider-range").slider("values", 0);
+        val1 = $("#slider-range").slider("values", 1);
+        var minutes0 = parseInt(val0 % 60, 10),
+         hours0 = parseInt(val0 / 60 % 24, 10),
+         minutes1 = parseInt(val1 % 60, 10),
+         hours1 = parseInt(val1 / 60 % 24, 10);
+        startTime = getTime(hours0, minutes0);
+        endTime = getTime(hours1, minutes1);
+        start = getTime2(hours0, minutes0);
+        end = getTime2(hours1, minutes1);
+        //alert(startTime);
+        //alert(endTime);
+        //$("#ShiftStart").val(start);
+        //$("#ShiftEnd").val(end);
+        //$("#tblMEmployee1_Address1").val(startTime);
+        //$("#tblMEmployee1_Address2").val(endTime);
+        $("#ShiftStart").val(start);
+        $("#ShiftEnd").val(end);
+        $("#LunchStart").val(startTime);
+        $("#LunchEnd").val(endTime);
+        $("#ShiftStart").attr('value', start);
+        $("#ShiftEnd").attr('value', end);
+        SetLunchTime();
+    }
+    function getTime(hours, minutes) {
+        var time = null;
+        minutes = minutes + "";
+        if (hours < 12) { time = "AM"; }
+        else { time = "PM"; }
+        if (hours == 0) { hours = 12; }
+        if (hours > 12) { hours = hours - 12; }
+        if (minutes.length == 1) { minutes = "0" + minutes; }
+        var strhour = '';
+        if (hours <= 9) strhour = '0' + hours;
+        else strhour = hours;
+        var strminute = '';
+        if (minutes < 10) strminute = '0' + minutes;
+        else strminute = minutes;
+        return strhour + ":" + strminute + " " + time;
+    }
+    function getTime2(hours, minutes) {
+        //var time = null;
+        //minutes = minutes + "";
+        //if (hours < 12) { time = "AM"; }
+        //else { time = "PM"; }
+        //if (hours == 0) { hours = 12; }
+        //if (hours > 12) { hours = hours - 12; }
+        //if (minutes.length == 1) { minutes = "0" + minutes; }
+        var strhour = '';
+        if (hours <= 9) strhour = '0' + hours;
+        else strhour = hours;
+        var strminute = '';
+        if (minutes < 10) strminute = '0' + minutes;
+        else strminute = minutes;
+        //return strhour + ":" + strminute + " " + time;
+        return strhour + ":" + strminute;// + " " + time;
+    }
+    function checkMax() {
+        var size = $("#slider-range").slider("values", 1) - $("#slider-range").slider("values", 0);
+        if (size >= 1435) {
+            $("#slider-range div")
+                .addClass("ui-state-error")
+                .removeClass("ui-widget-header");
+            $("#scheduleSubmit")
+                .attr("disabled", "disabled")
+                .addClass("ui-state-disabled")
+                .removeClass("ui-state-default");
+            // $("#SlideMax").text("Cannot be more than 24 hours");
+        }
+        else {
+            $("#slider-range div")
+                .addClass("ui-widget-header")
+                .removeClass("ui-state-error");
+            $("#scheduleSubmit")
+                .removeAttr("disabled")
+                .addClass("ui-state-default")
+                .removeClass("ui-state-disabled");
+            $("#SlideMax").text("");
+        }
+    }
+
+    slideTime();
+
+
+    var startTime1;
+    var endTime1;
+    //$("#scheduleSubmit").on('click', function () {
+    //    console.log(startTime);
+    //    console.log(endTime);
+
+    //    $("#slider-range1").slider({
+    //        range: true, min: val0 , max: val1, values: [540, 1020], step: 5, slide: slideTime1, change: checkMax1
+    //    });
+    //});
+
+    //$("#slider-range1").slider({
+    //    range: true, min: val0, max: val1 + 5, values: [540, 1020], step: 5, slide: slideTime1, change: checkMax1
+    //});
+
+
+    //$(".ui-widget-header").bind("change", function (event, ui) {
+    //    alert('ok');
+    //});
+    //$("#slider-range").on("change", ".ui-widget-header", function () {
+    //    alert('ok');
+    //});
+
+    //function slideTime1(event, ui) {
+    //    var val0 = $("#slider-range1").slider("values", 0),
+    //        val1 = $("#slider-range1").slider("values", 1),
+    //        minutes0 = parseInt(val0 % 60, 10),
+    //        hours0 = parseInt(val0 / 60 % 24, 10),
+    //        minutes1 = parseInt(val1 % 60, 10),
+    //        hours1 = parseInt(val1 / 60 % 24, 10);
+    //    startTime1 = getTime1(hours0, minutes0);
+    //    endTime1 = getTime1(hours1, minutes1);
+    //    $("#ModifiedOn").val(startTime1);
+    //    $("#CreatedBy").val(endTime1);
+    //}
+    function getTime1(hours, minutes) {
+        var time = null;
+        minutes = minutes + "";
+        if (hours < 12) { time = "AM"; }
+        else { time = "PM"; }
+        if (hours == 0) { hours = 12; }
+        if (hours > 12) { hours = hours - 12; }
+        if (minutes.length == 1) { minutes = "0" + minutes; }
+        var strhour = '';
+        if (hours <= 9) strhour = '0' + hours;
+        else strhour = hours;
+        var strminute = '';
+        if (minutes < 10) strminute = '0' + minutes;
+        else strminute = minutes;
+        return strhour + ":" + strminute + " " + time;
+        //return hours + ":" + minutes
+    }
+    function getTime3(hours, minutes) {
+        //var time = null;
+        //minutes = minutes + "";
+        //if (hours < 12) { time = "AM"; }
+        //else { time = "PM"; }
+        //if (hours == 0) { hours = 12; }
+        //if (hours > 12) { hours = hours - 12; }
+        //if (minutes.length == 1) { minutes = "0" + minutes; }
+        var strhour = '';
+        if (hours <= 9) strhour = '0' + hours;
+        else strhour = hours;
+        var strminute = '';
+        if (minutes < 10) strminute = '0' + minutes;
+        else strminute = minutes;
+        return strhour + ":" + strminute;// + " " + time;
+    }
+    function checkMax1() {
+        var size = $("#slider-range1").slider("values", startTime) - $("#slider-range1").slider("values", endTime);
+        if (size >= 600) {
+            $("#slider-range1 div")
+                .addClass("ui-state-error")
+                .removeClass("ui-widget-header");
+
+            $("#SlideMax1").text("Cannot be more than 24 hours");
+        }
+        else {
+            $("#slider-range1 div")
+                .addClass("ui-widget-header")
+                .removeClass("ui-state-error");
+
+            $("#SlideMax1").text("");
+        }
+    }
+
+    slideTime();
+
+
+
+    $(function () {
+        $("#Location").change(function () {
+            fnGetRelatedQuestion();
+
+        });
+        $("#AppointmentTypes").change(function () {
+            fnGetRelatedQuestion();
+
+        });
+        $("#ResourceType").change(function () {
+            debugger;
+            var status = this.value;
+            //alert(status);
+            if (status == "1") {
+                //$("#AppointmentMinute").val("test");
+                document.getElementById("PT").innerHTML = "Select P.T";
+                $("#Resource22").show();
+                $("#Resource11").hide();
+                $("#TECH").hide();
+                $("#PT").show();
+                $("#PT1").hide();
+                $("#PTA1").hide();
+                $("#PTA").hide();
+                //$("#tblMUser_MobNo").hide();
+                $("#LMT").hide();
+                //$("#tblMUser_CreatedOn").hide();
+                $("#PersonalTrainerOnly").hide();
+                //$("#tblMUser_Password").hide();
+                $("#Massage").hide();
+                $("#Personal_Trainer").hide();
+                $("#Appointment").hide();
+                $("#PatientVisit").show();
+                //$("#ShortName").val()
+                $("#Resource22").change(function () {
+                    //var status = this.value;
+                    //alert('ok');
+                    fnGetRelatedQuestion2();
+                });
+
+            }
+
+            else if (status == "2") {
+                debugger;
+                document.getElementById("PT1").innerHTML = "Select P.T";
+                document.getElementById("TECH").innerHTML = "Select tech";
+                $("#Resource11").show();
+                $("#Resource22").show();
+                $("#TECH").show();
+                $("#PT1").show();
+                $("#PT").hide();
+                $("#PTA").hide();
+                $("#PTA1").hide();
+                //$("#tblMUser_Email").show();
+                //$("#tblMUser_MobNo").hide();
+                $("#LMT").hide();
+                //$("#tblMUser_CreatedOn").hide();
+                $("#PersonalTrainerOnly").hide();
+                // $("#tblMUser_Password").hide();
+                $("#Massage").show();
+                $("#Personal_Trainer").hide();
+                $("#Appointment").show();
+                $("#PatientVisit").hide();
+                $("#Resource22").change(function () {
+                    //var status = this.value;
+                    //alert('ok');
+                    fnGetRelatedQuestion2();
+                });
+            }
+            else if (status == "3") {
+                document.getElementById("PTA").innerHTML = "Select P.T.A";
+                //document.getElementById("Related_query4").innerHTML = "Select tech";
+                // $("#tblMUser_MobNo").show();
+                $("#Resource22").show();
+                $("#Resource11").hide();
+                $("#TECH").hide();
+                $("#PTA").show();
+                $("#PT1").hide();
+                $("#PTA1").hide();
+                $("#PT").hide();
+                $("#LMT").hide();
+                //$("#tblMUser_CreatedOn").hide();
+                $("#PersonalTrainerOnly").hide();
+                //$("#tblMUser_Password").hide();
+                $("#Massage").hide();
+                $("#Appointment").hide();
+                $("#PatientVisit").hide();
+                $("#Resource11").change(function () {
+                    //var status = this.value;
+                    //alert('ok');
+                    fnGetRelatedQuestion2();
+                });
+            }
+
+            else if (status == "4") {
+                document.getElementById("PTA1").innerHTML = "Select P.T.A";
+                document.getElementById("TECH").innerHTML = "Select tech";
+                //$("#tblMUser_MobNo").show();
+                $("#Resource11").show();
+                $("#Resource22").show();
+                $("#PT").hide();
+                $("#TECH").show();
+                $("#PTA1").show();
+                $("#PT").hide();
+                $("#PT1").hide();
+                $("#PTA").hide();
+                $("#LMT").hide();
+                //$("#tblMUser_CreatedOn").hide();
+                $("#PersonalTrainerOnly").hide();
+                //$("#tblMUser_Password").hide();
+                $("#Massage").show();
+                $("#Appointment").show();
+                $("#PatientVisit").hide();
+                $("#Resource22").change(function () {
+                    //var status = this.value;
+                    //alert('ok');
+                    fnGetRelatedQuestion2();
+                });
+
+            }
+            else if (status == "5") {
+                document.getElementById("LMT").innerHTML = "Select L.M.T";
+                // document.getElementById("TECH").innerHTML = "Select tech";
+                //$("#tblMUser_CreatedOn").show();
+                //$("#tblMUser_MobNo").hide();
+                $("#Resource22").show();
+                $("#Resource11").hide();
+                $("#PT").hide();
+                $("#TECH").hide();
+                $("#PT1").hide();
+                $("#PTA1").hide();
+                $("#PTA").hide();
+                $("#LMT").show();
+                $("#PersonalTrainerOnly").hide();
+                //$("#tblMUser_Password").hide();
+                $("#Massage").hide();
+                $("#Appointment").hide();
+                $("#PatientVisit").hide();
+                $("#Resource11").change(function () {
+                    //var status = this.value;
+                    //alert('ok');
+                    fnGetRelatedQuestion2();
+                });
+            }
+            else if (status == "6") {
+                document.getElementById("PersonalTrainerOnly").innerHTML = "Select Personal Trainer Only";
+                // document.getElementById("TECH").innerHTML = "Select tech";
+                $("#Resource22").show();
+                $("#Resource11").hide();
+                //$("#tblMUser_MobNo").hide();
+                //$("#Resource1").hide();
+                //$("#tblMUser_Email").hide();
+                $("#PT").hide();
+                $("#TECH").hide();
+                $("#PT1").hide();
+                $("#PTA1").hide();
+                $("#PTA").hide();
+                $("#LMT").hide();
+                $("#PersonalTrainerOnly").show();
+                $("#Massage").hide();
+                $("#Appointment").hide();
+                $("#PatientVisit").hide();
+                $("#Resource22").change(function () {
+                    //var status = this.value;
+                    //alert('ok');
+                    fnGetRelatedQuestion2();
+                });
+            }
+            fnGetRelatedQuestion();
+
+
+        });
+
+    });
+    $("input:radio[name='IsTechLMT']").change(function () {
+        if ($("input:radio[name='IsTechLMT']:checked").val() == 1) {
+
+
+            $("#minutes1").show();
+
+            var WorkStartTime = $("#ShiftStart").val();
+            var WorkEndTime = $("#ShiftEnd").val();
+
+            var vWorkStartTime = WorkStartTime.split(':');
+            var vWH = parseInt(vWorkStartTime[0]);
+            var vWHToMin = vWH * 60;
+            var WHTotalMin = vWHToMin + parseInt(vWorkStartTime[1]);
+
+
+            var vWorkEndTime = WorkEndTime.split(':');
+            var vWE = parseInt(vWorkEndTime[0]);
+            var vWEToMin = vWE * 60;
+            var WETotalMin = vWEToMin + parseInt(vWorkEndTime[1]);
+
+            //alert(WHTotalMin);
+            //alert(WETotalMin);
+
+
+            var lunchStartTime = $("#LunchStart").val();
+            var lunchEndTime = $("#LunchEnd").val();
+
+            var vlunchStartTime = lunchStartTime.split(':');
+            var vLH = parseInt(vlunchStartTime[0]);
+            var vLHToMin = vLH * 60;
+            var LHTotalMin = vLHToMin + parseInt(vlunchStartTime[1]);
+
+
+            var vlunchEndTime = lunchEndTime.split(':');
+            var vLE = parseInt(vlunchEndTime[0]);
+            var vLEToMin = vLE * 60;
+            var LETotalMin = vLEToMin + parseInt(vlunchEndTime[1]);
+
+            //alert(LHTotalMin);
+            //alert(LETotalMin);
+
+            var hours = WETotalMin - WHTotalMin;
+            var Lunchhours = LETotalMin - LHTotalMin;
+
+            var totalhours = hours - Lunchhours;
+
+            $("#minutes").text(totalhours);
+            $("#Personal_Trainer").hide();
+            $("#minutes2").hide();
+        }
+        if ($("input:radio[name='IsTechLMT']:checked").val() == 0) {
+
+            $("#Personal_Trainer").show();
+            $("#minutes1").hide();
+
+        }
+    });
+    $("input:radio[name='IsTechCPT']").change(function () {
+        if ($("input:radio[name='IsTechCPT']:checked").val() == 1) {
+
+
+            $("#minutes2").show();
+
+            var WorkStartTime = $("#ShiftStart").val();
+            var WorkEndTime = $("#ShiftEnd").val();
+
+            var vWorkStartTime = WorkStartTime.split(':');
+            var vWH = parseInt(vWorkStartTime[0]);
+            var vWHToMin = vWH * 60;
+            var WHTotalMin = vWHToMin + parseInt(vWorkStartTime[1]);
+
+
+            var vWorkEndTime = WorkEndTime.split(':');
+            var vWE = parseInt(vWorkEndTime[0]);
+            var vWEToMin = vWE * 60;
+            var WETotalMin = vWEToMin + parseInt(vWorkEndTime[1]);
+
+            //alert(WHTotalMin);
+            //alert(WETotalMin);
+
+
+            var lunchStartTime = $("#LunchStart").val();
+            var lunchEndTime = $("#LunchEnd").val();
+
+            var vlunchStartTime = lunchStartTime.split(':');
+            var vLH = parseInt(vlunchStartTime[0]);
+            var vLHToMin = vLH * 60;
+            var LHTotalMin = vLHToMin + parseInt(vlunchStartTime[1]);
+
+
+
+            var vlunchEndTime = lunchEndTime.split(':');
+            var vLE = parseInt(vlunchEndTime[0]);
+            var vLEToMin = vLE * 60;
+            var LETotalMin = vLEToMin + parseInt(vlunchEndTime[1]);
+
+            //alert(LHTotalMin);
+            //alert(LETotalMin);
+
+            var hours = WETotalMin - WHTotalMin;
+            var Lunchhours = LETotalMin - LHTotalMin;
+
+            var totalhours = hours - Lunchhours;
+            // alert(totalhours);
+            $("#minutes").text(totalhours);
+            //$("#Personal_Trainer").hide();
+            $("#Client").text(totalhours);
+            //$("#minutes2").hide();
+
+
+        }
+        if ($("input:radio[name='IsTechCPT']:checked").val() == 0) {
+
+
+            $("#minutes2").hide();
+            //alert("0");
+        }
+    });
+
+
+
+</script>
+
+<script>
+
+    //$('#ReferralSource').change(function () { fnGetRelatedQuestion(); });
+    $('#Resource22').addClass('form-control');
+    $('#Resource11').addClass('form-control');
+    $('#Location').addClass('form-control');
+</script>

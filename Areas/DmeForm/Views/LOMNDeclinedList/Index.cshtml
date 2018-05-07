@@ -1,0 +1,381 @@
+﻿@*@{
+        Layout = null;
+    }
+
+    <!DOCTYPE html>
+
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>Index</title>
+    </head>
+    <body>
+        <div>
+        </div>
+    </body>
+    </html>*@
+
+
+
+
+<style type="text/css">
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+    }
+
+    section.outertable {
+        position: relative;
+        border: 1px solid #000;
+        padding-top: 37px;
+        background: #337ab7;
+    }
+
+    section.positioned {
+        position: absolute;
+        top: 100px;
+        left: 100px;
+        width: 800px;
+        box-shadow: 0 0 15px #333;
+    }
+
+    .outertable th div a {
+        color: #fff;
+        box-shadow: none;
+    }
+
+    .outertable .container {
+        overflow-y: auto;
+        height: 300px;
+        padding: 0;
+        width: 100%;
+    }
+
+    .outertable table {
+        border-spacing: 0;
+        width: 100%;
+    }
+
+    .outertable td + td {
+        border-left: 1px solid #eee;
+    }
+
+    .outertable td, .outertable th {
+        border-bottom: 1px solid #eee;
+        background: #ddd;
+        color: #000;
+        padding: 13px 25px;
+        font-size: 14px;
+    }
+
+    .outertable th {
+        height: 0;
+        line-height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+        color: transparent;
+        border: none;
+        white-space: nowrap;
+    }
+
+        .outertable th div.totalarrow {
+            position: absolute;
+            background: transparent;
+            color: #fff;
+            padding: 7px 25px;
+            top: 0;
+            margin-left: -25px;
+            line-height: normal;
+            border-left: 1px solid #fff;
+            background: url(../ptotslp/images/botharrow.png) no-repeat right 9px;
+            min-height: 50px;
+            cursor: pointer;
+        }
+
+        .outertable th:first-child div {
+            border: none;
+        }
+
+    .divbuttomArrow {
+        position: absolute;
+        background: transparent;
+        color: #fff;
+        padding: 7px 25px;
+        top: 0;
+        margin-left: -25px;
+        line-height: normal;
+        border-left: 1px solid #fff;
+        background: url(../ptotslp/images/bottarrow.png) no-repeat right 15px;
+        min-height: 50px;
+        cursor: pointer;
+    }
+
+    .divTopArrow {
+        position: absolute;
+        background: transparent;
+        color: #fff;
+        padding: 7px 25px;
+        top: 0;
+        margin-left: -25px;
+        line-height: normal;
+        border-left: 1px solid #fff;
+        background: url(../ptotslp/images/toparrow.png) no-repeat right 15px;
+        min-height: 50px;
+        cursor: pointer;
+    }
+</style>
+
+<center><h2 style="margin-top:5px;"> DME LOMN Declined List </h2></center>
+<section class="bodyinner2">
+    <div class="row">
+
+
+        <div class="col-sm-5">
+            <select class="form-control" id="ddlDMEForms" onchange="fnShowPatientList('')">
+                <option value="0" selected>-- Select DME Form --</option>
+                <option value="L1846">Knee Brace Custom Form</option>
+                <option value="L1843">Knee Brace Free Style</option>
+                <option value="L1845">Knee Brace Fusion Ligament</option>
+                <option value="L1847">Knee Brace Fusion OA Form</option>
+                <option value="L0637">Lumbosacral Orthosis Order Form</option>
+                <option value="L0456">Spinomed IVTLSO Form</option>
+            </select>
+
+        </div>
+
+
+        <div class="clearfix"></div>
+    </div>
+    <br />
+    <div class="row">
+
+        <section class="outertable">
+            <div class="container">
+                <table id="example">
+                    <thead>
+                        <tr class="header">
+                            <th>Patient Name<div class="totalarrow" id="divFirstName"><a onclick="fnShowPatientList('FirstName');">Patient Name</a></div></th>
+                            <th>DOB<div class="totalarrow" id="divDOB"><a onclick="fnShowPatientList('DOB');">DOB</a></div></th>
+                            <th>HPSC  Code<div class="totalarrow" id="divHCPCSCode"><a onclick="fnShowPatientList('HCPCSCode');">HPSC  Code</a></div></th>
+                            <th>Status<div class="totalarrow" id="divStatus"><a onclick="fnShowPatientList('Status');">Status</a></div></th>
+                            <th>Date Recommended<div class="totalarrow" id="divStatus"><a onclick="fnShowPatientList('LastReviewDate');">Date Recommended</a></div></th>
+                            <th><div style="background:none;"></div></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+
+
+    </div>
+
+</section>
+<input type="hidden" id="HDNShortOrderStore" />
+<input type="hidden" id="HDNHeaderFilterId" />
+@*<input type="hidden" id="hdnLocation"/>*@
+<script>
+
+    $(document).ready(function () {
+        //var location = window.location.href;
+        //alert(location);
+        //$("#hdnLocation").val(location);
+        fnShowPatientList('');
+        //$("#example").tablesorter();
+        //$("#example").sortable();
+    });
+
+    function fnShowPatientList(objVal) {
+        var vLinkToRedirect = "";
+        var vControllerName = "";
+        var vPatientId = "";
+        var vCustomHtml = "";
+        var vStatus = "";
+        var vShortOrder = "";
+        var vPreviousHeaderId = "";
+        var vSelectedDivId = "";
+        var vDMEFromId = "";
+        //alert('dddddd');
+        var __dmeFormId = $("#ddlDMEForms").val();
+        debugger;
+        if (objVal != '') {
+            vSelectedDivId = 'div' + objVal;
+            vPreviousHeaderId = $('#HDNHeaderFilterId').val();
+            if (vPreviousHeaderId != objVal) {
+                $('#HDNHeaderFilterId').val(objVal);
+                $('#HDNShortOrderStore').val('ASC');
+                vShortOrder = 'ASC';
+                if (vPreviousHeaderId != '') {
+                    var className = $('#div' + vPreviousHeaderId).attr('class');
+                    $('#div' + vPreviousHeaderId).removeClass(className).addClass("totalarrow");
+                }
+                $('#' + vSelectedDivId).removeClass("totalarrow").addClass('divbuttomArrow');
+
+            }
+            else {
+                vShortOrder = $('#HDNShortOrderStore').val();
+                if (vShortOrder == '') {
+                    vShortOrder == 'ASC';
+                    $('#' + vSelectedDivId).removeClass("divTopArrow").addClass("divbuttomArrow");
+                }
+                else if (vShortOrder == 'ASC') {
+                    vShortOrder = 'DESC';
+                    $('#' + vSelectedDivId).removeClass("divbuttomArrow").addClass("divTopArrow");
+                }
+                else if (vShortOrder == 'DESC') {
+                    vShortOrder = 'ASC';
+                    $('#' + vSelectedDivId).removeClass("divTopArrow").addClass("divbuttomArrow");
+                }
+                $('#HDNShortOrderStore').val(vShortOrder);
+            }
+        }
+        else {
+            objVal = '';
+            vShortOrder = '';
+            $('#HDNHeaderFilterId').val('');
+            $('#HDNShortOrderStore').val('');
+        }
+
+        if (__dmeFormId == "0")
+            $("#tblPatientList tbody").html("");
+        //alert(__dmeFormId);
+        $.ajax({
+            url: '@Url.Action("ShowPatientList", "LOMNDeclinedList")',
+            type: "POST",
+            dataType: "JSON",
+            data: { DMEFormCode: __dmeFormId, ShortColName: objVal, ShortOrder: vShortOrder },
+            success: function (jsonData) {
+                $("#example tbody").html("");
+                for (var i = 0; i < jsonData.length; i++) {
+                    vPatientId = "";
+                    vControllerName = "";
+                    vLinkToRedirect = "";
+                    vCustomHtml = "";
+                    vStatus = "";
+                    var __date = jsonData[i].DOB;
+                    var __dateReview = jsonData[i].LastReviewDate;
+                    //alert('DOB:' + __date);
+                    var dateString = __date.substr(6);
+                    var dateStringReview = __dateReview.substr(6);
+                    var currentTime = new Date(parseInt(dateString));
+                    var currentTimeReview = new Date(parseInt(dateStringReview));
+                    var month, monthReview;
+                    if (currentTime.getMonth() < 10) {
+                        month = currentTime.getMonth() + 1;
+                        month = '0' + month.toString();
+                    }
+                    else { month = currentTime.getMonth() + 1; }
+                    if (currentTimeReview.getMonth() < 10) {
+                        monthReview = currentTimeReview.getMonth() + 1;
+                        monthReview = monthReview.toString();
+                    }
+                    else {
+                        monthReview = currentTimeReview.getMonth() + 1;
+                    }
+
+                    var day, dayReview;
+                    if (currentTime.getDate() < 10) {
+                        day = currentTime.getDate();
+                        day = '0' + day.toString();
+                    }
+                    else {
+                        day = currentTime.getDate();
+                    }
+                    if (currentTimeReview.getDate() < 10) {
+                        dayReview = currentTimeReview.getDate();
+                        dayReview = '0' + dayReview.toString();
+                    }
+                    else {
+                        dayReview = currentTimeReview.getDate();
+                    }
+                    var year = currentTime.getFullYear();
+                    var yearReview = currentTimeReview.getFullYear();
+                    var date = month + "/" + day + "/" + year;
+                    var dateReview = monthReview + "/" + dayReview + "/" + yearReview;
+                    vPatientId = jsonData[i].Patient_Id.toString();
+                    vControllerName = jsonData[i].ControllerName.toString();
+                    vDMEFromId = jsonData[i].DMEFormId.toString();
+                    vStatus = jsonData[i].Status.toString();
+                    var CreatedBy = jsonData[i].CreatedBy.toString();
+                    //alert(CreatedBy);
+                    if (vStatus.trim().indexOf('Letter') >= 0) {
+                        //if (vStatus.trim() == "DME Delivery Pending") {
+                        vCustomHtml = '<td><a href="/ptotslp/DF_' + vControllerName + '/Create2New?DMEFormId=' + vDMEFromId + '"><i class="btn btn-primary" aria-hidden="true">ReGenerate LOMN</i></a></td>';
+                        //vCustomHtml = '<td><a href="/ptotslp/DF_LOMNDeclinedList/Create2?id=' + id + '"><i class="btn btn-primary" aria-hidden="true">ReGenerate LOMN</i></a></td>';
+                        //vCustomHtml = '<td><a href="/DF_DMECoverageNotAvailableList/Create?id=' + id + '"><i class="btn btn-primary" aria-hidden="true">DME Coverage</i></a></td>';
+                    }
+
+                    else {
+                        vCustomHtml = '<td><a href=""></td>';
+                    }
+                    var row = "<tr>" +
+                                        "<td>" + jsonData[i].PatientName.toString() + "</td>" +
+                                        "<td>" + date + "</td>" +
+                                       "<td>" + jsonData[i].HCPCSCode.toString() + "</td>" +
+                                        "<td>" + vStatus.trim() + "</td>" +
+                                        "<td>" + dateReview + "</td>" +
+                                       "<td>" + vCustomHtml + "</td>" +
+                                    "</tr>";
+                    $("#example tbody").append(row);
+                }
+                //$("#dvTable").append("</table>");
+
+            },
+            error: function (error) {
+                //alert("Error: " + error);
+            },
+            statusCode: {
+                404: function () {
+                    //alert("Page Not Found.");
+                }
+            }
+        });
+    }
+</script>
+
+<script>
+    function fnShowDetail(KneeBraceCustomForm_Id) {
+        var url = "@Url.Action("KneeBraceCustomFormPdf", "KneeBraceCustomForm", new { Area = "DmeForm" })" + "?id=" + KneeBraceCustomForm_Id;
+        //fnShowPopupForDetail(url);
+        popupwindow(url, 'KneeBraceCustomForm', 1000, 800);
+    }
+    function fnShowDetail1(kneebraceCustomId) {
+        var url = "@Url.Action("KneeBraceCustomFormoaPdf", "KneeBraceFreeStyleOASoftForm", new { Area = "DmeForm" })" + "?id=" + kneebraceCustomId;
+        //fnShowPopupForDetail(url);
+        popupwindow(url, 'KneeBraceFreeStyleOASoftForm', 1000, 800);
+    }
+    function fnShowDetail2(KneeBraceFusionLigamentForm_Id) {
+        var url = "@Url.Action("KneeBraceFusionLigamentOrderFormPdf", "KneeBraceFusionLigamentOrderForm", new { Area = "DmeForm" })" + "?id=" + KneeBraceFusionLigamentForm_Id;
+        //fnShowPopupForDetail(url);
+        popupwindow(url, 'KneeBraceFusionLigamentOrderForm', 1000, 800);
+    }
+    function fnShowDetail3(kneebraceCustomId) {
+        var url = "@Url.Action("KneeBraceFusionOAFormPdf", "KneeBraceFusionOAForm", new { Area = "DmeForm" })" + "?id=" + kneebraceCustomId;
+        //fnShowPopupForDetail(url);
+        popupwindow(url, 'KneeBraceFusionOAForm', 1000, 800);
+    }
+    function fnShowDetail4(KneeBraceFusionLigamentForm_Id) {
+        //alert(KneeBraceFusionLigamentForm_Id);
+        var url = "@Url.Action("LumbosacralOrthosisFormPdf", "LumbosacralOrthosisForm", new { Area = "DmeForm" })" + "?id=" + KneeBraceFusionLigamentForm_Id;
+        //fnShowPopupForDetail(url);
+        popupwindow(url, 'LumbosacralOrthosisForm', 1000, 800);
+    }
+    function fnShowDetail5(SpinomedIVTLSOForm_Id) {
+        var url = "@Url.Action("SpinomedIVTLSOFormPdf", "SpinomedIVTLSOForm", new { Area = "DmeForm" })" + "?id=" + SpinomedIVTLSOForm_Id;
+
+
+        //fnShowPopupForDetail(url);
+        popupwindow(url, 'SpinomedIVTLSOForm', 1000, 800);
+    }
+</script>
+
+
+
+
+
+
+
+
+
+

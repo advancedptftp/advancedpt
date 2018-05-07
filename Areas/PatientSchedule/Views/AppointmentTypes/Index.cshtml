@@ -1,0 +1,211 @@
+﻿@model PagedList.IPagedList<DataLayer.Models.tblMPatSchdAppointmentType>
+@using DataLayer;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Index";
+}
+<style>
+    .SortHeader {
+        color: #fff;
+    }
+
+    .sortorderasc {
+        color: black;
+    }
+
+    .sortorderdesc {
+        color: green;
+    }
+
+    .searchsec {
+        width: 350px;
+    }
+</style>
+<center><h2 style="margin-top:20px;">Appointment List</h2></center>
+
+
+<section class="bodyinner2">
+    <div>
+        <p class="pull-right">
+            @Html.ActionLink("Create New Record", "Create", null, new { @class = "btn btn-primary" })
+        </p>
+        @using (Html.BeginForm("Index", "AppointmentTypes", FormMethod.Get))
+        {
+            @*<div class="col-sm-3">
+                <select class="form-control" id="drSearchOption">
+                    <option value="1">Name</option>
+                    <option value="2">Description</option>
+                </select>
+
+            </div>*@
+
+            <div class="searchsec">
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @id = "txtSearchString", placeholder = "Search here ..." })
+                <button id="btnSearch"><i class="fa fa-search" aria-hidden="true"></i></button>
+                <div class="clearfix"></div>
+            </div>
+        }
+        @using (Html.BeginForm("Index", "AppointmentTypes", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+        {
+            @Html.DropDownList("PageSize1")
+        }
+        @{
+            bool? direction1 = ViewBag.SortDirection;
+            if (direction1 == null) { direction1 = false; }
+        }
+
+        <div class="pull-left" style=" padding:10px;">
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+    <div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+
+                        <th>
+                            @{ var classname = "botharrow";}
+                            @if ((ViewBag.CurrentSort == "Name" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                            {
+                                classname = "bottarrow";
+                            }
+                            else if ((ViewBag.CurrentSort == "Name" && ViewBag.SortDirection == false))
+                            {
+                                classname = "toparrow";
+                            }
+                            @Html.ActionLink("Short Name", "Index", new { sortOrder = "Name", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname })
+
+                        </th>
+                        <th>
+                            @Html.DisplayName("Description")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Appointment Length in Minutes")
+                        </th>
+                        <th colspan="2">
+                            @Html.DisplayName("Color Code")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Is Active")
+                        </th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+
+                </thead>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>@Html.DisplayFor(modelItem => item.AppointmentMinute)</td>
+                        <td style="width:6%;" align="center">
+                            <input type="text" style="background-color:@item.ColorCode; width:30px; height:30px;" readonly="readonly" />
+
+                        </td>
+                        <td>@Html.DisplayFor(modelItem => item.ColorCode)</td>
+                        <td align="center">
+                            @if (item.IsActive == true)
+                            {<label class="fa fa-unlock" style="color: #0f68e6; "></label> }
+                            else
+                            {<label class="fa fa-lock" style="color: #eb1923;"></label> }
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Edit", "AppointmentTypes", new { id = item.AppointmentType_Id })">
+                                <i class="fa fa-edit" aria-hidden="true"></i>
+                            </a>
+
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Details", "AppointmentTypes", new { id = item.AppointmentType_Id })">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+
+            </table>
+
+        </div>
+
+        <div>
+            <br />
+            @using (Html.BeginForm("Index", "AppointmentTypes", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+            {
+                @Html.DropDownList("PageSize")
+            }
+            @{
+                bool? direction = ViewBag.SortDirection;
+                if (direction == null) { direction = false; }
+            }
+            <div class="pull-left" style=" padding:10px;">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                      new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction }))
+        </div>
+    </div>
+
+</section>
+@*<script>
+    $("#PageSize").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+</script>*@
+<script>
+    $("#PageSize").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+    $("#PageSize1").addClass("form-control");
+    $('#PageSize1').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#drSearchOption option:selected").val(1);
+        var res = '@ViewBag.dropDownOption';
+        if (res != undefined && res != " " && res != '' && res != null && res != "") {
+            var fields = res.split(',');
+            var option = fields[0];
+            var text = fields[1];
+
+            $('#drSearchOption').val(option).attr("selected", "selected");
+            $("#txtSearchString").val(text);
+        }
+        else {
+            $("#drSearchOption option:selected").val(1);
+        }
+    });
+
+    $("#btnSearch").click(function () {
+        if ($("#drSearchOption option:selected").val() != "" && $("#txtSearchString").val() != "") {
+            $("#txtSearchString").val($("#drSearchOption option:selected").text().trim() + ":" + $("#txtSearchString").val());
+            $("#drSearchOption").val(selectedCompany);
+        }
+        else {
+            $("#txtSearchString").val();
+        }
+    });
+</script>

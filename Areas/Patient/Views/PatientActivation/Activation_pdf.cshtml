@@ -1,0 +1,1760 @@
+﻿@model DataLayer.Models.PatientActivation
+@using DataLayer;
+@{
+    ViewBag.Title = "Activation_pdf";
+}
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>myadvancedpt.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="favicon.png">
+
+    <!-- Bootstrap core CSS -->
+
+
+</head>
+
+<body>
+    @using (Html.BeginForm("Create", "PatientActivation", FormMethod.Post, new { name = "Create", id = "Create" }))
+    {
+
+        <div style="width:95%; margin:0 auto; padding:40px 0; font-family:verdana; font-size:20px; color:#333;">
+
+
+            <div style="padding: 35px 0 8px 0; font-size: 25px; font-weight: bold; font-size: 40px; border-bottom: 5px solid #231f20; color: #0c57a1; position: relative; color: #231f20;">
+
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td width="82%">Activation Form</td>
+                    </tr>
+                </table>
+
+
+
+
+            </div>
+            <div style="padding:35px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="7%" height="22">Date:</td>
+                        <td width="21%"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:7px;">@Model.Condition.Contact_Date.GetExactValue()</div></td>
+                        <td width="12%">Staff Name:</td>
+                        <td width="27%"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:7px;">@Html.DisplayFor(m => m.User.Name, new { @class = "applitextfield" })</div></td>
+                        <td width="15%">Contact&nbsp;Method:</td>
+                        <td width="18%"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:7px;">@(((PatientContactType)Enum.ToObject(typeof(PatientContactType), (Convert.ToInt32(Model.Condition.Contact_Type)))).ToCustomString())</div></td>
+                    </tr>
+                </table>
+
+            </div>
+            <div style="padding:20px 0 0 0; border-top:5px solid #231f20;"></div>            
+
+            <div style="padding:15px 0 20px 0;  font-size:30px;"><strong>A. INTRODUCTION FOR ALL CALLS</strong></div>
+            <div style="padding:8px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align:center; color:#000; font-weight:bold; vertical-align:top; padding-right:8px;">(A1)</td>
+                        <td width="94%" valign="top">
+                            Thank you for calling
+                            <span style="width:500px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                Advanced Physical Therapy Of Central Florida
+                            </span>, how can I help you?
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+            <div style="padding:8px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align:center; color:#000; font-weight:bold; vertical-align:top; padding-right:8px;">(A2)</td>
+                        <td width="94%" valign="top">
+                            Have you been here before?
+                            <strong>
+
+
+                                @{
+        if (Model.Condition.IsSeenHereBefore == 1)
+        {
+                        <label> Yes </label>
+        }
+        else
+        {
+                        <label> No </label>
+        }
+                                }
+
+
+
+                            </strong>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+            <div style="padding:12px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(A3)</td>
+                        <td width="94%" valign="top">
+                            May I have your name?
+                            <span style="width:300px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                @Html.DisplayFor(m => m.Patient.FirstName, new { @class = "applitextfield1" })
+                            </span>
+                            <span style="width:300px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+
+                                @Html.DisplayFor(m => m.Patient.LastName, new { @class = "applitextfield1" })
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+            <div style="padding:12px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(A4)</td>
+                        <td width="94%" valign="top">
+                            What is the best phone number at which to reach you?
+                            <span style="width:167px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                @{
+                                if (Model.PatientUser.MobNo !=null)
+                                {
+                                    @Html.DisplayFor(m => m.PatientUser.MobNo, new { @class = "applitextfield1" })
+                                }
+                                else if (Model.Patient.Phone2 != null)
+                                {
+                                    @Html.DisplayFor(m => m.Patient.Phone2, new { @class = "applitextfield1" })
+                                }
+                                else if (Model.Patient.Phone3 != null)
+                                {
+                                    @Html.DisplayFor(m => m.Patient.Phone3, new { @class = "applitextfield1" })
+                                }
+                                }
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+            <div style="padding:12px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(A5)</td>
+                        <td width="94%" valign="top">
+                            And may I have your address?
+                            <span style="width:700px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                @{
+                                     if(Model.Patient.AddressLine1!=null)
+                                    {
+                                    @Html.DisplayFor(m => m.Patient.AddressLine1, new { @class = "applitextfield1" })
+                                    <span>,</span>
+                                    }
+
+                                    if(Model.Patient.AddressLine2!=null)
+                                    {
+                                    @Html.DisplayFor(m => m.Patient.AddressLine2, new { @class = "applitextfield1" })
+                                    <span>,</span>
+                                    }
+
+                                    if(Model.Patient.City!=null)
+                                    {
+                                    @Html.DisplayFor(m => m.Patient.City, new { @class = "applitextfield1" })
+                                    <span>,</span>
+                                    }
+
+
+
+                                    if (ViewBag.StateName!="")
+                                    {
+                                    @ViewBag.StateName<span>,</span>
+
+                                   }
+                                  if(Model.Patient.ZipCode!=null)
+                                  {
+                                    @Html.DisplayFor(m => m.Patient.ZipCode, new { @class = "applitextfield1" })
+                                  }
+                                }
+                            </span>
+                            <div style="padding-top:20px;"><strong>IF THEY ASK WHY:</strong> We want to get you to the office closest to your home.</div>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+            <div style="padding:12px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(A6)</td>
+                        <td width="94%" valign="top">
+                            And may I have your birthdate as well?
+                            <span style="width:200px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                @Model.Patient.DOB.GetExactValue()
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+            <div style="padding:12px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(A7)</td>
+                        <td width="94%" valign="top">
+                            Okay,
+                            <span style="width:400px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                @(Model.Patient.FirstName + " " + Model.Patient.LastName)
+                            </span>
+                            how did you hear about us?
+                            <span style="width:200px; margin:0 10px 0 10px; padding-top:0px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                @if (Model.Patient.tblMReferralSource != null)
+                                {
+                                    @Model.Patient.tblMReferralSource.Name
+                                }
+
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+            <div style="padding:12px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(A8)</td>
+                        <td width="94%" valign="top">
+                            Very good, welcome to <span style="width:500px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                Advanced Physical Therapy Of Central Florida
+                            </span><br />my name is,
+                            <span style="width:300px; margin:0 10px 0 10px; padding-top:0px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                @Html.DisplayFor(m => m.User.Name, new { @class = "applitextfield1" })
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+            <div style="padding:12px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" align="left" valign="top" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(A9)</td>
+                        <td width="94%" align="left" valign="top">
+                            What exactly is wrong and how can we help you? <span style="width:200px;  display:inline-block; border-bottom:1px solid #000;">
+                                @if (Model.Condition.ProblemType != 0 && Model.Condition.ProblemType != null)
+                                {
+                                    @(((ProblrmType)Enum.ToObject(typeof(ProblrmType), (Convert.ToInt32(Model.Condition.ProblemType)))).ToCustomString())
+                                }
+                            </span>
+                            <span style="width:1100px; height:25px;  display:inline-block; border-bottom:1px solid #000; padding-top:20px;">@Html.DisplayFor(m => m.Condition.ProblemDetail)</span>
+                            When did your @(((ProblrmType)Enum.ToObject(typeof(ProblrmType), (Convert.ToInt32(Model.Condition.ProblemType)))).ToCustomString()) happen ? @Convert.ToDateTime(Model.Condition.FromWhenProblemExist).GetExactValue()
+                        </td>
+                </tr>
+            </table>
+
+        </div>
+            <div style="padding:12px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" align="left" valign="top" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(A10)</td>
+                        <td width="94%" align="left" valign="top">
+                            Are you experiencing a lot of @(((ProblrmType)Enum.ToObject(typeof(ProblrmType), (Convert.ToInt32(Model.Condition.ProblemType)))).ToCustomString()),
+                            medium or a little bit? @(((ProblemStrength)Enum.ToObject(typeof(ProblemStrength), (Convert.ToInt32(Model.Condition.ProblemStrength)))).ToCustomString())
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+            <div style="padding:12px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" align="left" valign="top" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(A11)</td>
+                        <td width="94%" align="left" valign="top">
+                            I’m sorry to hear you’re experiencing so much @(((ProblrmType)Enum.ToObject(typeof(ProblrmType), (Convert.ToInt32(Model.Condition.ProblemType)))).ToCustomString()).
+                            We’ll try to get you in as
+                            soon as possible.
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+        <div style="padding:12px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(A12)</td>
+                    <td width="94%" valign="top">
+                        Are you under the care of a physician? <strong>
+                          
+
+                                @{
+                                    if (Model.Condition.IsUnderPhysician == 1)
+                                    {
+                                                                    <label> Yes </label>
+                                    }
+                                    else
+                                    {
+                                                                    <label> No </label>
+                                    }
+                                }                            
+                        </strong>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <div style="padding:12px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(A13)</td>
+                    <td width="94%" valign="top">
+                        May I have his or her name please?
+                        <span style="width:200px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+
+                            @ViewBag.DoctorName
+                        </span>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <div style="padding:12px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(A14)</td>
+                    <td width="94%" valign="top"><span style="width:1000px;">
+    Do you know the name of your doctor’s group or their phone number?</span><br />
+    <span style="width:200px; margin:0 10px 0 10px; padding-top:20px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+        @Html.DisplayFor(m => m.Condition.DoctorPhone, new { @class = "applitextfield1" })
+    </span>
+</td>
+                </tr>
+            </table>
+        </div>
+        <div style="padding:12px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(A15)</td>
+                    <td width="94%" valign="top">
+                        Now how do you intend to pay for your services? <span style="height: 30px; width: 200px; margin: 0 10px 0 10px; padding-top: 0px; display: inline-block; border-bottom: 1px solid #ccc; border-left: none; border-right: none; border-top: none;">
+                            @(((PatientPaymentOption)Enum.ToObject(typeof(PatientPaymentOption), (Convert.ToInt32(Model.Condition.PaymentType)))).ToCustomString())
+                        </span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+            <div style="padding:12px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(A16)</td>
+                        <td width="94%" valign="top">
+                            Are you seeking in home care or would you be coming to us? <span style="height: 30px; width: 200px; margin: 0 10px 0 10px; padding-top: 0px; display: inline-block; border-bottom: 1px solid #ccc; border-left: none; border-right: none; border-top: none;">
+                                @{
+                                    if (Model.Condition.SeekingCareType == 1)
+                                    {
+                                        <label>Home Care</label>
+                                    }
+                                    else
+                                    {
+                                        <label>Walk In</label>
+                                    }
+                                }
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="padding:12px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(A17)</td>
+                        <td width="94%" valign="top">
+                            Which office is most convenient? SW State Road 200 in Ocala, SE 17th Street in Ocala, Belleview, or The Villages?
+                            <div style="padding-top:10px;">
+                                First Choice
+
+
+
+                                <span style="width:400px; margin:0 10px 0 10px; padding-top:0px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+
+                                    @ViewBag.ConLoc1
+                                </span>
+
+                                Second Choice
+
+                                <span style="width:300px; margin:0 10px 0 10px; padding-top:0px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @ViewBag.ConLoc2
+
+                                </span>
+                            </div>
+
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+            <div style="padding:12px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(A18)</td>
+                        <td width="94%" valign="top">
+                            What day of the week works best for you?
+                            <span style="width:200px; margin:0 10px 0 10px; padding-top:0px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                @(((SuitedDayOfWeek)Enum.ToObject(typeof(SuitedDayOfWeek), (Convert.ToInt32(Model.Condition.SuitedWeekDay)))).ToCustomString())
+                            </span>
+
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="padding:12px 0 150px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px; ">(A19)</td>
+                        <td width="94%" valign="top">
+                            And are mornings or afternoons better? <strong>
+
+                                @{
+                                    if (Model.Condition.SuitedDayTime == 0)
+                                    {
+                                        <label> Anytime </label>
+                                    }
+                                    else if (Model.Condition.SuitedDayTime == 1)
+                                    {
+                                        <label> Mornings </label>
+                                    }
+                                    else
+                                    {
+                                        <label> Afternoons </label>
+                                    }
+                                }
+                            </strong>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+            <div style="padding:12px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(A20)</td>
+                        <td width="94%" valign="top">
+                            Are you looking to get in as soon as possible or can you wait a few days? <strong>
+                                <span class="p_left15">
+
+                                    @{
+                                        if (Model.Condition.CanWaitUpto == 0)
+                                        {
+                                            <label> Urgent </label>
+                                        }
+                                        else if (Model.Condition.CanWaitUpto == 1)
+                                        {
+                                            <label> Can Wait a Week </label>
+                                        }
+                                        else
+                                        {
+                                            <label> Can Wait a Month </label>
+                                        }
+                                    }
+                                </span>
+                            </strong>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="padding:12px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right:8px">(A21)</td>
+                        <td width="94%" valign="top">
+                            Okay, let me go ahead and check to see exactly what times we have available and I’ll be right back, okay? <strong>(Hold)</strong>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="padding:12px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px">(A22)</td>
+                        <td width="94%" valign="top">
+                            Hi
+                            <span style="height: 30px; width: 200px; margin: 0 10px 0 10px; display: inline-block; border-bottom: 1px solid #ccc; border-left: none; border-right: none; border-top: none;">
+                                @Html.DisplayFor(m => m.Patient.FirstName, new { @class = "applitextfield1" })
+                            </span> are you still there? Great News! We have appointments available on
+                            <strong>
+                                <span style="height: 30px; width: 200px; margin: 0 10px 0 10px; padding-top: 0px; display: inline-block; border-bottom: 1px solid #ccc; border-left: none; border-right: none; border-top: none;">
+
+                                    @ViewBag.DayName
+                                </span>
+
+                            </strong>, @Convert.ToDateTime(Model.Condition.ScheduledDateTime).GetExactValue(). Which one do you prefer?
+                            <span style="height: 30px; width: 300px; margin: 0 10px 0 10px; padding-top: 0px; display: inline-block; border-bottom: 1px solid #ccc; border-left: none; border-right: none; border-top: none;">
+                                @Convert.ToDateTime(Model.Condition.ScheduledDateTime).GetExactValue()
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="padding:12px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(A23)</td>
+                        <td width="94%" valign="top">
+                            Okay, I’m going to go ahead and put you down for
+                            <span style="width: 300px; margin: 0 10px 0 10px; display:inline-block; border-bottom: 1px solid #ccc; border-left: none; border-right: none; border-top: none;">
+                                @Convert.ToDateTime(Model.Condition.ScheduledDateTime).GetExactValue()
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="padding:12px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px">(A24)</td>
+                        <td width="94%" valign="top">
+                            Now I’m going to reserve this spot for you, so if for any reason you might have to cancel or reschedule, call us at
+                            least 48 hours in advance to let us know, okay?
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+            <div style="padding:12px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px">(A25)</td>
+                        <td width="94%" valign="top">
+                            Do you have any concerns with transportation?
+                            @{
+                                    if (Model.Condition.IsTransport == 1)
+                                    {
+                                                    <label> Yes </label>
+                                    }
+                                    else
+                                    {
+                                                    <label> No </label>
+                                    }
+                            }
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="padding:12px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px">(A26)</td>
+                        <td width="94%" valign="top">
+                            What county do you live in? @Model.Condition.County.GetExactValue()
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="padding:12px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px">(A27)</td>
+                        <td width="94%" valign="top">
+                            Okay, after we hang up I will contact @Model.Condition.County.GetExactValue() County transport and arrange for your transportation.
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            @if (Model.Condition.SeekingCareType == ((Convert.ToInt32(SeekingCareType.Home_Care)) + 1))
+            {
+
+                <div style="padding:30px 0 20px 0; font-size:25px;"><strong>B. FOR HOME HEALTHCARE ONLY</strong></div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(B1)</td>
+                            <td width="94%" valign="top">
+                                Okay, what city do you live in?
+                                <span style="width:200px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Html.DisplayFor(m => m.Patient.City)
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(B2)</td>
+                            <td width="94%" valign="top">
+                                Is it difficult for you to leave your home? <strong>
+                                    <span class="p_left15">
+
+                                        @Html.RadioButtonFor(m => m.Condition.IsDifficultToLeaveHome, Convert.ToInt16(YesNo.Yes).ToString()) Yes
+                                        @Html.RadioButtonFor(m => m.Condition.IsDifficultToLeaveHome, Convert.ToInt16(YesNo.No).ToString()) No
+
+                                    </span>
+                                </strong>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(B3)</td>
+                            <td width="94%" valign="top">
+                                Do you use a cane, walker or wheelchair?
+
+                                @Html.RadioButtonFor(m => m.Condition.WalkerType, Convert.ToInt16(WalkerType.cane).ToString()) Cane
+                                @Html.RadioButtonFor(m => m.Condition.WalkerType, Convert.ToInt16(WalkerType.walker).ToString()) Walker
+                                @Html.RadioButtonFor(m => m.Condition.WalkerType, Convert.ToInt16(WalkerType.wheelchair).ToString()) Wheelchair
+                                @Html.RadioButtonFor(m => m.Condition.WalkerType, Convert.ToInt16(WalkerType.None).ToString()) None
+
+
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(B4)</td>
+                            <td width="94%" valign="top">
+                                How often do you leave the house for social functions?
+                                <span style="width:200px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Html.DisplayFor(m => m.Condition.FrequencyOfLeavingHome, new { @class = "applitextfield1" })
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(B5)</td>
+                            <td width="94%" valign="top">
+                                And do you drive or does someone take you?
+
+                                <div>
+                                    @Html.RadioButtonFor(m => m.Condition.IsDriveByOwn, (Convert.ToInt16(IsDriveType.Drive_By_Own) + 1).ToString()) Drive By Myself
+                                    @Html.RadioButtonFor(m => m.Condition.IsDriveByOwn, (Convert.ToInt16(IsDriveType.Drive_By_Someone) + 1).ToString()) Drive By Someone
+
+                                </div>
+
+
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(B6)</td>
+                            <td width="94%" valign="top">
+                                Do you need the help of another person to safely leave your home?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>
+                                    <span class="p_left15">
+                                        @Html.RadioButtonFor(m => m.Condition.NeedHelpOfOtherPerson, Convert.ToInt16(NeedHelpOfOtherPerson.Yes).ToString())Yes
+                                        @Html.RadioButtonFor(m => m.Condition.NeedHelpOfOtherPerson, Convert.ToInt16(NeedHelpOfOtherPerson.No).ToString())No
+                                        @Html.RadioButtonFor(m => m.Condition.NeedHelpOfOtherPerson, Convert.ToInt16(NeedHelpOfOtherPerson.Some_Times).ToCustomString())Sometimes
+                                    </span>
+                                </strong>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(B7)</td>
+                            <td width="94%" valign="top">
+                                <strong>
+                                    <span class="p_left15">
+                                        @Html.RadioButtonFor(m => m.Condition.IsEligible, (Convert.ToInt16(IsEligable.Eligible_for_HomeCare) + 1).ToString(), new { @class = "Eligibility" }) Eligible for HomeCare
+                                        @Html.RadioButtonFor(m => m.Condition.IsEligible, (Convert.ToInt16(IsEligable.Not_Eligible) + 1).ToString(), new { @class = "Eligibility" }) Or Not Eligible
+                                    </span>
+                                </strong> It sounds like you may be better suited for treatment in our outpatient clinic.
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(B8)</td>
+                            <td width="94%" valign="top"><strong>ELIGIBLE: </strong>Okay, it sounds like you may be eligable for home care.</td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(B9)</td>
+                            <td width="94%" valign="top">
+                                Do you have medical insurance?&nbsp;&nbsp;<strong>
+                                    <span class="p_left15">
+                                        @Html.RadioButtonFor(m => m.Condition.IsInsuranceDone, Convert.ToInt16(YesNo.Yes).ToString()) Yes
+                                        @Html.RadioButtonFor(m => m.Condition.IsInsuranceDone, Convert.ToInt16(YesNo.No).ToString()) No
+                                    </span>
+                                </strong>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(B10)</td>
+                            <td width="94%" valign="top">
+                                Okay, what type of insurance do you have?
+                                <span style="width:200px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Html.DisplayFor(m => m.HomeCareInsurances[0].Name, new { @class = "applitextfield1" })
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(B11)</td>
+                            <td width="94%" valign="top">
+                                Do you have your card handy? May I have the policy number?
+                                <span style="width:200px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Html.DisplayFor(m => m.HomeCareInsurances[0].PolicyNumber, new { @class = "applitextfield1" })
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(B12)</td>
+                            <td width="94%" valign="top">
+                                And is there a group number?
+                                <span style="width:200px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Html.DisplayFor(m => m.HomeCareInsurances[0].GroupNumber, new { @class = "applitextfield1" })
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(B13)</td>
+                            <td width="94%" valign="top">
+                                Thank you for this information. I’m going to have our home care specialist call you back as soon as she can to set up
+                                all of your services. Does that work okay for you? Great! Thank you for calling and have a wonderful day.
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:20px 0 0 0; border-top:5px solid #231f20;"></div>
+            }
+            @if (Model.Condition.PaymentType == Convert.ToInt32(PatientPaymentOption.In_Network_Commercial_Insurance))
+            {
+                <div style="padding:30px 0 20px 0; font-size:25px;"><strong>C. IN-NETWORK COMMERCIAL INSURANCE / MEDICARE REPLACEMENT PLAN</strong></div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(C1)</td>
+                            <td width="94%" valign="top">Okay, do you have your card handy? <strong>(IF NOT, THEY WILL NEED TO CALL BACK WHEN IT’S AVAILABLE.)</strong></td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(C2)</td>
+                            <td width="94%" valign="top">
+                                May I have the policy number?
+                                <span style="width:200px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Html.DisplayFor(m => m.InNetworkInsurances[0].PolicyNumber, new { @class = "applitextfield1" })
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(C3)</td>
+                            <td width="94%" valign="top">
+                                And is there a group number?
+                                <span style="width:200px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Html.DisplayFor(m => m.InNetworkInsurances[0].GroupNumber, new { @class = "applitextfield1" })
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(C4)</td>
+                            <td width="94%" valign="top">
+                                May I have the name of the policy holder?
+                                <span style="width:200px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+
+                                    @Html.DisplayFor(m => m.InNetworkInsurances[0].HolderName, new { @class = "applitextfield1" })
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(C5)</td>
+                            <td width="94%" valign="top">
+                                And may I have the policy holder’s date of birth?
+                                <span style="width:400px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+
+                                    @Convert.ToDateTime(Model.InNetworkInsurances[0].HolderDOB).GetExactValue()
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(C6)</td>
+                            <td width="94%" valign="top">
+                                Can you turn that card over and give me the phone number listed for Provider Service?
+                                <span style="width:200px; margin:0 10px 0 10px; padding-top:11px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Html.DisplayFor(m => m.InNetworkInsurances[0].ServiceProviderPhone, new { @class = "applitextfield1" })
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style=" padding: 20px; background: #ddd; margin: 15px 0; font-size: 15px; line-height: 26px;">
+                    <strong>Office Use:</strong><span style="padding:0 15px 0 0;">
+                        Authorization for evaluation required? <strong>
+                            <span class="p_left15">
+
+                                <label class="radio-inline">@Html.RadioButtonFor(m => m.InNetworkInsurances[0].IsAuthRequired, Convert.ToInt16(YesNo.Yes).ToString()) Yes</label>
+                                <label class="radio-inline">@Html.RadioButtonFor(m => m.InNetworkInsurances[0].IsAuthRequired, Convert.ToInt16(YesNo.No).ToString()) No</label> <br />
+                        </strong>
+                    </span> Authorization for treatment required? <strong>
+                        <span class="p_left15">
+                            <label class="radio-inline">@Html.RadioButtonFor(m => m.InNetworkInsurances[0].IsAuthRequiredForTreatment, Convert.ToInt16(YesNo.Yes).ToString()) Yes</label>
+                            <label class="radio-inline">@Html.RadioButtonFor(m => m.InNetworkInsurances[0].IsAuthRequiredForTreatment, Convert.ToInt16(YesNo.No).ToString()) No</label>
+                        </span>
+                    </strong>
+                </div>
+                <div style="padding:12px 0">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(C7)</td>
+                            <td width="94%" valign="top">Okay, this is what I’d like for you to do. Do you see the 1-800 number on the card?</td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(C8)</td>
+                            <td width="94%" valign="top">I want you to give them a call and then get three pieces of information to bring in. Do you have a pen handy?</td>
+                        </tr>
+                    </table>
+
+                </div>
+
+                <div style="height:25px">&nbsp;</div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(C9)</td>
+                            <td width="94%" valign="top">
+                                I’d like you to ask them for three things: your deductible, coinsurance, and any maximums for outpatient physical
+                                therapy treatment. Just bring those three pieces of information with you and also make sure to bring your insurance
+                                card and government-issued photo identification. If for any reason you feel that your deductible or coinsurance is too
+                                high, don’t worry, we have special programs available to help with those situations and to make it affordable for you.
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:15px 0; text-align:center;">
+                    <strong>
+                        ANSWER TO ‘HOW MUCH WILL IT BE?’: ANYWHERE BETWEEN $5 AND $60 PER VISIT DEPENDING ON YOUR
+                        INSURANCE AND MOST OF OUR PATIENTS GET BETTER WITHIN 8 VISITS.
+                    </strong>
+                </div>
+
+                <div style="padding:20px 0 0 0; border-top:5px solid #231f20;"></div>
+            }
+            @if (Model.Condition.PaymentType == Convert.ToInt32(PatientPaymentOption.Medicare))
+            {
+                <div style="padding:30px 0 20px 0; font-size:25px;"><strong>D. MEDICARE</strong></div>
+                <div style="padding:3px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align:center; color:#000; font-weight:bold; vertical-align:top;">(D1)</td>
+                            <td width="94%" valign="top">Okay, do you have your card handy? <strong>(IF NOT, THEY WILL NEED TO CALL BACK WHEN IT’S AVAILABLE.)</strong></td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(D2)</td>
+                            <td width="94%" valign="top">
+                                May I have the policy number?
+                                <span style="width:200px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+
+                                    @Html.DisplayFor(m => m.MedicareInsurances[0].PolicyNumber, new { @class = "applitextfield1" })
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(D3)</td>
+                            <td width="94%" valign="top">
+                                And is there a group number?
+                                <span style="width:200px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Html.DisplayFor(m => m.MedicareInsurances[0].GroupNumber, new { @class = "applitextfield1" })
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(D4)</td>
+                            <td width="94%" valign="top">
+                                May I have the name of the policy holder?
+                                <span style="width:400px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Html.DisplayFor(m => m.MedicareInsurances[0].HolderName, new { @class = "applitextfield1" })
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(D5)</td>
+                            <td width="94%" valign="top">
+                                And may I have the policy holder’s date of birth?
+                                <span style="width:350px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Convert.ToDateTime(Model.MedicareInsurances[0].HolderDOB).GetExactValue()
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(D6)</td>
+                            <td width="94%" valign="top">
+                                Okay and do you have a secondary or Medigap policy as well?<strong>
+
+                                    <span class="p_left15">
+                                        @{
+                if (Model.MedicareInsurances.Count > 1)
+                {
+                    <label> Yes </label>
+                }
+                else
+                {
+                    <label> No </label>
+                }
+                                        }
+
+                                    </span>
+
+                                </strong>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                if (Model.MedicareInsurances.Count > 1)
+                {
+                    <div style="padding:12px 0;">
+                        <table width="100%" border="0">
+                            <tr>
+                                <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(D7)</td>
+                                <td width="94%" valign="top">
+                                    And what is the name of that policy?
+                                    <span style="width:200px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                        @Html.DisplayFor(m => m.MedicareInsurances[1].Name, new { @class = "applitextfield1" })
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div style="padding:12px 0;">
+                        <table width="100%" border="0">
+                            <tr>
+                                <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(D8)</td>
+                                <td width="94%" valign="top">
+                                    May I have the policy number?
+                                    <span style="width:200px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                        @Html.DisplayFor(m => m.MedicareInsurances[1].PolicyNumber, new { @class = "applitextfield1" })
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div style="padding:12px 0;">
+                        <table width="100%" border="0">
+                            <tr>
+                                <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(D9)</td>
+                                <td width="94%" valign="top">
+                                    And is there a group number?
+                                    <span style="width:200px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                        @Html.DisplayFor(m => m.MedicareInsurances[1].GroupNumber, new { @class = "applitextfield1" })
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div style="padding:12px 0;">
+                        <table width="100%" border="0">
+                            <tr>
+                                <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(D10)</td>
+                                <td width="94%" valign="top">
+                                    May I have the name of the policy holder?
+                                    <span style="width:200px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+
+                                        @Html.DisplayFor(m => m.MedicareInsurances[1].HolderName, new { @class = "applitextfield1" })
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div style="padding:12px 0;">
+                        <table width="100%" border="0">
+                            <tr>
+                                <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(D11)</td>
+                                <td width="94%" valign="top">
+                                    And may I have the policy holder’s date of birth?
+                                    <span style="width:200px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                        @Convert.ToDateTime(Model.MedicareInsurances[1].HolderDOB).GetExactValue()
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                }
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(D12)</td>
+                            <td width="94%" valign="top">
+                                Have you received any physical therapy treatment this year? &nbsp;<strong>
+                                    <span class="p_left15">
+                                        @{
+                if (Model.Condition.Is_PhysicalTherephyBefore == 1)
+                {
+                    <label>Yes</label>
+                }
+                else
+                {
+                    <label>No</label>
+                }
+                                        }
+
+                                    </span>
+                                </strong>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(D13)</td>
+                            <td width="94%" valign="top">
+                                Have you been seen by a home health care agency in the last year? &nbsp;&nbsp;<strong>
+                                    <span class="p_left15">
+                                        @{
+                if (Model.Condition.IsSeenByHomeHealthAgency == 1)
+                {
+                    <label>Yes</label>
+                }
+                else
+                {
+                    <label>No</label>
+                }
+                                        }
+
+                                    </span>
+                                </strong>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="padding:12px 0;">
+                        <table width="100%" border="0">
+                            <tr>
+                                <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(D14)</td>
+                                <td width="94%" valign="top">
+                                    When were you last seen by the agency?
+                                    <span style="width:200px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                        @Convert.ToDateTime(Model.MedicareInsurances[0].AgencyDate).GetExactValue()
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                <div style="padding:12px 0;">
+                        <table width="100%" border="0">
+                            <tr>
+                                <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(D15)</td>
+                                <td width="94%" valign="top">
+                                    What was the name of the agency?
+                                    <span style="width:200px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                        @Html.DisplayFor(m => m.MedicareInsurances[0].AgencyName, new { @class = "applitextfield1" })
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                <div style="padding:20px 0 0 0; border-top:5px solid #231f20; margin-top:20px;"></div>
+            }
+            @if (Model.Condition.PaymentType == Convert.ToInt32(PatientPaymentOption.Workers_Compensation))
+            {
+                <div style="padding:30px 0 20px 0; font-size:25px;"><strong>E. WORKERS COMPENSATION CLAIM</strong></div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align:center; color:#000; font-weight:bold; vertical-align:top;">(E1)</td>
+                            <td width="94%" valign="top">
+                                What is your employer’s name?
+                                <span style="width:200px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Html.DisplayFor(m => m.Patient.Employer_Name, new { @class = "applitextfield1" })
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:3px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(E2)</td>
+                            <td width="94%" valign="top">
+                                And what is the phone number there?
+                                <span style="width:200px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Html.DisplayFor(m => m.Patient.Employer_Phone, new { @class = "applitextfield1" })
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(E3)</td>
+                            <td width="94%" valign="top">
+                                What is your adjuster’s name?
+                                <span style="width:200px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Html.DisplayFor(m => m.Condition.Insurance_Adjustor_Name, new { @class = "applitextfield1" })
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(E4)</td>
+                            <td width="94%" valign="top">
+                                And what is his or her phone number?
+                                <span style="width:200px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Html.DisplayFor(m => m.Condition.Insurance_Adjustor_Phone, new { @class = "applitextfield1" })
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+
+                <div style="padding:20px 0 0 0; border-top:5px solid #231f20;"></div>
+            }
+            @if (Model.Condition.PaymentType == Convert.ToInt32(PatientPaymentOption.Auto_Accident_Or_Attorney_Lien))
+            {
+
+                <div style="padding:30px 0 20px 0; font-size:25px;"><strong>F. AUTO ACCIDENT / ATTORNEY LIEN CASE</strong></div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(F1)</td>
+                            <td width="94%" valign="top">
+                                Were you seen by a medical doctor within 14 days of your accident? &nbsp;&nbsp;<strong>
+                                    <span class="p_left15">
+                                        @{
+                if (Model.Condition.IsUnderMedicalDoctor == 1)
+                {
+                    <label>Yes</label>
+                }
+                else
+                {
+                    <label>No</label>
+                }
+                                        }
+
+                                    </span>
+                                </strong>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(F2)</td>
+                            <td width="94%" valign="top">
+                                If so, who?
+                                <span style="width:200px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Html.DisplayFor(m => m.Condition.WhoseFaultAccident, new { @class = "applitextfield1" })
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(F3)</td>
+                            <td width="94%" valign="top">
+                                And what is the name of your auto insurance?
+                                <span style="width:200px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Html.DisplayFor(m => m.Condition.NameOfAutoInsurance, new { @class = "applitextfield1" })
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(F4)</td>
+                            <td width="94%" valign="top">
+                                Do you have a contact number for that insurance company?
+                                <span style="width:200px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Html.DisplayFor(m => m.Condition.AutoInsurancePhone, new { @class = "applitextfield1" })
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(F5)</td>
+                            <td width="94%" valign="top">
+                                And may I have the claim number?
+                                <span style="width:200px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Html.DisplayFor(m => m.Condition.AutoInsuranceClaimNo, new { @class = "applitextfield1" })
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(F6)</td>
+                            <td width="94%" valign="top">
+                                What is your attorney’s name?
+                                <span style="width:200px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Html.DisplayFor(m => m.Condition.Attorney_Name, new { @class = "applitextfield1" })
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                 <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(F7)</td>
+                            <td width="94%" valign="top">
+                                What is the date of the accident?
+                                <span style="width:200px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Convert.ToDateTime(Model.Condition.Date_Of_Accident).GetExactValue()
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:20px 0 0 0; border-top:5px solid #231f20; margin-top:20px;"></div>
+            }
+            @if (Model.Condition.PaymentType == Convert.ToInt32(PatientPaymentOption.Personal_Injury))
+            {
+                <div style="padding:30px 0 20px 0; font-size:25px;"><strong>G. PERSONAL INJURY (I.E. SLIP AND FALL IN A STORE)</strong></div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(G1)</td>
+                            <td width="94%" valign="top">
+                                May I have the date of the injury?
+                                <span style="width:200px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Convert.ToDateTime(Model.Condition.Date_Of_Accident).GetExactValue()
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(G2)</td>
+                            <td width="94%" valign="top">
+                                And who is the company contact person?
+                                <span style="width:200px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Html.DisplayFor(m => m.Condition.StoreContactPerson, new { @class = "applitextfield1" })
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(G3)</td>
+                            <td width="94%" valign="top">
+                                Do you have their phone number
+                                <span style="width:200px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Html.DisplayFor(m => m.Condition.StorePhoneNo, new { @class = "applitextfield1" })
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:20px 0 0 0; border-top:5px solid #231f20;"></div>
+            }
+            @if (Model.Condition.PaymentType == Convert.ToInt32(PatientPaymentOption.HMO))
+            {
+                <div style="padding:30px 0 20px 0; font-size:25px;"><strong>H. HMO (OUT-OF-NETWORK)</strong></div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(H1)</td>
+                            <td width="94%" valign="top">
+                                Okay, since you have an HMO, you have two options available to you at this time: the first option is you can submit
+                                a request to your HMO to be seen here by us and we can help you submit that request; do you know how to do that?
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(H2)</td>
+                            <td width="94%" valign="top">Or option number two is that you can take advantage of our special program for HMO members who want to opt out.</td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:20px 0 0 0; border-top:5px solid #231f20;"></div>
+            }
+            @if (Model.Condition.PaymentType == Convert.ToInt32(PatientPaymentOption.Out_of_Network_Commercial_Insurance))
+            {
+                <div style="padding:30px 0 20px 0; font-size:25px;"><strong>I. OUT-OF-NETWORK COMMERCIAL INSURANCE</strong></div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(I1)</td>
+                            <td width="94%" valign="top">Okay, do you have your card handy? <strong>(IF NOT, THEY WILL NEED TO CALL BACK WHEN IT’S AVAILABLE.)</strong></td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(I2)</td>
+                            <td width="94%" valign="top">
+                                May I have the policy number?
+                                <span style="width:200px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Html.DisplayFor(m => m.OutNetworkInsurances[0].PolicyNumber, new { @class = "applitextfield1" })
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(I3)</td>
+                            <td width="94%" valign="top">
+                                And is there a group number?
+                                <span style="width:200px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Html.DisplayFor(m => m.OutNetworkInsurances[0].GroupNumber, new { @class = "applitextfield1" })
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(I4)</td>
+                            <td width="94%" valign="top">
+                                May I have the name of the policy holder?
+                                <span style="width:200px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Html.DisplayFor(m => m.OutNetworkInsurances[0].HolderName, new { @class = "applitextfield1" })
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(I5)</td>
+                            <td width="94%" valign="top">
+                                And may I have the policy holder’s date of birth?
+                                <span style="width:200px; margin:0 10px 0 10px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Convert.ToDateTime(Model.OutNetworkInsurances[0].HolderDOB).GetExactValue()
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(I6)</td>
+                            <td width="94%" valign="top">
+                                Can you turn that card over and give me the phone number listed for Provider Service?
+                                <span style="width:200px; margin:0 10px 0 10px; padding-top:11px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Html.DisplayFor(m => m.OutNetworkInsurances[0].ServiceProviderPhone, new { @class = "applitextfield1" })
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="height:25px">&nbsp;</div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(I7)</td>
+                            <td width="94%" valign="top">
+                                Do you know if you’ve met your deductible?&nbsp;<strong>
+                                    <span class="p_left15">
+                                        @Html.RadioButtonFor(m => m.OutNetworkInsurances[0].Deductible, Convert.ToInt16(YesNo.Yes).ToString()) Yes
+                                        @Html.RadioButtonFor(m => m.OutNetworkInsurances[0].Deductible, Convert.ToInt16(YesNo.No).ToString()) No
+                                        @Html.RadioButtonFor(m => m.OutNetworkInsurances[0].Deductible, Convert.ToInt16(YesNo.NoOption).ToString()) No Not Sure
+                                    </span>
+                                </strong>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+
+                <div style="padding:30px 0 20px 0; font-size:25px;"><strong>IF YOU HAVE VERIFIED PATIENT BENEFITS:</strong></div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(I8)</td>
+                            <td width="94%" valign="top">
+                                <strong>For members with unmet out-of-network deductibles:</strong> ‘You have two options; you can go to an in-network provider and pay $ (in-network deductible amount >$499) or you can come to us and we can see you for only $499.’
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(I9)</td>
+                            <td width="94%" valign="top">
+                                For members with a deductible that has been met: “You can go in-network and pay a 
+                                <span style="width:200px; margin:0 10px 0 10px; padding-top:11px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Html.DisplayFor(m => m.OutNetworkInsurances[0].CoInsurance, new { @class = "applitextfield1" })
+                                </span>  % co-insurance or you can come to us out of network and pay a little bit more at 
+                                <span style="width:200px; margin:0 10px 0 10px; padding-top:11px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Html.DisplayFor(m => m.OutNetworkInsurances[0].CoPay, new { @class = "applitextfield1" })
+                                </span> %
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:30px 0 20px 0; font-size:25px;"><strong>IF YOU HAVE NOT VERIFIED PATIENT BENEFITS:</strong></div>
+                <p>CONTINUE WITH ACTIVATION. WHEN CALL COMPLETE, CONTACT INSURANCE COMPANY TO CHECK PATIENT BENEFITS. THEN CALL THE PATIENT BACK WITH INFORMATION.</p>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(I10)</td>
+                            <td width="94%" valign="top">
+                                <strong>For members with unmet out-of-network deductibles:</strong> ‘You have two options; you can go to an in-network provider and pay $ (in-network deductible amount >$499) or you can come to us and we can see you for only $499.’
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:12px 0;">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(I11)</td>
+                            <td width="94%" valign="top">
+                                For members with a deductible that has been met: “You can go in-network and pay a 
+                                <span style="width:200px; margin:0 10px 0 10px; padding-top:11px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Html.DisplayFor(m => m.OutNetworkInsurances[0].CoInsurance, new { @class = "applitextfield1" })
+                                </span>  % co-insurance or you can come to us out of network and pay a little bit more at  
+                                <span style="width:200px; margin:0 10px 0 10px; padding-top:11px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Html.DisplayFor(m => m.OutNetworkInsurances[0].CoPay, new { @class = "applitextfield1" })
+                                </span> %
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div style="padding:20px 0 0 0; border-top:5px solid #231f20;"></div>
+            }        
+        @if (Model.Condition.IsTransport == 2)
+        {
+            <div style="padding:30px 0 20px 0; font-size:25px;"><strong>J. APT PATIENTS HEAR ‘APPLE’ - NO TRANSPORT NEEDED</strong></div>
+            <div style="padding:1px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(J1)</td>
+                        <td width="94%" valign="top">
+                            <strong>(Attire)</strong> Since it is your (body part) I’d like for you to wear (tank top/shorts/loose clothing) so its easier for you to participate in your exam. We do have gowns available but they’re not quite as comfortable as your own clothes.
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+            <div style="padding:1px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 9px;">(J2)</td>
+                        <td width="94%" valign="top">
+                            <strong>(Paperwork Via Email)</strong> Most of our patients find it convenient to complete their paperwork at home.&nbsp;&nbsp; <strong>
+                                <span class="p_left15">
+                                    @{
+                                        if (Model.Condition.IsPaperworkViaEmail == 1)
+                                        {
+                                            <label>Yes</label>
+                                        }
+                                        else
+                                        {
+                                            <label>No</label>
+                                        }
+                                    }
+
+                                </span>
+                            </strong>
+                            <div style="padding-top:8px;">
+                                What is the best email address to send that to?
+                                <span style="width:200px; margin:0 10px 0 10px; padding-top:11px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Html.DisplayFor(m => m.PatientUser.Email, new { @class = "applitextfield1" })
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+            <div style="padding:12px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(J3)</td>
+                        <td width="94%" valign="top">
+                            <strong>(Payment)</strong> Also remember to bring some form of payment like check, card, or cash. If for any reason you feel like your deductible or co-insurance is too high, don’t worry; we have programs available for that.
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+            <div style="padding:12px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(J4)</td>
+                        <td width="94%" valign="top"><strong>(Late)</strong> Also, don’t be late; we have a pretty strict late policy and we’ll have to reschedule if you are late.</td>
+                    </tr>
+                </table>
+
+            </div>
+            <div style="padding:12px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(J5)</td>
+                        <td width="94%" valign="top">
+                            <strong>(Early)</strong> Also, since you are using insurance and there’s paperwork involved, come 30 minutes early before your appointment; that way we can take care of all those things.
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+            <div style="padding:12px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(J6)</td>
+                        <td width="94%" valign="top">
+                            So we’ll see you on
+                            <span style="width:300px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+
+                                @Convert.ToDateTime(Model.Condition.ScheduledDateTime).GetExactValue()
+                            </span>
+                            Okay
+                            <span style="width:350px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                @(Model.Patient.FirstName + " " + Model.Patient.LastName)
+                            </span>;
+                            <div style="padding-top:5px;">it was nice talking to you and we look forward to seeing you soon. Have a wonderful day!    </div>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+        }
+        else
+        {
+            <div style="padding:30px 0 20px 0; font-size:25px;"><strong>K. APT PATIENTS HEAR ‘APPLE’ - TRANSPORT NEEDED</strong></div>
+            <div style="padding:1px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(J1)</td>
+                        <td width="94%" valign="top">
+                            <strong>(Attire)</strong>Since it is your (body part) I’d like for you to wear (tank top/shorts/loose clothing) so its easier for you to participate in your exam. We do have gowns available but they’re not quite as comfortable as your own clothes.
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+            <div style="padding:1px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 9px;">(J2)</td>
+                        <td width="94%" valign="top">
+                            <strong>(Paperwork Via Email)</strong>Most of our patients find it convenient to complete their paperwork at home.&nbsp;&nbsp; <strong>
+                                <span class="p_left15">
+                                    @{
+                                        if (Model.Condition.IsPaperworkViaEmail == 1)
+                                        {
+                                            <label>Yes</label>
+                                        }
+                                        else
+                                        {
+                                            <label>No</label>
+                                        }
+                                    }
+
+                                </span>
+                            </strong>
+                            <div style="padding-top:8px;">
+                                What is the best email address to send that to?
+                                <span style="width:200px; margin:0 10px 0 10px; padding-top:11px; display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+                                    @Html.DisplayFor(m => m.PatientUser.Email, new { @class = "applitextfield1" })
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+            <div style="padding:12px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(J3)</td>
+                        <td width="94%" valign="top">
+                            <strong>(Payment)</strong>Also remember to bring some form of payment like check, card, or cash. If for any reason you feel like your deductible or co-insurance is too high, don’t worry; we have programs available for that.
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+            <div style="padding:12px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(J4)</td>
+                        <td width="94%" valign="top"><strong>(Late)</strong>Also, don’t be late; we have a pretty strict late policy and we’ll have to reschedule if you are late.</td>
+                    </tr>
+                </table>
+
+            </div>
+            <div style="padding:12px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(J5)</td>
+                        <td width="94%" valign="top">
+                            <strong>(Early)</strong>Also, since you are using insurance and there’s paperwork involved, come 30 minutes early before your appointment; that way we can take care of all those things.
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+            <div style="padding:12px 0;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td width="6%" style="text-align: center; color: #000; font-weight: bold; vertical-align: top; padding-right: 8px;">(J6)</td>
+                        <td width="94%" valign="top">
+                            So we’ll see you on
+                            <span style="width:300px; margin:0 10px 0 10px;  display:inline-block; border-bottom:1px solid #ccc; border-left:none; border-right:none; border-top:none;">
+
+                                @Convert.ToDateTime(Model.Condition.ScheduledDateTime).GetExactValue()
+                            </span>
+                            . As I mentioned previously, after we hang up I will contact @(Model.Patient.FirstName + " " + Model.Patient.LastName) transport to arrange your transportation.
+                            <ul>
+                                <li>I will give you a call with your pickup information.</li>
+                                <li>I will call you back with @(Model.Patient.FirstName + " " + Model.Patient.LastName) transport to schedule your pickup once I have them on the line.</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+        }
+    </div>
+    }
+    <div style="padding:20px 0 0 0; border-top:5px solid #231f20;"></div>
+</body>
+</html>
+

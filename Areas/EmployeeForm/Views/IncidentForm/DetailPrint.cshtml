@@ -1,0 +1,390 @@
+﻿@model DataLayer.Models.tblTIncidentForm
+@{
+    Layout = null;
+}
+@using DataLayer;
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>myadvancedpt.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="favicon.png">
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+    <!-- Bootstrap core CSS -->
+</head>
+
+<body>
+
+
+    <div style="width:700px; margin:0 auto; padding:5px 0; font-family:verdana; font-size:13px; color:#000;">
+
+
+        <div style="padding:0 0 5px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="39%">
+                        <h2 style="padding:0; font-size:20px; margin:0;">
+                            Incident report Form<br>
+                            <span style="font-size:15px; font-weight:normal;"></span>
+                        </h2>
+                    </td>
+                    <td width="61%"><div style="padding:10px; text-align:center; border:2px dashed #333; font-size:13px; font-weight:bold;">CONFIDENTIAL REPORT</div></td>
+                </tr>
+            </table>
+
+        </div>
+        <div style="padding:0 0 10px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="33%" style="padding-right:10px;">
+                        <div style="padding:0 0 0 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">
+                            @Model.Involved_Person_Name
+                        </div>
+                        <b> Name of Person Involved </b>
+                    </td>
+                    <td width="20%" style="padding-right:10px;">
+                        <div style="padding:0 0 0 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.DateOfBirth.GetExactValue()</div>
+                        <b> Date of Birth </b>
+</td>
+                    <td width="20%" style="padding-right:10px;">
+                        <div style="padding:0 0 0 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.MR_</div>
+                        <b> MR# (if applicable)</b>
+</td>
+                    <td width="20%" style="padding-right:10px;" valign="top">
+                        @if (Model.Gender == "M")
+                        {
+                            <div style="padding:0 0 0 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">Male</div>
+                        }
+                        else
+                        {
+                            <div style="padding:0 0 0 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">Female</div>
+                        }
+                        <b> Gender</b>
+
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <div style="padding:0 0 10px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="33%" style="padding-right:10px;">
+                        <div style="padding:0 0 0 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.Street_Address</div>
+                        <b> Street Address of Occurrence </b>
+</td>
+                    <td width="20%" style="padding-right:10px;">
+                        <div style="padding:0 0 0 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.City</div>
+                        <b>City</b>
+                    </td>
+                    <td width="20%" style="padding-right:10px;">
+                        <div style="padding:0 0 0 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.State</div>
+                        <b> State</b>
+</td>
+                    <td width="20%" style="padding-right:10px;" valign="top">
+                        <div style="padding:0 0 0 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.Zip_Code</div>
+                        <b>Zip Code</b>
+</td>
+                </tr>
+            </table>
+
+        </div>
+        <div style="padding:0 0 10px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="20%" style="padding-right:10px;">
+                        <div style="padding:0 0 0 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.DateOfOccurance.GetExactValue()</div>
+                        <b>Date of Occurrence</b>
+</td>
+                    <td width="20%" style="padding-right:10px;">
+                        <div style="padding:0 0 0 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.TimeOfIncident.GetExactValue()</div>
+                        <b>Time of Incident</b>
+</td>
+                    <td width="40%" style="padding-right:10px;">
+                        <div style="padding:0 0 0 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.Person_Completing_Report</div>
+                        <b>Person Completing Report</b>
+</td>
+
+                </tr>
+            </table>
+
+        </div>
+        <div style="padding:0; border-bottom:1px dotted #333; border-top:1px dotted #333; margin-top:5px;">
+
+            <table width="100%" border="0">
+                <tr>
+                    <td width="34%">
+                        <strong>Was a Physician Notified?</strong><br>
+                        @if (Model.WasPhysicianNotified)
+                        {
+                            @("Yes")
+                        }
+                        else
+                        {
+                            @("No")
+                        }
+                    </td>
+                    <td width="66%">
+                        @if (Model.WasPhysicianNotified)
+                        {
+                            <table width="100%" border="0">
+                                <tr>
+                                    <td width="28%"><b>Physician Name:</b></td>
+                                    <td width="72%"><div style="padding:3px 0 0 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.PhysicianName</div></td>
+                                </tr>
+                            </table>
+
+
+
+                            <table width="100%" border="0">
+                                <tr>
+                                    <td width="60%"><b>Date & Time they were notified:</b></td>
+                                    <td width="39%"><div style="padding:3px 0 0 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.Notified_DateTime.GetExactValue()</div></td>
+                                </tr>
+                            </table>
+
+
+                        }
+                        else
+                        {
+                            @*<strong>  No </strong>*@
+                        }
+
+
+
+                        @*<td width="66%">
+                                <div style="padding:0 0 8px 0;">
+                                    <table width="100%" border="0">
+                                        <tr>
+                                            <td width="28%">Physician Name:</td>
+                                            <td width="72%"><div style="padding:3px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.PhysicianName</div></td>
+                                        </tr>
+                                    </table>
+
+                                </div>
+                                <div style="padding:0 0 8px 0;">
+                                    <table width="100%" border="0">
+                                        <tr>
+                                            <td width="51%">Date & Time they were notified:</td>
+                                            <td width="49%"><div style="padding:3px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.Notified_DateTime</div></td>
+                                        </tr>
+                                    </table>
+
+                                </div>
+
+                            </td>*@
+                    </td>
+                </tr>
+            </table>
+
+
+        </div>
+        <div style="padding:0 0 0 0;margin-top:-5px;">
+
+            <h3>Check Applicable Event:</h3>
+            @Html.HiddenFor(m => m.IncidentEvent_Id)
+            <table width="100%" style="width: 90%; margin: 20px;margin-top:-15px;margin-bottom:0px;">
+                @{ var odd = true; }
+                @foreach (var item in ViewBag.IncidentEvent_Id)
+                {
+
+                    if (odd)
+                    {
+                        @:                        <tr>
+                            <td>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" id="@item.Value" class="chk" name="@item.Text" value="@item.Value" disabled="disabled" checked="@item.Selected" />@item.Text
+                                </label><br />
+                            </td>
+
+                            }
+                            else
+                            {
+                            <td>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" id="@item.Value" name="@item.Text" class="chk" value="@item.Value" disabled="disabled" checked="@item.Selected" />@item.Text
+                                </label><br />
+                            </td>
+                            @:                        </tr>
+                                                            }
+
+                    odd = !odd;
+                }
+
+
+
+            </table>
+
+
+
+        </div>
+        <div style="padding:0 0 0 0;margin-top:-10px;">
+            <h3>Describe the event, effects, outcome and potential risk issue (name equipment, drug, procedure, treatment, etc.)</h3>
+            <div style="padding:0px 0 8px 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.Event_Desc</div>
+        </div>
+        <div style="padding:0 0 0 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="65%"><h3>For PI Director Use Only:</h3></td>
+                    <td width="35%">
+                        <table width="100%" border="0">
+                            <tr>
+                                <td width="44%">Date Received</td>
+                                <td width="56%"><div style="padding:0 0 0 0; border-bottom:1px solid #333; margin-bottom:5px; min-height:20px;">@Model.Date_Received.GetExactValue()</div></td>
+                            </tr>
+                        </table>
+
+
+                    </td>
+
+                </tr>
+            </table>
+
+        </div>
+        <div style="padding:0 0 0 0;margin-top:-5px;">
+            <table width="100%" border="0">
+                <tr>
+                    <td><strong>Effect</strong></td>@Html.HiddenFor(e => e.Effect)
+
+                    <td>
+                        @if(Model.Effect != null && Model.Effect.Contains("1")){
+                            <input type="checkbox" class="chkeffect" id="chkeffect1" value="1" name="optradio" disabled="disabled" checked="checked">
+                        }
+                        else
+                        {
+                            <input type="checkbox" class="chkeffect" id="chkeffect1" value="1" name="optradio" disabled="disabled">
+                        }
+                        &nbsp;Trending
+                    </td>
+                    <td>
+                        @if (Model.Effect != null && Model.Effect.Contains("2"))
+                        {
+                            <input type="checkbox" class="chkeffect" id="chkeffect2" value="1" name="optradio" disabled="disabled" checked="checked">
+                    }
+                    else
+                    {
+                            <input type="checkbox" class="chkeffect" id="chkeffect2" value="1" name="optradio" disabled="disabled">
+                    }
+                        &nbsp;Inconsequential
+                    </td>
+                    <td>
+                        @if (Model.Effect != null && Model.Effect.Contains("3"))
+                        {
+                            <input type="checkbox" class="chkeffect" id="chkeffect3" value="1" name="optradio" disabled="disabled" checked="checked">
+                       }
+                        else{
+                            <input type="checkbox" class="chkeffect" id="chkeffect3" value="1" name="optradio" disabled="disabled">
+                       }
+                        &nbsp;Consequential
+                    </td>
+                    <td>
+                        @if (Model.Effect != null && Model.Effect.Contains("3"))
+                        {
+                            <input type="checkbox" class="chkeffect" id="chkeffect4" value="1" name="optradio" disabled="disabled" checked="checked">
+                            }
+                            else
+                            {
+                              <input type="checkbox" class="chkeffect" id="chkeffect4" value="1" name="optradio" disabled="disabled">
+                            }
+                        &nbsp;Non-existing / Unknown
+                    </td>
+                </tr>
+            </table>
+
+
+        </div>
+        <div style="padding:0 0 0 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="17%"><strong>Follow-Up </strong></td>
+                    <td width="83%"><div style="padding:0px 0 5px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:20px;">@Model.FollowUp</div></td>
+                </tr>
+            </table>
+
+
+        </div>
+        <div style="padding:0 0 0 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="26%"><strong>Medical Consequence</strong></td>
+                    <td width="36%" style="padding-right:20px;"><div style="padding:0px 0 0 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:20px;">@Model.MedicalConsequence</div></td>
+                    <td width="13%"><strong>Date Filed</strong></td>
+                    <td width="25%"><div style="padding:0px 0 5px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:20px;">@Model.MedicalConsequence_Date.GetExactValue()</div></td>
+                </tr>
+            </table>
+
+
+        </div>
+        <div style="padding:0 0 0 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="26%"><strong>Legal Consequence</strong></td>
+                    <td width="36%" style="padding-right:20px;"><div style="padding:0px 0 0 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:20px;">@Model.LegalConsequence</div></td>
+                    <td width="13%"><strong>Date Filed</strong></td>
+                    <td width="25%"><div style="padding:0px 0 5px 0; border-bottom:1px solid #333; margin-bottom:0px; min-height:20px;">@Model.LegalConsequence_Date.GetExactValue()</div></td>
+                </tr>
+            </table>
+
+
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        // CheckBox For Incident Event_Id
+        var selected = $("#IncidentEvent_Id").val();
+        //alert(selected);
+        if (selected) {
+            var chkArray = selected.split(',');
+            for (var i = 0; i < chkArray.length; i++) {
+                $('input#' + chkArray[i]).attr('checked', 'true');
+            }
+        }
+        // CheckBox For Effect
+        var selected1 = $("#Effect").val();
+        //alert(selected1);
+        if (selected1) {
+            var chkArray1 = selected1.split(',');
+            for (var i = 0; i < chkArray1.length; i++) {
+                $('input#chkeffect' + chkArray1[i]).attr('checked', 'true');
+            }
+        }
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+

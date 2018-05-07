@@ -1,0 +1,141 @@
+﻿
+@{
+    ViewBag.Title = "CreateReferralInfo";
+}
+
+<section class="bodyinner">
+    <div class="container">
+        <div class="bodyleft">
+
+            @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+        </div>
+        <div class="bodyright">
+            <div class="report-form clearfix">
+                <h2 style="padding-bottom:15px;">Patient Express Registration</h2>
+                <h3 class="pull-left p_top05">
+                    Advanced Physical Therapy
+                    of Central Florida
+                </h3>
+                <div class="patient"><input name="date" class="form-control datepicker datepicker-bg" placeholder="mm/dd/yyyy" type="text"></div>
+                <div class="clearfix"></div>
+
+
+
+
+                <div class="tabcont">
+
+                    <h3 class="pull-left">Referral Info</h3>
+                    <div class="clearfix"></div>
+
+                    <div class="row">
+                        <div class="col-md-4 col-sm-12">
+
+
+
+                            <h4>How did you hear about us?</h4>
+
+                            <div class="outerf"><label class="checkbox-inline"><input name="optradio" type="checkbox">Friend or Family</label></div>
+                            <div class="outerf"><label class="checkbox-inline"><input name="optradio" type="checkbox">Internet</label></div>
+                            <div class="outerf"><label class="checkbox-inline"><input name="optradio" type="checkbox">Advertisement</label></div>
+                            <div class="outerf"><label class="checkbox-inline"><input name="optradio" type="checkbox">Brochure</label></div>
+                            <div class="outerf"><label class="checkbox-inline"><input name="optradio" type="checkbox">Insurance/Directory</label></div>
+                            <div class="outerf">
+                                <label class="checkbox-inline"><input name="optradio" type="checkbox">Other</label>
+                                <div class="hiddenform">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label>Please Give Details</label>
+                                            <textarea class="form-control"></textarea>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+                        </div>
+                        <div class="col-md-8 col-sm-12">
+
+
+
+
+                            <div class="outerf">
+                                <label class="checkbox-inline"><input name="optradio" type="checkbox">Physician/Dentist/Chiroprator/Nurse:</label>
+                                <div class="hiddenform">
+                                    <div class="row">
+                                        <div class="col-sm-6 col-md-6 form-group">
+                                            <label>Primary or Referring Physician Name</label>
+                                            <input class="form-control" id="" type="text">
+                                        </div>
+                                        <div class="col-sm-6 col-md-6 form-group">
+                                            <label for="date">City</label>
+                                            <input class="form-control" id="" type="text">
+                                        </div>
+                                        <div class="col-sm-6 col-md-6 form-group">
+                                            <label>State</label>
+                                            <input class="form-control" id="" type="text">
+                                        </div>
+                                        <div class="col-sm-6 col-md-6 form-group">
+                                            <label for="location-incident">Phone</label><br>
+                                            <input class="form-control" id="" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="subbutt">
+                        <button type="submit" class="btn btn-primary pull-left">Back</button>
+                        <button type="submit" class="btn btn-orange pull-right">Proceed to Next Step</button>
+                        <div class="clearfix"></div>
+                    </div>
+
+                </div>
+
+
+
+
+
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+
+</section>
+<script>
+    $('#Credentials').addClass('form-control');
+</script>
+<script>
+    $('#CompanyId').addClass('form-control');
+</script>
+<script>
+    $('#OfficeLocation').addClass('form-control');
+</script>
+<script>
+    $('#PhoneExt').addClass('form-control');
+</script>
+<script>
+    $('#PositionTitle').addClass('form-control');
+</script>
+<script>
+    jQuery('.datepicker').datepicker();
+</script>
+<script>
+    $('#selectState').addClass('form-control');
+
+</script>
+

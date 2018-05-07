@@ -1,0 +1,80 @@
+@font-face {
+    font-family: 'proxima_nova_rgregular';
+    src: url('mark_simonson_-_proxima_nova_regular.woff2') format('woff2'),
+         url('mark_simonson_-_proxima_nova_regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'proxima_nova_rgbold';
+    src: url('proximanova-bold.woff2') format('woff2'),
+         url('proximanova-bold.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'proxima_novalight';
+    src: url('proximanova-light.woff2') format('woff2'),
+         url('proximanova-light.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'proxima_novalight_italic';
+    src: url('proximanova-lightitalic.woff2') format('woff2'),
+         url('proximanova-lightitalic.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'proxima_novaregular_italic';
+    src: url('proximanova-regularitalic.woff2') format('woff2'),
+         url('proximanova-regularitalic.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'proxima_novasemibold';
+    src: url('proximanova-semibold.woff2') format('woff2'),
+         url('proximanova-semibold.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'proxima_novasemibold_italic';
+    src: url('proximanova-semibolditalic.woff2') format('woff2'),
+         url('proximanova-semibolditalic.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}

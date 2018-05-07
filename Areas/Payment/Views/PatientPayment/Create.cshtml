@@ -1,0 +1,1578 @@
+﻿@model DataLayer.Models.tblTPaymtPatient
+@using DataLayer;
+@{
+    // ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_PatientPortal.cshtml";
+    string strCurrentDate = string.Empty;
+    int counterPatientHolder = 1;
+}
+<style>
+    .clsloadingforCard {
+        display: block;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 9998;
+        background-color: rgba(0,0,0,.3);
+        -webkit-animation: fade 500ms;
+        -moz-animation: fade 500ms;
+        -o-animation: fade 500ms;
+        animation: fade 500ms;
+    }
+
+    .divloadingforCard {
+        width: 100%;
+        text-align: center;
+        padding-top: 26%;
+    }
+</style>
+
+<div class="body ">
+    <div class="activationform_fullpage">
+
+        <div class="report-form clearfix">
+            @using (Html.BeginForm("Create", "PatientPayment", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.PatientId)
+                @Html.HiddenFor(model => model.PatientPayTran_Id)
+                @Html.HiddenFor(model => model.NoOfInstallments)
+                @Html.HiddenFor(e => e.tblTPaymtHardShip.SignatureOfPersonMakingReq)
+                @Html.HiddenFor(e => e.tblTPaymtHardShip.SignatureOfSpouseOrOther)
+
+                <h3 style="padding-bottom:15px;" id="PatPayment">Patient Payment</h3>
+                <h3 style="padding-bottom:15px;" id="PatHardShip">Patient Hardship</h3>
+
+                <div class="clearfix line"></div>
+                @Html.Partial("_SignPad")
+                <div id="dvid_1">
+                    <div class=headrightcont> <label><strong>Your total Cost of Care is $@ViewBag.TotalAmt USD. Is that amount a concern?</strong></label></div>
+
+
+                    <div class="col-sm-12 col-md-6 form-group">
+
+                        <div class="control-group">
+                            <div class="inlineradio">
+                                <label class="control control--radio greenbuttradio1">
+                                    <span>YES</span>
+                                    <input type="radio" name="amountconcern" id="amountconcern" value="1" />
+                                    <div class="control__indicator"></div>
+                                </label>
+
+                            </div>
+                            <div class="inlineradio">
+                                <label class="control control--radio redbuttradio1">
+                                    <span>NO</span>
+                                    <input type="radio" name="amountconcern" id="amountconcern" value="0" />
+                                    <div class="control__indicator"></div>
+                                </label>
+
+                            </div>
+                            <div style="clear:both;"></div>
+
+                        </div>
+                        <div style="clear:both;"></div>
+
+                    </div>
+                </div>
+                <div class="row" id="dvid_2">
+                    <div class=headrightcont> <label><strong>You have to pay $@ViewBag.Thirdinstallments USD. Is that amount a concern?</strong></label></div>
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <div class="control-group">
+                            <div class="inlineradio">
+                                <label class="control control--radio greenbuttradio1">
+                                    <span>YES</span>
+                                    <input type="radio" name="Pay3instalment" id="Pay3instalment" value="1" />
+                                    <div class="control__indicator"></div>
+                                </label>
+
+                            </div>
+                            <div class="inlineradio">
+                                <label class="control control--radio redbuttradio1">
+                                    <span>NO</span>
+                                    <input type="radio" name="Pay3instalment" id="Pay3instalment" value="0" />
+                                    <div class="control__indicator"></div>
+                                </label>
+
+                            </div>
+                            <div style="clear:both;"></div>
+
+                        </div>
+                        <div style="clear:both;"></div>
+                    </div>
+
+
+
+                </div>
+                <div class="row" id="dvid_3">
+                    <div class=headrightcont> <label><strong>You have to pay $@ViewBag.Sixinstallments USD. Is that amount a concern?</strong></label></div>
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <div class="control-group">
+                            <div class="inlineradio">
+                                <label class="control control--radio greenbuttradio1">
+                                    <span>YES</span>
+                                    <input type="radio" name="Pay6instalment" id="Pay6instalment" value="1" />
+                                    <div class="control__indicator"></div>
+                                </label>
+
+                            </div>
+                            <div class="inlineradio">
+                                <label class="control control--radio redbuttradio1">
+                                    <span>NO</span>
+                                    <input type="radio" name="Pay6instalment" id="Pay6instalment" value="0" />
+                                    <div class="control__indicator"></div>
+                                </label>
+
+                            </div>
+                            <div style="clear:both;"></div>
+
+                        </div>
+                        <div style="clear:both;"></div>
+                    </div>
+
+
+
+                </div>
+                <div class="row" id="dvid_5">
+
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <div class="col-sm-6 col-md-5 form-group">
+                            <div class=headrightcont>Location</div>
+                            @Html.DropDownListFor(e => e.LocationId, (SelectList)ViewBag.Location, new { @class = "form-control" })
+                        </div>
+                        <div class="col-sm-6 col-md-5 form-group">
+                            <div class=headrightcont>Payment date</div>
+                            @{
+                if (Model.PaymentDate != null)
+                {
+                    strCurrentDate = Convert.ToString(Model.PaymentDate);
+                    strCurrentDate = String.Format("{0:dd-MM-yyyy}", strCurrentDate);
+                }
+                else
+                {
+                    strCurrentDate = String.Format("{0:dd-MM-yyyy}", DateTime.Now);
+                }
+                            }
+
+                            <input type="text" id="PaymentDate" name="PaymentDate" value="@strCurrentDate" class="form-control">
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="row" id="dvid_6">
+
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <div class="col-sm-6 col-md-5 form-group">
+                            <div class=headrightcont>Total Amount to pay</div>
+                            @Html.TextBoxFor(e => e.TotalAmoutToPay, new { @class = "form-control", @disabled = "disabled" })
+                        </div>
+                        <div class="col-sm-6 col-md-5 form-group">
+                            <div class=headrightcont>Advance Payment Amount</div>
+                            @Html.TextBoxFor(e => e.AdvancePaidAmount, new { @class = "form-control", @disabled = "disabled" })
+                        </div>
+                        <div class="col-sm-6 col-md-5 form-group">
+                            <div class=headrightcont>Due Amount</div>
+                            @Html.TextBoxFor(e => e.DueAmount, new { @class = "form-control", @disabled = "disabled" })
+                        </div>
+                        <div class="col-sm-6 col-md-5 form-group">
+                            <div class=headrightcont>Pay Amount</div>
+                            @Html.TextBoxFor(e => e.PaidAmount, new { @class = "form-control", @disabled = "disabled" })
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row" id="dvid_7">
+
+                    <div class="col-sm-12 col-md-12 form-group">
+
+                        <div class="col-sm-6 col-md-3 form-group">
+                            <div class=headrightcont>Payment Mode:</div>
+
+                        </div>
+                        @*<div class="col-sm-6 col-md-3 headrightcont">
+                            <input type="radio" name="PaymentMode" id="PaymentMode" value="1" />&nbsp; Cheque
+                        </div>*@
+                        <div class="inlineradio">
+                            <label class="control control--radio greenbuttradio1">
+                                <span>Cheque</span>
+                                <input type="radio" name="PaymentMode" id="PaymentMode" value="1" />
+                                <div class="control__indicator"></div>
+                            </label>
+
+                        </div>
+                        <div class="inlineradio">
+                            <label class="control control--radio greenbuttradio1">
+                                <span>Card</span>
+                                <input type="radio" name="PaymentMode" id="PaymentMode" value="3" />
+                                <div class="control__indicator"></div>
+                            </label>
+
+                        </div>
+                        @*<div class="col-sm-6 col-md-3 headrightcont">
+
+                                <input type="radio" name="PaymentMode" id="PaymentMode" value="2" />&nbsp; Cash
+                            </div>*@
+                        @*<div class="col-sm-6 col-md-3 headrightcont">
+
+                            <input type="radio" name="PaymentMode" id="PaymentMode" value="3" />&nbsp; Card
+                        </div>*@
+                    </div>
+
+                </div>
+                <div class="row" id="dvid_8" style="display:none">
+
+                    <div class="col-sm-12 col-md-12 form-group">
+
+                        <div class="col-sm-6 col-md-4 form-group">
+                            <div class=headrightcont>Cheque Number</div>
+                            @Html.TextBoxFor(e => e.ChequeNumber, new { @class = "form-control", maxlength = "25", onkeypress = "return restrictCharacters(this, event, integerOnly);" })
+                        </div>
+                        <div class="col-sm-6 col-md-4 form-group">
+                            <div class=headrightcont>Cheque Date</div>
+                            @Html.TextBoxFor(e => e.ChequeDate, new { @class = "form-control datepicker datepicker-bg" })
+                        </div>
+
+                        <div class="col-sm-6 col-md-4 form-group">
+                            <div class=headrightcont>Bank Name</div>
+                            @Html.TextBoxFor(e => e.BankName, new { @class = "form-control", maxlength = "50" })
+                        </div>
+                        <div class="col-sm-6 col-md-4 form-group">
+                            <div class=headrightcont>Branch Name</div>
+                            @Html.TextBoxFor(e => e.BranchName, new { @class = "form-control", maxlength = "40" })
+                        </div>
+                        <div class="col-sm-6 col-md-4 form-group">
+                            <div class=headrightcont>IFSC Code</div>
+                            @Html.TextBoxFor(e => e.IFSC, new { @class = "form-control", maxlength = "10" })
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row" id="dvid_9" style="display:none">
+                    <div class=headrightcont> <label><strong>Would you like to go for HardShip ?</strong></label></div>
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <div class="control-group">
+                            <div class="inlineradio">
+                                <label class="control control--radio greenbuttradio1">
+                                    <span>YES</span>
+                                    <input type="radio" name="HardShip" id="HardShip" value="1" />
+                                    <div class="control__indicator"></div>
+                                </label>
+
+                            </div>
+                            <div class="inlineradio">
+                                <label class="control control--radio redbuttradio1">
+                                    <span>NO</span>
+                                    <input type="radio" name="HardShip" id="HardShip" value="0" />
+                                    <div class="control__indicator"></div>
+                                </label>
+
+                            </div>
+                            <div style="clear:both;"></div>
+
+                        </div>
+                        <div style="clear:both;"></div>
+                    </div>
+
+
+
+                </div>
+                <div id="dvid_4">
+                    <div>
+
+                        <div style="padding:20px 0 5px 0;">
+                            <h3 style="padding:0 0 5px 0; margin:0; font-size:19px;">Instruction Page</h3>
+                            <p style="padding:0 0 15px 0; margin:0; font-size:15px; font-weight:bold;">All information relating to financial hardship requests will be kept confidential.</p>
+
+                            <p style="padding:0 0 15px 0; margin:0;">The patient will need to complete a financial disclosure form and provide documentation of proof of income. Appropriate documentation of financial hardship would be one or more of the following:</p>
+
+                            <p style="padding:0 0 8px 0; margin:0;">1) Documented proof that patient is at or below 200% of the current federal poverty guidelines (see attachment B for 2008 guidelines). This can include documents such as</p>
+                            <div style="padding:0 0 20px 20px;">
+                                a. W-2 withholding statements<br>
+                                b. Pay check stubs<br>
+                                c. Income tax return<br>
+                                d. Forms from Medicaid or other State-funded medical assistance<br>
+                                e. Forms from employers or welfare agencies.
+                            </div>
+
+                            <p style="padding:0 0 8px 0; margin:0;">2) Patient has other circumstances that indicate financial hardship. These can be situations such as:</p>
+                            <div style="padding:0 0 20px 20px;">
+                                a. proof of bankruptcy settlement<br>
+                                b. catastrophic situations (death or disability in family, divorce)<br>
+                                c. or other documentation that shows that patient would be unable to pay medical bill and still be able to pay for other basic necessary expenses.
+                            </div>
+
+                            <p style="padding:0 0 12px 0; margin:0;">Income shall be annualized from the date of request based on documentation provided and upon verbal information provided by the patient. The annualization process will also take into consideration seasonal employment and temporary increases and/or decreases to income.</p>
+
+                            <p style="padding:0 0 12px 0; margin:0;">Any denial of “financial hardship” discount request will be written and will include instructions for reconsideration. If additional documentation of financial need is received to support charity care, the request will be reviewed and considered per the above guidelines.</p>
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+                <div id="dvid_10">
+                    <div>
+                        <div style="padding:15px 0 15px 0; margin-top:20px; text-align:center; font-size:17px; font-weight:bold;">
+                            <p>
+                                2014 POVERTY GUIDELINES FOR THE 48 CONTIGUOUS STATES
+                                AND THE DISTRICT OF COLUMBIA
+                            </p>
+
+                        </div>
+
+                        <table style="width:100%; text-align:center; font-size:14px;" border="1" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td style="padding:5px; background:#000; color:#fff; font-size:15px;"><strong>Persons In Household</strong></td>
+                                <td style="padding:5px; background:#000; color:#fff; font-size:15px;"><strong>Poverty Guideline</strong></td>
+                            </tr>
+                            <tr>
+                                <td style="padding:6px;">1</td>
+                                <td style="padding:6px;">$11,670</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:6px;">2</td>
+                                <td style="padding:6px;">$15,730</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:6px;">3</td>
+                                <td style="padding:6px;">$19,790</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:6px;">4</td>
+                                <td style="padding:6px;">$23,850</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:6px;">5</td>
+                                <td style="padding:6px;">$27,910</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:6px;">6</td>
+                                <td style="padding:6px;">$31,970</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:6px;">7</td>
+                                <td style="padding:6px;">$36,030</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:6px;">8</td>
+                                <td style="padding:6px;">$40,090</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="padding:8px;"><strong>For households with more than 8 persons, add $4,060 for each additional person.</strong></td>
+                            </tr>
+                        </table>
+
+                        <div style="text-align:center; padding:25px 0 25px 0;">SOURCE: Federal Register, Vol. 77, No. 17, January 26, 2012, pp. 4034-4035</div>
+
+                        <div style="padding:0 0 45px 0;">
+                            OIG Special Fraud Alert (1994). OIG Advisory Opinion 97-4. Federal Register, Vol 65, No. 81, 4-26-00 pages 24401-2440742 CFR, section 1001.952 (k)HIPAA, section 231(h), section 1128A42 USC, Section 1320a-7aBBA, section 4331 False Claims Act, Public Law 104-191, Kennedy v Connecticut General Life Ins. Co (Case Law) 924 F.2d 698 (7th Cir. 1991) Managed Care Contracts
+                        </div>
+                    </div>
+                </div>
+                <div id="dvid_11">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 form-group">
+                            <div class="col-sm-6 col-md-5 form-group">
+                                <div class=headrightcont>Patient Name</div>
+                                <input type="text" value="@ViewBag.PatientName" class="form-control" id="Tbl_PatientName" />
+                                <span id="PatientName" style="color:red;" class="validateMsg"></span>
+                                @*// @Html.TextBox(, new { @class = "form-control" })>*@
+                            </div>
+                            <div class="col-sm-6 col-md-5 form-group">
+                                <div class=headrightcont>Date</div>
+                                @Html.TextBoxFor(m => m.tblTPaymtHardShip.HardShipDate,new { @class = "form-control datepicker datepicker-bg" })
+                                <span id="HardShipDate" style="color:red;" class="validateMsg"></span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div id="dvid_12">
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <div class="col-sm-6 col-md-5 form-group">
+                            <div class=headrightcont>Name of Responsible Party</div>
+                            @Html.TextBoxFor(e => e.tblTPaymtHardShip.ResponsiblePartyName, new { @class = "form-control" })
+                            <span id="ResponsibleParty" style="color:red;" class="validateMsg"></span>
+                        </div>
+                        <div class="col-sm-6 col-md-5 form-group">
+                            <div class=headrightcont>Relationship to Patient</div>
+                            @Html.TextBoxFor(m => m.tblTPaymtHardShip.RelationShipToPatient, new { @class = "form-control" })
+                            <span id="RelationshipPatien" style="color:red;" class="validateMsg"></span>
+                        </div>
+
+                    </div>
+                </div>
+                <div id="dvid_13">
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <div class="col-sm-6 col-md-5 form-group">
+                            <div class=headrightcont>Patient’s Home Address</div>
+                            @Html.TextBoxFor(e => e.tblTPaymtHardShip.PatientHomeAddress, new { @class = "form-control" })
+                            <span id="PatientHomeAddress" style="color:red;" class="validateMsg"></span>
+                        </div>
+                        <div class="col-sm-6 col-md-5 form-group">
+                            <div class=headrightcont>Patient’s Phone Number</div>
+                            @Html.TextBoxFor(m => m.tblTPaymtHardShip.PatientPhoneNo, new { @class = "form-control UsCellFormat" })
+                            <span id="PatientPhoneNo" style="color:red;" class="validateMsg"></span>
+                        </div>
+
+                    </div>
+                </div>
+                <div id="dvid_14">
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <div class="col-sm-6 col-md-5 form-group">
+                            <div class=headrightcont>Patient’s Employer Name</div>
+                            @Html.TextBoxFor(e => e.tblTPaymtHardShip.PatientEmployerName, new { @class = "form-control" })
+                            <span id="PatientEmployerName" style="color:red;" class="validateMsg"></span>
+                        </div>
+                        <div class="col-sm-6 col-md-5 form-group">
+                            <div class=headrightcont>Patient’s Employer Address</div>
+                            @Html.TextBoxFor(m => m.tblTPaymtHardShip.PatientEmployerAddress, new { @class = "form-control" })
+                            <span id="PatientEmployerAddress" style="color:red;" class="validateMsg"></span>
+                        </div>
+
+                    </div>
+                </div>
+                <div id="dvid_15">
+                    <div class=headrightcont> <label><strong>Is the Patient Unemployed?</strong></label></div>
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <div class="control-group">
+                            <div class="inlineradio">
+                                <label class="control control--radio greenbuttradio1">
+                                    <span>YES</span>
+                                    @Html.RadioButtonFor(a => a.tblTPaymtHardShip.IsPatientUnEmployed, true, new { name = "PatUnemp", value = "1" })
+                                    @*<input type="radio" name="PatUnemp" id="PatUnemp" value="1" />*@
+                                    <div class="control__indicator"></div>
+                                </label>
+
+                            </div>
+                            <div class="inlineradio">
+                                <label class="control control--radio redbuttradio1">
+                                    <span>NO</span>
+                                    @Html.RadioButtonFor(a => a.tblTPaymtHardShip.IsPatientUnEmployed, false, new { name = "PatUnemp", value = "0" })
+                                    @*<input type="radio" name="PatUnemp" id="PatUnemp" value="0" />*@
+                                    <div class="control__indicator"></div>
+                                </label>
+
+                            </div>
+                            <div style="clear:both;"></div>
+
+                        </div>
+                        <div style="clear:both;"></div>
+                    </div>
+                </div>
+                <div id="dvid_16">
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <div class="col-sm-6 col-md-5 form-group">
+                            <div class=headrightcont>How Long?</div>
+                            @Html.TextBoxFor(e => e.tblTPaymtHardShip.HowLongPatientUnEmployed, new { @class = "form-control", onkeypress = "return restrictCharacters(this, event, integerOnly);" })
+                            <span id="HowLongPatientUnEmployed" style="color:red;" class="validateMsg"></span>
+                        </div>
+
+                    </div>
+                </div>
+                <div id="dvid_17">
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <div class="col-sm-6 col-md-5 form-group">
+                            <div class=headrightcont>Spouse’s Name</div>
+                            @Html.TextBoxFor(e => e.tblTPaymtHardShip.SpouseName, new { @class = "form-control" })
+                            <span id="SpouseName" style="color:red;" class="validateMsg"></span>
+                        </div>
+                        <div class="col-sm-6 col-md-5 form-group">
+                            <div class=headrightcont>Spouse’s Phone Number</div>
+                            @Html.TextBoxFor(m => m.tblTPaymtHardShip.SpousePhoneNo, new { @class = "form-control UsCellFormat" })
+                            <span id="SpousePhoneNo" style="color:red;" class="validateMsg"></span>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-sm-6 col-md-5 form-group">
+                            <div class=headrightcont>Spouse’s Employer Name</div>
+                            @Html.TextBoxFor(m => m.tblTPaymtHardShip.SpouseEmployerName, new { @class = "form-control" })
+                            <span id="SpouseEmployerName" style="color:red;" class="validateMsg"></span>
+                        </div>
+                        <div class="col-sm-6 col-md-5 form-group">
+                            <div class=headrightcont>Spouse’s Employer Address</div>
+                            @Html.TextBoxFor(m => m.tblTPaymtHardShip.SpouseEmployerAddress, new { @class = "form-control" })
+                            <span id="SpouseEmployerAddress" style="color:red;" class="validateMsg"></span>
+                        </div>
+
+                    </div>
+                </div>
+                <div id="dvid_18">
+                    <div class=headrightcont> <label><strong>Is the Spouse Unemployed?</strong></label></div>
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <div class="control-group">
+                            <div class="inlineradio">
+                                <label class="control control--radio greenbuttradio1">
+                                    <span>YES</span>
+                                    @Html.RadioButtonFor(a => a.tblTPaymtHardShip.IsSpouseUnEmployed, true, new { name = "SpouseEmp", value = "1" })
+                                    @*<input type="radio" name="SpouseEmp" id="SpouseEmp" value="1" />*@
+                                    <div class="control__indicator"></div>
+                                </label>
+
+                            </div>
+                            <div class="inlineradio">
+                                <label class="control control--radio redbuttradio1">
+                                    <span>NO</span>
+                                    @Html.RadioButtonFor(a => a.tblTPaymtHardShip.IsSpouseUnEmployed, false, new { name = "SpouseEmp", value = "0" })
+                                    @*<input type="radio" name="SpouseEmp" id="SpouseEmp" value="2" />*@
+                                    <div class="control__indicator"></div>
+                                </label>
+
+                            </div>
+                            <div style="clear:both;"></div>
+
+                        </div>
+                        <div style="clear:both;"></div>
+                    </div>
+                </div>
+                <div id="dvid_19">
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <div class="col-sm-6 col-md-5 form-group">
+                            <div class=headrightcont>How Long?</div>
+                            @Html.TextBoxFor(e => e.tblTPaymtHardShip.HowLongSpouseUnEmployed, new { @class = "form-control", onkeypress = "return restrictCharacters(this, event, integerOnly);" })
+                            <span id="HowLongSpouseUnEmployed" style="color:red;" class="validateMsg"></span>
+                        </div>
+
+                    </div>
+                </div>
+                <div id="dvid_20">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 form-group">
+                            <div id="PatientRestrictedToDo">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-7 form-group">
+                                        <div class=headrightcont>How many people are living in your household?</div>
+                                        <input type="text" id="HouseHoldMembersCount" value="@counterPatientHolder" class="form-control" disabled="disabled" />
+                                        @*@Html.TextBoxFor(e => e.CountHouseholdMember, new { @class = "form-control" })*@
+                                    </div>
+                                </div>
+                                @for (int i = 0; i < Model.litblTPaymtHouseholdMember.Count; i++)
+                                {
+                                <div class="row preexamin">
+                                    <div id="divRestrictedToDo_@i">
+                                        <div class="clearfix"></div>
+                                        <div class="col-sm-4 form-group">
+                                            <div class=headrightcont>Household Member Name</div>
+                                            @Html.TextBoxFor(e => e.litblTPaymtHouseholdMember[i].HouseholdMemberName, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-sm-3 form-group">
+                                            <div class=headrightcont>Employer</div>
+                                            @Html.TextBoxFor(e => e.litblTPaymtHouseholdMember[i].Employer, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-sm-3 form-group">
+                                            <div class=headrightcont>Employer Address</div>
+                                            @Html.TextBoxFor(e => e.litblTPaymtHouseholdMember[i].EmployerAddress, new { @class = "form-control" })
+                                        </div>
+                                        @*<div class="col-sm-0 col-md-0 form-group">
+                                                <button class="addbutt" type="button" style="margin-top:0;" title="Remove New Conditions" onclick='removeRowRestrictedToDo("@i")'>
+                                                    <i class="fa fa-remove" aria-hidden="true"></i>
+                                                </button>
+                                            </div>*@
+                                    </div>
+                                </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class=headrightcont>
+                                <button id="btnaddanotherRestrictedToDo" type="submit" class="btn btn-orange">Add </button>
+                            </div>
+                            <div class="clearfix"></div>
+
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="clearfix"></div>
+                    <br /><br /><br />
+                </div>
+                <div id="dvid_21" class="row">
+                    <div class=headrightcont> <label><strong>Who Contributes to the Monthly Household Income?</strong></label></div>
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <div class="headrightcont">
+
+                            <div>
+                                <label class="radio-inline">
+                                    <input type="checkbox" id="ChkHouseholdIncome_1" name="ContributesMonthlyIncome" value="Patient" />&nbsp;
+                                    <strong>Patient</strong>
+                                </label>
+                            </div>
+                            <div>
+                                <label class="radio-inline">
+                                    <input type="checkbox" id="ChkHouseholdIncome_2" name="ContributesMonthlyIncome" value="Spouse" />&nbsp;
+                                    <strong>Spouse</strong>
+                                </label>
+                            </div>
+                            <div>
+                                <label class="radio-inline">
+                                    <input type="checkbox" id="ChkHouseholdIncome_3" name="ContributesMonthlyIncome" value="Responsible Party" />&nbsp;
+                                    <strong>Responsible Party</strong>
+                                </label>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div>
+                                <label class="radio-inline">
+                                    <input type="checkbox" id="ChkHouseholdIncome_4" name="ContributesMonthlyIncome" value="Children Working" />&nbsp;
+                                    <strong>Children Working</strong>
+                                </label>
+                            </div>
+                            @Html.HiddenFor(a => a.tblTPaymtHardShip.HouseholdContributedBy, new { id = "HouseholdIncome" })
+
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="dvid_22" class="row">
+                    <div class="col-sm-6 col-md-5 form-group">
+                        <div class=headrightcont>Monthly Salary (Gross)</div>
+                        @Html.TextBoxFor(e => e.tblTPaymtHardShip.MonthlySalary, new { @class = "form-control AddTotalAmount", onkeypress = "return checkForInvalidCharacters( event, integerOnly);", maxlength = "7" })
+                    </div>
+                    <div class="col-sm-6 col-md-5 form-group">
+                        <div class=headrightcont>Public Assistance Benefits</div>
+                        @Html.TextBoxFor(e => e.tblTPaymtHardShip.PublicAssistanceBenefits, new { @class = "form-control AddTotalAmount", onkeypress = "return restrictCharacters(this, event, integerOnly);", maxlength = "10" })
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-sm-6 col-md-5 form-group">
+                        <div class=headrightcont>Unemployment Benefits</div>
+                        @Html.TextBoxFor(e => e.tblTPaymtHardShip.UnemploymentBenefits, new { @class = "form-control AddTotalAmount", onkeypress = "return restrictCharacters(this, event, integerOnly);", maxlength = "10" })
+                    </div>
+                    <div class="col-sm-6 col-md-5 form-group">
+                        <div class=headrightcont>Social Security Benefits</div>
+                        @Html.TextBoxFor(e => e.tblTPaymtHardShip.SocialSecurityBenefits, new { @class = "form-control AddTotalAmount", onkeypress = "return restrictCharacters(this, event, integerOnly);", maxlength = "10" })
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-sm-6 col-md-5 form-group">
+                        <div class=headrightcont>Workman’s Compensation</div>
+                        @Html.TextBoxFor(e => e.tblTPaymtHardShip.WorkmansCompensation, new { @class = "form-control AddTotalAmount", onkeypress = "return restrictCharacters(this, event, integerOnly);", maxlength = "10" })
+                    </div>
+                    <div class="col-sm-6 col-md-5 form-group">
+                        <div class=headrightcont>Child Support</div>
+                        @Html.TextBoxFor(e => e.tblTPaymtHardShip.ChildSupport, new { @class = "form-control AddTotalAmount", onkeypress = "return restrictCharacters(this, event, integerOnly);", maxlength = "10" })
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-sm-6 col-md-5 form-group">
+                        <div class=headrightcont>Other (Alimony, Etc.)</div>
+                        @Html.TextBoxFor(e => e.tblTPaymtHardShip.Other, new { @class = "form-control AddTotalAmount", onkeypress = "return restrictCharacters(this, event, integerOnly);", maxlength = "10" })
+                    </div>
+                    <div class="col-sm-6 col-md-5 form-group">
+                        <div class=headrightcont><b>TOTAL FAMILY INCOME</b></div>
+                        @Html.TextBoxFor(e => e.tblTPaymtHardShip.TotalIncome, new { @class = "form-control", onkeypress = "return restrictCharacters(this, event, integerOnly);", maxlength = "10" })
+                        <span id="TotalIncome" style="color:red;" class="validateMsg"></span>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div id="dvid_23" class="row">
+                    <div style="padding:12px 0; font-weight:bold;">
+                        I HEREBY ACKNOWLEDGE THAT THE INFORMATION GIVEN HEREIN IS TRUE AND CORRECT. I AUTHORIZE
+                        ADVANCED PHYSICAL THERAPY OF CENTRAL FLORIDA, INC TO VERIFY ANY INFORMATION CONTAINED IN
+                        THIS DOCUMENT FOR THE SOLE PURPOSE OF ASSESSING FINANCIAL NEED.
+                    </div>
+                </div>
+                <div class="row" id="dvid_24">
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <div class="headrightcont"><label>We look forward to building a relationship with you that will last a lifetime!</label></div>
+
+                    </div>
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <label>Signature of Claimant</label>
+                        <div></div>
+                        @*@Html.Partial("_SignPad")*@
+
+                        @{
+                                var imgurl4 = Url.Content("~/Images/nosignature.png");
+                                if (Model.tblTPaymtHardShip.SignatureOfPersonMakingReq != null)
+                                {
+                                    imgurl4 = "data:image/png;base64," + Convert.ToBase64String(Model.tblTPaymtHardShip.SignatureOfPersonMakingReq);
+                                }
+                        }
+                        <img src="@imgurl4" alt="Alternate Text" class="form-control" id="imgPatientSign1" style="width:500px; height:200px;" />
+                        <div style="clear:both; padding-top:15px;"></div>
+                        <label id="lblTime"></label>
+                        <div style="clear:both; padding-top:15px;"></div>
+                        <input type="hidden" name="name" value="" id="hdnImageVal2" />
+                        <input type="button" id="btnClaimantSignature" class="btn btn-primary" onclick="fnShowSignPad('imgPatientSign1', 'tblTPaymtHardShip_SignatureOfPersonMakingReq', 'lblTime')" value="Click Here To Add Signature" />
+
+
+                    </div>
+                </div>
+                <div class="row" id="dvid_25">
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <div class="headrightcont"><label>We look forward to building a relationship with you that will last a lifetime!</label></div>
+
+                    </div>
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <label>Signature of Spouse/Other</label>
+                        <div></div>
+                        @*@Html.Partial("_SignPad")*@
+
+                        @{
+                                var imgurl23 = Url.Content("~/Images/nosignature.png");
+                                if (Model.tblTPaymtHardShip.SignatureOfSpouseOrOther != null)
+                                {
+                                    imgurl23 = "data:image/png;base64," + Convert.ToBase64String(Model.tblTPaymtHardShip.SignatureOfSpouseOrOther);
+                                }
+                        }
+                        <img src="@imgurl23" alt="Alternate Text" class="form-control" id="imgSpouseSign" style="width:500px; height:200px;" />
+                        <div style="clear:both; padding-top:15px;"></div>
+                        <label id="lblTime1"></label>
+                        <div style="clear:both; padding-top:15px;"></div>
+                        <input type="hidden" name="name" value="" id="hdnImageVal2" />
+                        <input type="button" id="btnSpouseSignature" class="btn btn-primary" onclick="fnShowSignPad('imgSpouseSign', 'tblTPaymtHardShip_SignatureOfSpouseOrOther', 'lblTime1')" value="Click Here To Add Signature" />
+
+                    </div>
+                </div>
+
+                <div class="row" id="dvid_26">
+                    <div>
+                        <h3 style="padding:0 0 5px 0; margin:0; font-size:19px;">Supporting Documents</h3>
+                        <p style="padding:0 0 15px 0; margin:0; font-size:15px; font-weight:bold;">Please return all items (as applicable) on this checklist (in person or by mail):</p>
+
+                        <div style="padding:5px 0;">
+                            @Html.CheckBox("tblTPaymentHardShipSupportingDoc.IsMostRecentIRSTaxFormSigned")
+                            &nbsp;Most recent IRS tax forms (1040 and/or W-2). Must be signed.
+                        </div>
+                        <div style="padding:5px 0;">
+                            @Html.CheckBox("tblTPaymentHardShipSupportingDoc.IsCheckStubsForPast30Days")
+                            &nbsp;Check stubs for the past 30 days for all persons employed in the home.
+                        </div>
+                        <div style="padding:5px 0;">
+                            @Html.CheckBox("tblTPaymentHardShipSupportingDoc.IsUnEmploymentCheckStubsFor30Days")
+                            &nbsp;Unemployment check stubs for the past 30 days.
+                        </div>
+                        <div style="padding:5px 0;">
+                            @Html.CheckBox("tblTPaymentHardShipSupportingDoc.IsDriverLicenseOrIDCards")
+                            &nbsp;Driver’s license or identification cards for adults.
+                        </div>
+                        <div style="padding:5px 0;">
+                            @Html.CheckBox("tblTPaymentHardShipSupportingDoc.IsProofOfAllOtherIncomeReceived")
+                            &nbsp;Proof of all other income received in the past 30 days.
+                        </div>
+                        <div style="padding:5px 0;">
+                            @Html.CheckBox("tblTPaymentHardShipSupportingDoc.IsProofOfAllOutstandingBills")
+                            &nbsp;Proof of all outstanding bills (payment stubs, cancelled checks, etc.).
+                        </div>
+                        <div style="padding:5px 0;">
+                            @Html.CheckBox("tblTPaymentHardShipSupportingDoc.IsDSHSDenialLetter")
+                            &nbsp;DSHS Denial letter.
+                        </div>
+                        <div style="padding:5px 0;">
+                            @Html.CheckBox("tblTPaymentHardShipSupportingDoc.IsMedicaidFormsOrCard")
+                            &nbsp;Medicaid forms or card
+                        </div>
+                        <div style="padding:5px 0;">
+                            @Html.CheckBox("tblTPaymentHardShipSupportingDoc.IsCompletedOrSignedDisclosureForm")
+                            &nbsp;Completed and Signed Disclosure Form & Financial Statement (Page 2 of this application).
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+                @Html.Partial("_PrevNext")
+
+
+                <div id="dvid_subbutt" class="subbutt" style="display:none">
+
+                    <button type="submit" class="btn btn-orange pull-right" id="btnsave">Save</button>
+                    <div class="clearfix"></div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div id="loadingforCard" class="clsloadingforCard">
+    <div class="divloadingforCard">
+        <img src="~/Images/pageloader1.gif" width="200" height="200" />
+    </div>
+</div>
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<script type="text/javascript">
+    //Surgery
+    var vcounterPatientHolder = 1;
+    $(document).ready(function () {
+        $("#PatientName").hide();
+        $("#HardShipDate").hide();
+        $("#ResponsibleParty").hide();
+        $("#RelationshipPatien").hide();
+        $("#PatientEmployerName").hide();
+        $("#PatientEmployerAddress").hide();
+        $("#PatientHomeAddress").hide();
+        $("#PatientPhoneNo").hide();
+        $("#HowLongPatientUnEmployed").hide();
+        $("#SpouseName").hide();
+        $("#SpousePhoneNo").hide();
+        $("#SpouseEmployerName").hide();
+        $("#SpouseEmployerAddress").hide();
+        $("#HowLongSpouseUnEmployed").hide();
+        $("#TotalIncome").hide();
+        $('#loadingforCard').hide();
+        $('#PatHardShip').hide();
+
+        $(".AddTotalAmount").on('change', function () {
+            $(".AddTotalAmount").mask("#,##0.00", { reverse: true });
+            var TotalAmount = 0;
+            var MonthlySalary = $("#tblTPaymtHardShip_MonthlySalary").val();
+            var DecMonthlySalary = 0;
+            if (MonthlySalary != "") {
+                DecMonthlySalary = parseFloat(MonthlySalary);
+            }
+            var UnemploymentBenefits = $("#tblTPaymtHardShip_UnemploymentBenefits").val();
+            var DecUnemploymentBenefits = 0;
+            if (UnemploymentBenefits != "") {
+                DecUnemploymentBenefits = parseFloat(UnemploymentBenefits)
+            }
+            var WorkmansCompensation = $("#tblTPaymtHardShip_WorkmansCompensation").val();
+            var DecWorkmansCompensation = 0;
+            if (WorkmansCompensation != "") {
+                DecWorkmansCompensation = parseFloat(WorkmansCompensation);
+            }
+            var Other = $("#tblTPaymtHardShip_Other").val();
+            var decOther = 0;
+            if (Other != "") {
+                decOther = parseFloat(Other);
+            }
+            var PublicAssistanceBenefits = $("#tblTPaymtHardShip_PublicAssistanceBenefits").val();
+            var DecPublicAssistanceBenefits = 0;
+            if (PublicAssistanceBenefits != "") {
+                DecPublicAssistanceBenefits = parseFloat(PublicAssistanceBenefits);
+            }
+            var SocialSecurityBenefits = $("#tblTPaymtHardShip_SocialSecurityBenefits").val();
+            var DecSocialSecurityBenefits = 0;
+            if (SocialSecurityBenefits != "") {
+                DecSocialSecurityBenefits = parseFloat(SocialSecurityBenefits);
+
+            }
+            var ChildSupport = $("#tblTPaymtHardShip_ChildSupport").val();
+            var DecChildSupport = 0;
+            if (ChildSupport != "") {
+                DecChildSupport = parseFloat(ChildSupport);
+            }
+            TotalAmount = DecMonthlySalary + DecUnemploymentBenefits + DecWorkmansCompensation + decOther + DecPublicAssistanceBenefits + DecSocialSecurityBenefits + DecChildSupport;
+            $("#tblTPaymtHardShip_TotalIncome").val(TotalAmount);
+        });
+
+
+    });
+
+
+    tblTPaymtHardShip_PatientPhoneNo
+
+    __last = 26;
+
+
+    function fnValidate(pos) {
+        var ele = [];
+
+
+        return ___validate(ele);
+    }
+
+    function fnNextToShow(pos) {
+        if (pos == 1) {
+            if ($("input:radio[name='amountconcern']:checked").val() == "1") {
+                ClearPayment();
+                __last = 26;
+                return 2;
+            }
+            else if ($("input:radio[name='amountconcern']:checked").val() == "0") {
+
+                $("input:radio[name='Pay3instalment']:checked").removeAttr('checked');
+                $("input:radio[name='Pay6instalment']:checked").removeAttr('checked');
+                $("#PatPayment").show();
+                $("#PatHardShip").hide();
+                return 5;
+            }
+            else {
+                return 1;
+            }
+        }
+        if (pos == 2) {
+            if ($("input:radio[name='Pay3instalment']:checked").val() == "1") {
+                ClearPayment();
+                __last = 26;
+                //fnfinancialapplicationPdf();
+                // return 3;
+            }
+            else if ($("input:radio[name='Pay3instalment']:checked").val() == "0") {
+                $("input:radio[name='Pay6instalment']:checked").removeAttr('checked');
+                $("#PatPayment").show();
+                $("#PatHardShip").hide();
+                return 5;
+            }
+            else {
+                return 2;
+            }
+
+        }
+        if (pos == 3) {
+            if ($("input:radio[name='Pay6instalment']:checked").val() == "1") {
+                $("input:radio[name='Pay6instalment']:checked").removeAttr('checked');
+                $("#PatPayment").hide();
+                $("#PatHardShip").show();
+                __last = 26;
+                ClearPayment();
+                return 9;
+            }
+            else if ($("input:radio[name='Pay6instalment']:checked").val() == "0") {
+                $("#PatPayment").show();
+                $("#PatHardShip").hide();
+                return 5;
+            }
+            else {
+                return 3;
+            }
+
+        }
+        if (pos == 4) {
+            return 10;
+        }
+        if (pos == 10) {
+            return 11;
+        }
+        if (pos == 9) {
+            if ($("input:radio[name='HardShip']:checked").val() == "1") {
+                ClearPayment();
+               
+                return 4;
+            }
+            else if ($("input:radio[name='HardShip']:checked").val() == "0") {
+                $("input:radio[name='HardShip']:checked").removeAttr('checked');
+                return 3;
+            }
+           
+        }
+        if (pos == 11) {
+            var Pname = document.getElementById("Tbl_PatientName");
+            var pDate = document.getElementById("tblTPaymtHardShip_HardShipDate");
+            if (Pname.value == "") {
+                $("#PatientName").show();
+                $("#PatientName").text("Enter Patient Name");
+                return 11;
+            }
+            else if (pDate.value == "") {
+                $("#HardShipDate").show();
+                $("#HardShipDate").text("Enter Patient Date");
+                return 11;
+            }
+            else {
+                $("#PatientName").hide();
+                return 12;
+            }
+
+        }
+        if (pos == 12) {
+            var ResponsiblePartyName = document.getElementById("tblTPaymtHardShip_ResponsiblePartyName");
+            var RelationShipToPatient = document.getElementById("tblTPaymtHardShip_RelationShipToPatient");
+            if (ResponsiblePartyName.value == "") {
+                $("#ResponsibleParty").show();
+                $("#ResponsibleParty").text("Enter  Responsible Party Name");
+                return 12;
+            }
+            else if (RelationShipToPatient.value == "") {
+                $("#RelationshipPatien").show();
+                $("#RelationshipPatien").text("Enter Relationship");
+                return 12;
+            }
+            else {
+                return 13;
+            }
+
+        }
+        if (pos == 13) {
+            var PatientHomeAddress = document.getElementById("tblTPaymtHardShip_PatientHomeAddress");
+            var PatientPhoneNo = document.getElementById("tblTPaymtHardShip_PatientPhoneNo");
+            if (PatientHomeAddress.value == "") {
+                $("#PatientHomeAddress").show();
+                $("#PatientHomeAddress").text("Enter Patient Patient Address");
+                return 13;
+            }
+            else if (PatientPhoneNo.value == "") {
+                $("#PatientPhoneNo").show();
+                $("#PatientPhoneNo").text("Enter Patient Phone No");
+                return 13;
+            }
+            else if ($("#tblTPaymtHardShip_PatientPhoneNo").val().length < 14) {
+                $("#PatientPhoneNo").show();
+                $("#PatientPhoneNo").text("Enter Patient Phone No Correctly");
+                return 13;
+            }
+            else {
+                return 14;
+            }
+        }
+        if (pos == 14) {
+            var PatientEmployerName = document.getElementById("tblTPaymtHardShip_PatientEmployerName");
+            var PatientEmployerAddress = document.getElementById("tblTPaymtHardShip_PatientEmployerAddress");
+            if (PatientEmployerName.value == "") {
+                $("#PatientEmployerName").show();
+                $("#PatientEmployerName").text("Enter Patient Employer");
+                return 14;
+            }
+            else if (PatientEmployerAddress.value == "") {
+                $("#PatientEmployerAddress").show();
+                $("#PatientEmployerAddress").text("Enter Patient Employer Address");
+                return 14;
+            }
+            else {
+                return 15;
+            }
+        }
+        if (pos == 15) {
+
+            if ($("input:radio[name='tblTPaymtHardShip.IsPatientUnEmployed']:checked").val() == "True") {
+                $("input:radio[name='Pay3instalment']:checked").removeAttr('checked');
+                return 16;
+            }
+            else if (true) {
+                if ($("input:radio[name='tblTPaymtHardShip.IsPatientUnEmployed']:checked").val() == "False") {
+                    $("input:radio[name='Pay3instalment']:checked").removeAttr('checked');
+                    return 17;
+                }
+            }
+            else {
+                alert("Select Yes or No");
+                return 15;
+            }
+        }
+        if (pos == 16) {
+            var HowLongPatientUnEmployed = document.getElementById("tblTPaymtHardShip_HowLongPatientUnEmployed");
+            if (HowLongPatientUnEmployed.value == "") {
+                $("#HowLongPatientUnEmployed").show();
+                $("#HowLongPatientUnEmployed").text("Enter How long UnEmployer");
+                return 16;
+            }
+            else {
+                return 17;
+            }
+        }
+        if (pos == 17) {
+            var SpouseName = document.getElementById("tblTPaymtHardShip_SpouseName");
+            var SpousePhoneNo = document.getElementById("tblTPaymtHardShip_SpousePhoneNo");
+            var SpouseEmployerName = document.getElementById("tblTPaymtHardShip_SpouseEmployerName");
+            var SpouseEmployerAddress = document.getElementById("tblTPaymtHardShip_SpouseEmployerAddress");
+            if (SpouseName.value == "") {
+                $("#SpouseName").show();
+                $("#SpouseName").text("Enter Spouse Name");
+                return 17;
+            }
+            else if (SpousePhoneNo.value == "") {
+                $("#SpousePhoneNo").show();
+                $("#SpousePhoneNo").text("Enter Spouse Phone No");
+                return 17;
+            }
+            else if (SpouseEmployerName.value == "") {
+                $("#SpouseEmployerName").show();
+                $("#SpouseEmployerName").text("Enter Spouse Employer Name");
+                return 17;
+            }
+            else if (SpouseEmployerAddress.value == "") {
+                $("#SpouseEmployerAddress").show();
+                $("#SpouseEmployerAddress").text("Enter Spouse Employer Address");
+                return 17;
+            }
+            else if ($("#tblTPaymtHardShip_SpousePhoneNo").val().length < 14) {
+                $("#SpousePhoneNo").show();
+                $("#SpousePhoneNo").text("Enter Spouse Phone No Correctly");
+                return 17;
+            }
+            else {
+                return 18;
+            }
+        }
+        if (pos == 18) {
+            if ($("input:radio[name='tblTPaymtHardShip.IsSpouseUnEmployed']:checked").val() == "True") {
+                return 19;
+            }
+            else if ($("input:radio[name='tblTPaymtHardShip.IsSpouseUnEmployed']:checked").val() == "False") {
+                return 20;
+            }
+            else {
+                $("input:radio[name='tblTPaymtHardShip.IsSpouseUnEmployed']:checked").removeAttr('checked');
+                return 18;
+            }
+        }
+        if (pos == 19) {
+            var HowLongSpouseUnEmployed = document.getElementById("tblTPaymtHardShip_HowLongSpouseUnEmployed");
+            if (HowLongSpouseUnEmployed.value == "") {
+                $("#HowLongSpouseUnEmployed").show();
+                $("#HowLongSpouseUnEmployed").text("Enter how long Spouse Employer");
+                return 19;
+            }
+            else {
+                return 20;
+            }
+        }
+        if (pos == 20) {
+            return 21;
+        }
+        if (pos == 21) {
+            return 22;
+        }
+        if (pos == 22) {
+            var TotalIncome = document.getElementById("tblTPaymtHardShip_TotalIncome");
+            if (TotalIncome.value == "" || TotalIncome.value == 0) {
+                $("#TotalIncome").show();
+                $("#TotalIncome").text("Enter Total Amount");
+                return 22;
+            }
+                //if ($("#TotalFamilyIncome").val() == "" || $("#TotalFamilyIncome").val() == null) {
+                //    alert("Enter How long Total Family Income");
+                //    $("#TotalFamilyIncome").focus();
+                //    return 21;
+                //}
+            else {
+                return 23;
+            }
+        }
+        if (pos == 5) {
+            if ($("input:radio[name='Pay3instalment']:checked").val() != "0" && $("input:radio[name='Pay6instalment']:checked").val() != "0") {
+                GetPaymentammont();
+                return 6;
+            }
+            else if ($("input:radio[name='Pay6instalment']:checked").val() == "0") {
+                GetPaymentammont6instalment();
+                return 6;
+            }
+            else {
+                GetPaymentammont3instalment();
+                return 6;
+            }
+        }
+
+        if (pos == 7) {
+
+            //alert($("input:radio[name='PaymentMode']:checked").val());
+
+
+            if ($("input:radio[name='PaymentMode']:checked").val() == "1") {
+                //alert('fhgfhgfh');
+                __last = 8;
+                $("#dvid_8").show();
+                return 8;
+            }
+            else if ($("input:radio[name='PaymentMode']:checked").val() == "2") {
+                return 10;
+            }
+            else if ($("input:radio[name='PaymentMode']:checked").val() == "3") {
+                if ($("input:radio[name='Pay3instalment']:checked").val() == "0") {
+                    {
+                        __last = 9;
+                        $('#loadingforCard').show();
+                        $.post("@Url.Action("PaymentState", "PatientPayment", new { Area = "Payment" })", {
+                            Amount: $('#PaidAmount').val(), LocationId: $('#LocationId').val(),
+                            PaymentDate: $('#PaymentDate').val(), TotalAmoutToPay: $('#TotalAmoutToPay').val(),
+                            AdvPtAmount: $('#AdvPtAmount').val(), DueAmount: $('#DueAmount').val(),
+                            PaymentMode: $("input:radio[name='PaymentMode']:checked").val(),
+                            NoOfInstallments: 3
+                        }, function () {
+
+                            window.location.href = "Payment";
+                            $('#loadingforCard').hide();
+                        });
+                    }
+                }
+                else if ($("input:radio[name='Pay6instalment']:checked").val() == "0") {
+                    {
+                        __last = 111;
+                        $('#loadingforCard').show();
+                        //$("#dvid_8").hide();
+                        $.post("@Url.Action("PaymentState", "PatientPayment", new { Area = "Payment" })", {
+                            Amount: $('#PaidAmount').val(), LocationId: $('#LocationId').val(),
+                            PaymentDate: $('#PaymentDate').val(), TotalAmoutToPay: $('#TotalAmoutToPay').val(),
+                            AdvPtAmount: $('#AdvPtAmount').val(), DueAmount: $('#DueAmount').val(),
+                            PaymentMode: $("input:radio[name='PaymentMode']:checked").val(),
+                            NoOfInstallments: 6
+                        }, function () {
+                            //return 9;
+                            window.location.href = "Payment";
+                            $('#loadingforCard').hide();
+                        });
+                    }
+                }
+                else {
+                    {
+                        __last = 111;
+                        $('#loadingforCard').show();
+                        //$("#dvid_8").hide();
+                        $.post("@Url.Action("PaymentState", "PatientPayment", new { Area = "Payment" })", {
+                            Amount: $('#PaidAmount').val(), LocationId: $('#LocationId').val(),
+                            PaymentDate: $('#PaymentDate').val(), TotalAmoutToPay: $('#TotalAmoutToPay').val(),
+                            AdvPtAmount: $('#AdvPtAmount').val(), DueAmount: $('#DueAmount').val(),
+                            PaymentMode: $("input:radio[name='PaymentMode']:checked").val()
+
+                        }, function () {
+
+                            window.location.href = "Payment";
+                            $('#loadingforCard').hide();
+                        });
+                    }
+                }
+
+                // var vPaidAmount = $('#PaidAmount').val();
+                //  window.location.href = "Payment?Amount="+$('#PaidAmount').val();
+
+            }
+            else {
+                return 7;
+            }
+        }
+        if (pos == 8) {
+
+            return 10;
+        }
+        if (pos == 23) {
+            return 24;
+        }
+        if (pos == 11) {
+
+            //alert($("input:radio[name='amountconcern']:checked").val());
+            if ($("input:radio[name='amountconcern']:checked").val() == "1") {
+                $("input:radio[name='Pay3instalment']:checked").removeAttr('checked');
+                $("#dvid_24").hide();
+                return 4;
+            }
+            else if ($("input:radio[name='amountconcern']:checked").val() == "0") {
+                $("input:radio[name='Pay3instalment']:checked").removeAttr('checked');
+                return 1;
+            }
+            else {
+                return 11;
+            }
+        }
+
+        return pos + 1;
+
+    }
+
+
+    function fnTriggerAtEnd() {
+
+        if (__last == 111) {
+            $("#dvid_8").hide();
+            $('.dvPrevNext').hide();
+        }
+        else {
+
+            if ($("#dvid_" + __last).is(':visible')) $('#dvid_subbutt').show();
+            else $('#dvid_subbutt').hide();
+        }
+
+
+
+    }
+
+    function fnfinancialapplicationPdf() {
+        debugger;
+
+        $.ajax({
+            url: "@Url.Action("financialapplication", "PatientPayment", new { Area = "Payment" })",
+            type: "GET",
+            success: function (result) {
+                alert(result);
+                //window.location.href = result;
+                window.open(result, '_blank');
+            },
+            error: function () {
+                return false;
+            }
+        });
+
+
+    }
+    @*function fnShowDetail(id) {
+    function GetPaymentammont() {
+        //alert(12);
+        $.ajax({
+        var url = "@Url.Action("PatHardShipPDf", "PatientPayment", new { Area = "Payment" })" + "?id=" + 1002;
+            type: "POST",
+            dataType: "JSON",
+            data: { PId: $('#PatientId').val() },
+            success: function (data) {
+                //$('#myModal').modal();
+                $('#TotalAmoutToPay').val(data.TotalAmoutToPay);
+                $('#AdvancePaidAmount').val(data.AdvancePaidAmount);
+                $('#DueAmount').val(data.DueAmount);
+                $('#PaidAmount').val(data.DueAmount);
+                $('#NoOfInstallments').val(0);
+        //fnShowPopupForDetail(url);
+            },
+            error: function (error) { alert("Error: " + error); },
+            statusCode: {
+                404: function () {
+                    alert("Page Not Found.");
+                }
+            }
+        });
+        popupwindow(url, 'Activation', 1000, 800);
+    }*@
+
+    function GetPaymentammont() {
+        //alert("ok");
+        $.ajax({
+            url: "@Url.Action("GetPaymentammonts", "PatientPayment")",
+            type: "POST",
+            dataType: "JSON",
+            data: { PId: $('#PatientId').val() },
+            success: function (data) {
+                //$('#myModal').modal();
+                $('#TotalAmoutToPay').val(data.TotalAmoutToPay);
+                $('#AdvancePaidAmount').val(data.AdvancePaidAmount);
+                $('#DueAmount').val(data.DueAmount);
+                $('#PaidAmount').val(data.DueAmount);
+                $('#NoOfInstallments').val(0);
+
+            },
+            error: function (error) { alert("Error: " + error); },
+            statusCode: {
+                404: function () {
+                    alert("Page Not Found.");
+                }
+            }
+        });
+
+    }
+    function GetPaymentammont3instalment() {
+        //alert("ok");
+        $.ajax({
+            url: "@Url.Action("GetPaymentammontsInstalment", "PatientPayment")",
+            type: "POST",
+            dataType: "JSON",
+            data: { PId: $('#PatientId').val() },
+            success: function (data) {
+                //$('#myModal').modal();
+                $('#TotalAmoutToPay').val(data.TotalAmoutToPay);
+                $('#AdvancePaidAmount').val(data.AdvancePaidAmount);
+                $('#DueAmount').val(data.DueAmount);
+                $('#PaidAmount').val(data.PaidAmount);
+                $('#NoOfInstallments').val(3);
+
+            },
+            error: function (error) { alert("Error: " + error); },
+            statusCode: {
+                404: function () {
+                    alert("Page Not Found.");
+                }
+            }
+        });
+
+    }
+    function checkForInvalidCharacter(sevent, inputBox) {
+        if ((event.which != 46 || inputBox.val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+            event.preventDefault();
+        }
+    };
+
+    function GetPaymentammont6instalment() {
+        //alert("ok");
+        $.ajax({
+            url: "@Url.Action("GetPaymentammontsInstalment6", "PatientPayment")",
+            type: "POST",
+            dataType: "JSON",
+            data: { PId: $('#PatientId').val() },
+            success: function (data) {
+                //$('#myModal').modal();
+                $('#TotalAmoutToPay').val(data.TotalAmoutToPay);
+                $('#AdvancePaidAmount').val(data.AdvancePaidAmount);
+                $('#DueAmount').val(data.DueAmount);
+                $('#PaidAmount').val(data.PaidAmount);
+                $('#NoOfInstallments').val(6);
+            },
+            error: function (error) { alert("Error: " + error); },
+            statusCode: {
+                404: function () {
+                    alert("Page Not Found.");
+                }
+            }
+        });
+
+    }
+    function ClearPayment() {
+        $("#LocationId").val("");
+        $('#PaymentDate').attr("placeholder", Date());
+        //$("#PaymentDate").val("Date()");
+        $("#TotalAmoutToPay").val("");
+        $("#DueAmount").val("");
+        $("#AdvancePaidAmount").val("");
+        $("#PaidAmount").val("");
+        $("#ChequeNumber").val("");
+        $("#ChequeDate").val("");
+        $("#BankName").val("");
+        $("#BranchName").val("");
+        $("#IFSC").val("");
+    }
+    @*function fnfinancialapplicationPdf() {
+        var url = "@Url.Action("financialapplication", "PatientPayment", new { Area = "Payment" })";
+       // popupwindow(url, 'financialapplication', 1000, 800);
+        window.open(url, '_blank');
+
+    }*@
+
+    var counterPatientExercis = 1;
+    var divInnerPatientExercis;
+
+
+
+
+    //    $("#btnaddanotherRestrictedToDo").click(function () {
+
+    //        alert(33);
+
+    //        divInnerPatientExercis = '<div id="divRestrictedToDo_' + counterPatientExercis + '">'+' <div  class="col-sm-6 col-md-4 form-group">' + '<input class="form-control" id="MemberName_' + counterPatientExercis + '" name="" type="text" value/>' +
+    //'</div>' + '<div class="col-sm-6 col-md-4 form-group">' + '<input class="form-control" id="Emp_' + counterPatientExercis + '" name="" type="text" value/>' +
+    //'</div>' + '<div class="col-sm-6 col-md-4 form-group">' + '<input class="form-control" id="Address_' + counterPatientExercis + '" name="" type="text" value/>' +
+    //'</div>' + '</div>'+' <div class="col-sm-0 col-md-0 form-group">' +
+    //                            '<button class="addbutt" type="button" style="margin-top:0;" title="Remove New Conditions" onclick="removeRowRestrictedToDo(' + counterPatientExercis + ')" >' +
+    //                               ' <i class="fa fa-remove" aria-hidden="true">' + '</i>' +
+    //                            '</button>' +
+    //                       ' </div>';
+
+    //        $("#PatientRestrictedToDo").append(divInnerPatientExercis);
+    //        counterPatientExercis++;
+
+    //    });
+
+
+    $("#btnaddanotherRestrictedToDo").click(function () {
+
+        //alert(33);
+        var IsHasVal = true;
+        for (var i = 0; i < counterPatientExercis; i++) {
+            var vDivId = "#divRestrictedToDo_" + i;
+            alert(vDivId);
+            if ($(vDivId).length > 0) {
+                var InputID = "MemberName_" + counterPatientExercis;
+                var vInputID = $("#" + InputID + "").val();
+                if (vInputID == '') {
+                    var vSpanErro = "#HouseholdMemberName_" + counterPatientExercis;
+                    $("#vSpanErro").show();
+                    $("#vSpanErro").text("Enter House holdMember Name_");
+                    IsHasVal = false;
+                }
+            }
+        }
+        if (IsHasVal == true) {
+            divInnerPatientExercis = '<div class="row" id="divRestrictedToDo_' + counterPatientExercis + '">'
+                                    + ' <div  class="col-sm-4 form-group">'
+                                        + '<input class="form-control" id="MemberName_' + counterPatientExercis + '" name="litblTPaymtHouseholdMember[' + counterPatientExercis + '].HouseholdMemberName" type="text" />' + '<span id="HouseholdMemberName_' + counterPatientExercis + '" style="color:red;" class="validateMsg"></span>' +
+                                      '</div>'
+                                    + '<div class="col-sm-3 form-group">'
+                                        + '<input class="form-control" id="Emp_' + counterPatientExercis + '" name="litblTPaymtHouseholdMember[' + counterPatientExercis + '].Employer" type="text" />' +
+                                      '</div>'
+                                    + '<div class="col-sm-3 form-group">'
+                                        + '<input class="form-control" id="Address_' + counterPatientExercis + '" name="litblTPaymtHouseholdMember[' + counterPatientExercis + '].EmployerAddress" type="text" />' +
+                                      '</div>'
+                                    + ' <div class="col-sm-2 form-group">' +
+                                        '<button class="addbutt" type="button" style="margin-top:0;" title="Remove New Conditions" onclick="removeRowRestrictedToDo(' + counterPatientExercis + ')" >' +
+                                        ' <i class="fa fa-remove" aria-hidden="true">' + '</i>' +
+                                        '</button>' +
+                                      ' </div>'
+                                   + '</div>';
+
+            $("#PatientRestrictedToDo").append(divInnerPatientExercis);
+            counterPatientExercis++;
+            vcounterPatientHolder++;
+            $("#HouseHoldMembersCount").val(vcounterPatientHolder);
+        }
+    });
+
+
+
+
+
+
+
+    function removeRowRestrictedToDo(counterPatientExercis) {
+        //alert(counterPatientExercis);
+        var newCnt1 = 0;
+        for (var i = counterPatientExercis ; i < counterPatientExercis; i++) {
+            newCnt1 = parseInt(i) + 1;
+
+            // $("#ListofPatientExercis_" + i + "__PatientExercises").val($("#ListofPatientExercis_" + newCnt1 + "__PatientExercises").val());
+            // $("#ListofPatientExercis_" + i + "__PatientExercises_Id").val($("#ListofPatientExercis_" + newCnt1 + "__PatientExercises_Id").val());
+            // $("#ListofPatientExercis_" + i + "__PTExam_Id").val($("#ListofPatientExercis_" + newCnt1 + "__PTExam_Id").val());
+            //$("#ListofPatientExercis_" + i + "__PTExam_Id").val($("#ListofPatientExercis_" + newCnt1 + "__PTExam_Id").val());
+        }
+
+        var newCnt = counterPatientExercis - 1;
+        //alert(newCnt);
+        $("#divRestrictedToDo_" + counterPatientExercis).remove();
+        counterPatientExercis--;
+        vcounterPatientHolder--;
+        $("#HouseHoldMembersCount").val(vcounterPatientHolder);
+
+
+
+    }
+
+</script>
+<script>
+    $("#btnsave").click(function () {
+        $("#TotalAmoutToPay")
+                  .removeAttr("disabled")
+
+        $("#AdvancePaidAmount")
+                   .removeAttr("disabled")
+
+        $("#DueAmount")
+                   .removeAttr("disabled")
+
+        $("#PaidAmount")
+                   .removeAttr("disabled")
+    });
+
+
+    var ChakString = "";
+    $("input:checkbox[name='ContributesMonthlyIncome']").on('click', function () {
+        var ContributesMonthlyIncomeValue = $("input:checkbox[name='ContributesMonthlyIncome']:checked").val()
+        var ChakString = "";
+        for (var j = 1; j <= 4; j++) {
+            if ($("#ChkHouseholdIncome_" + j + "").is(":checked")) {
+                if (ChakString == "") {
+                    ChakString = $("#ChkHouseholdIncome_" + j + "").val();
+                }
+                else {
+                    ChakString = ChakString + ',' + $("#ChkHouseholdIncome_" + j + "").val();
+                }
+            }
+        }
+        $("#HouseholdIncome").val(ChakString);
+    });
+
+
+</script>
+<script>
+
+    var digitsOnly = /[1234567890]/g;
+    var integerOnly = /[0-9\.]/g;
+    var alphaOnly = /[A-Za-z]/g;
+
+    function restrictCharacters(myfield, e, restrictionType) {
+        if (!e) var e = window.event
+        if (e.keyCode) code = e.keyCode;
+        else if (e.which) code = e.which;
+        var character = String.fromCharCode(code);
+
+        // if they pressed esc... remove focus from field...
+        if (code == 27) { this.blur(); return false; }
+
+        // ignore if they are press other keys
+        // strange because code: 39 is the down key AND ' key...
+        // and DEL also equals .
+        if (!e.ctrlKey && code != 9 && code != 8 && code != 36 && code != 37 && code != 38 && (code != 39 || (code == 39 && character == "'")) && code != 40) {
+            if (character.match(restrictionType)) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+    }
+</script>

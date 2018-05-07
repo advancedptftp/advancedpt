@@ -1,0 +1,534 @@
+﻿@model PagedList.IPagedList<DataLayer.Models.tbldtn>
+@using PagedList.Mvc;
+@using DataLayer;
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+@if (ViewBag.Error != null)
+{
+    <script>
+        alertify.alert('@ViewBag.Error').setHeader('AdvancePT Says');
+    </script>
+
+}
+@*@if (ViewBag.msg == "1")
+{
+    <script>
+
+        $(document).ready(function () {
+            $('#__Complete').modal();
+        });
+        //window.location.href = "/Patient/Index?PatientCondition_Id="+ ViewBag.ConditionId
+    </script>
+}*@
+
+
+<link href="/Content/semantic.css" rel="stylesheet">
+<style>
+    .NewPatient {
+        background-color: rgba(205, 216, 36, 0.68) !important;
+    }
+</style>
+@*<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">*@
+
+<body>
+
+</body>
+<section class="bodyinner2">
+    <div>
+        <h2 class="text-center">Daily Treatment Note List</h2>
+      
+
+    </div>
+
+    <div>
+        @{
+            if (Model.Count >= 0)
+            {
+                <div>
+
+                    @{
+                bool? direction = ViewBag.SortDirection;
+                if (direction == null) { direction = false; }
+                    }
+
+
+                    @using (Html.BeginForm("Index", "TreatmentNoteSubjective", FormMethod.Get, new { area = "DailyTreatmentNote" }))
+                    {
+
+                        <div class="searchsec">
+
+                            @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search by Patient full name" })
+                            <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                            <div class="clearfix"></div>
+                        </div>
+                    }
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+
+                                <th>
+                                    @{ var classname = "botharrow";}
+                                    @if ((ViewBag.CurrentSort == "PatientName" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                                    {
+                                        classname = "bottarrow";
+                                    }
+                                    else if ((ViewBag.CurrentSort == "PatientName" && ViewBag.SortDirection == false))
+                                    {
+                                        classname = "toparrow";
+                                    }
+                                    @Html.ActionLink("Patient Name", "Index", new { sortOrder = "PatientName", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname })
+                                    @*@Html.DisplayName("Resource Type")*@
+                                </th>
+                           
+                                <th>
+                                    @Html.DisplayName("Location")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("CIA Status")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Interim Status")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("DTN Status")
+                                </th>
+
+                                <th>
+                                    Next Step
+                                </th>
+                                <th>
+
+                                </th>
+                            </tr>
+                        </thead>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PatientName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LocationName)
+                                   
+                                </td>
+                                <td>
+                                    @if (item.CIA_Status == "A")
+                                    {
+                                        
+                                             @Html.DisplayName("CIA Completed")
+                                    }
+                                    else
+                                    {
+                                        @Html.DisplayName("In Process")
+                                    }
+
+                                </td>
+                                <td>
+                                    @if (item.INTERIM_Status == 5)
+                                    {
+
+                                        @Html.DisplayName("INTERIM Completed")
+                                    }
+                                    else
+                                    {
+                                        @Html.DisplayName("In Process")
+                                    }
+
+                                </td>
+                                <td>
+                                  
+                                    @if (item.Dtn_Status == 1)
+                                    {
+
+                                        @Html.DisplayName("Subjective Completed")
+                                        
+
+                                    }
+                                    @if (item.Dtn_Status == 2)
+                                    {
+                                         @Html.DisplayName("Pre Treatment Completed")
+
+                                    }
+
+                                    @if (item.Dtn_Status == 3)
+                                    {
+                                         @Html.DisplayName("Objective Plan Completed")
+                                       
+                                    }
+                                    @if (item.Dtn_Status == 4)
+                                    {
+                                         @Html.DisplayName("Post Treatment Completed")
+                                       
+                                    }
+                                    @if (item.Dtn_Status == 5)
+                                    {
+                                         @Html.DisplayName("Billing Completed")
+                                     
+                                    }
+                                    @if (item.Dtn_Status == 6)
+                                    {
+                                        @Html.DisplayName("Assessment Completed")
+
+                                    }
+                                    @if (item.Dtn_Status == 7)
+                                    {
+                                        @Html.DisplayName("Plan Completed")
+
+                                    }
+                                </td>
+                                <td>
+                                   
+                                    @if (item.Dtn_Status ==0)
+                                    {
+                                        <a href="@Url.Action("Create", "TreatmentNoteSubjective", new { PC_id = item.PatientConditionId, p_id = item.PatientID })">
+                                            <i class="btn btn-primary btn-lg" aria-hidden="true">Create DTN</i>
+                                        </a>
+
+                                    }
+                                    @if (item.Dtn_Status == 1)
+                                    {
+
+                                        <a href="@Url.Action("Create", "TreatmentNotePreTreatment", new { PC_id = item.PatientConditionId, p_id = item.PatientID })">
+                                            <i class="btn btn-primary btn-lg" aria-hidden="true">Pre Treatment</i>
+                                        </a>
+
+                                    }
+                                    @if (item.Dtn_Status == 2)
+                                    {
+                                        <a href="@Url.Action("TreatmentNoteOptionSelect", "TreatmentNoteObjective", new { PC_id = item.PatientConditionId, p_id = item.PatientID })">
+                                            <i class="btn btn-primary btn-lg" aria-hidden="true">Objective</i>
+
+                                        </a>
+
+                                    }
+
+                                    @if (item.Dtn_Status == 3)
+                                    {
+
+                                        <a href="@Url.Action("Create", "TreatmentNotePostTreatment", new { PC_id = item.PatientConditionId, p_id = item.PatientID })">
+                                            <i class="btn btn-primary btn-lg" aria-hidden="true">Post Treatment</i>
+                                        </a>
+
+                                    }
+                                    @if (item.Dtn_Status == 4)
+                                    {
+
+                                        <a href="@Url.Action("Create", "BillingScreen", new { PC_id = item.PatientConditionId, p_id = item.PatientID })">
+                                            <i class="btn btn-primary btn-lg" aria-hidden="true">Billing</i>
+                                        </a>
+
+                                    }
+                                    @if (item.Dtn_Status == 5)
+                                    {
+                                        <a href="@Url.Action("Create", "TreatmentNoteAssessment", new { p_id = item.PatientID, PC_id = item.PatientConditionId })">
+                                            <i class="btn btn-primary btn-lg" aria-hidden="true">Assessment</i>
+                                        </a>
+                                    }
+                                    @if (item.Dtn_Status == 6)
+                                    {
+                                        <a href="@Url.Action("Create", "TreatmentNotePlan", new { p_id = item.PatientID, PC_id = item.PatientConditionId })">
+                                            <i class="btn btn-primary btn-lg" aria-hidden="true">Plan</i>
+                                        </a>
+                                    }
+                                    
+                                </td>
+                                @*<td>
+                                   
+                                    @if (item.INTERIM_Status == 2)
+                                    {
+                                        <a href="@Url.Action("EditsUBJECTIBE", "InterimAssessment", new { P_id = item.PatientID, C_id = item.PatientConditionId })">
+                                            Subjective
+                                        </a>
+                                        <a href="@Url.Action("editobjective", "InterimAssessment", new { P_id = item.PatientID, id = item.PatientConditionId })">
+                                            / Objective
+                                        </a>
+                                    }
+                                    @if (item.INTERIM_Status == 4)
+                                    {
+                                        <a href="@Url.Action("EditsUBJECTIBE", "InterimAssessment", new { P_id = item.PatientID, C_id = item.PatientConditionId })">
+                                            Subjective
+                                        </a>
+                                        <a href="@Url.Action("editobjective", "InterimAssessment", new { P_id = item.PatientID, id = item.PatientConditionId })">
+                                            / Objective
+                                        </a>
+                                        <a href="@Url.Action("Edit_Plan", "InterimAssessment", new { P_id = item.PatientID, id = item.PatientConditionId })">
+                                            / Plan
+                                        </a>
+                                    }
+                                    @if (item.INTERIM_Status == 5)
+                                    {
+                                        <a href="@Url.Action("EditsUBJECTIBE", "InterimAssessment", new { P_id = item.PatientID, C_id = item.PatientConditionId })">
+                                            Subjective
+                                        </a>
+                                        <a href="@Url.Action("editobjective", "InterimAssessment", new { P_id = item.PatientID, id = item.PatientConditionId })">
+                                            / Objective
+                                        </a>
+                                        <a href="@Url.Action("Edit_Plan", "InterimAssessment", new { P_id = item.PatientID, id = item.PatientConditionId })">
+                                            / Plan
+                                        </a>
+                                        <a href="@Url.Action("Edit_Assessment", "InterimAssessment", new { P_id = item.PatientID, id = item.PatientConditionId })">
+                                            / Assessment
+                                        </a>
+                                    }
+                                </td>*@
+                                @*<td>
+                                    @if (item.INTERIM_Status == 5 || item.INTERIM_Status == 6)
+                                    {
+                                        for (var i = 1; i < @item.reportpdf + 1; i++)
+                                        {
+
+                                            <a href="#" onclick="fn_CreatePDF(@item.PatientID,@item.PatientConditionId,@item.INTERIM_Status,@i)">
+                                                <i class="fa fa-file-pdf-o fa-4x" aria-hidden="true"></i>
+                                            </a>
+                                        }
+
+
+                                    }
+                                </td>*@
+                                <td>
+                                    @if (item.Dtn_Status == 7)
+                                    {
+                                       <a href="#" onclick="fn_Report(@item.PatientID, @item.PatientConditionId)">
+                               <i class="btn btn-primary" aria-hidden="true">Report</i>
+                              
+                           </a>
+                                     
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+
+                <div>
+                    <br />
+                    @using (Html.BeginForm("Index", "TreatmentNoteSubjective", new { area = "DailyTreatmentNote",sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+                    {
+                        @Html.DropDownList("PageSize")
+                    }
+                    <div class="pull-left" style=" padding:10px;">
+                        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                    </div>
+
+                    @Html.PagedListPager(Model, page => Url.Action("Index",
+                      new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction }))
+                </div>
+            }
+        }
+
+        <p id="demo"></p>
+
+    </div>
+
+</section>
+
+@*<div class="modal fade" id="__Complete" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="custommodalbody">
+                <h3 style="padding:0;">Welcome to Advanced P.T.! </h3>
+
+                <div class="modal-body">
+                    <div>
+                        <div id="content">
+                            Do you want to complete Interim Assessment?
+                        </div>
+                    </div>
+                </div>
+
+           
+            </div>
+        </div>
+
+    </div>
+</div>*@
+<div class="modal fade" id="__Complete" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="padding-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                @*<h4 class="modal-title">Search Patient Name</h4>*@
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div id="searchPatient">
+
+                        <div class="SearchResultContainer1">
+                            <table class="table table-bordered table-scroll" id="tblReportList">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Report</th>
+                                      
+                                    </tr>
+                                </thead>
+                                <tbody> </tbody>
+                            </table>
+
+                            
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+    });
+
+
+    $("#PageSize").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+
+    function fn_Report(pid, pcid) {
+
+        $.ajax({
+            url: '@Url.Action("Reportlist", "TreatmentNoteSubjective")',
+            type: 'POST',
+            data: {
+                P_id: pid,
+                PC_id: pcid,
+            },
+            success: function (json) {
+                $("#tblReportList tbody").html('');
+                for (var i = 0; i < json.length; i++) {
+                    var __date = json[i].appoimentdate;
+                    var dateString = __date.substr(6);
+                    var currentTime = new Date(parseInt(dateString));
+
+                    var month;
+                    if (currentTime.getMonth() < 10) {
+                        month = currentTime.getMonth() + 1;
+                        month = '0' + month.toString();
+                    }
+                    else { month = currentTime.getMonth() + 1; }
+
+                    var day;
+                    if (currentTime.getDate() < 10) {
+                        day = currentTime.getDate();
+                        day = '0' + day.toString();
+                    }
+                    else {
+                        day = currentTime.getDate();
+                    }
+
+                    var year = currentTime.getFullYear();
+                    var date = month + "/" + day + "/" + year;
+                    PatientId = json[i].patientid.toString();
+                    patientcondation_ID = json[i].patientcondation.toString();
+                    NoofDTN = json[i].NoofDTN.toString();
+                    var row = "<tr><td>" + date + "</td><td><a href='#' onclick='fn_CreatePDF(" + PatientId + "," + patientcondation_ID + "," + NoofDTN + ");'><i class='fa fa-file-pdf-o fa-3x' aria-hidden='true'></i></a></td></tr>";
+                    $("#tblReportList tbody").append(row);
+                    $('#__Complete').modal();
+                }
+              
+            },
+            error: function (msg) {
+            }
+        });
+    }
+
+
+
+
+
+    function fn_CreatePDF(PatientId, patientcondation_ID, NoofDTN) {
+        //alert("ok");
+        var url = "@Url.Action("DTN_Pdf", "TreatmentNoteSubjective", new { Area = "DailyTreatmentNote" })" + "?PatientId=" + PatientId + "&PatientConditionId=" + patientcondation_ID + "&NoofDTN=" + NoofDTN;
+        popupwindow(url, 'DTN_Pdf', 1000, 800);
+
+        //fnShowPopupForDetail(url);
+    }
+
+
+
+
+
+
+    function fnCreateInterim(PatientConditionId) {
+        // alert("ok");
+        $.ajax({
+            url: "@Url.Action("Create", "InterimAssessment")",
+            type: "POST",
+            dataType: "JSON",
+            data: { PatientConditionId: PatientConditionId },
+            success: function (data) {
+
+                $('#myModal').modal('hide');
+                var msg = data;
+                alert(msg);
+                //location.reload();
+
+            },
+            error: function () {
+                alert("Error occured.");
+            }
+        });
+
+    }
+    function sure(PatientConditionId) {
+        var txt;
+        var r = confirm("Please note you won't be able to edit anymore after you click OK here");
+        if (r == true) {
+            $.ajax({
+                url: '@Url.Action("CompleteAssesment", "InterimAssessment")',
+                type: 'POST',
+                data: { Patientcondationids: PatientConditionId },
+                success: function (res) {
+
+                    window.location.href = '@Url.Action("Index", "InterimAssessment")';
+                },
+                error: function (msg) {
+                }
+            });
+
+        } else {
+            window.location.href = '@Url.Action("Index", "InterimAssessment")';
+        }
+        document.getElementById("demo").innerHTML = txt;
+    }
+
+
+</script>
+
+<script type="text/javascript">
+
+
+    function fn_EligibleForInterim(NoOfVisits, NoOfDays, PId, CondId, DaysNotification) {
+
+      
+
+        if (NoOfVisits >= NoOfVisits || NoOfDays >= NoOfDays) {
+            window.location.href = '@Url.Action("Create", "InterimAssessment")?P_id=' + PId + '&C_id=' + CondId + '&day=' + NoOfDays + '&visit=' + NoOfVisits + '&DaysNotification=' + DaysNotification;
+        }
+        else {
+            alertify.alert("No of visits and days are not matched to proceed Interim Subjective.").setHeader("AdvancePT Says");
+            window.location.href(true);
+        }
+      
+    }
+
+</script>

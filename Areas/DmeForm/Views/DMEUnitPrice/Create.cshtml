@@ -1,0 +1,94 @@
+﻿@model DataLayer.Models.tblRDMEUnitPrice
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (ViewBag.Error != null)
+{
+    @Html.Raw(ViewBag.Error)
+}
+<section class="bodyinner">
+    <div class="container">
+        <center><h2>DME Item Price</h2></center>
+            <div class="report-form clearfix">
+
+                @using (Html.BeginForm("Create", "DMEUnitPrice", FormMethod.Post, new { name = "Create", id = "Create", enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+
+
+
+                    @Html.ValidationSummary(true)
+
+                    <div class="row">
+                        @*<div class="col-sm-6 col-md-6 form-group">
+
+
+                            @Html.Label("DME Form Code")
+                            @Html.DropDownListFor(e => e.DMEFormCode, (SelectList)ViewBag.dmecode, new { @class = "form-control" })
+                          
+                        </div>*@
+
+                        <div class="col-sm-5">
+                            @Html.Label("DME Item Name:")
+                            <select class="form-control" id="DMEFormCode" name="DMEFormCode">
+                                <option value="0" selected>-- Select DME Item --</option>
+                                <option value="L1846">BREG Custom Knee Brace </option>
+                                <option value="L1843">Free Style OA Soft Knee Brace </option>
+                                <option value="L1845">Fusion Ligament Knee Brace </option>
+                                <option value="L1847">Fusion OA Knee Brace </option>
+                                <option value="L0637">Lumbosacral Orthosis Order </option>
+                                <option value="L0456">Spinomed IVTLSO </option>
+                            </select>
+                            <span class="validateMsg" id="DMEFormCodes"></span>
+                        </div>
+                        <div class="col-sm-6 col-md-6 form-group">
+
+                            @Html.Label("Item Unit Price:")
+                            @Html.TextBoxFor(model => model.UnitPrice, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.UnitPrice)
+                        </div>
+                        @*<div class="col-sm-6 col-md-6 form-group">
+                            @Html.Label("DME Form Name")
+                            @Html.DropDownListFor(e => e.DMEFormName, (SelectList)ViewBag.DMEFormName, new { @class = "form-control" })
+                           
+                        </div>*@
+                    </div>
+                    <div class="row">
+                       
+
+                    </div>
+                    
+                    <div class="subbutt">
+                        <input type="submit" value="Create" class="btn btn-orange pull-right" onclick="return validateInputs();" />
+
+                        <div class="clearfix"></div>
+                    </div>
+
+
+
+                    <p>@Html.ActionLink("Back to List", "Index")</p>
+                }
+            </div>
+
+
+
+        <div class="clearfix"></div>
+    </div>
+</section>
+
+<script>
+    function validateInputs() {
+     
+        if ($('#DMEFormCode').val() == "0") {
+            //alert($('#DMEFormCode').val())
+            $("#DMEFormCodes").text("Please select DME item name");
+
+
+            return false;
+        }
+
+
+    }
+</script> 

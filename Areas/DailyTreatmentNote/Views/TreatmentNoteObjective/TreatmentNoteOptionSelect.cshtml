@@ -1,0 +1,250 @@
+﻿@model DataLayer.Models.DaliyTreatmentNote
+
+@{
+    ViewBag.Title = "Create";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    string str1 = string.Empty;
+    string str2 = string.Empty;
+}
+
+@{
+    #region        1) Resistance Level
+    Dictionary<int, string> resLevel = new Dictionary<int, string>();
+    resLevel.Add(0, "-- Select --");
+    resLevel.Add(1, "Passive Range of Motion");
+    resLevel.Add(2, "Active Assisted Range of Motion");
+    resLevel.Add(3, "Active Range of Motion");
+    resLevel.Add(4, "Resisted Range of Motion");
+
+    #endregion
+
+    #region   2) Body Part
+    Dictionary<int, string> BodyPart = new Dictionary<int, string>();
+    BodyPart.Add(0, "-- Select --");
+    BodyPart.Add(1, "Elbow");
+    BodyPart.Add(2, "Knee");
+    BodyPart.Add(3, "Ankle");
+    BodyPart.Add(4, "Hip");
+    BodyPart.Add(5, "Shoulder");
+    BodyPart.Add(6, "Wrist");
+    BodyPart.Add(7, "Hand");
+    BodyPart.Add(8, "Finger");
+    BodyPart.Add(9, "Foot");
+    BodyPart.Add(10, "Neck");
+    BodyPart.Add(11, "Low Back");
+    BodyPart.Add(12, "Pelvis");
+    BodyPart.Add(13, "Jaw");
+
+
+    #endregion
+
+    #region   3) Function
+    Dictionary<int, string> FunctionalActivity = new Dictionary<int, string>();
+    FunctionalActivity.Add(0, "-- Select --");
+    FunctionalActivity.Add(1, "Crawling");
+    FunctionalActivity.Add(2, "Lifting");
+    FunctionalActivity.Add(3, "Climbing");
+
+    #endregion
+
+    #region   4) Plane of Motion:
+    Dictionary<int, string> PlaneofMotion = new Dictionary<int, string>();
+    PlaneofMotion.Add(0, "-- Select --");
+    PlaneofMotion.Add(1, "Flexion");
+    PlaneofMotion.Add(2, "Extension");
+    PlaneofMotion.Add(3, "Abduction");
+    PlaneofMotion.Add(4, "Adduction");
+    PlaneofMotion.Add(5, "Internal Rotation");
+    PlaneofMotion.Add(6, "External Rotation");
+    PlaneofMotion.Add(7, "Rotation");
+    PlaneofMotion.Add(8, "Lateral Flexion");
+    PlaneofMotion.Add(9, "Seat Position");
+
+    #endregion
+}
+
+
+<section class="bodyinner">
+    <div class="container">
+
+        <div class="report-form clearfix">
+            @using (Html.BeginForm("TreatmentNoteOptionSelect", "TreatmentNoteObjective", FormMethod.Post, new { id = "TreatmentNoteObjective", name = "TreatmentNoteObjective" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+
+                @Html.HiddenFor(e => e.Patient_Id)
+                @Html.HiddenFor(e => e.PatientCondition_Id)
+                @Html.HiddenFor(e => e.DTNPlanTreatment_ID)
+                @Html.HiddenFor(e => e.DTNTreatmentDetails_Id)
+                @Html.HiddenFor(e => e.Treatment_Id)
+                @Html.HiddenFor(e => e.OptionValue)
+                @Html.HiddenFor(e => e.CombindFieldsValue)
+                @Html.HiddenFor(e => e.CreatedBy)
+                @Html.HiddenFor(e => e.CreatedOn)
+                @Html.HiddenFor(e => e.ModifiedBy)
+                @Html.HiddenFor(e => e.ModifiedOn)
+
+                if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+
+                <div class="topforn">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="lefttext">
+                                @{
+                if (ViewBag.PatientName != null)
+                {
+                    @ViewBag.PatientName
+                }
+                                }, DOB:
+                                @{
+                if (ViewBag.PatientDOB != null)
+                {
+                    @ViewBag.PatientDOB
+                }
+                                }
+                                <br />
+
+
+                                @{
+                string hyfen = "-";
+                string space = " ";
+                string st1 = "Tx Time :";
+
+                if (ViewBag.TreatmentFromTime != null && ViewBag.TreatmentToTime != null)
+                {
+                    @st1 @space @ViewBag.TreatmentFromTime @space @hyfen @space @ViewBag.TreatmentToTime
+                }
+                                }<br />
+
+                                POC:
+                                @{
+                string divideSign = "/";
+                string commaSign = ",";
+                string ends = "ends";
+
+                if (ViewBag.TotalNoofVisitRequired != null && ViewBag.CurrentVisitNo != null && ViewBag.TreatmentEndDate != null)
+                {
+                    @ViewBag.CurrentVisitNo @divideSign @ViewBag.TotalNoofVisitRequired @commaSign @space @ends @space @ViewBag.TreatmentEndDate
+                }
+                <br />
+                if (ViewBag.Date_Of_injury != null)
+                {
+                    string _Date_Of_injury = "Date Of injury : ";
+                    @_Date_Of_injury @ViewBag.Date_Of_injury;
+                }
+                else
+                {
+                    if (ViewBag.SurgeryDate != null)
+                    {
+                        string _SurgeryDate = "SurgeryDate : ";
+                        @_SurgeryDate @ViewBag.SurgeryDate;
+                    }
+                    else
+                    {
+                        if (ViewBag.DateonSet != null)
+                        {
+                            string _DateonSet = "Date on Set : ";
+                            @_DateonSet @ViewBag.DateonSet;
+                        }
+                    }
+                }
+                <br />
+                                }
+
+
+                            </div>
+                            <div class="righttext">
+
+                                @{
+                string s1 = string.Empty;
+                int pos1 = 0;
+                string icdCode = string.Empty;
+                string disease = string.Empty;
+                string _desc = string.Empty;
+
+                if (ViewBag.IcdCodeWithDisease != null)
+                {
+
+                    foreach (var item in ViewBag.IcdCodeWithDisease)
+                    {
+                        s1 = Convert.ToString(item);
+                        pos1 = s1.IndexOf('_');
+                        icdCode = s1.Substring(0, pos1);
+                        string NewICDCode = icdCode.Insert(3, ".");
+                        disease = s1.Substring(pos1 + 1);
+                        _desc = NewICDCode + commaSign + space + @disease;
+                        <p>@_desc</p>
+                    }
+                }
+                                }
+                                Auth: 3/15, ends 03/31/18
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                    </div>
+
+                    <div class="botheadingsec">Daily Treatment Note <span>OBJECTIVE</span></div>
+                </div>
+
+                <div id="divMain">
+                    <div id="divPlanOptions">
+                        <div class="row">
+                            <div class="col-sm-5 form-group">
+                                @Html.Label("Resistance Level:")
+                                @Html.DropDownList("ResistanceLevel", new SelectList(resLevel, "key", "value"), new { @class = "applitextfield2 box form-control btn-lg valid PlanOptionId", multiple = "multiple" })
+                                @*@Html.DropDownList("ResistanceLevel", new SelectList(resLevel, "key", "value"), new { @class = "applitextfield2 box form-control btn-lg valid PlanOptionId", multiple = "multiple" })*@
+                            </div>
+                            <div class="col-sm-5 form-group">
+                                @Html.Label("Body Part:")
+                                @Html.DropDownList("BodyPart", new SelectList(BodyPart, "key", "value"), new { @class = "applitextfield2 box form-control btn-lg valid PlanOptionId" })
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-5 form-group">
+                                @Html.Label("Function:")
+                                @Html.DropDownList("FunctionalActivity", new SelectList(FunctionalActivity, "key", "value"), new { @class = "applitextfield2 box form-control btn-lg valid PlanOptionId" })
+                            </div>
+                            <div class="col-sm-5 form-group">
+                                @Html.Label("Plane of Motion:")
+                                @Html.DropDownList("PlaneofMotion", new SelectList(PlaneofMotion, "key", "value"), new { @class = "applitextfield2 box form-control btn-lg valid PlanOptionId"})
+                            </div>
+
+                        </div>
+                    </div>
+                    <div id="divSave" style="float:right">
+                        <input type="submit" id="btnNext" class="btn btn-orange btn-lg" value="Next" style="margin-top:20px;" />
+                    </div>
+                </div>
+
+
+
+
+                <div class="row" style="padding-top:10px;">
+                    <a href="@Url.Action("Index", "TreatmentNoteSubjective", new { Area = "DailyTreatmentNote" })">
+                        <i>Back to List</i>
+                    </a>
+                </div>
+
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Modal -->
+@*@Html.Partial("~/Views/Shared/_SearchPatientPartial.cshtml")*@
+@{Html.RenderPartial("~/Views/Shared/_SearchPatientPartial.cshtml");}
+
+<!-- End Modal -->
+
+<script type="text/javascript">
+
+
+
+
+</script>

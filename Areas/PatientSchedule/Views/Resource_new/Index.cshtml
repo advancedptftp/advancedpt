@@ -1,0 +1,286 @@
+﻿@model PagedList.IPagedList<DataLayer.Models.ResourceNew>
+@using DataLayer;
+@using PagedList.Mvc;
+@*@using PagedList.Mvc;*@
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+
+
+<section class="bodyinner2">
+    <h2 class="text-center">Resource List</h2>
+    <div>
+
+        <p class="pull-right">
+            @Html.ActionLink("Create New Record", "Create", null, new { @class = "btn btn-primary" })
+        </p>
+
+        @{
+            bool? direction = ViewBag.SortDirection;
+            if (direction == null) { direction = false; }
+        }
+        @using (Html.BeginForm("Index", "Resource_new", FormMethod.Get))
+        {
+
+            <div class="searchsec">
+
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search by First Name.." })
+                <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                <div class="clearfix"></div>
+            </div>
+        }
+
+        @*@using (Html.BeginForm("Index", "Resource", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+        {
+            @Html.DropDownList("PageSize1")
+        }
+        @{
+            bool? direction1 = ViewBag.SortDirection;
+            if (direction1 == null) { direction1 = false; }
+        }*@
+
+        @*<div class="pull-left" style=" padding:10px;">
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        </div>*@
+
+        <div class="clearfix"></div>
+    </div>
+
+
+    @*<div>
+        <p class="pull-right">
+            @Html.ActionLink("Create New Record", "Create", null, new { @class = "btn btn-primary" })
+        </p>
+        @using (Html.BeginForm("Index", "Resource", FormMethod.Get))
+        {
+            <div class="searchsec">
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search here ..." })
+                <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                <div class="clearfix"></div>
+            </div>
+        }
+        <div class="clearfix"></div>
+    </div>*@
+
+    <div>
+        <div class="table-responsive">
+          
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+
+                        <th>
+                            @{ var classname = "botharrow";}
+                            @if ((ViewBag.CurrentSort == "Resource" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                            {
+                                classname = "bottarrow";
+                            }
+                            else if ((ViewBag.CurrentSort == "Resource" && ViewBag.SortDirection == false))
+                            {
+                                classname = "toparrow";
+                            }
+                            @Html.ActionLink("Resource Type", "Index", new { sortOrder = "Resource", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname })
+                            @*@Html.DisplayName("Resource Type")*@
+                        </th>
+                        <th>
+                            @{ var classname1 = "botharrow";}
+                            @if ((ViewBag.CurrentSort == "PT_PTA" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                            {
+                                classname1 = "bottarrow";
+                            }
+                            else if ((ViewBag.CurrentSort == "PT_PTA" && ViewBag.SortDirection == false))
+                            {
+                                classname1 = "toparrow";
+                            }
+                            @Html.ActionLink("Resource 1", "Index", new { sortOrder = "PT_PTA", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname1 })
+                          
+                        </th>
+                        <th>
+                            @{ var classname2 = "botharrow";}
+                            @if ((ViewBag.CurrentSort == "Tech" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                            {
+                                classname2 = "bottarrow";
+                            }
+                            else if ((ViewBag.CurrentSort == "Tech" && ViewBag.SortDirection == false))
+                            {
+                                classname2 = "toparrow";
+                            }
+                            @Html.ActionLink("Resource 2", "Index", new { sortOrder = "Tech", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname2 })
+
+                        </th>
+                        
+                        <th>
+                            @Html.DisplayName("Short Name")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Appointment Type")
+                        </th>
+                        @*<th>
+                            @{ var classname3 = "botharrow";}
+                            @if ((ViewBag.CurrentSort == "Timestart" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                            {
+                                classname3 = "bottarrow";
+                            }
+                            else if ((ViewBag.CurrentSort == "Timestart" && ViewBag.SortDirection == false))
+                            {
+                                classname3 = "toparrow";
+                            }
+                            @Html.ActionLink("Working Time Start", "Index", new { sortOrder = "Timestart", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname3 })
+
+                        </th>*@
+                        @*<th>
+                            @{ var classname4 = "botharrow";}
+                            @if ((ViewBag.CurrentSort == "TimeEnd" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                            {
+                                classname4 = "bottarrow";
+                            }
+                            else if ((ViewBag.CurrentSort == "TimeEnd" && ViewBag.SortDirection == false))
+                            {
+                                classname4 = "toparrow";
+                            }
+                            @Html.ActionLink("Working Time End", "Index", new { sortOrder = "TimeEnd", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname4 })
+
+                        </th>*@
+                        
+                       
+                        <th>Is Active</th>
+                        
+                        <th></th>
+                        <th></th>
+                    </tr>
+
+                </thead>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                           @*@ ((DataLayer.Resource)@item.ResourceType).*@
+
+                           @Html.DisplayFor(m => item.Resource_Type)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Resource1EmpName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Resource2EmpName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ShortName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AppointmentTypeName)
+                        </td>
+                        @*<td>
+                                @Html.DisplayFor(modelItem => item.ShiftEnd)
+                            </td>*@
+                       
+                        <td align="center">
+                            @if (item.IsActive == true)
+                            {<label class="fa fa-unlock" style="color: #0f68e6; "></label> }
+                            else
+                            {<label class="fa fa-lock" style="color: #eb1923;"></label> }
+                        </td>
+                        @*<td>
+                                @Html.DisplayFor(modelItem => item.City)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.State)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ZipCode)
+                            </td>*@
+
+
+                        @*<td>*@
+
+                        @*@if (item.DMEForm_Status_Id != null && item.DMEForm_Status_Id < 9 && lStatus.Contains(item.DMEForm_Status_Id.Value + 1))
+                            {*@
+                        @*<a href="@Url.Action("Create", "Doctor", new { id = item.Doctor_Id })">
+                                <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                            </a>*@
+
+                        @*}
+                            else if(item.DMEForm_Status_Id==9){*@
+                        @*<a href="@Url.Action("Create", "PurchaseOrder", new { DME_Id = item.KneeBraceFusionLigamentForm_Id, DMEType = "L1845" })">
+                                    <i class="fa fa-angle-double-up" aria-hidden="true"></i>
+                                </a>
+                            @*}*@
+                        @*</td>*@
+                        @*@if (item.DMEForm_Status_Id == 9) {
+                                <td>&nbsp;</td>}
+                            else {*@
+                        <td>
+                            @*@if (item.DMEForm_Status_Id != null && ((item.DMEForm_Status_Id == 1 && item.CreatedBy == currentuserid) || (item.DMEForm_Status_Id != 1 && item.ModifiedBy == currentuserid)))
+                                {*@
+                            <a href="@Url.Action("Edit", "Resource_new", new { id = item.Resource_Id })">
+                                <i class="fa fa-edit" aria-hidden="true"></i>
+                            </a>
+                            @*}*@
+                        </td>
+                        @*}*@
+                        <td>
+                            <a href="@Url.Action("Details", "Resource_new", new { id = item.Resource_Id })">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+                        </td>
+
+                    </tr>
+                }
+
+            </table>
+
+        </div>
+        <div>
+            <br />
+            @using (Html.BeginForm("Index", "Resource_new", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+            {
+                @Html.DropDownList("PageSize")
+            }
+            <div class="pull-left" style=" padding:10px;">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+            
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                      new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction }))
+        </div>
+    </div>
+
+</section>
+
+@*<script>
+    function fnShowDetail(Doctor_Id) {
+        var url = "@Url.Action("Doctor", "Resource", new { Area = "Patient" })" + "?id=" + Doctor_Id;
+        //fnShowPopupForDetail(url);
+        popupwindow(url, 'Doctor', 1000, 800);
+    }
+</script>*@
+@*<script>
+    $("#PageSize").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+</script>*@
+<script>
+    $("#PageSize").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+    //$("#PageSize1").addClass("form-control");
+    //$('#PageSize1').on('change', function (event) {
+
+    //    var form = $(event.target).parents('form');
+
+    //    form.submit();
+    //});
+</script>
+

@@ -1,0 +1,335 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>myadvancedpt.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="favicon.png">
+  
+    @Styles.Render("~/Content/PatientPortal")
+    <script>
+     
+        function SchedulePopupOpen(cDate) {
+            if (cDate != null && cDate != '') {
+                $.ajax({
+
+                    url: '@Url.Action("GetAppoInfoByDate", "Patient", new { area = ""})',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: { CurrentDate: cDate },
+                    success: function (data) {
+                        $('#myModal').modal();
+                        $('#hdnAppointmentId').val(data.Appointment_TypeId);
+                        $('#PatientName').html(data.PatientName);
+                        $('#AppointmentDate').html(data.title);
+                        $('#Employee').html(data.Employee + "  (" + data.Resource_Type + ")");
+                        $('#Appointment_Type').html(data.Appointment_Type);
+                        $('#startTime').html(data.start);
+                        $('#endTime').html(data.end);
+                        var url = window.location.href;     // Returns full URL
+                        //alert('URL' + url);
+                        var path = url +"/Patient/SchedulePatientForPatient?reschedule=yes&AppointmentID=" + $('#hdnAppointmentId').val();
+                        $("#btnReschedule1").attr("href", path);
+                    },
+                    error: function (error) { alert("Error: " + error); },
+                    statusCode: {
+                        404: function () {
+                            alert("Page Not Found.");
+                        }
+                    }
+                });
+            }
+        }
+        function fnConfirmationforschedule() {
+            return confirm("Do you want to re-schedule this appointment");
+        }
+
+        function fnConfirmation() {
+            var txt;
+            var r = confirm("Do you want to cancel this appointment");
+            if (r == true) {
+                //alert(PatientId);
+                $.ajax({
+                    url: '@Url.Action("CreateAppoCancel")' + "?AppointmentId=" + $('#hdnAppointmentId').val(),
+                    type: "POST",
+                    dataType: "JSON",
+                    data: { things: false },
+                    success: function (data) {
+                        //$('#ModalReschedule').modal('hide');
+                        $('#myModal').modal('hide');
+                        alert(data);
+                        location.reload();
+
+                    },
+                    error: function () {
+                        alert("Error occured.");
+                    }
+                });
+            } else {
+                txt = "Cancel";
+            }
+        }
+    var __NotificationRelated = {
+        _GetNotification: "@Url.Action("GetNotifications", "Patient", new { Area=""})",
+        _MarkAsReadNotification: "@Url.Action("MarkAsReadNotification", "Patient", new { Area = "" })",
+        _DeleteNotification: "@Url.Action("DeleteNotification", "Patient", new { Area = "" })"
+    };
+    var __ImageRelated = {
+        _arrowtop: "@Url.Content("~/Images/arrowtop.png")",
+        _arrowbott: "@Url.Content("~/Images/arrowbott.png")"
+    };
+    var __MenuRelated = {
+        _GetMenu: "@Url.Action("GetMenu", "Home", new { Area = "" })",
+    };
+    var __pdfRelated = {
+        _embededpdf: "@Url.Action("PDFEmbeded", "Home", new { Area = "" })",
+        _ShowPdfInPopup: "@Url.Action("PDFPopUp", "Home", new { Area = "" })",
+        _showPdfInWinPopup: "@Url.Action("showPdfInWinPopup", "Home", new { Area = "" })",
+    };
+    </script>
+
+    @Scripts.Render("~/Script/PatientPortal")
+
+</head>
+
+<body class="patientformse">
+
+
+
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="@Url.Action("Index", new { Controller="Patient", Area=""})"><img src="@Url.Content("~/Images/logo.png")" title="myadvancedpt.com" alt=""></a>
+            </div>
+
+            <div class="rightlink">
+
+                <div class="authorsec">
+                    <div class="dropdown">
+                        <a href="#" id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="@Url.Content("~/Images/profilepic.jpg")" class="profilepic" alt="">
+                            @{
+                                if (Session["LogedInUser"] != null)
+                                {
+                                    @Html.Label(((DataLayer.Models.tblMUser)Session["LogedInUser"]).Name)<i class="fa fa-chevron-down" aria-hidden="true"></i>
+                                }
+                            }
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dLabel">
+                            <li>@Html.ActionLink("My Profile", "ViewProfileInfo", new { Area = "", Controller = "Patient" })</li>
+                            <li>@Html.ActionLink("Change Password", "Changepassword", new { Area = "", Controller = "Patient" })</li>
+                            <li>@Html.ActionLink("Log Out", "Logout", new { Area = "", Controller = "Home" })</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+
+            </div>
+            <div class="rightlink">
+                <div class="authorsec1">
+                    <div id="dvNotificationContainer" class="dropdown">
+                        <a href="#" id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-bell" aria-hidden="true"></i><span id="sNotificationCount" class="noticount">...</span>
+                        </a>
+                        <ul id="uNotification" class="dropdown-menu" aria-labelledby="dLabel"></ul>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            @*<div class="rightlink">
+
+                <div class="authorsec1">
+                    <div class="dropdown">
+                        <a href="#" id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-bell" aria-hidden="true"></i><span class="noticount">2</span>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dLabel">
+                            <li><a href="#">Notification 1</a></li>
+                            <li><a href="#">Notification 2</a></li>
+                            <li><a href="#">Notification 3</a></li>
+                            <li><a href="#">Notification 4</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+                <div class="clearfix"></div>
+
+            </div>*@
+
+
+            <div class="clearfix"></div>
+
+        </div>
+    </header>
+
+    <section class="bodyinner">
+        <div class="container">
+           
+            <div class="outrtpat">
+                @RenderBody()
+
+               
+                <div class="clearfix"></div>
+            </div>
+
+
+
+        </div>
+        <div class="clearfix"></div>
+    </section>
+    <footer>© Copyright 2017. All Rights Reserved</footer>
+
+
+
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" style="padding:11px;">
+                    <button type="button" class="close" data-dismiss="modal" style="font-size:36px">&times;</button>
+                    <h3 id="modalTitle" class="modal-title" style="padding:0px;text-align:center">Appointment Details</h3>
+                </div>
+                <div id="modalBody" class="modal-body">
+                    <form id="createAppointmentForm" class="form-horizontal">
+                        <div class="control-group shedule_popup">
+
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td><strong>Appointment Date:</strong></td>
+                                    <td><span id="AppointmentDate"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>Appointment Type:</strong>
+                                    </td>
+                                    <td><span id="Appointment_Type"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>Patient Name:</strong>
+                                    </td>
+                                    <td><span id="PatientName"></span></td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <strong>Start Time:</strong>
+                                    </td>
+                                    <td><span id="startTime"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>End Time:</strong>
+                                    </td>
+                                    <td><span id="endTime"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>Therapist:</strong>
+                                    </td>
+                                    <td>
+                                        <span id="Employee"></span>
+                                        <input type="hidden" id="hdnAppointmentId" />
+                                    </td>
+
+                                </tr>
+                            </table>
+
+                        </div>
+                        <input type="hidden" id="hdEventID" />
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    @*<button type="button" class="btn btn-primary" id="btnReschedule">Re-Schedule</button>*@
+                    <a class="btn btn-primary" id="btnReschedule1" href="#" onclick=" return fnConfirmationforschedule();">Re-Schedule</a>
+                    <button type="button" class="btn btn-primary" id="btnCancelRequest" onclick="fnConfirmation();">Cancel</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+    <script>
+//Initialize 2nd demo:
+ddaccordion.init({
+	headerclass: "technology", //Shared CSS class name of headers group
+	contentclass: "thelanguage", //Shared CSS class name of contents group
+	revealtype: "click", //Reveal content when user clicks or onmouseover the header? Valid value: "click", "clickgo", or "mouseover"
+	mouseoverdelay: 200, //if revealtype="mouseover", set delay in milliseconds before header expands onMouseover
+	collapseprev: true, //Collapse previous content (so only one open at any time)? true/false
+	defaultexpanded: [true], //index of content(s) open by default [index1, index2, etc]. [] denotes no content.
+	onemustopen: true, //Specify whether at least one header should be open always (so never all headers closed)
+	animatedefault: true, //Should contents open by default be animated into view?
+	scrolltoheader: false, //scroll to header each time after it's been expanded by the user?
+	persiststate: true, //persist state of opened contents within browser session?
+	toggleclass: ["closedlanguage", "openlanguage"], //Two CSS classes to be applied to the header when it's collapsed and expanded, respectively ["class1", "class2"]
+	togglehtml: ["prefix", "<img src='images/arrowtop.png' style='width:13px; height:9px' /> ", "<img src='images/arrowbott.png' style='width:13px; height:9px' /> "], //Additional HTML added to the header when it's collapsed and expanded, respectively  ["position", "html1", "html2"] (see docs)
+	animatespeed: "normal", //speed of animation: integer in milliseconds (ie: 200), or keywords "fast", "normal", or "slow"
+	oninit:function(expandedindices){ //custom code to run when headers have initalized
+		//do nothing
+	},
+	onopenclose:function(header, index, state, isuseractivated){ //custom code to run whenever a header is opened or closed
+		//do nothing
+	}
+})
+
+    </script>
+
+
+    <script language="JavaScript">
+$(document).ready(function() {
+	$(".topnav").accordion({
+		accordion:false,
+		speed: 500,
+		closedSign: '[+]',
+		openedSign: '[-]'
+	});
+});
+
+    </script>
+
+
+    <script>
+jQuery('.datepicker').datepicker();
+    </script>
+
+
+</body>
+</html>
+<script>
+    var timeout = null;
+    $(document).ready(function () {
+        clearTimeout(timeout);
+        timeout = setTimeout(function () {
+
+            fnShowSessionOutAlert();
+
+        }, 30*60*1000);
+
+    });
+    $(document).on('mousemove', function () {
+
+        clearTimeout(timeout);
+        timeout = setTimeout(function () {
+            fnShowSessionOutAlert();
+
+        }, 30*60*1000);
+    });
+    function fnShowSessionOutAlert() {
+        var link = "@Url.Action("Logout", "Home", new { Area = "" })";
+        var closable = alertify.alert().setting('closable');
+
+        alertify.alert().setHeader('AdvancePT Says')
+          .setting({
+              'label': 'OK',
+              'message': 'Your session has been expired, please login again',
+              'onok': function () { window.location = link; }
+          }).show();
+
+    }
+</script>

@@ -1,0 +1,64 @@
+﻿@model IEnumerable<DataLayer.Models.tblTCIAPlanTreatment>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.TreatmentDesc)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModifiedOn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TreatmentDescCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tblMUser.UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tblMUser1.UserName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.TreatmentDesc)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreatedOn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ModifiedOn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TreatmentDescCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tblMUser.UserName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tblMUser1.UserName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Treatment_Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Treatment_Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Treatment_Id })
+        </td>
+    </tr>
+}
+
+</table>

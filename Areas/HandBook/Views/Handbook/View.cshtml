@@ -1,0 +1,327 @@
+﻿@using DataLayer.Models;
+@model IEnumerable<DataLayer.Models.tblTHandBook>
+
+@{
+    ViewBag.Title = "View";
+    bool IsFirstPage = (bool)ViewBag.IsFirstPage;
+    Int32 intTotalPageCount = (Int32)ViewBag.chapterTotalPages;
+    Int32 intCurrentPage = 0;
+
+
+    List<tblTHandBook> objPageTitleList = (List<tblTHandBook>)ViewBag.pageTitle;
+
+}
+
+
+
+
+
+<section class="bodyinner">
+    <div class="container">
+        <input type="hidden" name="hdnTotalPageCount" value="@intTotalPageCount" id="hdnTotalPageCount">
+        <input type="hidden" name="hdnCurrentPage" value="@intCurrentPage" id="hdnCurrentPage">.
+
+
+
+
+
+
+        <div class="handbookin">
+            <div class="handbookinleft">&nbsp;</div>
+            <div class="handbookinright">
+
+                <h2><strong>Employee Policy & Procedure Handbook<br><span style="color:rosybrown;"></span></strong></h2>
+
+                @*<ul>
+                        @foreach (var item in (List<DataLayer.Models.tblMHandBookChapter>)@ViewBag.Chapter)
+                        {
+                            <li>
+                                <a href="@Url.Content("~/HB_Handbook/View?showfront=false&chapter=")@item.ChapterNo">@item.ChapterName</a>
+                            </li>
+                        }
+                    </ul>*@
+
+                @*<ul class="ulchapter">
+                        @foreach (var item in (List<DataLayer.Models.tblMHandBookChapter>)@ViewBag.Chapter)
+                        {
+                            <li>
+                                @if (item.tblMHandbookSections.Count > 0)
+                                {
+                                    <a href="javascript:void(0);" onclick="fnshowul(this);">@item.ChapterName</a>
+                                    <ul style="display:none;" class="ulsection">
+
+                                        @foreach (var sec in  item.tblMHandbookSections)
+                                        {
+                                            <li>
+                                                <a href="@Url.Content("~/HB_Handbook/View?showfront=false&chapter=")@item.ChapterNo&section=@sec.Section_Id">@sec.SectionName</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                     <a href="@Url.Content("~/HB_Handbook/View?showfront=false&chapter=")@item.ChapterNo">@item.ChapterName</a>
+                                }
+                            </li>
+                        }
+                    </ul>*@
+
+                <ul class="ulchapter">
+                    @foreach (var item in (List<DataLayer.Models.tblMHandBookChapter>)@ViewBag.Chapter)
+                    {
+                        <li>
+                            @if (item.tblMHandbookSections.Count > 0)
+                            {
+                                <a href="javascript:void(0);" onclick="fnshowul(this);">@item.ChapterName</a>
+                                <ul style="display:none;" class="ulsection">
+
+                                    @foreach (var sec in item.tblMHandbookSections)
+                                    {
+                                        <li>
+                                            @if (sec.tblTHandBooks.Count > 0)
+                                            {
+                                                @*<a href="@Url.Content("~/HB_Handbook/View?showfront=false&chapter=")@item.ChapterNo&section=@sec.Section_Id">@sec.SectionName</a>*@
+                                                <a href="javascript:void(0);" onclick="fnshowul(this);">@sec.SectionName</a>
+                                                <ul style="display:none;" class="ulpagetitle">
+                                                    @foreach (var c in sec.tblTHandBooks)
+                                                    {
+                                                        <li>
+                                                            <a href="@Url.Content("~/HB_Handbook/View?showfront=false&chapter=")@item.ChapterNo&section=@sec.Section_Id&HandBookId=@c.HandBook_Id">@c.PageTitle</a>
+                                                            @*<a href="@Url.Content("~/HB_Handbook/View?showfront=false&chapter=")@item.ChapterNo&section=@sec.Section_Id&HandBookId=@c.HandBook_Id">@c.PageTitle</a>*@
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            }
+                                            else
+                                            {
+                                                <a href="@Url.Content("~/HB_Handbook/View?showfront=false&chapter=")@item.ChapterNo&section=@sec.Section_Id">@sec.SectionName</a>
+                                            }
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <a href="@Url.Content("~/HB_Handbook/View?showfront=false&chapter=")@item.ChapterNo">@item.ChapterName</a>
+                            }
+                        </li>
+                    }
+                </ul>
+
+
+
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+
+
+
+        @{
+            Int32 intPageCount = 1;
+
+            foreach (var item in Model)
+            {
+                <div class="flepcont" id="divPageContent_@intPageCount" style="display:none;">
+                    <div class="f-page">
+                        <div class="pagebar">
+                            <div class="f-title">
+                                <a href="@Url.Content("~/HB_Handbook/View")" class="back"><i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;Go to Home</a>
+                                <span class="pageno">
+                                    @Html.Raw(item.PageNo)
+                                </span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                        <h2 align="center">
+                            @Html.Raw(item.tblMHandBookChapter.ChapterName)
+                        </h2>
+                        <h2 align="center">
+                            @if (item.tblMHandbookSection != null)
+                            {
+                                @Html.Raw(item.tblMHandbookSection.SectionName)
+                            }
+                        </h2>
+                    </div>
+                    @Html.Raw(item.PageContent)
+
+
+                </div>
+                            intPageCount++;
+            }
+
+
+        }
+
+
+        <div class="employeelist">
+            <a id="btnPrevious" href="javascript:void(0);" onclick="btnPreviousClick();" class="back1"><i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;Back to Previous page</a>
+            <a id="btnPageNext" href="javascript:void(0);" onclick="btnNextClick();" class="next1">Go to Next page&nbsp;&nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+            <div class="clearfix"></div>
+        </div>
+
+
+        <div class="clearfix"></div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var flag = '@ViewBag.Flag';
+        //alert(flag);
+        if (flag == 'False') {
+            //alert('ok');
+            $("#flip").show();
+            $("#divMainTitle").show();
+            $("#divPageContent_1").hide();
+            $("#hdnCurrentPage").val(0);
+            $("#btnPageNext").hide();
+            $("#btnPrevious").hide();
+        }
+        else {
+            var IsFirstPage = '@ViewBag.IsFirstPage';
+            if (IsFirstPage.toLowerCase() == 'true') {
+                btnNextClick();
+            }
+        }
+    });
+</script>
+
+
+
+
+<script>
+
+    @*$(document).ready(function () {
+        var IsFirstPage = '@ViewBag.IsFirstPage';
+        if (IsFirstPage.toLowerCase() == 'true') {
+            btnNextClick();
+        }
+        else {
+            $("#flip").show();
+            $("#divMainTitle").show();
+            $("#divPageContent_1").hide();
+            $("#hdnCurrentPage").val(0);
+            $("#btnPageNext").hide();
+            $("#btnPrevious").hide();
+        }
+    });*@
+
+    function fnshowul(obj) {
+        $(obj).next().toggle();
+    }
+    function fnPagetitle(obj1) {
+        $(obj1).next().toggle();
+    }
+
+    jQuery('.datepicker').datepicker();
+    $("#btnPrevious").hide();
+
+    @*$(document).keydown(function (e) {
+
+            var vPageCount = '@ViewBag.chapterTotalPages';
+            if (vPageCount > 0) {
+                switch (e.which) {
+                    case 37: // left
+                        btnPreviousClick();
+                        break;
+                    case 38: // up
+                        break;
+                    case 39: // right
+                        btnNextClick();
+                        break;
+                    case 40: // down
+                        break;
+
+                    default: return;
+                }
+                e.preventDefault();
+
+            }
+        });*@
+
+    var PageCount = parseInt('@ViewBag.chapterTotalPages');
+    if (PageCount == 0) {
+        $("#btnPageNext").hide();
+    }
+
+    function btnPreviousClick() {
+        var vCurrentPage = parseInt($('#hdnCurrentPage').val());
+        var vPreviousPage = vCurrentPage - 1;
+        var VTotalPageCount = parseInt($('#hdnTotalPageCount').val());
+
+        var showfront = true;
+
+        $("#btnPageNext").show();
+        if (vCurrentPage == 1) {
+            $("#hdnCurrentPage").val(0);
+            $("#divPageContent_1").hide();
+            $("#btnPrevious").hide();
+            $("#flip").show();
+            $("#divMainTitle").show();
+        }
+        else {
+            $("#hdnCurrentPage").val(vPreviousPage);
+
+            for (var i = 1; i <= VTotalPageCount; i++) {
+                if (i == vPreviousPage) {
+                    $("#divPageContent_" + i).show();
+                    showfront = false;
+                }
+                else {
+                    $("#divPageContent_" + i).hide();
+                }
+            }
+        }
+        if (showfront) $('.handbookin').show();
+        else $('.handbookin').hide();
+    }
+
+    function btnNextClick() {
+        var vCurrentPage = parseInt($('#hdnCurrentPage').val());
+        var vNextPage = vCurrentPage + 1;
+        var VTotalPageCount = parseInt($('#hdnTotalPageCount').val());
+
+        var showfront = true;
+
+        $("#flip").hide();
+        $("#divMainTitle").hide();
+        $("#btnPrevious").show();
+
+        if (vNextPage == VTotalPageCount) {
+            for (var i = 1; i < VTotalPageCount; i++) {
+                $("#divPageContent_" + i).hide();
+            }
+
+            $("#hdnCurrentPage").val(VTotalPageCount);
+            $("#divPageContent_" + VTotalPageCount).show();
+            $("#btnPageNext").hide();
+            showfront = false;
+        }
+        else {
+            $("#hdnCurrentPage").val(vNextPage);
+
+            for (var i = 1; i < VTotalPageCount; i++) {
+                if (i == vNextPage) {
+                    $("#divPageContent_" + i).show();
+                    showfront = false;
+                }
+                else {
+                    $("#divPageContent_" + i).hide();
+                }
+            }
+        }
+        if (showfront) $('.handbookin').show();
+        else $('.handbookin').hide();
+    }
+
+
+</script>
+
+

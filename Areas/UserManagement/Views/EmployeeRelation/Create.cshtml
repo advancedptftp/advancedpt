@@ -1,0 +1,200 @@
+﻿@model DataLayer.Models.tblREmployeeRelation
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="bodyinner">
+    <div class="container">
+        <div class="innerform">
+            <div class="user-form clearfix">
+
+                <h2 class="text-center">Create Employee Relationship</h2>
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => m.EmployeePTASignature)
+                    @Html.HiddenFor(m => m.EmployeePTSignature)
+                    @*<div class="form-horizontal">
+                        <h4>tblREmployeeRelation</h4>
+                        <hr />*@
+                    @Html.ValidationSummary(true)
+                     if (ViewBag.Error != null)
+                                           {
+                                            @Html.Raw(ViewBag.Error)
+                                           }
+                    <div class="form-group col-md-12">
+                        @Html.LabelFor(model => model.Location_Id, "Location", new { })
+                        @Html.DropDownListFor(model => model.Location_Id,(IEnumerable<SelectListItem>)(ViewBag.Location_Id), "Select Location", new { @id = "LocationDropDownId", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Location_Id)
+
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        @Html.Label("Employee Role")
+                        @Html.TextBox("PT", "PT", new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.EmployeePT_Id)
+                    </div>
+
+                    <div class="col-sm-6 form-group">
+                        @Html.Label("Employee Role")
+                        @Html.TextBox("PTA", "PTA", new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.EmployeePTA_Id)
+                    </div>
+
+                    <div class="col-sm-6 form-group">
+                        @Html.LabelFor(model => model.tblMEmployee, "PT", new { })
+                        @Html.DropDownListFor(model => model.EmployeePT_Id, new SelectList(ViewBag.EmployeePT_Id, "Value", "Text"), "Select PT Name", new { @class = "form-control", @id = "EmployeePTDropDownId", disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.EmployeePT_Id)
+                    </div>
+
+                    <div class="col-sm-6 form-group">
+                        @Html.LabelFor(model => model.tblMEmployee1, "PTA", new { })
+                        @Html.DropDownListFor(model => model.EmployeePTA_Id, new SelectList(ViewBag.EmployeePTA_Id, "Value", "Text"), "Select PTA Name", new { @class = "form-control", @id = "EmployeePTADropDownId", disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.EmployeePTA_Id)
+                    </div>
+
+                    <div class="col-sm-6 form-group">
+                        <h3>Signature of PT</h3>
+                        <div></div>
+                        @Html.Partial("_SignPad")
+
+                        @{var imgurl4 = Url.Content("~/Images/nosignature.png");
+                        if (Model.EmployeePTSignature != null )
+                        {
+                            imgurl4 = "data:image/png;base64," + Convert.ToBase64String(Model.EmployeePTSignature);
+                        }
+                        }
+                        <img src="@imgurl4" alt="Alternate Text" class="form-control optional" id="imgPatientSign" style="width:500px; height:200px;" />
+                        <div style="clear:both; padding-top:15px;"></div>
+                        <label id="lblTime"></label>
+                        <div>
+                            <span id="Signature_Validation" style="color:red"></span>
+                        </div>
+                        <div style="clear:both; padding-top:15px;"></div>
+                        <input type="hidden" name="name" value="" id="hdnImageVal2" />
+                        <input type="button" id="btnClaimantSignature" class="btn btn-primary" onclick="fnShowSignPad('imgPatientSign', 'EmployeePTSignature', 'lblTime')" value="Click Here To Add Signature" />
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        <h3> Signature of PTA</h3>
+
+                        <div></div>
+
+                        @Html.Partial("_SignPad")
+
+                        @{var imgurl5 = Url.Content("~/Images/nosignature.png");
+                        if (Model.EmployeePTASignature != null)
+                        {
+                            imgurl5 = "data:image/png;base64," + Convert.ToBase64String(Model.EmployeePTASignature);
+                        }
+                        }
+                        <img src="@imgurl5" alt="Alternate Text" class="form-control optional" id="imgTherapistSign" style="width:500px; height:200px;" />
+                        <div style="clear:both; padding-top:15px;"></div>
+                        <label id="lblTime1"></label>
+                        <div>
+                            <span id="Signature_Validation" style="color:red"></span>
+                        </div>
+                        <div style="clear:both; padding-top:15px;"></div>
+                        <input type="hidden" name="name" value="" id="hdnImageVal2" />
+                        <input type="button" id="btnTherapistSignature" class="btn btn-primary" onclick="fnShowSignPad('imgTherapistSign', 'EmployeePTASignature', 'lblTime1')" value="Click Here To Add Signature" />
+                    </div>
+
+                    <div class="clearfix "></div>
+
+                    @*<div class="subbutt col-sm-6 form-group">
+                        <input type="submit" name="btnCreate" id="btnCreate" value="Click Here to begin" class="btn btn-orange pull-right" />
+
+                    </div>
+                    <div class="subbutt col-sm-6 form-group">
+                        <input type="submit" name="btnCreate" id="btnCreate" value="Click Here to begin" class="btn btn-orange pull-right" />
+
+                    </div>*@
+
+                    <div class="col-sm-6 form-group">
+                        @Html.Hidden("CreatedOn", DateTime.Now)
+
+                    </div>
+
+                    <div class="subbutt">
+                        <input type="submit" id="btn-submit" value="Create" class="btn btn-orange pull-right" />
+
+                    </div>
+                    <p>
+                        @Html.ActionLink("Back to List", "Index")
+                    </p>
+                }
+
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<script type="text/javascript">
+
+    $(function () {
+        $("#LocationDropDownId").change(function () {
+            PopulateEmployeePT();
+            debugger;
+            PopulateEmployeePTA();
+        });
+    });
+        </script>
+<script type="text/javascript">
+    function PopulateEmployeePT() {
+        
+        var LocationId = $("#LocationDropDownId").val();
+        $.ajax({
+            url: "@Url.Action("PopulateEmployeePT", "EmployeeRelation")",
+            data: { strSelectedLocationId: LocationId },
+            dataType: "json",
+            type: "POST",
+            success: function (result) {
+               
+                // alert(result);
+                $("#EmployeePTDropDownId").empty();
+                $("#EmployeePTDropDownId").append(result);
+                $("#EmployeePTDropDownId").prop("disabled", false);
+
+                //if (result != null && result != '') {
+                //    alertify.alert('Data deleted successfully', function () { window.location.href = result.redirectTo; }).setHeader('System says');
+                //}
+            },
+            error: function () {
+                debugger;
+                return false;
+            }
+        });
+
+    }
+
+    function PopulateEmployeePTA() {
+        debugger;
+        var LocationId = $("#LocationDropDownId").val();
+        $.ajax({
+            url: "@Url.Action("PopulateEmployeePTA", "EmployeeRelation")",
+            data: { strSelectedLocationId: LocationId },
+            dataType: "json",
+            type: "POST",
+            success: function (result) {
+                debugger;
+                // alert(result);
+                $("#EmployeePTADropDownId").empty();
+                $("#EmployeePTADropDownId").append(result);
+                $("#EmployeePTADropDownId").prop("disabled", false);
+
+                //if (result != null && result != '') {
+                //    alertify.alert('Data deleted successfully', function () { window.location.href = result.redirectTo; }).setHeader('System says');
+                //}
+            },
+            error: function () {
+                debugger;
+                return false;
+            }
+        });
+
+    }
+
+</script>

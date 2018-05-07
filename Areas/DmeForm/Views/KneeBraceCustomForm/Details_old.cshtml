@@ -1,0 +1,474 @@
+﻿@model DataLayer.Models.tblTKneeBraceCustomForm
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>tblTKneeBraceCustomForm</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.HCPCSCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HCPCSCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsCustomOAMedialOffLoader_01208)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsCustomOAMedialOffLoader_01208)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsCustomOALateralOffLoader_01300)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsCustomOALateralOffLoader_01300)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsCustomLigamentBrace_01207)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsCustomLigamentBrace_01207)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Fitting_ThighCircumference)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fitting_ThighCircumference)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Fitting_CalfCircumference)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fitting_CalfCircumference)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Fitting_KneeOffset)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fitting_KneeOffset)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Fitting_KneeWidth)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fitting_KneeWidth)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CirclePosition)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CirclePosition)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Gender)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Gender)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Patient_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Patient_Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DOB)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DOB)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PatientMC)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PatientMC)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsCheckDriversLicenseRegionC)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsCheckDriversLicenseRegionC)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CallMCRepNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CallMCRepNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tax_ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tax_ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PTAN)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PTAN)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NPI)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NPI)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RegionC_Confirm)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RegionC_Confirm)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MC_RepName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MC_RepName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MC_BadgeNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MC_BadgeNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MC_Int)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MC_Int)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Diagnosis_Desc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Diagnosis_Desc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Therapist_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Therapist_Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Doctor_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Doctor_Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsCompleLetterOfMedNec)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsCompleLetterOfMedNec)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CompleLetterOfMedNec_Int)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CompleLetterOfMedNec_Int)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsGiveFromLetterOfMedNec)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsGiveFromLetterOfMedNec)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsFAXLetterOfMedNec)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsFAXLetterOfMedNec)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FAXLetterOfMedNec_Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FAXLetterOfMedNec_Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsRecivedLetterOfMedNec)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsRecivedLetterOfMedNec)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReceivedLetterOfMedNec_Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReceivedLetterOfMedNec_Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsOrderOrthosis)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsOrderOrthosis)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderOrthosis_Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderOrthosis_Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PhoneNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PhoneNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AcctNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AcctNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Note)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Note)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ConfimationNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ConfimationNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsReceivedOrthosis)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsReceivedOrthosis)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReceivedOrthosis_Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReceivedOrthosis_Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReceivedOrthosisBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReceivedOrthosisBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ConditionReceived)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ConditionReceived)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsFitInstructed)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsFitInstructed)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FitInstructed_Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FitInstructed_Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FitInstructedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FitInstructedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsCompletePaperWork)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsCompletePaperWork)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CompletePaperWork_Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CompletePaperWork_Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CompletePaperWorkBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CompletePaperWorkBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Revised_Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Revised_Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ApprovedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ApprovedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMDMEPaperWorkStatu.PaparWorkStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMDMEPaperWorkStatu.PaparWorkStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMUser.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMUser.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMUser1.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMUser1.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMUser2.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMUser2.UserName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.KneeBraceCustomForm_Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

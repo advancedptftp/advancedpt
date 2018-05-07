@@ -1,0 +1,485 @@
+﻿@model DataLayer.Models.CIA
+@using System.Data;
+@using DataLayer;
+@{
+    ViewBag.Title = "CIA Index";
+
+    DataTable dt = new DataTable();
+
+    if (ViewBag.Index != null)
+    {
+        dt = (DataTable)ViewBag.Index;
+        //dt.DefaultView.Sort = "CreatedOn desc";
+        //dt = dt.DefaultView.ToTable();
+    }
+}
+<style>
+    .NewPatient {
+        background-color: rgba(205, 216, 36, 0.68) !important;
+    }
+</style>
+
+<center><h2 style="margin-top:20px;">Comprehensive Initial Assessment List</h2></center>
+
+<section class="bodyinner2">
+    <div class="pull-right marbot20">
+        @*@Html.ActionLink("Create New Initial Assessment", "Create", null, new { @class = "btn btn-primary btn-lg" })*@
+        @*@Html.ActionLink("Create New Initial Assessment", "RedirectToPTExam", null, new { @class = "btn btn-primary btn-lg" })*@
+    </div>
+    <div class="clearfix"></div>
+    @{
+        if (dt != null && dt.Rows.Count > 0)
+        {
+            <div>
+                @using (Html.BeginForm("Index", "Subjective", FormMethod.Get))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+
+                    @Html.HiddenFor(e => e.Patient_Id)
+                    @Html.HiddenFor(e => e.PatientCondition_Id)
+
+                    <div>
+                        <div class="table-responsive" >
+                            <table class="table table-bordered table-striped" id="CIAIndexTable">
+                                <thead>
+                                    <tr>
+                                        <th>Patient Name</th>
+                                        @*<th>Condition</th>*@
+                                        <th>Problem Area</th>
+                                        <th>CIA Status</th>
+                                        <th style="width:100px;">Status</th>
+                                        <th style="width:150px;">Action</th>
+                                        <th style="width:318px;">Edit Step</th>
+                                        <th>Pending Step</th>
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    @foreach (DataRow dr in dt.Rows)
+                                    {
+                                        <tr>
+                                            <th>@dr["Patient"]</th>
+                                            <th>@dr["Condition"]</th>
+
+                                            @*[ Subjective -> Objective -> Plan -> Assessment ]*@
+
+                                            @if (Convert.ToString(dr["CIA_Status"]) == "s".ToUpper() && Convert.ToBoolean(dr["IsComplete"]) == true)
+                                            {
+                                                <th><label style="color: #eb1923;">Subjective Complete</label></th>
+                                            }
+                                            else if (Convert.ToString(dr["CIA_Status"]) == "o".ToUpper() && Convert.ToBoolean(dr["IsComplete"]) == true)
+                                            {
+                                                <th><label style="color: #eb1923;">Objective Complete</label></th>
+                                            }
+                                            else if (Convert.ToString(dr["CIA_Status"]) == "d".ToUpper() && Convert.ToBoolean(dr["IsComplete"]) == true)
+                                            {
+                                                <th><label style="color: #eb1923;">Plan in process</label></th>
+                                            }
+                                            else if (Convert.ToString(dr["CIA_Status"]) == "p".ToUpper() && Convert.ToBoolean(dr["IsComplete"]) == true)
+                                            {
+                                                <th><label style="color: #eb1923;">Plan Complete</label></th>
+                                            }
+                                            else if (Convert.ToString(dr["CIA_Status"]) == "a".ToUpper() && Convert.ToBoolean(dr["IsComplete"]) == true)
+                                            {
+                                                <th><label style="color: #0f68e6;">Assessment Complete</label></th>
+                                            }
+                                            else if (Convert.ToString(dr["CIA_Status"]) == "s".ToUpper() && Convert.ToBoolean(dr["IsComplete"]) == false)
+                                            {
+                                                <th><label style="color: #0f68e6;">Subjective Incomplete</label></th>
+                                            }
+
+
+                                            @if (Convert.ToString(dr["CIA_Status"]) == "s".ToUpper())
+                                            {
+                                                <th><label style="color: #eb1923; ">In Process</label></th>
+                                            }
+                                            else if (Convert.ToString(dr["CIA_Status"]) == "o".ToUpper())
+                                            {
+                                                <th><label style="color: #eb1923; ">In Process</label></th>
+                                            }
+                                            else if (Convert.ToString(dr["CIA_Status"]) == "d".ToUpper())
+                                            {
+                                                <th><label style="color: #eb1923; ">In Process</label></th>
+                                            }
+                                            else if (Convert.ToString(dr["CIA_Status"]) == "p".ToUpper())
+                                            {
+                                                <th><label style="color: #eb1923; ">In Process</label></th>
+                                            }
+                                            else if (Convert.ToString(dr["CIA_Status"]) == "a".ToUpper() && Convert.ToBoolean(dr["IsComplete"]) == true)
+                                            {
+                                                <th><label style="color: #0f68e6; "><strong>Complete</strong></label></th>
+
+                                            }
+
+
+                                            @if (Convert.ToString(dr["CIA_Status"]) == "s".ToUpper() && Convert.ToBoolean(dr["IsComplete"]) == true)
+                                            {
+                                                <th>
+                                                    <a href="#" onclick="fn_GoToNextStep(@dr["Patient_Id"],@dr["PatientCondition_Id"],'@dr["CIA_Status"]');">
+                                                        <i class="fa fa-arrow-right" aria-hidden="true"></i> ( Objective )
+                                                    </a>
+                                                </th>
+    <th>
+        <a href="#" onclick="EditStep(@dr["Patient_Id"],@dr["PatientCondition_Id"],'@dr["CIA_Status"]','Subjective')">
+            Subjective
+        </a>
+    </th>
+                                                <th>
+                                                    <a href="#">
+                                                        <input type="button" class="btn btn-primary btn-lg" value="Patient/Therapist Goal" disabled="disabled">
+                                                    </a>
+                                                </th>
+                                            }
+                                            else if (Convert.ToString(dr["CIA_Status"]) == "s".ToUpper() && Convert.ToBoolean(dr["IsComplete"]) == false)
+                                            {
+                                                <th>
+                                                    <a href="#" onclick="fnGotoSubjective(@dr["Patient_Id"],@dr["PatientCondition_Id"]);">
+                                                        <i class="fa fa-arrow-right" aria-hidden="true"></i> ( Subjective )
+                                                    </a>
+                                                </th>
+    <th>
+        <a href="#" onclick="fn_GoToNextStep(@dr["Patient_Id"],@dr["PatientCondition_Id"],'@dr["CIA_Status"]')">           
+        </a>
+    </th>
+                                                <th>
+                                                    <a href="#">
+                                                        <input type="button" class="btn btn-primary btn-lg" value="Patient/Therapist Goal" disabled="disabled">
+                                                    </a>
+                                                </th>
+                                            }
+                                            else if (Convert.ToString(dr["CIA_Status"]) == "o".ToUpper() && Convert.ToBoolean(dr["IsComplete"]) == true)
+                                            {
+                                                <th>
+                                                    <a href="#" onclick="fn_GoToNextStep(@dr["Patient_Id"],@dr["PatientCondition_Id"],'@dr["CIA_Status"]')">
+                                                        <i class="fa fa-arrow-right" aria-hidden="true"></i> ( Plan )
+                                                    </a>
+                                                </th>
+    <th>
+        <a href="#" onclick="EditStep(@dr["Patient_Id"],@dr["PatientCondition_Id"],'@dr["CIA_Status"]','Subjective')">
+            Subjective
+        </a>
+        <span>|</span>
+        <a href="#" onclick="EditStep(@dr["Patient_Id"],@dr["PatientCondition_Id"],'@dr["CIA_Status"]','Objective')">
+            Objective
+        </a>
+    </th>
+                                                <th>
+                                                    <a href="#">
+                                                        <input type="button" class="btn btn-primary btn-lg" value="Patient/Therapist Goal" disabled="disabled">
+                                                    </a>
+                                                </th>
+                                            }
+                                            else if (Convert.ToString(dr["CIA_Status"]) == "d".ToUpper() && Convert.ToBoolean(dr["IsComplete"]) == true)
+                                            {
+                                                <th>
+                                                    <a href="#" onclick="fn_GoToNextStep(@dr["Patient_Id"],@dr["PatientCondition_Id"],'@dr["CIA_Status"]')">
+                                                        <i class="fa fa-arrow-right" aria-hidden="true"></i> ( Plan )
+                                                    </a>
+                                                </th>
+    <th>
+        <a href="#" onclick="EditStep(@dr["Patient_Id"],@dr["PatientCondition_Id"],'@dr["CIA_Status"]','Subjective')">
+            Subjective
+        </a>
+        <span>|</span>
+        <a href="#" onclick="EditStep(@dr["Patient_Id"],@dr["PatientCondition_Id"],'@dr["CIA_Status"]','Objective')">
+            Objective
+        </a>
+    </th>
+                                                <th>
+                                                    <a href="#">
+                                                        <input type="button" class="btn btn-primary btn-lg" value="Patient/Therapist Goal" disabled="disabled">
+                                                    </a>
+                                                </th>
+
+                                            }
+                                            else if (Convert.ToString(dr["CIA_Status"]) == "p".ToUpper() && Convert.ToBoolean(dr["IsComplete"]) == true)
+                                            {
+                                                <th>
+                                                    <a href="#" onclick="fn_GoToNextStep(@dr["Patient_Id"],@dr["PatientCondition_Id"],'@dr["CIA_Status"]')">
+                                                        <i class="fa fa-arrow-right" aria-hidden="true"></i> ( Assessment )
+                                                    </a>
+                                                </th>
+    <th>
+        <a href="#" onclick="EditStep(@dr["Patient_Id"],@dr["PatientCondition_Id"],'@dr["CIA_Status"]','Subjective')">
+            Subjective
+        </a>
+        <span>|</span>
+        <a href="#" onclick="EditStep(@dr["Patient_Id"],@dr["PatientCondition_Id"],'@dr["CIA_Status"]','Objective')">
+            Objective
+        </a>
+        <span>|</span>
+        <a href="#" onclick="EditStep(@dr["Patient_Id"],@dr["PatientCondition_Id"],'@dr["CIA_Status"]','Plan')">
+            Plan
+        </a>
+    </th>
+                                                <th>
+                                                    <a href="#">
+                                                        <input type="button" class="btn btn-primary btn-lg" value="Patient/Therapist Goal" disabled="disabled">
+                                                    </a>
+                                                </th>
+
+                                            }
+                                            else if (Convert.ToString(dr["CIA_Status"]) == "a".ToUpper() && Convert.ToBoolean(dr["IsComplete"]) == true)
+                                            {
+                                                <th>
+                                                    <center>
+                                                        <a href="#" onclick="fn_CreatePDF(@dr["Patient_Id"],@dr["PatientCondition_Id"],'@dr["CIA_Status"]')">
+                                                            <i class="fa fa-file-pdf-o fa-4x" aria-hidden="true"></i>
+                                                        </a>
+                                                    </center>
+                                                </th>
+    <th>
+        <a href="#" onclick="EditStep(@dr["Patient_Id"],@dr["PatientCondition_Id"],'@dr["CIA_Status"]','Subjective')">
+            Subjective
+        </a>
+        <span>|</span>
+        <a href="#" onclick="EditStep(@dr["Patient_Id"],@dr["PatientCondition_Id"],'@dr["CIA_Status"]','Objective')">
+            Objective
+        </a>
+        <span>|</span>
+        <a href="#" onclick="EditStep(@dr["Patient_Id"],@dr["PatientCondition_Id"],'@dr["CIA_Status"]','Plan')">
+            Plan
+        </a>
+        <span>|</span>
+        <a href="#" onclick="EditStep(@dr["Patient_Id"],@dr["PatientCondition_Id"],'@dr["CIA_Status"]','Assessment')">
+            Assessment
+        </a>
+    </th>
+
+                                                <th>
+                                                    <a href="@Url.Action("GoToInitialAssessment", "Subjective", new { id = @dr["PatientCondition_Id"] })">
+                                                        <input type="button" class="btn btn-primary btn-lg" value="Patient/Therapist Goal">
+                                                    </a>
+                                                </th>
+                                            }
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div>
+                            <br />
+
+                        </div>
+                    </div>
+
+                }
+            </div>
+        }
+
+    }
+
+</section>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ('@ViewBag.msg' != '') {
+            alertify.alert('@ViewBag.msg').setHeader('AdvancePT Says');
+            @*'@ViewBag.msg' = '';*@
+        }
+
+        if ('@ViewBag.Error' == "No") {
+            alertify.alert("Cannot proceed for comprehensive initial assessment now").setHeader("AdvancePT Says");
+            window.location.href = '@Url.Action("PatientIndex", "PatientActivation", new { area = "Patient" })';
+        }
+    });
+
+
+    function fnGotoSubjective(Patient_Id, PatientCondition_Id) {
+        $.ajax({
+            url: '@Url.Action("SubjectiveStep1", "Subjective")',
+            type: 'POST',
+            dataType: 'JSON',
+            data: { PatientConditionId: PatientCondition_Id },
+            success: function (data) {
+                window.location.href = '@Url.Action("Create", "Subjective", new { area = "ComprehensiveInitialAssessment" })'
+            },
+            error: function (error) {
+                //alert("Error: " + error.type);
+            },
+            statusCode: {
+                404: function () {
+                    alert("page not found");
+                }
+            }
+
+        });
+    }
+
+
+    function fn_GoToNextStep(Patient_Id, PatientCondition_Id, CIA_Status) {
+        //alert("PatientId: " + Patient_Id); alert("PatientCondition_Id: " + PatientCondition_Id); alert("CIA_Status: " + CIA_Status);
+
+        if (CIA_Status == "s".toUpperCase()) {
+            $.ajax({
+                url: '@Url.Action("ObjectiveStep1", "Objective")',
+                type: 'POST',
+                dataType: 'JSON',
+                data: { PatientId: Patient_Id, PatientConditionId: PatientCondition_Id },
+                success: function (data) {
+                    window.location.href = '@Url.Action("Create1", "Objective", new { area = "ComprehensiveInitialAssessment" })'
+                },
+                error: function (error) {
+                    alert("Error: " + error.type);
+                },
+                statusCode: {
+                    404: function () {
+                        alert("page not found");
+                    }
+                }
+
+            });
+        }
+        else if (CIA_Status == "o".toUpperCase()) {
+            $.ajax({
+                url: '@Url.Action("PlanStep1", "Plan")',
+                type: 'POST',
+                dataType: 'JSON',
+                data: { PatientId: Patient_Id, PatientConditionId: PatientCondition_Id },
+                success: function (data) {
+                    window.location.href = '@Url.Action("Create", "Plan", new { area = "ComprehensiveInitialAssessment" })'
+                },
+                error: function (error) {
+                    alert("Error: " + error.type);
+                },
+                statusCode: {
+                    404: function () {
+                        alert("page not found");
+                    }
+                }
+
+            });
+        }
+        else if (CIA_Status == "d".toUpperCase()) {
+            $.ajax({
+                url: '@Url.Action("Planpanding", "Plan")',
+                type: 'POST',
+                dataType: 'JSON',
+                data: { PatientId: Patient_Id, PatientConditionId: PatientCondition_Id },
+                success: function (data) {
+                    window.location.href = '@Url.Action("PlanStep2", "Plan", new { area = "ComprehensiveInitialAssessment" })'
+                },
+                error: function (error) {
+                    alert("Error: " + error.type);
+                },
+                statusCode: {
+                    404: function () {
+                        alert("page not found");
+                    }
+                }
+
+            });
+        }
+        else if (CIA_Status == "p".toUpperCase()) {
+            $.ajax({
+                url: '@Url.Action("AssessmentStep1", "Assessment")',
+                type: 'POST',
+                dataType: 'JSON',
+                data: { PatientId: Patient_Id, PatientConditionId: PatientCondition_Id },
+                success: function (data) {
+                    @*window.location.href = '@Url.Action("Create", "Assessment", new { area = "ComprehensiveInitialAssessment" })'*@
+                    window.location.href = '@Url.Action("PatientCurrentLevelofAffectedAreas", "Assessment", new { area = "ComprehensiveInitialAssessment" })'
+                },
+                error: function (error) {
+                    alert("Error: " + error.type);
+                },
+                statusCode: {
+                    404: function () {
+                        alert("page not found");
+                    }
+                }
+
+            });
+        }
+        else {
+            window.location.href = '@Url.Action("Index", "Subjective", new { area = "ComprehensiveInitialAssessment" })';
+        }
+    }
+
+</script>
+
+<script type="text/javascript">
+    function fn_CreatePDF(Patient_Id, PatientCondition_Id, CIA_Status) {
+        if (CIA_Status == "a".toUpperCase()) {
+            var url = "@Url.Action("CIA_Pdf", "Plan", new { Area = "ComprehensiveInitialAssessment" })" + "?PatientId=" + Patient_Id + "&PatientConditionId=" + PatientCondition_Id;
+            popupwindow(url, 'CIA_Pdf', 1000, 800);
+        }
+
+        //fnShowPopupForDetail(url);
+    }
+</script>
+
+<script type="text/javascript">
+    function EditStep(Patient_Id, PatientCondition_Id, CIA_Status, WhichStepEdit) {
+        //alert("Patient_Id : " + Patient_Id + " " + "PatientCondition_Id : " + " " + PatientCondition_Id + " " + "CIA_Status : " + CIA_Status + " " + "WhichStepEdit :" + WhichStepEdit);
+
+        if (CIA_Status != '') {
+            if (Patient_Id != '' && PatientCondition_Id != '' && WhichStepEdit != '') {
+                if (CIA_Status == "s".toUpperCase() && WhichStepEdit == "Subjective".trim()) {
+                    window.location.href = "@Url.Action("EditStepSubjective", "Subjective", new { Area = "ComprehensiveInitialAssessment" })?PatientId=" + Patient_Id + "&PatientConditionId=" + PatientCondition_Id;
+                }
+                else if (CIA_Status == "o".toUpperCase()) {
+
+                    var StepsToMove = WhichStepEdit.trim();
+
+                    //alert("StepsToMove : " + StepsToMove);
+
+                    if (StepsToMove == "Subjective".trim()) {
+                        window.location.href = "@Url.Action("EditStepSubjective", "Subjective", new { Area = "ComprehensiveInitialAssessment" })?PatientId=" + Patient_Id + "&PatientConditionId=" + PatientCondition_Id;
+                    }
+                    else if (StepsToMove == "Objective".trim()) {
+                        window.location.href = "@Url.Action("Create1", "Objective", new { Area = "ComprehensiveInitialAssessment" })?PatientId=" + Patient_Id + "&PatientConditionId=" + PatientCondition_Id + "&Flag=" + 1;
+                    }
+                }
+                else if (CIA_Status == "d".toUpperCase()) {
+                    var StepsToMove = WhichStepEdit.trim();
+
+                    //alert("StepsToMove : " + StepsToMove);
+
+                    if (StepsToMove == "Subjective".trim()) {
+                        window.location.href = "@Url.Action("EditStepSubjective", "Subjective", new { Area = "ComprehensiveInitialAssessment" })?PatientId=" + Patient_Id + "&PatientConditionId=" + PatientCondition_Id;
+                    }
+                    else if (StepsToMove == "Objective".trim()) {
+                        window.location.href = "@Url.Action("Create1", "Objective", new { Area = "ComprehensiveInitialAssessment" })?PatientId=" + Patient_Id + "&PatientConditionId=" + PatientCondition_Id + "&Flag=" + 1;
+                    }
+                }
+                else if (CIA_Status == "p".toUpperCase()) {
+                    var StepsToMove = WhichStepEdit.trim();
+
+                    //alert("StepsToMove : " + StepsToMove);
+
+                    if (StepsToMove == "Subjective".trim()) {
+                        window.location.href = "@Url.Action("EditStepSubjective", "Subjective", new { Area = "ComprehensiveInitialAssessment" })?PatientId=" + Patient_Id + "&PatientConditionId=" + PatientCondition_Id;
+                    }
+                    else if (StepsToMove == "Objective".trim()) {
+                        window.location.href = "@Url.Action("Create1", "Objective", new { Area = "ComprehensiveInitialAssessment" })?PatientId=" + Patient_Id + "&PatientConditionId=" + PatientCondition_Id + "&Flag=" + 1;
+                    }
+                    else if (StepsToMove == "Plan".trim()) {
+                        window.location.href = "@Url.Action("Create", "Plan", new { Area = "ComprehensiveInitialAssessment" })?PatientId=" + Patient_Id + "&PatientConditionId=" + PatientCondition_Id + "&Flag=" + 1;
+                    }
+                }
+                else if (CIA_Status == "a".toUpperCase()) {
+                    var StepsToMove = WhichStepEdit.trim();
+
+                    //alert("StepsToMove : " + StepsToMove);
+
+                    if (StepsToMove == "Subjective".trim()) {
+                        window.location.href = "@Url.Action("EditStepSubjective", "Subjective", new { Area = "ComprehensiveInitialAssessment" })?PatientId=" + Patient_Id + "&PatientConditionId=" + PatientCondition_Id;
+                    }
+                    else if (StepsToMove == "Objective".trim()) {
+                        window.location.href = "@Url.Action("Create1", "Objective", new { Area = "ComprehensiveInitialAssessment" })?PatientId=" + Patient_Id + "&PatientConditionId=" + PatientCondition_Id + "&Flag=" + 1;
+                    }
+                    else if (StepsToMove == "Plan".trim()) {
+                        window.location.href = "@Url.Action("Create", "Plan", new { Area = "ComprehensiveInitialAssessment" })?PatientId=" + Patient_Id + "&PatientConditionId=" + PatientCondition_Id + "&Flag=" + 1;
+                    }
+                    else if (StepsToMove == "Assessment".trim()) {
+                        window.location.href = "@Url.Action("PatientCurrentLevelofAffectedAreas", "Assessment", new { Area = "ComprehensiveInitialAssessment" })?PatientId=" + Patient_Id + "&PatientConditionId=" + PatientCondition_Id + "&OperationMode=" + 1;
+                    }
+                }
+            }
+        }
+    }
+</script>

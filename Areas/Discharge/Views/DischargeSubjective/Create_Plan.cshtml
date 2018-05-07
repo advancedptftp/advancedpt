@@ -1,0 +1,620 @@
+﻿@model DataLayer.Models.DischargeNote
+@using DataLayer;
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string str1 = string.Empty;
+    string str2 = string.Empty;
+    if (@ViewBag.TreatmentDesc != null)
+    {
+
+    }
+}
+
+<link href="~/Content/patientportal.css" rel="stylesheet" />
+
+<style>
+    .selectedRow {
+        background-color: rgba(249, 159, 62, 0.65);
+        color: white;
+    }
+</style>
+<style type="text/css">
+    .table-fixed thead {
+        width: 97%;
+    }
+
+    .table-fixed tbody {
+        height: 230px;
+        overflow-y: auto;
+        width: 100%;
+    }
+
+    .table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
+        display: block;
+    }
+
+        .table-fixed tbody td, .table-fixed thead > tr > th {
+            float: left;
+            border-bottom-width: 0;
+        }
+</style>
+<style>
+    .loadingdivschedule {
+        display: block;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 9998;
+        background-color: rgba(0,0,0,.3);
+        -webkit-animation: fade 500ms;
+        -moz-animation: fade 500ms;
+        -o-animation: fade 500ms;
+        animation: fade 500ms;
+    }
+
+    .loadingcontainerschedule {
+        width: 100%;
+        text-align: center;
+        padding-top: 26%;
+    }
+</style>
+
+<section class="bodyinner">
+    <div class="container">
+
+        <div class="report-form clearfix">
+            <h1 class="text-center" style="font-size:30px;"><strong>Discharge Note Plan</strong> </h1>
+            @using (Html.BeginForm("Create_Plan", "DischargeSubjective", FormMethod.Post, new { id = "Create", name = "Create" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(e => e.patientconditionId)
+                @Html.HiddenFor(e => e.Patient_Id)
+                @Html.HiddenFor(e => e.PatientPTExam_Id)
+                @Html.HiddenFor(e => e.PhysicalTherapyGoals)
+                @Html.HiddenFor(e => e.NoOfWeeksToAchieveGoal)
+                @Html.HiddenFor(e => e.NoOfVisitsPerWeekNeeded)
+               @Html.HiddenFor(e => e.PlanDesc)
+                @Html.HiddenFor(e => e.TotalNoOfVisitNeeded)
+                @Html.HiddenFor(e => e.Treatment_Ids)
+                @Html.HiddenFor(e => e.CreatedBy)
+                @Html.HiddenFor(e => e.CreatedOn)
+                @Html.HiddenFor(e => e.ModifiedBy)
+                @Html.HiddenFor(e => e.ModifiedOn)
+
+                if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+
+        
+                
+                ///////////////////////////////////////////////////
+                
+                 @*<div class="topforn">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table width="100%" border="0">
+                                <tr>
+                                    <td width="22%"><h3><strong>Plan of Care</strong></h3></td>
+                                    
+                                    <td width="78%"></td>
+                                </tr>
+                            </table>
+
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table width="100%" border="0">
+                                <tr>
+                                    <td width="20%"><h4><strong>Patient Name:</strong></h4></td>
+                                    <td width="35%">
+                                        @Html.TextBoxFor(m => m.PatientName, new { @class = "form-control", @readonly = true, @style = "font-size:24px;" })
+                                    </td>
+                                    <td width="45%">
+                                        <div class="col-sm-1 form-group" style="padding-top:25px;"></div>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+
+                    </div>
+                </div>*@
+                 <div class="topforn">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="lefttext">
+                        @{
+        if (ViewBag.PatientName != null)
+        {
+            @ViewBag.PatientName
+        }
+                        }, DOB:
+                        @{
+        if (ViewBag.PatientDOB != null)
+        {
+            @ViewBag.PatientDOB
+        }
+                        }
+                        <br />
+                        @*Tx Time : 8:00-8:40 PM<br />*@
+                        @*POC: 3/11, ends 02/12/18*@
+
+                        @{
+        string hyfen = "-";
+        string space = " ";
+        string st1 = "Tx Time :";
+
+        if (ViewBag.TreatmentFromTime != null && ViewBag.TreatmentToTime != null)
+        {
+            @st1 @space @ViewBag.TreatmentFromTime @space @hyfen @space @ViewBag.TreatmentToTime
+        }
+                        }<br />
+
+                        POC:
+                        @{
+        string divideSign = "/";
+        string commaSign = ",";
+        string ends = "ends";
+
+        if (ViewBag.TotalNoofVisitRequired != null && ViewBag.CurrentVisitNo != null && ViewBag.TreatmentEndDate != null)
+        {
+            @ViewBag.CurrentVisitNo @divideSign @ViewBag.TotalNoofVisitRequired @commaSign @space @ends @space @ViewBag.TreatmentEndDate
+        }
+        <br />
+        if (ViewBag.Date_Of_injury != null)
+        {
+            string _Date_Of_injury = "Date Of injury : ";
+            @_Date_Of_injury @ViewBag.Date_Of_injury;
+        }
+        else
+        {
+            if (ViewBag.SurgeryDate != null)
+            {
+                string _SurgeryDate = "SurgeryDate : ";
+                @_SurgeryDate @ViewBag.SurgeryDate;
+            }
+            else
+            {
+                if (ViewBag.DateonSet != null)
+                {
+                    string _DateonSet = "Date on Set : ";
+                    @_DateonSet @ViewBag.DateonSet;
+                }
+            }
+        }
+        <br />
+        @*if (ViewBag.FromWhenProblemExist != null)
+        {
+            string _FromWhenProblemExist = "From When Problem Exist : ";
+            @_FromWhenProblemExist @ViewBag.FromWhenProblemExist;
+        }*@
+                        }
+
+
+                    </div>
+                    <div class="righttext">
+                        @*Sumit Paul, DOB:01/14/74<br />
+                            Tx Time : 8:00-8:40 PM*@
+                        @{
+          string str3 = string.Empty;
+        if (ViewBag.Disease_names != null)
+        {
+            string disease = ViewBag.Disease_names;
+            string[] diseasesplit = disease.Split(':');
+            for (var i = 0; i < diseasesplit.Count(); i++)
+                    {
+                <div>
+                    @diseasesplit[i]
+                        </div>
+                             <div class="clearfix"></div>
+             }
+           
+        }
+                        }
+                        @*@str2 <br />*@
+                        @*@str3*@
+                        Auth: 3/15, ends 03/31/18
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+            </div>
+
+            @*<div class="botheadingsec">Daily Treatment Note <span>OBJECTIVE</span></div>*@
+
+
+        </div>
+                <div id="divid_1" class="fieldpar" style="display:none;">
+                    <div class="row">
+                        <div class="col-md-3 inlinetext fontlarge">Frequency per week:</div>
+                        <div class="col-md-4 form-group">
+                            @*@Html.TextBox("NoOfVisitsPerWeekNeeded", (string)ViewBag.NoOfVisitsPerWeekNeeded, new { @class = "form-control", @readonly = true })*@
+                            @*<input type="text" id="@ViewBag.NoOfVisitsPerWeekNeeded" class="newfield valid txt ObjectiveOption" name=@ViewBag.NoOfVisitsPerWeekNeeded value=@ViewBag.NoOfVisitsPerWeekNeeded onblur="fn_CheckRange_NoOfVisitsPerWeekNeeded()" />*@
+                            @*<input type="text" id="NoOfVisitsPerWeekNeeded" class="newfield valid txt VisitsPerWeekNeeded"  />*@
+                            @Html.TextBox("NoOfVisitsPerWeekNeeded", (string)ViewBag.NoOfVisitsPerWeekNeeded, new { @class = "newfield valid txt VisitsPerWeekNeeded", @readonly = true })
+                            <div id="divMsg" style="display:none;"><span id="spanPlanErrMsg" style="color:red; font-size:medium;"></span></div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3 inlinetext fontlarge">Total no of weeks:</div>
+                        <div class="col-md-4 form-group">
+                            @*@Html.TextBox("TotalNoOfVisitNeeded", (string)ViewBag.TotalNoOfVisitNeeded, new { @class = "form-control", @readonly = true })*@
+                            @*<input type="text" id="@ViewBag.NoOfWeeksToAchieveGoal" class="newfield valid txt ObjectiveOption" name=@ViewBag.NoOfWeeksToAchieveGoal value=@ViewBag.NoOfWeeksToAchieveGoal />*@
+                            @*<input type="text" id="NoOfWeeksToAchieveGoal" class="newfield valid txt WeeksToAchieveGoal"  />*@
+                            @Html.TextBox("NoOfWeeksToAchieveGoal1", (string)ViewBag.NoOfWeeksToAchieveGoal1, new { @class = "newfield valid txt WeeksToAchieveGoal",  @readonly = true })
+                            <div id="divMsg2" style="display:none;"><span id="spanPlanErrMsg2" style="color:red; font-size:medium;"></span></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 inlinetext fontlarge">Number of visit(s) needed to achieve goals:</div>
+                        <div class="col-md-4 form-group">
+                            @*<input type="text" id="ToAchieveGoal" class="txt ToAchieveGoal" readonly="readonly" style="width:60px;" />*@
+                            @Html.TextBox("TotalNoOfVisitNeeded", (string)ViewBag.TotalNoOfVisitNeeded, new { @class = "txt ToAchieveGoal",@Style="width: 53px;", @readonly = true })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 inlinetext fontlarge">Number of visit(s) remaining to achieve goals:@ViewBag.noofreminigvisit </div>
+                        
+                    </div>
+                </div>
+
+                <div id="divid_2">
+                    <h2><center>Treatment</center></h2>
+                    <div class="clearfix">&nbsp;</div>
+                    @if (ViewBag.Treatments != null)
+                    {
+                        int j = 1;
+                    <div>
+                        @foreach (var item in ViewBag.Treatments)
+                            {
+                            <div class="radiosec">
+                                <input id="chkQues_@item.Value" class="checkbox-custom chkTreatmentPlans" name="chkQues" type="checkbox" value="@item.Value">
+                                <label for="chkQues_@item.Value" class="checkbox-custom-label lblPlans" id="lblchkQues_@item.Value">@item.Text</label>
+                            </div>
+                                j++;
+
+                                if (j % 3 == 1)
+                                {
+                            <div class="clearfix"></div>
+                                }
+                            }
+                    </div>
+                    }
+
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div id="divBackToObjective" style="float:left; display:none;">
+                    <input type="button" id="btnBackToObjective" class="btn btn-orange btn-lg" value="<< Back To Objective" />
+                </div>
+
+                @*<div style="float:right">
+                    <input type="button" id="btnNext" class="btn btn-primary btn-lg" value="Next >>" />
+                </div>*@
+                @*<div style="float: left; margin-bottom: 5px;">
+                    <input type="button" id="btnPrev" class="btn btn-primary btn-lg" value="<< Previous" />
+                </div>*@
+                <div style="float:right">
+                    <input type="submit" id="btnSave" class="btn btn-orange btn-lg" value="Save & Next >>" />
+                </div>
+
+
+                <div class="clearfix"></div>
+
+                <div class="row">
+                    @*<a href="@Url.Action("Index", "Subjective")" style="padding-left:15px;">Back to List</a>*@
+                    <a href="@Url.Action("Index", "DischargeSubjective")" style="padding-left:15px;"><span class="btn btn-primary btn-lg">Back to list</span> </a>
+                </div>
+                
+                
+                
+                
+            }
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+     var PlanReptdesc = "";
+
+    $(document).ready(function () {
+
+        //$(".VisitsPerWeekNeeded").focus();
+
+        $("#divid_1").hide();
+        $("#divBackToObjective").hide();
+        $("#divid_2").show();
+        $("#btnNext").show();
+        $("#btnSave").show();
+        $("#btnPrev").hide();
+
+        //---Patient ID----//
+        $("#PatientName").val('@ViewBag.PatientName');
+
+        //--- Disabled "btnNext" Button When Page Load ---//
+        //$("#btnNext").prop('disabled', true);
+    });
+
+    //$("#btnNext").click(function () {
+    //    $("#divid_1").hide();
+    //    $("#divBackToObjective").hide();
+    //    $("#divid_2").show();
+    //    $("#btnNext").hide();
+    //    $("#btnPrev").show();
+    //    $("#btnSave").show();
+    //});
+
+    //$("#btnPrev").click(function () {
+    //    $("#divid_1").show();
+    //    $("#divBackToObjective").show();
+    //    $("#divid_2").hide();
+    //    $("#btnNext").show();
+    //    $("#btnSave").hide();
+    //    $("#btnPrev").hide();
+
+    //    //--- Disabled "btnNext" Button When Back To Previous ---//
+    //    //$("#btnNext").prop('disabled', true);
+    //});
+
+
+    function fn_CheckRange_NoOfVisitsPerWeekNeeded(val1) {
+        //-------------- Check The value of Frequency per week Not > 3 ---------------------//
+        @*var txtId1 = '@ViewBag.NoOfVisitsPerWeekNeeded'
+        var v1 = $("#" + txtId1).val();*@
+
+        var v1 = val1;
+
+        $("#ToAchieveGoal").val("");      // Clean The "ToAchieveGoal" TextBox
+
+        if (!/^[0-9]+$/.test(v1)) {                     // Check for only numeric characters
+            $("#spanPlanErrMsg").text("Please input only numeric data in frequency per week");
+            $("#divMsg").show();
+            $("#divid_1").show();
+            $("#divid_2").hide();
+            $(".VisitsPerWeekNeeded").val("");
+            $(".VisitsPerWeekNeeded").focus();
+
+            //--- Disabled "btnNext" Button ---//
+            $("#btnNext").prop('disabled', true);
+            return false;
+        }
+        else if (v1 == "" || v1 == '' || v1 == " " || v1 == ' ' || v1 == undefined) {
+            $("#spanPlanErrMsg").text("Please input data in frequency per week");
+            $("#divMsg").show();
+            $("#divid_1").show();
+            $("#divid_2").hide();
+            $(".VisitsPerWeekNeeded").val("");
+            $(".VisitsPerWeekNeeded").focus();
+
+            //--- Disabled "btnNext" Button ---//
+            $("#btnNext").prop('disabled', true);
+            return false;
+        }
+        else if (v1 > 3) {
+            $("#spanPlanErrMsg").text("Frequency per week should be less than 4");
+            $("#divMsg").show();
+            $("#divid_1").show();
+            $("#divid_2").hide();
+            $(".VisitsPerWeekNeeded").val("");
+            $(".VisitsPerWeekNeeded").focus();
+
+            //--- Disabled "btnNext" Button ---//
+            $("#btnNext").prop('disabled', true);
+            return false;
+        }
+        else if (v1 == 0) {
+            $("#spanPlanErrMsg").text("Frequency per week should not be zero");
+            $("#divMsg").show();
+            $("#divid_1").show();
+            $("#divid_2").hide();
+            $(".VisitsPerWeekNeeded").val("");
+            $(".VisitsPerWeekNeeded").focus();
+
+            //--- Disabled "btnNext" Button ---//
+            $("#btnNext").prop('disabled', true);
+            return false;
+        }
+        else {
+            $("#spanPlanErrMsg").text("");
+            //----- Calculate Number of Weeks Needed to Achieve Goals -----//
+            var n1 = $('.VisitsPerWeekNeeded').val();
+            var n2 = $(".WeeksToAchieveGoal").val();
+            var res = (n1 * n2);
+            $("#ToAchieveGoal").val(res);
+        }
+    }
+
+    function fn_CheckValidationforTotalnoWeek(val2) {
+        //--- Check Total no weeks zero or blank  ------//
+
+        var v2 = val2;
+
+        $("#ToAchieveGoal").val("");      // Clean The "ToAchieveGoal" TextBox
+
+
+        if (!/^[0-9]+$/.test(v2)) {               // Check for only numeric characters
+            $("#spanPlanErrMsg2").text("Please input only numeric data in total no of week");
+            $("#divMsg2").show();
+            $("#divid_1").show();
+            $("#divid_2").hide();
+            $(".WeeksToAchieveGoal").val("");
+            $(".WeeksToAchieveGoal").focus();
+
+            //--- Disabled "btnNext" Button ---//
+            $("#btnNext").prop('disabled', true);
+            return false;
+        }
+        else if (v2 == "" || v2 == " " || v2 == '' || v2 == ' ' || v2 == undefined) {
+            $("#spanPlanErrMsg2").text("Please input data in total no of week");
+            $("#divMsg2").show();
+            $("#divid_1").show();
+            $("#divid_2").hide();
+            $(".WeeksToAchieveGoal").val("");
+            $(".WeeksToAchieveGoal").focus();
+
+            //--- Disabled "btnNext" Button ---//
+            $("#btnNext").prop('disabled', true);
+            return false;
+        }
+        else if (v2 == 0) {
+            $("#spanPlanErrMsg2").text("Total no of week should not be zero");
+            $("#divMsg2").show();
+            $("#divid_1").show();
+            $("#divid_2").hide();
+            $(".WeeksToAchieveGoal").val("");
+            $(".WeeksToAchieveGoal").focus();
+
+            //--- Disabled "btnNext" Button ---//
+            $("#btnNext").prop('disabled', true);
+            return false;
+        }
+        else {
+            $("#spanPlanErrMsg2").text("");
+            //----- Calculate Number of Weeks Needed to Achieve Goals -----//
+
+            var n1 = $('.VisitsPerWeekNeeded').val();
+            var n2 = $(".WeeksToAchieveGoal").val();
+            var res = (n1 * n2);
+            $("#ToAchieveGoal").val(res);
+
+            if ($("#ToAchieveGoal").val() > 0) {
+                $("#btnNext").prop('disabled', false);
+            }
+        }
+    }
+
+</script>
+
+<script type="text/javascript">
+    var Plans = "";
+    $("#btnSave").click(function () {
+
+        if ($('.chkTreatmentPlans').filter(':checked').length > 0) {
+            var Treatment_Ids = "";
+            Plans = "";
+            $('.chkTreatmentPlans:checked').each(function () {
+                var vChkNewVal = $(this).val();
+                var vlableControlId = 'lblchkQues_' + vChkNewVal;
+                var lableVal = $("#" + vlableControlId).text();
+                Treatment_Ids = Treatment_Ids + "," + vChkNewVal;
+                if (Plans == '') {
+                    Plans = lableVal;
+                }
+                else {
+                    Plans = Plans + ', ' + lableVal;
+                }
+
+            });
+        } else {
+            //alertify.alert("Please select the options", function () { alertify.message('OK'); });
+            alertify.alert("Please select the options").setHeader('AdvancePT Says');
+            return false;
+        }
+        var indx2 = Treatment_Ids.indexOf(",");
+        var strlen2 = Treatment_Ids.length;
+        var str2 = Treatment_Ids.substring(indx2 + 1, strlen2);
+
+        //---- Set Hidden Field Values ----//
+        @*$("#PatientPTExam_Id").val('@ViewBag.PatientPTExam_Id');
+        $("#PhysicalTherapyGoals").val('@ViewBag.PhysicalTherapyGoals');
+        $("#NoOfWeeksToAchieveGoal").val('@ViewBag.NoOfWeeksToAchieveGoal');
+
+        var txtId1 = '@ViewBag.NoOfVisitsPerWeekNeeded'
+        var txtId2 = '@ViewBag.NoOfWeeksToAchieveGoal'
+        var v1 = $("#" + txtId1).val();
+        var v2 = $("#" + txtId2).val();
+        $("#NoOfVisitsPerWeekNeeded").val(v1);
+        $("#NoOfWeeksToAchieveGoal").val(v2);*@
+
+        //$("#NoOfWeeksToAchieveGoal").val($("#NoOfVisitsPerWeekNeeded").val());
+        //var v1 = $("#NoOfVisitsPerWeekNeeded").val();
+        //var v2 = $("#NoOfWeeksToAchieveGoal").val();
+
+
+        var v1 = $('.VisitsPerWeekNeeded').val();
+        var v2=$(".WeeksToAchieveGoal").val();
+        var v3 = $("#ToAchieveGoal").val();
+
+        //$("#NoOfVisitsPerWeekNeeded").val(v1);
+        //$("#NoOfWeeksToAchieveGoal").val(v2);
+        //$("#TotalNoOfVisitNeeded").val(v3);
+
+
+
+        //$("#Treatment_Ids").val(str2);
+
+        $("#PatientPTExam_Id").val('@ViewBag.PatientPTExam_Id');
+        $("#PhysicalTherapyGoals").val('@ViewBag.PhysicalTherapyGoals');
+        $("#NoOfWeeksToAchieveGoal").val('@ViewBag.NoOfWeeksToAchieveGoal1');
+        $("#NoOfVisitsPerWeekNeeded").val('@ViewBag.NoOfVisitsPerWeekNeeded');
+        $("#TotalNoOfVisitNeeded").val('@ViewBag.TotalNoOfVisitNeeded');
+        $("#Treatment_Ids").val(str2);
+
+        PlanReptdesc += "Patient will benefit from skilled physical therapy treatment " + $("#NoOfWeeksToAchieveGoal").val();
+        PlanReptdesc += "x ";
+        PlanReptdesc += " per week for ";
+        PlanReptdesc += $("#NoOfVisitsPerWeekNeeded").val();
+        PlanReptdesc += " week(s) for: ";
+        PlanReptdesc += Plans + '.';
+        //alert(PlanReptdesc);
+        //alert($("#NoOfVisitsPerWeekNeeded").val());
+        //alert($("#NoOfWeeksToAchieveGoal").val());
+        $("#PlanDesc").val(PlanReptdesc);
+        //alert($("#PlanDesc").val());
+        //Assign Plan Report Description
+
+    });
+
+    //------ Back To Objection Part For Edit --------//
+    $("#btnBackToObjective").click(function () {
+        window.location.href = '@Url.Action("Create1", "DischargeSubjective")?Patient_Id=' + Patient_Id + "&PatientCondition_Id=" + PatientCondition_Id + "&Flag=" + 1;
+    });
+</script>
+
+<script type="text/javascript">
+    $(".VisitsPerWeekNeeded").keyup(function () {
+        //alert($(this).val());
+        fn_CheckRange_NoOfVisitsPerWeekNeeded($(this).val());
+
+    });
+
+    $(".WeeksToAchieveGoal").keyup(function () {
+        //alert($(this).val());
+        fn_CheckValidationforTotalnoWeek($(this).val());
+    });
+
+</script>
+@*</script>*@
+
+@*<script type="text/javascript">
+
+    $("#btnSave").click(function () {
+        var Treatment_Ids = "";
+        $('.chkTreatmentPlans:checked').each(function () {
+            Treatment_Ids = Treatment_Ids + "," + $(this).val();
+        });
+
+        var indx2 = Treatment_Ids.indexOf(",");
+        var strlen2 = Treatment_Ids.length;
+        var str2 = Treatment_Ids.substring(indx2 + 1, strlen2);
+
+        $("#PatientPTExam_Id").val('@ViewBag.PatientPTExam_Id');
+        $("#PhysicalTherapyGoals").val('@ViewBag.PhysicalTherapyGoals');
+        $("#NoOfWeeksToAchieveGoal").val('@ViewBag.NoOfWeeksToAchieveGoal');
+        $("#NoOfVisitsPerWeekNeeded").val('@ViewBag.NoOfVisitsPerWeekNeeded');
+        $("#TotalNoOfVisitNeeded").val('@ViewBag.TotalNoOfVisitNeeded');
+        $("#Treatment_Ids").val(str2);
+    });
+
+</script>*@

@@ -1,0 +1,50 @@
+﻿@model DataLayer.Models.tblMPatientInsuranceCompanyName
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<section class="bodyinner">
+    <div class="container">
+        <div class="bodyleft">
+
+            @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+        </div>
+        <div class="bodyright">
+
+            <div class="report-form clearfix">
+                <h2 class="text-center">Create Insurance Company</h2>
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.Hidden("CreatedOn", DateTime.Now)
+                    if (ViewBag.Error != null)
+                    {
+                        @Html.Raw(ViewBag.Error)
+                    }
+                    <div class="row">
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Company Name")
+                            @Html.TextBoxFor(model => model.CompanyName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.CompanyName)
+                        </div>
+                      
+                    </div>
+
+                    <div class="subbutt">
+                        <input type="submit" value="Create" class="btn btn-orange pull-right" />
+
+                    </div>
+                    <p>@Html.ActionLink("Back to List", "Index")</p>
+                }
+            </div>
+
+
+
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</section>
+
+

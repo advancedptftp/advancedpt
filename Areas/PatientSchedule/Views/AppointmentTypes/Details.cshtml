@@ -1,0 +1,99 @@
+﻿@model DataLayer.Models.tblMPatSchdAppointmentType
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<script src="~/Scripts/farbtastic/dataset.js"></script>
+<script src="~/Scripts/farbtastic/color_classifier.js"></script>
+<script src="~/Scripts/farbtastic/farbtastic.js"></script>
+<link href="~/Scripts/farbtastic/farbtastic.css" rel="stylesheet" />
+
+<section class="bodyinner">
+    <div class="container">
+        @using (Html.BeginForm())
+        {
+      
+    <div class="bodyright" style="width:100%">
+
+        <div class="report-form clearfix">
+            <h2>Appointment List Form</h2>
+
+
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true)
+
+            @Html.HiddenFor(model => model.AppointmentType_Id)
+            @Html.HiddenFor(model => model.ModifiedOn)
+            @Html.HiddenFor(model => model.ModifiedBy)
+            @Html.HiddenFor(model => model.CreatedOn)
+            @Html.HiddenFor(model => model.CreatedBy)
+
+            @if (ViewBag.Error != null)
+            {
+                @Html.Raw(ViewBag.Error)
+            }
+
+            <div class="clearfix"></div>
+
+            <div class="row">
+                <div class="col-sm-6 col-md-6 form-group">
+                    @Html.Label("Name")
+                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @readonly = "readonly" })
+                    @*@Html.ValidationMessageFor(model => model.Name)*@
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6 col-md-6 form-group">
+                    @Html.Label("Description")
+                    @Html.TextBoxFor(model => model.Description, new { @class = "form-control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.Description)
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-sm-6 form-group">
+                    @Html.Label("Appointment Minute")
+                    @Html.TextBoxFor(model => model.AppointmentMinute, new { @class = "form-control", @readonly = "readonly" })
+                    @*@Html.ValidationMessageFor(model => model.Phone1)*@
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-11 form-group">
+                    <div style="width:100%">
+                        <div style="width:50%;float:left">
+                            @Html.Label("Color Code")
+                            @Html.TextBoxFor(model => model.ColorCode, new { @class = "form-control", @readonly = "readonly", @disabled = true })
+                            @*<div class="form-group">
+                                    <label for="exampleInputUserType1">Color Name :</label><span style="color: red">*</span>
+                                    <input type="text" id="Colorname" name="Colorname" value="" class="form-control" readonly="readonly" />
+                                </div>*@
+                        </div>
+                        <div style="width:50%;float:left; padding-left:20px;">
+                            <div id="picker"></div>
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                </div>
+            </div>
+
+            <p>@Html.ActionLink("Back to List", "Index")</p>
+
+        </div>
+
+
+
+    </div>
+        }
+    </div>
+
+</section>
+<script>
+    $(document).ready(function () {
+        $('#picker').farbtastic('#ColorCode');
+    });
+</script>

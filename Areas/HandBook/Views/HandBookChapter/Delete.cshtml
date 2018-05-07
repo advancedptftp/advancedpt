@@ -1,0 +1,65 @@
+﻿@model DataLayer.Models.tblMHandBookChapter
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+@if (ViewBag.Error != null)
+{
+    @Html.Raw(ViewBag.Error)
+}
+
+<section class="bodyinner">
+    <div class="container">
+        <div class="bodyleft">
+
+
+            @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+        </div>
+        <div class="bodyright">
+
+            <div class="report-form clearfix">
+
+
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.ValidationSummary(true)
+                    if (ViewBag.Error != null)
+                    {
+                        @Html.Raw(ViewBag.Error)
+                    }
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6 form-group">
+
+                            @Html.Label("Chapter No")
+                            @Html.TextBoxFor(model => model.ChapterNo, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.ChapterNo)
+                        </div>
+
+                        <div class="col-sm-6 col-md-6 form-group">
+
+
+                            @Html.Label("Chapter Name")
+                            @Html.TextBoxFor(model => model.ChapterName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.ChapterName)
+                        </div>
+                    </div>
+
+                    <div class="subbutt">
+                        <input type="submit" value="Delete" class="btn btn-orange pull-right" />
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <p>@Html.ActionLink("Back to List", "Index")</p>
+                }
+            </div>
+
+
+
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</section>

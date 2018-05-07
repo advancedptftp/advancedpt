@@ -1,0 +1,149 @@
+﻿@model IEnumerable<DataLayer.Models.tblTCIAPlanTreatment>
+@using PagedList.Mvc;
+@using DataLayer;
+@using DataLayer.BusinessLogic;
+@using System.Drawing;
+
+@{
+    ViewBag.Title = "Index";
+    if (ViewBag.Error != null)
+    {
+        @Html.Raw(ViewBag.Error)
+    }
+
+}
+<style type="text/css">
+    .IsRequiredFieldClass {
+        color: red;
+    }
+</style>
+
+<center><h2 style="margin-top:20px;">Treatment Procedure List</h2></center>
+<section class="bodyinner2">
+    <div>
+        <p class="pull-right">
+            @Html.ActionLink("Create New Record", "Create", null, new { @class = "btn btn-primary btn-lg" })
+        </p>
+        @using (Html.BeginForm("Index", "DaliyTreatementNoteOptionMaster", FormMethod.Get))
+        {
+
+            <div class="searchsec">
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search here ..." })
+                <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                <div class="clearfix"></div>
+            </div>
+        }
+        <div class="clearfix"></div>
+    </div>
+
+    <div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayName("Sl No")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Treatment Procedures")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Procedures Options")
+                        </th>
+
+
+                        <th colspan="3" align="center">
+                            @Html.DisplayName("Action")
+                        </th>
+
+
+                    </tr>
+
+                </thead>
+                @{
+                    int cnt = 1;
+                    foreach (var item in Model)
+                    {
+
+                        <tr>
+                            <td>
+                                @cnt
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(e => item.TreatmentDesc)
+                            </td>
+                            <td>
+                                @{
+                        string space = " ";
+                        string comma = ",";
+                        string str = string.Empty;
+                        string final = string.Empty;
+                        string htmlStar = string.Empty;
+                        htmlStar = "*";
+
+
+                        if (ViewBag.dicPlanTreatmentOptions != null)
+                        {
+                            List<PlanSubOption> Pobj = new List<PlanSubOption>();
+                            Pobj = (List<PlanSubOption>)ViewBag.dicPlanTreatmentOptions;
+
+                            foreach (var dic in Pobj)
+                            {
+                                if (item.Treatment_Id == dic.Treatment_ID)
+                                {
+                                    if (dic.IsRequiedField == true)
+                                    {
+
+                                        str += dic.OptionName + htmlStar + comma + space;
+                                    }
+                                    else
+                                    {
+                                        str += dic.OptionName + comma + space;
+                                    }
+                                }
+                            }
+
+                            final = str.Trim().TrimEnd(',');
+                            @final
+
+                        }
+                                }
+                            </td>
+
+                            <td>
+                                @{
+                        if (ViewBag.dicPlanTreatmentOptions != null)
+                        {
+                            List<PlanSubOption> Pobj = new List<PlanSubOption>();
+                            Pobj = (List<PlanSubOption>)ViewBag.dicPlanTreatmentOptions;
+
+                            foreach (var dic in Pobj)
+                            {
+                                if (item.Treatment_Id == dic.Treatment_ID)
+                                {
+                                    <a href="@Url.Action("Edit", "DaliyTreatementNoteOptionMaster", new { id = item.Treatment_Id })">
+                                        <i class="fa fa-edit" aria-hidden="true"></i>
+                                    </a>
+                                    break;
+                                }
+                            }
+
+                        }
+                                }
+
+                            </td>
+
+                        </tr>
+                        cnt++;
+                    }
+                }
+
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>

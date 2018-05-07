@@ -1,0 +1,20 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Error";
+
+    string strErrMsg = string.Empty;
+    if (Session["strErrMsg"] != null)
+    {
+        strErrMsg = Convert.ToString(Session["strErrMsg"]);
+    }
+    
+}
+
+@*<h1 class="text-danger">Error.</h1>
+    <h2 class="text-danger">Server error occurred while processing your request</h2>*@
+<h2 class="text-danger">
+    Server error occurred while processing your request.<br/>
+    Please Try Again Later<br/>
+    @strErrMsg
+</h2>

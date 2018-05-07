@@ -1,0 +1,771 @@
+﻿@model DataLayer.Models.PatientRegistration
+@{
+    ViewBag.Title = "CreatePersonalInfo";
+}
+@if (ViewBag.Error != null)
+{
+    @Html.Raw(ViewBag.Error)
+}
+<section class="bodyinner">
+    <div class="container">
+        <div class="bodyleft">
+
+            @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+        </div>
+        <div class="bodyright">
+            <div class="report-form clearfix">
+                @using (Html.BeginForm("CreatePersonalInfo", "PatientRegistration", FormMethod.Post, new { name = "CreatePersonalInfo", id = "CreatePersonalInfo" }))
+                {
+                     @Html.HiddenFor(e => e.PatientCondition.PatientCondition_Id)
+                     @Html.HiddenFor(e => e.PatientCondition.PatientId)
+                    <h2 style="padding-bottom:15px;">Patient Express Registration</h2>
+                    <div class="clearfix linenewColor"></div>
+                    <div id="div_headerportion">
+
+                        <div class="row">
+                            <div class="col-sm-6 col-md-3 form-group">
+                                <label>Contact Type</label>
+
+                            </div>
+                            <div class="col-sm-6 col-md-3 form-group">
+                                @*@Html.DropDownList("ContactType", String.Empty)*@
+                                @Html.DropDownListFor(Model => Model.PatientCondition.Contact_Type,  from DataLayer.PatientContactType state in Enum.GetValues(typeof(DataLayer.PatientContactType))
+                                                               select new SelectListItem() { Text = state.ToString(), Value = Convert.ToInt32(( state)).ToString() })
+                                @*@Html.DropDownList("selectState", new List<SelectListItem>
+                                    {
+                                       new SelectListItem{ Text="Through Call", Value = "1" },
+                                       new SelectListItem{ Text="Through WalkIn", Value = "2" },
+                                       new SelectListItem{ Text="Through Refferal", Value = "3" },
+                                    })*@
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="clearfix line"></div>
+
+    <div id="div_personalInfoPrimary">
+        <div class="subbutt">
+
+            <input id="btn_GoToAdvance" type="button" class="btn btn-navyblue pull-right" value="Go To Advance Section" />
+
+        </div>
+        <div class="clearfix lineadvance"></div>
+        <h3 class="pull-left">Personal Info - Primary   </h3>
+
+        <div class="clearfix"></div>
+
+        <div class="row">
+            <div class="col-sm-5 col-md-5 form-group">
+                <label>Last Name</label>
+                @Html.TextBoxFor(m => m.Patient.LastName, new { @class = "form-control"})
+
+            </div>
+            <div class="col-sm-1 col-md-1 form-group">
+                <label style="color:white">dasdd</label>
+                <label style="color:white">Or</label>
+            </div>
+            <div class="col-sm-5 col-md-5 form-group">
+                <label for="date">First Name</label>
+                @Html.TextBoxFor(m => m.Patient.FirstName, new { @class = "form-control"})
+
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-sm-5 col-md-5 form-group">
+                <label>Email Address</label>
+                @Html.TextBoxFor(m => m.PatientUser.Email, new { @class = "form-control"})
+
+
+            </div>
+            <div class="col-sm-1 col-md-1 form-group">
+                <label style="color:white">dasdd</label>
+                <label>Or</label>
+            </div>
+
+            <div class="col-sm-5 col-md-5 form-group">
+                <label>Home Phone</label>
+                @Html.TextBoxFor(m => m.PatientUser.MobNo, new { @class = "form-control NewCellNoFormat" })
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <label id="lblmsgUserID" style="color:black;font-size:18px"> </label>
+                <label id="lblmsgUserIDNew" style="color:Blue;font-size:18px"></label>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <label id="lblmsgPassword" style="color: black; font-size: 18px"></label>
+                <label id="lblmsgPasswordNew" style="color:Blue;font-size:18px"></label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <label id="lblmsgLink" style="color:black;font-size:18px"></label>
+                <label id="lblmsgLinkNew" style="color:Blue;font-size:18px"></label>
+                </div>
+            </div>
+
+                <div class="subbutt">
+
+                    <input type="button" class="btn btn-orange pull-right" value="Create Patient" id="btn_PPrimary" />
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+            <div id="div_personalInfoAdvance">
+                <div class="subbutt">
+
+                    <button id="btn_GoToPrimary" type="submit" class="btn btn-navyblue pull-right">Go To Primary Section</button>
+
+                </div>
+                <div class="clearfix lineadvance"></div>
+                <div id="div_personalInfo">
+
+                    <h3 class="pull-left">Personal Info - Advance</h3>
+
+                    <div class="clearfix"></div>
+
+
+                    <div class="row">
+                        <div class="col-sm-6 col-md-3 form-group">
+                            <label>Last Name</label>
+                            @Html.TextBoxFor(m => m.Patient.LastName, new { @class = "form-control"})
+
+                        </div>
+                        <div class="col-sm-6 col-md-3 form-group">
+                            <label for="date">First Name</label>
+                            @Html.TextBoxFor(m => m.Patient.FirstName, new { @class = "form-control"})
+
+                        </div>
+                        <div class="col-sm-6 col-md-1 form-group" style="display:none;">
+                            <label>Age</label>
+                            @*@Html.TextBoxFor(m => m.tblMPatient.Age, new { @class = "form-control", @id = "Age", @Name = "Age" })*@
+                            <input class="form-control" id="" type="text">
+                        </div>
+                        <div class="col-sm-6 col-md-5 form-group">
+                            <label>Email Address (Required to watch “New Patient Video”)</label>
+                            @Html.TextBoxFor(m => m.PatientUser.Email, new { @class = "form-control" })
+                            @*<input class="form-control" id="" type="text">*@
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-3 form-group">
+                            <label>Street Address</label>
+                            @Html.TextBoxFor(m => m.Patient.Street_Address, new { @class = "form-control"})
+                            @*<input class="form-control" id="" type="text">*@
+                        </div>
+                        <div class="col-sm-6 col-md-3 form-group">
+                            <label for="date">City</label>
+                            @Html.TextBoxFor(m => m.Patient.City, new { @class = "form-control"})
+                          @*<input class="form-control" id="" type="text">*@
+                        </div>
+                        <div class="col-sm-6 col-md-3 form-group">
+                            <label>State</label>
+                            <input class="form-control" id="" type="text">
+                        </div>
+                        <div class="col-sm-6 col-md-3 form-group">
+                            <label for="location-incident">ZIP</label><br>
+                            @Html.TextBoxFor(m => m.Patient.ZipCode, new { @class = "form-control"})
+                            @*<input class="form-control" id="" type="text">*@
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-3 form-group">
+                            <label>Home Phone</label>
+                            @Html.TextBoxFor(m => m.Patient.Phone2, new { @class = "form-control NewCellNoFormat" })
+                            @*<input class="form-control" id="" type="text">*@
+                        </div>
+                        <div class="col-sm-6 col-md-3 form-group">
+                            <label for="date">Cellular</label>
+                            @Html.TextBoxFor(m => m.PatientUser.MobNo, new { @class = "form-control NewCellNoFormat" })
+                            @*<input class="form-control" id="" type="text">*@
+                        </div>
+                        <div class="col-sm-6 col-md-3 form-group">
+                            <label for="location-incident">Occupation</label><br>
+                            @Html.TextBoxFor(m => m.Patient.Occupation, new { @class = "form-control"})
+                            @*<input class="form-control" id="" type="text">*@
+
+                        </div>
+                        <div class="col-sm-6 col-md-3 form-group">
+
+                            <label for="location-incident">Sex</label><br>
+                            <label class="radio-inline">@Html.RadioButtonFor(m => m.Patient.Gender, "M")Male</label>
+                            <label class="radio-inline">@Html.RadioButtonFor(m => m.Patient.Gender, "F")Female</label>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-3 form-group">
+                            <label>Employer Name</label>
+                            @Html.TextBoxFor(m => m.Patient.Employer_Name, new { @class = "form-control"})
+                            @*<input class="form-control" id="" type="text">*@
+                        </div>
+                        <div class="col-sm-6 col-md-3 form-group">
+                            <label for="date">Phone #</label>
+                            @Html.TextBoxFor(m => m.Patient.Emergency_Contact_Person, new { @class = "form-control NewCellNoFormat" })
+                            
+                            @*<input class="form-control" id="" type="text">*@
+                        </div>
+                        <div class="col-sm-6 col-md-6 form-group">
+                            <label>If Patient is a MINOR: Parent/Guardian Name </label>
+                            @Html.TextBoxFor(m => m.Patient.Guardian_Name, new { @class = "form-control"})
+                            @*<input class="form-control" id="" type="text">*@
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-3 form-group">
+                            <label>Social Security</label>
+                            @Html.TextBoxFor(m => m.Patient.Social_Security, new { @class = "form-control SSN_AutoFormat" })
+                            
+                            @*<input class="form-control" id="" type="text">*@
+                        </div>
+                        <div class="col-sm-6 col-md-3 form-group">
+                            <label for="date">Date of Birth</label>
+                            @Html.TextBoxFor(m => m.Patient.DOB, new { @class = "form-control NewDateFormat", style = "width:100%;", @Readonly = true, @placeholder = "mm/dd/yyyy" })
+                            @*<input name="date" class="form-control datepicker datepicker-bg" placeholder="mm/dd/yyyy" style="width:100%;" type="text">*@
+                        </div>
+                        <div class="col-sm-6 col-md-3 form-group">
+                            <label>Marital status</label><br>
+                            <label class="radio-inline">@Html.RadioButtonFor(m => m.Patient.Marital_Status, "S")Single</label>
+                            <label class="radio-inline">@Html.RadioButtonFor(m => m.Patient.Marital_Status, "M")Married</label>
+                            @*<label class="radio-inline"><input name="optradio" type="radio">Single</label>
+                            <label class="radio-inline"><input name="optradio" type="radio">Married</label>*@
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 ">
+                            <label><strong>Work Status</strong></label>
+                        </div>
+                        <div class="col-sm-6 col-md-3 form-group">
+                            @*@Html.CheckBoxFor(m => m.tblMPatient.Work_Status, new { @class = "checkbox-inline checkone", onclick = "fnchooseFreestyle(1);" })*@
+                            <div><input name="optradio" type="checkbox">&nbsp;&nbsp;Currently Employed</div>
+                        </div>
+                        <div class="col-sm-6 col-md-2 form-group">
+                            <div><input name="optradio" type="checkbox">&nbsp;&nbsp;Retired</div>
+                        </div>
+                        <div class="col-sm-6 col-md-2 form-group">
+                            <div><input name="optradio" type="checkbox">&nbsp;&nbsp;Disabled</div>
+                            <div style="padding:6px 0 0 20px;">
+                                <label class="radio-inline"><input name="optradio" type="radio">Single</label><br>
+                                <label class="radio-inline"><input name="optradio" type="radio">Temporary</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-2 form-group">
+                            <div><input name="optradio" type="checkbox">&nbsp;&nbsp;Student</div>
+                            <div style="padding:6px 0 0 20px;">
+                                <label class="radio-inline"><input name="optradio" type="radio">Part Time</label><br>
+                                <label class="radio-inline"><input name="optradio" type="radio">Full Time</label>
+                            </div>
+                        </div>
+                    </div>
+                    @*<div class="subbutt">
+
+                            <button type="submit" class="btn btn-orange pull-right">Proceed to Next Step</button>
+                            <div class="clearfix"></div>
+                        </div>*@
+
+                </div>
+                <div class="clearfix line"></div>
+                <div id="div_condition">
+                    <h3 class="pull-left">My Condition Info</h3>
+                    @*<p class="pull-right p_top15"><strong>**ALL INFO REQUIRED**</strong></p>*@
+                    <div class="clearfix"></div>
+
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+@Html.HiddenFor(m => m.PatientCondition.Injury_Type)
+                            <h4>My injury/ailment is related to . . .</h4>
+                            <div class="outerf">
+                                <label class="checkbox-inline"><input name="optradio" type="checkbox" id="Injury"><strong>AUTO/PERSONAL INJURY</strong></label>
+                                <div class="hiddenform">
+                                    <div class="form-inline">
+                                        <div class="form-group">
+                                            <label for="exampleInputName2" class="p_rig15">Date of accident :</label>
+                                            @Html.TextBoxFor(m => m.PatientCondition.Date_Of_Accident, new { @class = "form-control datepicker datepicker-bg", style = "width:100%;" })
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="outerf">
+                                <label class="checkbox-inline"><input name="optradio" type="checkbox" id="WORK"><strong>WORK INJURY</strong></label>
+                                <div class="hiddenform">
+                                    <p>Complete all information below</p>
+                                    <div class="row">
+                                        <div class="col-sm-6 col-md-6 form-group">
+                                            <label>Date of injury</label>
+                                            @Html.TextBoxFor(m => m.PatientCondition.Date_Of_Accident, new { @class = "form-control datepicker datepicker-bg", style = "width:100%;" })
+                                        </div>
+                                        <div class="col-sm-6 col-md-6 form-group">
+                                            <label for="date">Your company HR person’s name</label>
+                                            @Html.TextBoxFor(m => m.PatientCondition.Company_HR_Name, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-sm-6 col-md-6 form-group">
+                                            <label>Insurance adjustor’s name</label>
+                                            @Html.TextBoxFor(m => m.PatientCondition.Insurance_Adjustor_Name, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-sm-6 col-md-6 form-group">
+                                            <label for="location-incident">Insurance adjustor’s phone</label><br>
+                                            @Html.TextBoxFor(m => m.PatientCondition.Insurance_Adjustor_Phone, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="outerf">
+                                <label class="checkbox-inline"><input name="optradio" type="checkbox" id="NO_INJURY"><strong>NO INJURY</strong></label>
+                                <div class="hiddenform">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label>What do you think may have caused it?</label>
+                                            @Html.TextBoxFor(m => m.PatientCondition.Cause_Of_Ailment, new { @class = "form-control" })
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+
+                            <h4>I have already had . . </h4>
+                            <div class="outerf">
+                                <label class="checkbox-inline"><input name="optradio" type="checkbox"><strong>SURGERY</strong></label>
+                                <div class="hiddenform">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label>Surgery Type</label>
+                                            @Html.TextBoxFor(m => m.PatientCondition.SurgeryType, new { @class = "form-control" })
+                                            <label>Date of Surgery</label>
+                                            @Html.TextBoxFor(m => m.PatientCondition.SurgeryDate, new { @class = "form-control datepicker datepicker-bg" })
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="outerf">
+                                <label class="checkbox-inline"><input name="optradio" type="checkbox"><strong>PHYSICAL THERAPY BEFORE</strong></label>
+                                <div class="hiddenform">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label>Name of Physical Therapy Office</label>
+                                            @Html.TextBoxFor(m => m.PatientCondition.PTName, new { @class = "form-control" })
+                                            <label>Where You done PHYSICAL THERAPY?</label>
+                                            @Html.TextBoxFor(m => m.PatientCondition.PTWhere, new { @class = "form-control" })
+                                            <label>Date Of PHYSICAL THERAPY</label>
+                                            @Html.TextBoxFor(m => m.PatientCondition.PTDate, new { @class = "form-control datepicker datepicker-bg" })
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="outerf">
+                                <label class="checkbox-inline"><input name="optradio" type="checkbox"><strong>HOME HEALTHCARE</strong></label>
+                                <div class="hiddenform">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label>Are you still receiving it?</label><br>
+                                            <label class="radio-inline"><input name="optradio" type="radio">YES</label>
+                                            <label class="radio-inline"><input name="optradio" type="radio">NO</label>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="outerf">
+                                <label class="checkbox-inline"><input name="optradio" type="checkbox"><strong>OTHER CARE</strong></label>
+                                <div class="hiddenform">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label> Other Treatement Name</label>
+                                            @Html.TextBoxFor(m => m.PatientCondition.Other_Treatement, new { @class = "form-control" })
+                                            <label>Date Other Treatement</label>
+                                            @Html.TextBoxFor(m => m.PatientCondition.Other_TreatementDate, new { @class = "form-control datepicker datepicker-bg" })
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    @*Add Insurance*@
+                    <div class="row">
+                        <div class="col-sm-4 col-md-5 form-group">
+                            Diagnosis
+                        </div>
+                        <div class="col-sm-4 col-md-5 form-group">
+                            ICD-10 Code
+                        </div>
+                        <div class="col-sm-4 col-md-2 form-group">
+
+                        </div>
+                    </div>
+
+                    <div id="dvDiagnosis">
+                        <script>
+                            var counter = 0;
+                        </script>
+                        @*@for (int i = 0; i < Model.Insurances.Count; i++)
+                        {
+                            <div class="row">
+                                <div class="col-sm-4 col-md-5 form-group">
+                                    @Html.TextBoxFor(e => e.Insurances[i].PolicyNumber, new { @class = "form-control Disease_nameForICD" })
+                                    <span id="PolicyNumber" class="validateMsg"></span>
+                                </div>
+                                <div class="col-sm-4 col-md-5 form-group">
+                                    @Html.TextBoxFor(e => e.Insurances[i].HolderName, new { @class = "form-control ICD_CodeForICD" })
+                                    <span id="HolderName" class="validateMsg"></span>
+                                </div>
+                                <div class="col-sm-4 col-md-5 form-group">
+                                    @Html.TextBoxFor(e => e.Insurances[i].HolderDOB, new { @class = "form-control ICD_CodeForICD" })
+                                    <span id="HolderDOB" class="validateMsg"></span>
+                                </div>
+                                <div class="col-sm-4 col-md-5 form-group">
+                                    @Html.TextBoxFor(e => e.Insurances[i].GroupNumber, new { @class = "form-control ICD_CodeForICD" })
+                                    <span id="GroupNumber" class="validateMsg"></span>
+                                </div>
+                                <div class="col-sm-4 col-md-2 form-group">
+                                    <button id="addRows" class="addbutt" type="button" style="margin-top:0;" title="Add New Diagnosis"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                    @Html.HiddenFor(e => e.Insurances[i].PatientInsurance_Id, new { @class = "icdidForICD" })
+                                </div>
+                            </div>
+                            <script>
+                                counter += 1;
+                            </script>
+                        }*@
+
+                    </div>
+                    <div class="p_bot15">
+                        <button type="button" class="btn btn-primary pull-left" onclick="OpenDialog()">Search ICD-10</button>
+                        <div class="clearfix"></div>
+                    </div>
+                    @*End Insurance*@
+
+
+
+
+
+                    @*<div class="subbutt">
+                            <button type="submit" class="btn btn-primary pull-left">Back</button>
+                            <button type="submit" class="btn btn-orange pull-right">Proceed to Next Step</button>
+                            <div class="clearfix"></div>
+                        </div>*@
+                </div>
+                <div class="clearfix line"></div>
+                <div id="div_refferal">
+                    <h3 class="pull-left">Referral Info</h3>
+                    <div class="clearfix"></div>
+
+                    <div class="row">
+                        <div class="col-md-4 col-sm-12">
+                            <h4>How did you hear about us?</h4>
+                            <div class="outerf"><label class="checkbox-inline"><input name="optradio" type="checkbox">Friend or Family</label></div>
+                            <div class="outerf"><label class="checkbox-inline"><input name="optradio" type="checkbox">Internet</label></div>
+                            <div class="outerf"><label class="checkbox-inline"><input name="optradio" type="checkbox">Advertisement</label></div>
+                            <div class="outerf"><label class="checkbox-inline"><input name="optradio" type="checkbox">Brochure</label></div>
+                            <div class="outerf"><label class="checkbox-inline"><input name="optradio" type="checkbox">Insurance/Directory</label></div>
+                            <div class="outerf">
+                                <label class="checkbox-inline"><input name="optradio" type="checkbox">Other</label>
+                                <div class="hiddenform">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label>Please Give Details</label>
+                                            @Html.TextAreaFor(m => m.PatientCondition.ProblemDetail, new { @class = "form-control" })
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-8 col-sm-12">
+                            <div class="outerf">
+                                <label class="checkbox-inline"><input name="optradio" type="checkbox">Physician/Dentist/Chiroprator/Nurse:</label>
+                                <div class="hiddenform">
+                                    <div class="row">
+                                        <div class="col-sm-6 col-md-6 form-group">
+                                            <label>Primary or Referring Physician Name</label>
+                                            <input class="form-control" id="" type="text">
+                                        </div>
+                                        <div class="col-sm-6 col-md-6 form-group">
+                                            <label for="date">City</label>
+                                            <input class="form-control" id="" type="text">
+                                        </div>
+                                        <div class="col-sm-6 col-md-6 form-group">
+                                            <label>State</label>
+                                            <input class="form-control" id="" type="text">
+                                        </div>
+                                        <div class="col-sm-6 col-md-6 form-group">
+                                            <label for="location-incident">Phone</label><br>
+                                            <input class="form-control" id="" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="subbutt">
+                        @*<button type="submit" class="btn btn-primary pull-left">Back</button>*@
+                        <button type="submit" class="btn btn-orange pull-right" onclick="return validateInputs()">Update</button>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                @*<div class="clearfix line"></div>*@
+            </div>
+            }
+        </div>
+    </div>
+
+    </div>
+</section>
+
+
+
+
+
+<script>
+    jQuery('.datepicker').datepicker();
+</script>
+<script>
+    $('#tblTPatientCondition_Contact_Type').addClass('form-control');
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        //alert(31);
+        $("#lblmsgUserID").text("");
+        $("#lblmsgPassword").text("");
+        $("#lblmsgLink").text("");
+        $("#lblmsgUserIDNew").text("");
+        $("#lblmsgPasswordNew").text("");
+        $("#lblmsgLinkNew").text("");
+
+        $("#div_personalInfoPrimary").show();
+        $("#div_personalInfoAdvance").hide();
+    });
+    $("#btn_GoToAdvance").click(function () {
+        $("#div_personalInfoPrimary").hide();
+        $("#div_personalInfoAdvance").show();
+    });
+    $("#btn_GoToPrimary").click(function () {
+        $("#div_personalInfoPrimary").show();
+        $("#div_personalInfoAdvance").hide();
+    });
+
+    //Submit section
+
+    $("#btn_PPrimary").click(function () {
+        var ContactType = $("#tblTPatientCondition_Contact_Type").val();
+        var FName = $("#FirstName").val();
+        var LName = $("#LastName").val();
+        var email = $("#Email").val();
+        var MobNo = $("#MobNo").val();
+
+        $.ajax({
+            url: "@Url.Action("GeneratePatient", "PatientRegistration")",
+            datatype: JSON,
+            type: 'POST',
+            data: {
+                ContactType: ContactType,
+                FirstName: FName,
+                LastName: LName,
+                Email: email,
+                MobileNo: MobNo
+            },
+
+            success: function (Message) {
+
+                if (Message != null) {
+                    //alert(Message.Result);
+                    //alert(Message.UserId);
+                    //alert(Message.password);
+                    var LblMessageUser = Message.UserId;
+                    var LblPassword = Message.password;
+                    var LblLink = Message.Link;
+
+                    $("#lblmsgUserID").text("The Userid of the related patient is : ");
+                    $("#lblmsgUserIDNew").text(LblMessageUser);
+                    $("#lblmsgPassword").text("Password is : ");
+                    $("#lblmsgPasswordNew").text(LblPassword);
+                    $("#lblmsgLink").text("The related link is : ");
+                    $("#lblmsgLinkNew").text(LblLink);
+
+
+
+                    $("#FirstName").val("");
+                    $("#LastName").val("");
+                    $("#Email").val("");
+                    $("#MobNo").val("");
+                    $("#tblTPatientCondition_Contact_Type").val(0);
+                }
+                else {
+                }
+                //should display found it!
+            },
+            Error: {
+
+            }
+        }
+       );
+
+    });
+
+</script>
+
+
+
+
+
+@if (ViewBag.IsPatient != null && ViewBag.IsPatient)
+{
+    <script>
+        $(document).ready(function () {
+            $("#btn_GoToAdvance").click();
+            $('#btn_GoToPrimary').hide();
+            $('#div_headerportion').hide();
+            
+        });
+    </script>
+}
+
+<script type="text/javascript">
+
+    function validateInputs() {
+        if ($("#Injury").is(':checked'))
+        {
+            $("#PatientCondition_Injury_Type").val("1");
+            
+        }
+        if ($("#WORK").is(':checked')) {
+            $("#PatientCondition_Injury_Type").val("2");
+
+        }
+        if ($("#NO_INJURY").is(':checked')) {
+            $("#PatientCondition_Injury_Type").val("3");
+
+        }
+    }
+
+    </script>
+
+
+<script type="text/javascript">
+
+
+
+    $(function () {
+        $("#addRows").click(function () {
+            //counter = 2;
+            $("#dvDiagnosis").append("<div class='row'><div id='Div"
+                + counter + "' class='col-sm-4 col-md-5 form-group'>" +
+                "<input class='form-control Disease_nameForICD'  id='DMEDiognosis_" + counter + "__Diagnosis_Desc' name='DMEDiognosis[" + counter + "].Diagnosis_Desc' type='text'>" +
+                "</div><div id='Div1" + counter + "' class='col-sm-4 col-md-5 form-group'>" +
+                "<input class='form-control ICD_CodeForICD' id='DMEDiognosis_" + counter + "__ICD10Code' name='DMEDiognosis[" + counter + "].ICD10Code'  type='text'>" +
+                "</div><div id='Div2" + counter +
+                "' class='col-sm-4 col-md-2 form-group'> <button  class='addbutt' type='button' style='margin-top:0;' title='Remove New Diagnosis' onclick='removeRow("
+                + counter + ")'><i class='fa fa-remove' aria-hidden='true'></i></button><input type='hidden' id='DMEDiognosis_" + counter + "__DMEDiagnosis_Id' name='DMEDiognosis[" + counter + "].DMEDiagnosis_Id' value='' class='icdidForICD' /></div></div>")
+            BindOnFocusForICD();
+            counter++;
+        });
+    });
+
+    function removeRow(cnt) {
+        $("#Div" + cnt).remove();
+        $("#Div1" + cnt).remove();
+        $("#Div2" + cnt).remove();
+        counter--;
+    }
+    $('#Dialog-Box').dialog({
+        autoOpen: false,
+        height: 500,
+        width: 700,
+        modal: true
+    });
+
+    function OpenDialog() {
+
+        var name = $('#Name').val();
+        var address = $('#Address').val();
+        $('#Dialog-Name').val(name);
+        $('#Dialog-Address').val(address);
+        $('#Dialog-Box').dialog("open");
+    }
+
+
+    function SearchICD10() {
+
+        // $('#Dialog-Box').dialog("close");
+
+        @*$.ajax({
+            url: '@Url.Action("ActionName", "ControllerName")',
+            type: 'POST',
+            data: {
+                code: $('#Dialog-Name').val()
+
+            },
+            success: function (msg) {
+            },
+            error: function (msg) {
+            }
+        });*@
+
+
+        }
+
+
+
+    //var formData = $('#Create').serializeObject();
+    //$.extend(formData, { 'count': counter }); //Send Additional data
+
+
+
+
+
+    function closeDiv() {
+        $('#Dialog-Box').dialog("close");
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

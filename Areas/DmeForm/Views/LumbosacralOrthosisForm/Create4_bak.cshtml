@@ -1,0 +1,210 @@
+﻿@model DataLayer.Models.DMEOfficeStaffOrderOrthosis
+@using DataLayer;
+@{
+    ViewBag.Title = "Knee Brace Custom Order";
+}
+
+
+
+<section class="bodyinner">
+    @*@using (Html.BeginForm("Create", "KneeBraceCustomForm", FormMethod.Post, new { name = "Create", id = "Create" }))
+    {*@
+       
+    <div class="bodyleft">
+       
+
+        @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+    </div>
+    <div class="bodyright">
+
+        <div class="report-form clearfix">
+            <h2>Lumbosacral Orthosis Order Form: In Stock HCPCS Code: L0637</h2>
+            <div class="p_bot15"><strong>*MEDICARE PATIENTS: DO NOT PROCEED IF THEY HAVE BEEN ISSUED A ‘KNEE BRACE’ IN THE PAST 5 YEARS.</strong></div>
+
+            <hr>
+            @using (Html.BeginForm("Create4", "LumbosacralOrthosisForm", FormMethod.Post, new { name = "Create", id = "Create" }))
+            {
+                <div id="dvFirst">
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(e => e.Order.DMEForm_Id)
+                    @Html.HiddenFor(e => e.Order.DMEFormCode)
+                    @Html.HiddenFor(e => e.Order.CreatedOn)
+                    @Html.HiddenFor(e => e.Order.IsFaxLOMN)
+                    @Html.HiddenFor(e => e.Order.FaxLOMN_Date)
+                    @Html.HiddenFor(e => e.Order.DMEOfficeStaffOrder_Id)
+                    @if (ViewBag.Error != null)
+                    {
+                        @Html.Raw(ViewBag.Error)
+                    }
+
+
+                    <div id="dvOrder" class="todo_inner">
+
+
+                        <div class="outerf">
+                            <div class="stepheading"><strong>4. Office Staff </strong> <i>order</i></div>
+                            <div class="hiddenform">
+                                @*<div class="row">
+                                    <div class="col-sm-12 col-md-12 form-group">
+                                        <label class="checkbox-inline">
+
+                                            @Html.CheckBoxFor(e => e.Order.IsFaxLOMN, new { @class = "checkbox-inline" })
+                                            Fax Letter of Med.Nec.
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="row form-group">
+                                        <div class="col-sm-3 p_top10">Date</div>
+                                        <div class="col-sm-5">
+                                            @Html.TextBoxFor(m => m.Order.FaxLOMN_Date, new { @class = "form-control datepicker datepicker-bg", style = "width:100%;", @Readonly = true })
+                                        </div>
+                                    </div>
+                                </div>*@
+
+                                @Html.HiddenFor(e => e.Order.IsFaxLOMN)
+                                @Html.HiddenFor(e => e.Order.FaxLOMN_Date)
+
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12 form-group">
+                                        <label class="checkbox-inline">
+
+                                            @Html.CheckBoxFor(e => e.Order.IsReceiveLOMN, new { @class = "checkbox-inline" })
+                                            Receive Letter of Med.Nec.
+                                        </label>
+                                        <span id="IsReceiveLOMN" class="validateMsg"></span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="row form-group">
+                                        <div class="col-sm-3 p_top10">Date</div>
+                                        <div class="col-sm-5">
+                                            @Html.TextBoxFor(m => m.Order.ReceiveLOMN_Date, new { @class = "form-control datepicker datepicker-bg", @placeholder = "MM/dd/YYYY", style = "width:100%;", @Value = @Model.Order.ReceiveLOMN_Date.GetExactValue() })
+                                            <span id="ReceiveLOMN_Date" class="validateMsg"></span>
+                                         </div>
+                                    </div>
+                                </div>
+
+                                @*<div class="row">
+                                    <div class="col-sm-12 col-md-12 form-group">
+                                        <label class="checkbox-inline">
+
+                                            @Html.CheckBoxFor(e => e.Order.IsOrderOrthosis, new { @class = "checkbox-inline" })
+                                            Order Orthosis
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="row form-group">
+                                        <div class="col-sm-3 p_top10">Date</div>
+                                        <div class="col-sm-5">
+                                            @Html.TextBoxFor(m => m.Order.OrderOrthosis_Date, new { @class = "form-control datepicker datepicker-bg", style = "width:100%;", @Readonly = true })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row p_top15">
+                                    <div class="col-sm-12 col-md-12 form-group">
+
+                                        <p style="padding-bottom:8px;">
+                                            Ph# 800-321-0607 Acct#: 23298
+                                            <br /><strong>NOTE: Ground Shipping/UPS</strong>
+                                        </p>
+                                        <div class="row form-group">
+                                            <div class="col-sm-3 p_top10">Confirmation#</div>
+                                            <div class="col-sm-5">
+                                                @Html.TextBoxFor(m => m.Order.ConfirmationNo, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+
+                                        PO#: Last Name of the Patient
+
+                                    </div>
+                                </div>*@
+
+
+
+                            </div>
+                            <div class="subbutt">
+                                @*<button type="button" class="btn btn-primary pull-left" onclick="GotoMC()">Back</button>*@
+                                <button type="submit" onclick="return validateInputs()"  class="btn btn-orange pull-right">Submit</button>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+
+
+        <div class="clearfix"></div>
+        
+       
+        
+      
+    @*}*@
+</section>
+@*<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#ReceiveLOMN_Date").hide();
+    });
+
+    function validateInputs() {
+        var ReceiveLOMN_Date = document.getElementById("Order_ReceiveLOMN_Date");
+
+        if (ReceiveLOMN_Date.value == "") {
+            $("#ReceiveLOMN_Date").show();
+            $("#ReceiveLOMN_Date").text("Enter ReceiveLOMN Date");
+            ReceiveLOMN_Date.focus();
+            return false;
+        }
+
+    }
+</script>*@
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#Order_IsReceiveLOMN").focus();
+        var Fax_Date = document.getElementById("Order_FaxLOMN_Date").value;
+        //alert(Fax_Date);
+        $("#Order_ReceiveLOMN_Date").datepicker('setStartDate', new Date(Fax_Date));
+        $('#Order_ReceiveLOMN_Date').datepicker('setEndDate', new Date());
+    });
+
+    function validateInputs() {
+
+        $('#IsReceiveLOMN').hide();
+        $("#ReceiveLOMN_Date").hide();
+
+        var IsReceive = document.getElementById("Order_IsReceiveLOMN");
+        var ReceiveDate = document.getElementById("Order_ReceiveLOMN_Date");
+
+        if (!IsReceive.checked) {
+            $("#IsReceiveLOMN").show();
+            $("#IsReceiveLOMN").text("Please checked the checkbox.........");
+            IsReceive.focus();
+            return false;
+        }
+        else {
+            $("#IsReceiveLOMN").hide();
+        }
+
+        if (ReceiveDate.value == "") {
+            $("#ReceiveLOMN_Date").text("Please enter the date");
+            $("#ReceiveLOMN_Date").show();
+            ReceiveDate.focus();
+            return false;
+        }
+        else {
+            $("#ReceiveLOMN_Date").hide();
+        }
+    }
+</script>

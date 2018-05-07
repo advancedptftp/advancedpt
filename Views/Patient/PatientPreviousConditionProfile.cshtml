@@ -1,0 +1,623 @@
+﻿@model DataLayer.Models.PatientAllInformation
+@using DataLayer
+@{
+    ViewBag.Title = "CreatePersonalInfo";
+    Layout = "~/Views/Shared/_PatientPortal.cshtml";
+}
+@if (ViewBag.Error != null)
+{
+    @Html.Raw(ViewBag.Error)
+}
+
+
+<div class="body ">
+    <div class="report-form clearfix">
+        @using (Html.BeginForm("PatientPreviousConditionProfile", "Patient", FormMethod.Post, new { name = "PatientPreviousConditionProfile", id = "PatientPreviousConditionProfile" }))
+        {
+            @Html.HiddenFor(e => e.PatientCondition_Id)
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(m => m.Work_Status)
+
+            <h2 style="padding-bottom:15px;">Patient Previous Profile</h2>
+
+            <div id="div_personalInfoAdvance">
+
+                <h3 class="pull-left">My Condition Info</h3>
+                &nbsp;<br />
+                &nbsp;<br />
+                &nbsp;<br />
+                @*<p class="pull-right p_top15"><strong>**ALL INFO REQUIRED**</strong></p>*@
+                <div class="clearfix"></div>
+                @if (Model.Injury_Type == Convert.ToInt16(injurytype.Persnol_Injury))
+                {
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            @Html.HiddenFor(m => m.Injury_Type)
+
+                            <h4><strong>injury/ailment is related to . . .</strong> </h4>
+                            &nbsp;<br />
+
+                            <div class="outerf">
+                                <label class="checkbox-inline"><input name="optradio" type="checkbox" id="Injury" disabled="disabled"><strong>AUTO/PERSONAL INJURY</strong></label>
+                                <div class="hiddenform">
+                                    <div class="form-inline">
+                                        <div class="form-group">
+                                            <label for="exampleInputName2" class="p_rig15">Date of accident :</label>
+                                            @Html.TextBoxFor(m => m.Date_Of_Accident1, new { @class = "form-control datepicker datepicker-bg", @Value = @Model.Date_Of_Accident.GetExactValue(), style = "width:100%;", @disabled = true })
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if (Model.Injury_Type == Convert.ToInt16(injurytype.Work_Injury))
+                {
+                    @Html.HiddenFor(m => m.Injury_Type)
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="outerf">
+                                <label class="checkbox-inline"><input name="optradio" type="checkbox" id="WORK" disabled="disabled"><strong>WORK INJURY</strong></label>
+                                <div class="hiddenform">
+                                    <p>Complete all information below</p>
+                                    <div class="row">
+                                        <div class="col-sm-4 col-md-2 form-group">
+                                            <label>Date of injury</label>
+                                            @Html.TextBoxFor(m => m.Date_Of_Accident, new { @class = "form-control datepicker datepicker-bg", @Value = @Model.Date_Of_Accident.GetExactValue(), style = "width:100%;", @disabled = true })
+                                        </div>
+                                        <div class="col-sm-4 col-md-4 form-group">
+                                            <label for="date">Your company HR person’s name</label>
+                                            @Html.TextBoxFor(m => m.Company_HR_Name, new { @class = "form-control", @disabled = true })
+                                        </div>
+
+                                        <div class="col-sm-4 col-md-3 form-group">
+                                            <label for="location-incident">Insurance adjustor’s phone</label><br>
+                                            @Html.TextBoxFor(m => m.Insurance_Adjustor_Phone, new { @class = "form-control", @disabled = true })
+                                        </div>
+                                        <div class="col-sm-4 col-md-3 form-group">
+                                            <label>Insurance adjustor’s name</label>
+                                            @Html.TextBoxFor(m => m.Insurance_Adjustor_Name, new { @class = "form-control", @disabled = true })
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if (Model.Injury_Type == Convert.ToInt16(injurytype.No_Injury))
+                {
+                    @Html.HiddenFor(m => m.Injury_Type)
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+
+                            <div class="outerf">
+                                <label class="checkbox-inline"><input name="optradio" type="checkbox" id="NO_INJURY" disabled="disabled"><strong>NO INJURY</strong></label>
+                                <div class="hiddenform">
+
+                                    <div class="col-sm-12 col-md-10 form-group">
+                                        <label>What do you think may have caused it?</label>
+                                        @Html.TextBoxFor(m => m.Cause_Of_Ailment, new { @class = "form-control", @disabled = true })
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+
+                        <h4><strong>I have already had . . </strong></h4>
+                        &nbsp;<br />
+                        @if (Model.Is_Surgury_Done == Convert.ToInt16(true))
+                        {
+                            <div class="outerf">
+                                <label class="checkbox-inline"><input name="optradio78" type="checkbox" id="chkSurgery" disabled="disabled"><strong>SURGERY</strong></label>
+                                <div class="hiddenform">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6 form-group">
+                                            <label>Surgery Type</label>
+                                            @Html.TextBoxFor(m => m.SurgeryType, new { @class = "form-control", @disabled = true })
+                                        </div>
+                                        <div class="col-sm-12 col-md-6 form-group">
+                                            <label>Date of Surgery</label>
+                                            @Html.TextBoxFor(m => m.SurgeryDate, new { @class = "form-control datepicker datepicker-bg", @Value = @Model.SurgeryDate.GetExactValue(), @disabled = true })
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.Is_PhysicalTherephyBefore == Convert.ToInt16(true))
+                        {
+                            <div class="outerf">
+                                <label class="checkbox-inline"><input name="optradio86" type="checkbox" id="chkPhysical_Therapy" disabled="disabled"><strong>PHYSICAL THERAPY BEFORE</strong></label>
+                                <div class="hiddenform">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-4 form-group">
+                                            <label>Name of Physical Therapy Office</label>
+                                            @Html.TextBoxFor(m => m.PTName, new { @class = "form-control", @disabled = true })
+                                        </div>
+                                        <div class="col-sm-12 col-md-4 form-group">
+                                            <label>Where You done Physical Therapy?</label>
+                                            @Html.TextBoxFor(m => m.PTWhere, new { @class = "form-control", @disabled = true })
+                                        </div>
+                                        <div class="col-sm-12 col-md-4 form-group">
+                                            <label>Date Of Physical Therapy</label>
+                                            @Html.TextBoxFor(m => m.PTDate, new { @class = "form-control datepicker datepicker-bg", @Value = @Model.PTDate.GetExactValue(), @disabled = true })
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.IsHomeHealthCare == Convert.ToInt16(true))
+                        {
+                            <div class="outerf">
+                                <label class="checkbox-inline"><input name="optradio99" type="checkbox" id="chkHome_Healthcare" disabled="disabled"><strong>HOME HEALTHCARE</strong></label>
+                                <div class="hiddenform">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label>Are you still receiving it?</label><br>
+                                            <div class="headrightcont"><label class="radio-inline">@Html.RadioButtonFor(m => m.IsHomeHealthCare, "0", new { @disabled = true })&nbsp;YES </label><label class="radio-inline">@Html.RadioButtonFor(m => m.IsHomeHealthCare, "1", new { @disabled = true })&nbsp;NO</label></div>
+                                            @*<label class="radio-inline"><input name="optradio" type="radio">YES</label>
+                                                <label class="radio-inline"><input name="optradio" type="radio">NO</label>*@
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.Other_Treatement != null && Model.Other_TreatementDate != null)
+                        {
+                            <div class="outerf">
+                                <label class="checkbox-inline"><input name="optradio85" type="checkbox" id="chkOther_Care" disabled="disabled"><strong>OTHER CARE</strong></label>
+                                <div class="hiddenform">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6 form-group">
+                                            <label> Other Treatement Name</label>
+                                            @Html.TextBoxFor(m => m.Other_Treatement, new { @class = "form-control", @disabled = true })
+                                        </div>
+                                        <div class="col-sm-12 col-md-6 form-group">
+                                            <label>Date Other Treatement</label>
+                                            @Html.TextBoxFor(m => m.Other_TreatementDate, new { @class = "form-control datepicker datepicker-bg", @Value = @Model.Other_TreatementDate.GetExactValue(), @disabled = true })
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+
+                <div class="col-sm-4 col-md-3 form-group">
+                    <label> Problem Type</label>
+                    @*@Html.TextBoxFor(m => m.ProblemType, new { @class = "form-control" })*@
+                    @Html.TextBox("ProblemType", ((ProblrmType)Enum.ToObject(typeof(ProblrmType), (Convert.ToInt32(Model.ProblemType)))).ToCustomString(), new { @class = "form-control", @disabled = true })
+                </div>
+
+
+                <div class="col-sm-4 col-md-3 form-group">
+                    <label>From When Problem Exist</label>
+                    @Html.TextBoxFor(m => m.FromWhenProblemExist, new { @class = "form-control datepicker datepicker-bg", @Value = @Model.FromWhenProblemExist.GetExactValue(), @disabled = true })
+                </div>
+                <div class="col-sm-4 col-md-3 form-group">
+                    <label>Problem Duration</label>
+                    @Html.TextBoxFor(m => m.ProblemDuration, new { @class = "form-control", @disabled = true })
+                </div>
+                <div class="col-sm-4 col-md-3 form-group">
+                    <label>Problem Strength</label>
+                    @*@Html.TextBoxFor(m => m.ProblemStrength, new { @class = "form-control" })*@
+                    @Html.TextBox("ProblemStrength", ((ProblemStrength)Enum.ToObject(typeof(ProblemStrength), (Convert.ToInt32(Model.ProblemStrength)))).ToCustomString(), new { @class = "form-control", @disabled = true })
+                </div>
+
+
+                <div class="col-sm-12 col-md-12 form-group">
+                    <label>Problem Detail</label>
+                    @Html.TextAreaFor(m => m.ProblemDetail, new { @class = "form-control", @disabled = true })
+                </div>
+
+
+
+                <div class="col-sm-6 col-md-3 form-group">
+                    <label>Refered By Doctor</label><br>
+                    <label class="radio-inline">@Html.RadioButtonFor(m => m.IsReferedByDoctor, true, new { @disabled = true })Yes</label>
+                    <label class="radio-inline">@Html.RadioButtonFor(m => m.IsReferedByDoctor, false, new { @disabled = true })No</label>
+
+                </div>
+
+                @if (Model.IsReferedByDoctor == true)
+                {
+                    <div class="row">
+                        <div class="col-sm-3 col-md-3 form-group">
+                            <label>Referal Received Date Time</label>
+                            @Html.TextBoxFor(m => m.ReferalReceivedDateTime, new { @class = "form-control datepicker datepicker-bg", @Value = @Model.ReferalReceivedDateTime.GetExactValue(), @disabled = true })
+                        </div>
+                        <div class="col-sm-3 col-md-3 form-group">
+                            <label>Doctor First Name</label>
+                            @Html.TextBoxFor(m => m.DoctorFirstName, new { @class = "form-control", @readonly=true })
+                        </div>
+                        <div class="col-sm-3 col-md-3 form-group">
+                            <label>Doctor Last Name</label>
+                            @Html.TextBoxFor(m => m.DoctorLastName, new { @class = "form-control", @disabled = true })
+                        </div>
+                        <div class="col-sm-3 col-md-3 form-group">
+                            <label>Phone1</label>
+                            @Html.TextBoxFor(m => m.DoctorPhone1, new { @class = "form-control", @disabled = true })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 col-md-3 form-group">
+                            <label>Phone2</label>
+                            @Html.TextBoxFor(m => m.DoctorPhone2, new { @class = "form-control", @disabled = true })
+                        </div>
+                        <div class="col-sm-3 col-md-3 form-group">
+                            <label>City</label>
+                            @Html.TextBoxFor(m => m.DoctorCity, new { @class = "form-control", @disabled = true })
+                        </div>
+                        <div class="col-sm-3 col-md-3 form-group">
+                            <label>State</label>
+
+                            @Html.TextBoxFor(m => m.DoctorState, new { @class = "form-control", @disabled = true })
+                        </div>
+                        <div class="col-sm-3 col-md-3 form-group">
+                            <label>Zipcode</label>
+                            @Html.TextBoxFor(m => m.DoctorZipcode, new { @class = "form-control", @disabled = true })
+                        </div>
+                    </div>
+                }
+
+                @if (Model.SeekingCareType == Convert.ToInt16(SeekingCareType.Home_Care) + 1)
+                {
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+
+                            <h3>FOR HOME HEALTHCARE ONLY </h3>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="col-sm-12 col-md-6 form-group">
+                                        <label>Leave your Home</label><br>
+                                        <label class="radio-inline">@Html.RadioButtonFor(m => m.SeekingCareType, 1, new { @disabled = true })Yes</label>
+                                        <label class="radio-inline">@Html.RadioButtonFor(m => m.SeekingCareType, 0, new { @disabled = true })No</label>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="col-sm-12 col-md-6 form-group">
+                                        <label>Do you use a cane, walker or wheelchair?</label><br>
+                                        <label class="radio-inline">@Html.RadioButtonFor(m => m.WalkerType, 1, new { @disabled = true })walker</label>
+                                        <label class="radio-inline">@Html.RadioButtonFor(m => m.WalkerType, 2, new { @disabled = true })wheelchair</label>
+                                        <label class="radio-inline">@Html.RadioButtonFor(m => m.WalkerType, 3, new { @disabled = true })Cane</label>
+                                        <label class="radio-inline">@Html.RadioButtonFor(m => m.WalkerType, 4, new { @disabled = true })None</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="col-sm-12 col-md-6 form-group">
+                                        <label>Leave The House for Social Functions</label>
+                                        @Html.TextBoxFor(m => m.FrequencyOfLeavingHome, new { @class = "form-control", @disabled = true })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="col-sm-12 col-md-6 form-group">
+                                        <label>You Drive or Does Someone Take You</label><br>
+                                        <label class="radio-inline">@Html.RadioButtonFor(m => m.IsDriveByOwn, 1, new { @disabled = true })Drive By Myself</label>
+                                        <label class="radio-inline">@Html.RadioButtonFor(m => m.IsDriveByOwn, 0, new { @disabled = true })Drive By Someone</label>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="col-sm-12 col-md-6 form-group">
+                                        <label>You need the help of another person to safely leave your home</label><br>
+                                        <label class="radio-inline">@Html.RadioButtonFor(m => m.NeedHelpOfOtherPerson, 1, new { @disabled = true })Yes</label>
+                                        <label class="radio-inline">@Html.RadioButtonFor(m => m.NeedHelpOfOtherPerson, 2, new { @disabled = true })No</label>
+                                        <label class="radio-inline">@Html.RadioButtonFor(m => m.NeedHelpOfOtherPerson, 3, new { @disabled = true })Sometimes</label>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="col-sm-12 col-md-6 form-group">
+                                        <label>Medical Insurance</label><br>
+                                        <label class="radio-inline">@Html.RadioButtonFor(m => m.IsInsuranceDone, 1, new { @disabled = true })Yes</label>
+                                        <label class="radio-inline">@Html.RadioButtonFor(m => m.IsInsuranceDone, 0, new { @disabled = true })No</label>
+
+                                    </div>
+                                </div>
+                            </div>
+                            @if (Model.IsInsuranceDone == 1)
+                            {
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12">
+                                        <div class="col-sm-12 col-md-4 form-group">
+                                            <label>Type Of Insurance</label>
+                                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @disabled = true })
+
+                                        </div>
+                                        <div class="col-sm-12 col-md-4 form-group">
+                                            <label>Policy Number</label>
+                                            @Html.TextBoxFor(m => m.PolicyNumber, new { @class = "form-control", @disabled = true })
+                                        </div>
+                                        <div class="col-sm-12 col-md-4 form-group">
+                                            <label>Group Number</label>
+                                            @Html.TextBoxFor(m => m.GroupNumber, new { @class = "form-control", @disabled = true })
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+                @if (Model.PaymentType == Convert.ToInt16(PatientPaymentOption.In_Network_Commercial_Insurance))
+                {
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+
+                            <h3>IN-NETWORK COMMERCIAL INSURANCE / MEDICARE REPLACEMENT PLAN </h3>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-4 form-group">
+                                    <label>Policy Number</label>
+                                    @Html.TextBoxFor(m => m.IN_NETWORK_PolicyNumber, new { @class = "form-control", @disabled = true })
+                                </div>
+                                <div class="col-sm-12 col-md-4 form-group">
+                                    <label>Group Number</label>
+                                    @Html.TextBoxFor(m => m.IN_NETWORK_GroupNumber, new { @class = "form-control", @disabled = true })
+                                </div>
+                                <div class="col-sm-12 col-md-4 form-group">
+                                    <label>Name of the Policy Holder</label>
+                                    @Html.TextBoxFor(m => m.IN_NETWORK_Policy_Holder_name, new { @class = "form-control", @disabled = true })
+                                </div>
+                                <div class="col-sm-12 col-md-4 form-group">
+                                    <label>Policy Holder’s date of birth</label>
+                                    @Html.TextBoxFor(m => m.IN_NETWORK_Policy_Holder_DOB, new { @class = "form-control datepicker datepicker-bg", @disabled = true })
+                                </div>
+                                <div class="col-sm-12 col-md-4 form-group">
+                                    <label>Phone Number Listed for Provider Service</label>
+                                    @Html.TextBoxFor(m => m.IN_NETWORK_Policy_Holder_DOB, new { @class = "form-control", @disabled = true })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+                @if (Model.PaymentType == Convert.ToInt16(PatientPaymentOption.Medicare))
+                {
+
+                    <div id="div_MEDICARE">
+                        <div class="col-md-12 col-sm-12">
+                            <h3>MEDICARE</h3>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="col-sm-12 col-md-3 form-group">
+                                        <label>Phone Number</label>
+                                        @Html.TextBoxFor(m => m.MEDICARE_Phone1, new { @class = "form-control", @disabled = true })
+                                    </div>
+                                    <div class="col-sm-12 col-md-3 form-group">
+                                        <label>Group Number</label>
+                                        @Html.TextBoxFor(m => m.MEDICARE_GroupNumber1, new { @class = "form-control", @disabled = true })
+                                    </div>
+                                    <div class="col-sm-12 col-md-3 form-group">
+                                        <label>Policy Holder Name</label>
+                                        @Html.TextBoxFor(m => m.MEDICARE_Policy_Holder_name1, new { @class = "form-control", @disabled = true })
+                                    </div>
+                                    <div class="col-sm-12 col-md-3 form-group">
+                                        <label>Policy Holder Date Of Birth</label>
+                                        @Html.TextBoxFor(m => m.MEDICARE_Policy_Holder_DOB1, new { @class = "form-control  datepicker datepicker-bg", @disabled = true })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="col-sm-12 col-md-3 form-group">
+                                        <label>Secondary or Medigap Policy</label>
+                                        <label class="radio-inline">@Html.RadioButtonFor(m => m.Secondary, 1, new { @disabled = true })Yes</label>
+                                        <label class="radio-inline">@Html.RadioButtonFor(m => m.Secondary, 0, new { @disabled = true })No</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="col-sm-12 col-md-3 form-group">
+                                        <label>Phone Number</label>
+                                        @Html.TextBoxFor(m => m.MEDICARE_Phone2, new { @class = "form-control", @disabled = true })
+                                    </div>
+                                    <div class="col-sm-12 col-md-3 form-group">
+                                        <label>Group Number</label>
+                                        @Html.TextBoxFor(m => m.MEDICARE_GroupNumber2, new { @class = "form-control", @disabled = true })
+                                    </div>
+                                    <div class="col-sm-12 col-md-3 form-group">
+                                        <label>Policy Holder Name</label>
+                                        @Html.TextBoxFor(m => m.MEDICARE_Policy_Holder_name2, new { @class = "form-control", @disabled = true })
+                                    </div>
+                                    <div class="col-sm-12 col-md-3 form-group">
+                                        <label>Policy Holder Date Of Birth</label>
+                                        @Html.TextBoxFor(m => m.MEDICARE_Policy_Holder_DOB2, new { @class = "form-control  datepicker datepicker-bg", @disabled = true })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="col-sm-12 col-md-12 form-group">
+                                        <label>Received Any Physical therapy Treatment This Year</label><br />
+                                        <label class="radio-inline">@Html.RadioButtonFor(m => m.IsReceivedPTCurrentYear, 1, new { @disabled = true })Yes</label>
+                                        <label class="radio-inline">@Html.RadioButtonFor(m => m.IsReceivedPTCurrentYear, 0, new { @disabled = true })No</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="col-sm-12 col-md-12 form-group">
+                                        <label>Currently Being Seen by a Home Health Agency</label><br />
+                                        <label class="radio-inline">@Html.RadioButtonFor(m => m.IsSeenByHomeHealthAgency, 1, new { @disabled = true })Yes</label>
+                                        <label class="radio-inline">@Html.RadioButtonFor(m => m.IsSeenByHomeHealthAgency, 0, new { @disabled = true })No</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                else if (Model.PaymentType == Convert.ToInt16(PatientPaymentOption.Workers_Compensation))
+                { <div id="div_WORKERSCOMPENSATIONCLAIM">
+                    <div class="col-md-12 col-sm-12">
+                        <h3>WORKERS COMPENSATION CLAIM</h3>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">
+                                <div class="col-sm-12 col-md-3 form-group">
+                                    <label>Employer’s Name</label>
+                                    @Html.TextBoxFor(m => m.Employer_Name, new { @class = "form-control", @disabled = true })
+                                </div>
+                                <div class="col-sm-12 col-md-3 form-group">
+                                    <label>Employer’s  Phone Number</label>
+                                    @Html.TextBoxFor(m => m.Employer_Phone, new { @class = "form-control", @disabled = true })
+                                </div>
+                                <div class="col-sm-12 col-md-2 form-group">
+                                    <label>Adjuster’s Name</label>
+                                    @Html.TextBoxFor(m => m.Insurance_Adjustor_Name1, new { @class = "form-control", @disabled = true })
+                                </div>
+                                <div class="col-sm-12 col-md-4 form-group">
+                                    <label>Adjuster’s Phone Number </label>
+                                    @Html.TextBoxFor(m => m.Insurance_Adjustor_Phone2, new { @class = "form-control", @disabled = true })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+
+                else if (Model.PaymentType == Convert.ToInt16(PatientPaymentOption.Auto_Accident_Or_Attorney_Lien))
+                {
+                    <div id="div_AUTOACCIDENT">
+                        <div class="col-md-12 col-sm-12">
+                            <h3>AUTO ACCIDENT / ATTORNEY LIEN CASE</h3>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="col-sm-12 col-md-2 form-group">
+                                        <label>Accident Fault</label>
+                                        @Html.TextBoxFor(m => m.WhoseFaultAccident, new { @class = "form-control", @disabled = true })
+                                    </div>
+                                    <div class="col-sm-12 col-md-5 form-group">
+                                        <label>Name of the auto insurance for the at-fault partye</label>
+                                        @Html.TextBoxFor(m => m.NameOfAutoInsurance, new { @class = "form-control", @disabled = true })
+                                    </div>
+                                    <div class="col-sm-12 col-md-5 form-group">
+                                        <label>Contact number for that insurance company</label>
+                                        @Html.TextBoxFor(m => m.AutoInsurancePhone, new { @class = "form-control", @disabled = true })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="col-sm-12 col-md-4 form-group">
+                                        <label>Claim number</label>
+                                        @Html.TextBoxFor(m => m.AutoInsuranceClaimNo, new { @class = "form-control", @disabled = true })
+                                    </div>
+                                    <div class="col-sm-12 col-md-4 form-group">
+                                        <label>Attorney’s name</label>
+                                        @Html.TextBoxFor(m => m.Attorney_Name, new { @class = "form-control", @disabled = true })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else if (Model.PaymentType == Convert.ToInt16(PatientPaymentOption.Personal_Injury))
+                {
+                    <div id="div_PERSONAL">
+                        <div class="col-md-12 col-sm-12">
+                            <h3>PERSONAL INJURY (I.E. SLIP AND FALL IN A STORE)</h3>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="col-sm-12 col-md-3 form-group">
+                                        <label>Date of the injury</label>
+                                        @Html.TextBoxFor(m => m.Date_Of_injury1, new { @class = "form-control datepicker datepicker-bg", @disabled = true })
+                                    </div>
+                                    <div class="col-sm-12 col-md-3 form-group">
+                                        <label>Company Contact Person</label>
+                                        @Html.TextBoxFor(m => m.StoreContactPerson, new { @class = "form-control", @disabled = true })
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 form-group">
+                                        <label>Company Contact Person Phone Number</label>
+                                        @Html.TextBoxFor(m => m.StorePhoneNo, new { @class = "form-control", @disabled = true })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else if (Model.PaymentType == Convert.ToInt16(PatientPaymentOption.Out_of_Network_Commercial_Insurance))
+                {
+                    <div id="div_COMMERCIAL">
+                        <div class="col-md-12 col-sm-12">
+                            <h3>OUT-OF-NETWORK COMMERCIAL INSURANCE</h3>
+                            <div class="row">
+
+                                <div class="col-sm-12 col-md-2 form-group">
+                                    <label>Policy Number</label>
+                                    @Html.TextBoxFor(m => m.OUT_NETWORK_PolicyNumber, new { @class = "form-control", @disabled = true })
+                                </div>
+                                <div class="col-sm-12 col-md-2 form-group">
+                                    <label>Group Number</label>
+                                    @Html.TextBoxFor(m => m.OUT_NETWORK_GroupNumber, new { @class = "form-control", @disabled = true })
+                                </div>
+                                <div class="col-sm-12 col-md-3 form-group">
+                                    <label>Policy Holder Name</label>
+                                    @Html.TextBoxFor(m => m.OUT_NETWORK_Policy_Holder_name, new { @class = "form-control", @disabled = true })
+                                </div>
+                                <div class="col-sm-12 col-md-3 form-group">
+                                    <label>Policy Holder Date of Birth </label>
+                                    @Html.TextBoxFor(m => m.OUT_NETWORK_Policy_Holder_DOB, new { @class = "form-control datepicker datepicker-bg", @disabled = true })
+                                </div>
+                                <div class="col-sm-12 col-md-3 form-group">
+                                    <label>Policy Provider Phone number</label>
+                                    @Html.TextBoxFor(m => m.OUT_NETWORK_Serviceprovider, new { @class = "form-control", @disabled = true })
+                                </div>
+                                <div class="col-sm-12 col-md-6 form-group">
+                                    <label>Met Your Deductible</label><br />
+                                    <label class="radio-inline">@Html.RadioButtonFor(m => m.MetYourDeductible, 1, new { @disabled = true })Yes</label>
+                                    <label class="radio-inline">@Html.RadioButtonFor(m => m.MetYourDeductible, 2, new { @disabled = true })No</label>
+                                    <label class="radio-inline">@Html.RadioButtonFor(m => m.MetYourDeductible, 3, new { @disabled = true })Not Sure</label>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <div class="col-sm-12 col-md-3 form-group">
+                            <label>First Appointment  Date</label>
+                            @Html.TextBoxFor(m => m.ScheduledDateTime, new { @class = "form-control  datepicker datepicker-bg", @Value = @Model.ScheduledDateTime.GetExactValue(), @readonly = true })
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix line"></div>
+                
+            </div>
+        }
+        <p>
+            @Html.ActionLink("Back to List", "Index")<br />
+            <a href="@Url.Action("Index", "Patient", new { PatientCondition_Id=@Model.PatientCondition_Id })">
+                <i class="fa fa-backward" title="Back to List" aria-hidden="true"></i>
+            </a>
+        </p>
+    </div>
+</div>

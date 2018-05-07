@@ -1,0 +1,328 @@
+﻿@model DataLayer.Models.AttorneyLienInfo
+@using DataLayer;
+@{
+    ViewBag.Title = "AttroneyLienInfo";
+}
+@if (ViewBag.Error != null)
+{
+    @Html.Raw(ViewBag.Error)
+}
+
+<section class="bodyinner">
+    <div class="container ">
+
+        <div class="body ">
+            <div class="activationform_fullpage">
+                <div class="report-form clearfix">
+                    @using (Html.BeginForm("AttorneyLienInfo", "PatientRegistration", FormMethod.Post, new { name = "AttorneyLien", id = "AttorneyLien" }))
+                    {
+                        @Html.HiddenFor(e => e.PatientConditionID)
+                        @Html.HiddenFor(e => e.AttornetLien_Id)
+    @*@Html.HiddenFor(e => e.CreatedBy)
+    @Html.HiddenFor(e => e.CreatedOn)*@
+                            @Html.HiddenFor(e => e.PatientSignature)
+                            @Html.HiddenFor(e=>e.AttorneySignature)
+                            @Html.HiddenFor(e=>e.WitnessSignature)
+
+                        @Html.ValidationSummary(true)
+                        @Html.HiddenFor(e => e.Patient_Id)
+
+
+
+                        <div class="topforn">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6 form-group">
+                                    <table width="100%" border="0">
+                                        <tr>
+                                            <td width="22%"><strong>Patient First Name:</strong></td>
+                                            <td width="78%">@Html.TextBoxFor(m => m.FirstName, new { @class = "applitextfield CustomDateFormat" })</td>
+                                        </tr>
+                                    </table>
+
+                                </div>
+                                <div class="col-sm-6 col-md-6 form-group">
+                                    <table width="100%" border="0">
+                                        <tr>
+                                            <td width="27%"><strong>Patient Last Name:</strong></td>
+                                            <td width="73%">@Html.TextBoxFor(m => m.LastName, new { @class = "applitextfield" })</td>
+                                        </tr>
+                                    </table>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+
+                        <div id="div_personalInfo">
+                            <h3 style="padding-bottom:15px;">Attorney Lien Info</h3>
+                            @*<div class="clearfix line"></div>*@
+
+                            <div class="clearfix"></div>
+
+                            <div class="clearfix line"></div>
+                            <div class="row" id="dvid_1">
+                                <div class="col-sm-12 col-md-6 form-group">
+
+                                    <div class="headrightcont">
+                                        <div class="col-sm-6 col-md-7 form-group">
+                                            <label class=headrightcont>Attorney Name</label>
+                                            @Html.TextBoxFor(m => m.AttorneyName, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div style="clear:both;"></div>
+                                    @Html.ValidationMessageFor(model => model.AttorneyName)
+                                </div>
+                            </div>
+
+
+                            <div class="row" id="dvid_2">
+                                <div class="col-sm-12 col-md-6 form-group">
+                                    <div class="headrightcont">
+                                        <div class="col-sm-6 col-md-7 form-group">
+                                            <label class=headrightcont>Attorney Phone</label>
+                                            @Html.TextBoxFor(m => m.AttorneyPhone, new { @class = "form-control UsCellFormat" })
+                                        </div>
+                                    </div>
+                                    <div style="clear:both;"></div>
+                                    @Html.ValidationMessageFor(model => model.AttorneyPhone)
+                                </div>
+                            </div>
+
+                            <div class="row" id="dvid_3">
+                                <div class="headrightcont">
+                                    <label class=headrightcont>And may I have your address?</label>
+
+                                    <div class="full_textarea" style="padding-top:20px;">
+                                        @*@Html.TextAreaFor(m => m.Patient.AddressLine1, new { @class = "applitextfield1" })*@
+                                        <div class="col-sm-6 col-md-3 form-group">
+                                            <div class=headrightcont>
+                                                <label class=headrightcont>Address1</label>
+                                            </div>
+
+                                            @Html.TextBoxFor(m => m.AttorneyAddress1, new { @class = "applitextfield2" })
+                                            @Html.ValidationMessageFor(model => model.AttorneyAddress1)
+                                        </div>
+                                        <div class="col-sm-6 col-md-3 form-group">
+                                            <div class=headrightcont>
+                                                <label class=headrightcont>Address2</label>
+                                            </div>
+                                            @Html.TextBoxFor(m => m.AttorneyAddress2, new { @class = "applitextfield2" })
+                                            @Html.ValidationMessageFor(model => model.AttorneyAddress2)
+                                        </div>
+                                        <div class="col-sm-6 col-md-2 form-group">
+                                            <div class=headrightcont>
+                                                <label class=headrightcont>City</label>
+                                            </div>
+                                            @Html.TextBoxFor(m => m.AttorneyCity, new { @class = "applitextfield2" })
+                                            @Html.ValidationMessageFor(model => model.AttorneyCity)
+                                        </div>
+                                        <div class="col-sm-6 col-md-2 form-group">
+                                            <div class=headrightcont>
+                                                <label class=headrightcont>State</label>
+                                            </div>
+                                            @Html.DropDownList("AttorneyState")
+                                            @Html.ValidationMessageFor(model => model.AttorneyState)
+                                            @*@Html.DropDownListFor(m => m.AttorneyState, (SelectList)ViewBag.state, new { @class = "applitextfield2" })*@
+                                            @*@Html.DropDownListFor(m => m.AttorneyState, (SelectList)ViewBag.StateName, new { @class = "applitextfield2" })*@
+                                        </div>
+
+                                        <div class="col-sm-6 col-md-2 form-group">
+                                            <div class=headrightcont>
+                                                <label class=headrightcont>ZIP</label>
+                                            </div><br>
+                                            @Html.TextBoxFor(m => m.AttorneyZip, new { @class = "applitextfield2", maxlength = "10" })
+                                            @Html.ValidationMessageFor(model => model.AttorneyZip)
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row" id="dvid_4">
+                                <div class="col-sm-6 col-md-6 form-group">
+                                    <label for="headrightcont">
+                                        <label class=headrightcont>Date of Accident</label>
+                                    </label>
+                                    @Html.TextBoxFor(m => m.DateofAccident, new { @class = "form-control CustomDateFormat", style = "width:30%;", @Value = @Model.DateofAccident.GetExactValue(), @placeholder = "mm/dd/yyyy" })
+                                    
+
+                                    @Html.ValidationMessageFor(model => model.DateofAccident)
+                                </div>
+                            </div>
+                            @Html.Partial("_SignPad")
+                            <div class="row" id="dvid_5">
+                                <div>
+                                    <div class="col-sm-6 col-md-6 form-group">
+                                        <label class=headrightcont>Patient Signature</label>
+                                        <div></div>
+                                        @{var imgurl = Url.Content("~/Images/nosignature.png");
+                                      
+                                        if (Model.PatientSignature != null)
+                                        {
+                                            imgurl = "data:image/png;base64," + Convert.ToBase64String(Model.PatientSignature);
+                                        }
+                                        }
+                                        <img src="@imgurl" alt="Alternate Text" class="form-control" id="imgPatientSign" style="width:500px; height:200px;" />
+                                        @*<label id="lblTime1"></label>*@
+                                        <input type="hidden" name="name" value="" id="hdnImageVal1" />
+                                        @*<button onclick="fnShowSignPad('imgPatientSign', 'PatientSignature', 'lblTime')">Show Sign</button>*@
+                                        <input type="button" id="btnPatientSign" class="btn btn-primary" onclick="fnShowSignPad('imgPatientSign', 'PatientSignature', 'PatientSignatureDate')" value="Click To Add Signature" />
+                                    </div>
+                                    <div class="col-sm-6 col-md-6 form-group">
+                                        <label class=headrightcont>Attorney Signature</label>
+                                        <div></div>
+@{var imgurl2 = Url.Content("~/Images/nosignature.png");
+                                    
+                                        if (Model.AttorneySignature != null)
+                                        {
+                                            imgurl2 = "data:image/png;base64," + Convert.ToBase64String(Model.AttorneySignature);
+                                        }
+                                        }
+                                        <img src="@imgurl2" alt="Alternate Text" class="form-control" id="imgAttorneySign" style="width:500px; height:200px;" />
+                                        <input type="hidden" name="name" value="" id="hdnImageVal2" />
+                                        <input type="button" id="btnAttorneySign" class="btn btn-primary" onclick="fnShowSignPad('imgAttorneySign', 'AttorneySignature', 'AttorneySignatureDate')" value="Click To Add Signature" />
+
+                                    </div>
+                                    <div>
+                                        <div class="col-sm-6 col-md-6 form-group">
+                                            <label class=headrightcont>Patient Signature Date</label>
+                                            @Html.TextBoxFor(m => m.PatientSignatureDate, new { @class = "form-control datepicker datepicker-bg CustomDateFormat", style = "width:30%;", @Value = @Model.PatientSignatureDate.GetExactValue() })
+                                        </div>
+                                        <div class="col-sm-6 col-md-6 form-group">
+                                            <label class=headrightcont>Attorney Signature Date</label>
+                                            @Html.TextBoxFor(m => m.AttorneySignatureDate, new { @class = "form-control datepicker datepicker-bg CustomDateFormat", style = "width:30%;", @Value = @Model.AttorneySignatureDate.GetExactValue() })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" id="dvid_6">
+                                <div>
+                                   
+                                        <div class="col-sm-12 col-md-6 form-group">
+                                            <label class=headrightcont>Witness/Facility Representative Name</label>
+                                            @Html.TextBoxFor(m => m.WitnessName, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.WitnessName)
+                                        </div>
+                                    
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label class=headrightcont>Witness/Facility Representative Signature</label>
+                                            <div></div>
+                                            @{var imgurl3 = Url.Content("~/Images/nosignature.png");
+                                            if (Model.WitnessSignature != null)
+                                            {
+                                                imgurl3 = "data:image/png;base64," + Convert.ToBase64String(Model.WitnessSignature);
+                                            }
+                                            }
+                                            <img src="@imgurl3" alt="Alternate Text" id="imgWitnessSign" class="form-control" style="width:500px; height:200px;" />
+                                            <input type="hidden" name="name" value="" id="hdnImageVal3" />
+                                            <input type="button" id="btnWitnessSign" class="btn btn-primary" onclick="fnShowSignPad('imgWitnessSign', 'WitnessSignature', 'WitnessSignatureDate')" value="Click To Add Signature" />
+                                        </div>
+                                    
+                                        <div class="col-sm-12 col-md-6 form-group">
+                                            <label class=headrightcont>Witness Signature Date</label>
+                                            @Html.TextBoxFor(m => m.WitnessSignatureDate, new { @class = "form-control datepicker datepicker-bg CustomDateFormat", style = "width:30%;", @Value = @Model.WitnessSignatureDate.GetExactValue() })
+                                            @Html.ValidationMessageFor(model => model.WitnessSignatureDate)
+                                            <div style="clear:both;"></div>
+
+                                        </div>
+                                 
+                                </div>
+                            </div>
+
+                            
+                        </div>
+
+                        <div class="clearfix line"></div>
+                        <div>
+
+                            @Html.Partial("_PrevNext")
+                        </div>
+                        <div id="dvid_subbutt" class="subbutt" style="display:none">
+
+                            <button type="submit" class="btn btn-orange pull-right">Update</button>
+                            <div class="clearfix"></div>
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#AttorneyState').addClass('applitextfield2');
+
+    });
+
+
+    //$('#State').addClass('headrightcont');
+    __last = 6;
+
+    function fnValidate(pos) {
+        var ele = [];
+        if (pos == 1) {
+            ele = ["IsWorkingNow"];
+        }
+        else if (pos == 2) {
+            ele = ["IsTemporaryOff"];
+        }
+        else if (pos == 3) {
+            ele = ["AttorneyAddress1", "AttorneyCity", "AttorneyState", "AttorneyZip"];
+
+        }
+        else if (pos == 4) {
+            ele = ["DateofAccident"];
+
+        }
+        else if (pos == 5) {
+            ele = ["PatientSignatureDate"];
+
+        }
+        else if (pos == 6) {
+            ele = ["WitnessName", "WitnessSignatureDate"];
+
+        }
+        return ___validate(ele);
+    }
+
+    function fnNextToShow(pos) {
+        //if (pos == 1) {
+        //    if ($("input:radio[name='IsWorkingNow']:checked").val() == "1") {
+        //        return 2;
+        //    }
+        //    else
+        //        return 3;
+        //}
+
+
+
+        //if (pos == 9) {
+        //    if ($("input:radio[name='MedicationTaken']:checked").val() == "1") {
+        //        return 10;
+        //    }
+        //    else
+        //        return 11;
+        //}
+
+        //if (pos == 11) {
+        //    if ($("input:radio[name='UsualActivitiesEffected']:checked").val() == "1") {
+        //        return 12;
+        //    }
+        //    else
+        //        return 13;
+        //}
+
+
+
+        return pos + 1;
+    }
+    function fnTriggerAtEnd() {
+        if ($("#dvid_" + __last).is(':visible')) $('#dvid_subbutt').show();
+        else $('#dvid_subbutt').hide();
+    }
+</script>

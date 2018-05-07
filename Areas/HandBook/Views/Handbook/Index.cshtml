@@ -1,0 +1,156 @@
+﻿@model PagedList.IPagedList<DataLayer.Models.tblTHandBook>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Index";
+}
+
+<style>
+    .SortHeader {
+        color: #fff;
+    }
+
+    .sortorderasc {
+        color: black;
+    }
+
+    .sortorderdesc {
+        color: green;
+    }
+    .searchsec{
+        width: 350px;
+    }
+</style>
+@*<p>
+        @Html.ActionLink("Create New", "Create")
+        @Html.ActionLink("View", "View", null, new { @class="btn btn-primary" })
+    </p>*@
+<center><h2 style="margin-top:20px;">HandBook Page List</h2></center>
+
+<section class="bodyinner2">
+    <div>
+        <p class="pull-right">
+            @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+            <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Create", "Section")'">Create Section</button>
+            @Html.ActionLink("Create Chapters", "Index", new { Controller = "HandBookChapter", area = "HandBook" }, new { @class = "btn btn-primary" })
+            @Html.ActionLink("View", "View", null, new { @class = "btn btn-primary" })
+        </p>
+        @using (Html.BeginForm("Index", "Handbook", FormMethod.Get))
+        {
+
+            <div class="searchsec">
+
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search by Chapter and PageNumber" })
+                <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                <div class="clearfix"></div>
+            </div>
+        }
+        <div class="clearfix"></div>
+    </div>
+
+
+    <div>
+        <div class="table-responsive">
+          
+            <table class="table table-bordered table-striped">
+               
+                <thead>
+                   <tr>
+
+                       <th>
+                           @{ var classname = "botharrow";}
+                           @if ((ViewBag.CurrentSort == "name" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)) )
+                           {
+                               classname = "bottarrow"; 
+                           }
+                           else if ((ViewBag.CurrentSort == "name" && ViewBag.SortDirection == false))
+                           {
+                               classname = "toparrow";
+                           }
+                           @Html.ActionLink("Chapter Name", "Index", new { sortOrder = "name", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname })
+
+                       </th>
+                       <th>Section Name</th>
+                       <th>
+                           @{ var classname1 = "botharrow";}
+                           @if ((ViewBag.CurrentSort == "PageNo" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                           {
+                               classname1 = "bottarrow";
+                           }
+                           else if ((ViewBag.CurrentSort == "PageNo" && ViewBag.SortDirection == false))
+                           {
+                               classname1 = "toparrow";
+                           }
+                           @Html.ActionLink("Page Number", "Index", new { sortOrder = "PageNo", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname1 })
+                           @*@Html.Label("Page Number")*@
+
+                       </th>
+                       <th>Title</th>
+                       <th></th>
+                   </tr>
+
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tblMHandBookChapter.ChapterName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tblMHandbookSection.SectionName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PageNo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PageTitle)
+                            </td>
+
+
+
+                            <td>
+                                <a href="@Url.Action("Edit", "Handbook", new { id = item.HandBook_Id })">
+                                    <i class="fa fa-edit" aria-hidden="true"></i>
+                                </a>
+                                &nbsp;&nbsp;
+                                <a href="@Url.Action("Delete", "Handbook", new { id = item.HandBook_Id })">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </a>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+        <div>
+            <br />
+            @using (Html.BeginForm("Index", "Handbook", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+            {
+                @Html.DropDownList("PageSize")
+            }
+            @{
+                bool? direction = ViewBag.SortDirection;
+                if (direction == null) { direction = false; }
+            }
+            <div class="pull-left" style=" padding:10px;">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                      new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction }))
+        </div>
+    </div>
+
+</section>
+
+<script>
+    $("#PageSize").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+</script>

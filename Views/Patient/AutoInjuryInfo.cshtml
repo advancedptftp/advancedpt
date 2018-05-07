@@ -1,0 +1,14 @@
+﻿@model DataLayer.Models.PatientAutoInjuryPaymentInfo
+           
+@{
+    ViewBag.Title = "MyProfile";
+    Layout = "~/Views/Shared/_PatientPortal.cshtml";
+}
+
+@Html.Partial("~/Areas/Patient/Views/PatientRegistration/AutoInjuryPayment.cshtml", Model)
+<script>
+    __progressbarcontainer = "progressbarcontainer";
+</script>
+<div id="progressbarcontainer">
+
+</div>

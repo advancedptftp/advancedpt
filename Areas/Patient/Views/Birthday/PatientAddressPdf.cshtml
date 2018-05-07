@@ -1,0 +1,75 @@
+﻿@model DataLayer.Models.PatientProfile
+@using DataLayer;
+
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>myadvancedpt.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="favicon.png">
+
+    <!-- Bootstrap core CSS -->
+
+
+</head>
+
+<body>
+
+
+    <div style="width: @(ViewBag.EWidth + "px"); margin: 0 auto; padding: 5px 0; font-family: verdana; font-size: 13px; color: #333;">
+        @*<div style="padding:0 0 10px 0; margin-top:50px; ">
+            <div style="float:left;">
+                <table  border="0">
+                    <tr>
+                        <td style="padding-right:10px;">
+                            Advanced Physical Therapy of<br />
+                            Central Florida, Inc.<br />
+                            8585 SW Highway 200, Unit 8<br />
+                            Ocala, FL  34481
+                        </td>
+                    </tr>
+                    <tr>
+
+                </table>
+                </div>
+                <div style="float:right;">
+                    <table border="1" width="100px" height="100px">
+                        <tr>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        
+        &nbsp;&nbsp;<br />
+        &nbsp;&nbsp;<br />
+        &nbsp;&nbsp;<br />*@
+        
+        
+        <div style="position: relative; padding: 100px 0px;">
+            <div style="float:left;">
+                @*style="position: absolute; top: 40px; left: 50%; margin-left: -70px; "*@
+            <div><strong style="font-size:20px;">To</strong></div>
+            <div>Name: @(Model.FirstName + " " + Model.LastName)</div>
+            <div>Address:  @Html.DisplayFor(m => m.AddressLine1)</div>
+            <div>City: @Html.DisplayFor(m => m.City)</div>
+            <div>State: @ViewBag.statename</div>
+            <div>Zip Code:  @Html.DisplayFor(m => m.ZipCode)</div>
+        </div>
+        </div>
+
+
+            
+       
+      
+  
+
+
+    </div>
+
+
+
+</body>
+</html>

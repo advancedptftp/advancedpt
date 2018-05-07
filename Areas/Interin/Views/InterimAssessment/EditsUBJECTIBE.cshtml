@@ -1,0 +1,1084 @@
+﻿@model DataLayer.Models.CIAInterim
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string str1 = string.Empty;
+    string str2 = string.Empty;
+}
+<script>
+    var Affetcs_of, chkName, totalNoDiv;
+    var c1 = 1;
+    var Affect_With_Answare = "";
+    var OptionRange = "";
+    var OptionRangelist = "";
+    var splitOptionRangelist = "";
+    var splitOptionRange = "";
+    var optionafect = "";
+</script>
+
+<div class="report-form clearfix">
+
+    <h2 class="text-center">Interim Subjective</h2>
+    @using (Html.BeginForm("Create", "InterimAssessment", FormMethod.Post, new { id = "Create", name = "Create" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(e => e.CreatedBy)
+        @Html.HiddenFor(e => e.CreatedOn)
+        @Html.HiddenFor(e => e.ModifiedBy)
+        @Html.HiddenFor(e => e.ModifiedOn)
+        @Html.HiddenFor(e => e.Patient_Id)
+        @Html.HiddenFor(e => e.patientconditionId)
+        @Html.HiddenFor(e => e.ComplainsIds)
+        @Html.HiddenFor(e => e.AffectsIds)
+        @Html.HiddenFor(e => e.Subjective_Id)
+        @Html.HiddenFor(e => e.INTRM_Subjective_Id)
+        @Html.HiddenFor(e => e.SubjectiveAffect_Id_with_PercentageAssist_list)
+
+        if (ViewBag.Error != null)
+        {
+            @Html.Raw(ViewBag.Error)
+        }
+
+        @*<div class="topforn">
+            <div class="row">
+                <div class="col-sm-12">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="22%"><h3><strong>SUBJECTIVE</strong></h3></td>
+                            <td width="78%"></td>
+                        </tr>
+                    </table>
+
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="20%"><h4><strong>Patient Name:</strong></h4></td>
+                            <td width="35%">
+
+                                @Html.Label("PatientName", (string)ViewBag.name, new { @style = "color:black;font-size: 20px;", @readonly = true })
+                              
+                            </td>
+                            <td width="45%">
+                                <div class="col-sm-1 form-group" style="padding-top:17px; padding-left:10px;">
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+
+            </div>
+        </div>*@
+         <div class="topforn">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="lefttext">
+                        @{
+        if (ViewBag.PatientName != null)
+        {
+            @ViewBag.PatientName
+        }
+                        }, DOB:
+                        @{
+        if (ViewBag.PatientDOB != null)
+        {
+            @ViewBag.PatientDOB
+        }
+                        }
+                        <br />
+                        @*Tx Time : 8:00-8:40 PM<br />*@
+                        @*POC: 3/11, ends 02/12/18*@
+
+                        @{
+        string hyfen = "-";
+        string space = " ";
+        string st1 = "Tx Time :";
+
+        if (ViewBag.TreatmentFromTime != null && ViewBag.TreatmentToTime != null)
+        {
+            @st1 @space @ViewBag.TreatmentFromTime @space @hyfen @space @ViewBag.TreatmentToTime
+        }
+                        }<br />
+
+                        POC:
+                        @{
+        string divideSign = "/";
+        string commaSign = ",";
+        string ends = "ends";
+
+        if (ViewBag.TotalNoofVisitRequired != null && ViewBag.CurrentVisitNo != null && ViewBag.TreatmentEndDate != null)
+        {
+            @ViewBag.CurrentVisitNo @divideSign @ViewBag.TotalNoofVisitRequired @commaSign @space @ends @space @ViewBag.TreatmentEndDate
+        }
+        <br />
+        if (ViewBag.Date_Of_injury != null)
+        {
+            string _Date_Of_injury = "Date Of injury : ";
+            @_Date_Of_injury @ViewBag.Date_Of_injury;
+        }
+        else
+        {
+            if (ViewBag.SurgeryDate != null)
+            {
+                string _SurgeryDate = "SurgeryDate : ";
+                @_SurgeryDate @ViewBag.SurgeryDate;
+            }
+            else
+            {
+                if (ViewBag.DateonSet != null)
+                {
+                    string _DateonSet = "Date on Set : ";
+                    @_DateonSet @ViewBag.DateonSet;
+                }
+            }
+        }
+        <br />
+        @*if (ViewBag.FromWhenProblemExist != null)
+        {
+            string _FromWhenProblemExist = "From When Problem Exist : ";
+            @_FromWhenProblemExist @ViewBag.FromWhenProblemExist;
+        }*@
+                        }
+
+
+                    </div>
+                    <div class="righttext">
+                        @*Sumit Paul, DOB:01/14/74<br />
+                            Tx Time : 8:00-8:40 PM*@
+                        @{
+           string str3 = string.Empty;
+        if (ViewBag.Disease_names != null)
+        {
+            string disease = ViewBag.Disease_names;
+            string[] diseasesplit = disease.Split(':');
+            for (var i = 0; i < diseasesplit.Count(); i++)
+                    {
+                <div>
+                    @diseasesplit[i]
+                        </div>
+                             <div class="clearfix"></div>
+             }
+           
+        }
+                        }
+                        @*@str2 <br />*@
+                        @*@str3*@
+                        Auth: 3/15, ends 03/31/18
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+            </div>
+
+            @*<div class="botheadingsec">Daily Treatment Note <span>OBJECTIVE</span></div>*@
+
+
+        </div>
+        <div id="dvid_1">
+            <h2>Patient Complains Of:</h2>
+            <div class="inlinetext" style="font-size:x-large; padding-left:20px;">
+
+                <div>
+                    @if (ViewBag.SubjectiveComplainChk != null)
+                    {
+                        int j = 1;
+                        foreach (var item in ViewBag.SubjectiveComplainChk)
+                        {
+                            <div class="radiosec">
+                                <input id="chk@(item.Value)" class="checkbox-custom PatientComplains_of" name="@item.Text" type="checkbox" value="@item.Value" checked="@item.Selected">
+                                <label for="chk@(item.Value)" class="checkbox-custom-label">@item.Text</label>
+                            </div>
+                            j++;
+                            if (j % 3 == 1)
+                            {
+                                <div class="clearfix"></div>
+                            }
+                        }
+                    }
+                </div>
+                <div class="clearfix"></div>
+                <div style="float:right">
+                    <input type="button" id="btnNext1" class="btn btn-primary btn-lg" value="Next >>" onclick="fnShowDiv2()" />
+                </div>
+            </div>
+        </div>
+
+        <div id="dvid_2">
+            <h2>That affects patient:</h2>
+
+            <div class="inlinetext" style="font-size:x-large; padding-left:20px;">
+
+                @if (ViewBag.AffectPatient != null)
+                {
+                    int i = 1;
+                    foreach (var item1 in ViewBag.AffectPatient)
+                    {
+                        <div class="radiosec">
+                            <input id="chk1@(item1.Value)" class="checkbox-custom PatientAffetcs_of" name="@item1.Text" type="checkbox" value="@item1.Value" checked="@item1.Selected">
+                            <label for="chk1@(item1.Value)" class="checkbox-custom-label">@item1.Text</label>
+                        </div>
+                        i++;
+                        if (i % 3 == 1)
+                        {
+                            <div class="clearfix"></div>
+                        }
+                    }
+                }
+
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div style="float:left">
+                <input type="button" class="btn btn-primary btn-lg" value="<< Previous" onclick="fnShowDiv1()" />
+            </div>
+            <div style="float:right">
+                <input type="button" id="btnNext2" class="btn btn-primary btn-lg" value="Next >>" onclick="fnShowDiv3()" />
+            </div>
+        </div>
+
+        <div id="dvid_3">
+            <script type="text/javascript">
+                //SS
+
+                $("#PatientName").keypress(function (e) {
+
+                    var code = (e.keyCode ? e.keyCode : e.which);
+                    if (code === 13) {
+                        var patientName = $('#PatientName').val();
+                        if (patientName != "") {
+                            $('#txtPatientFirstName').val(patientName);
+                            fnSearchForPatient();
+                        }
+                        $("#btnTo").click();
+                        return false;
+                    }
+                });
+                //SS
+
+
+                function fn_CreateDivWithOptions() {
+
+                    chkName = chkName.substr(1);
+                    var AffetcsOfName = new Array();
+
+                    AffetcsOfName = chkName.split(",");
+                    $("#dvid_3").html('');
+
+                    totalNoDiv = AffetcsOfName.length;
+                    // alert(AffetcsOfName);
+                    $.each(AffetcsOfName, function (index, value) {
+                        //alert("index: " + index + " : " + "Value: " + value);
+
+                        var vDynamicHtmlContent = "<div id='div_" + index + "' class='div_AffetcsOfName'>";
+                        vDynamicHtmlContent += "<input id='chk_" + index + "' type='checkbox' value='" + index + "' class='checkbox-custom chk_AffetcsOfName' checked='Selected' disabled style='display: none;' />";
+                        vDynamicHtmlContent += "<label for='chk_" + index + "' class='checkbox-custom-label lblAffetcsOfName' style='display: none;'>" + value + "</label>";
+                        vDynamicHtmlContent += "<div class='clearfix'></div>";
+                        vDynamicHtmlContent += "<h2 class='chk_AffetcsOfName'>Prior to onset of symptoms, patient was able to perform <u>" + value.toLowerCase() + "</u> with: </h2>";
+                        vDynamicHtmlContent += "<div>";
+                        var j = 1;
+                        for (var i = 0; i < 100; i += 10) {
+                            var ControlId = "";
+                            ControlId = ControlId + index + "_" + i;
+                            vDynamicHtmlContent += "<div class='radiosec'>";
+                            vDynamicHtmlContent += "<input type='radio' name='radioChild_" + index + "' class = 'radio-custom PerformIndipendentWithAssist_" + index + "' value='" + ControlId+ "'   id = '" + index + "_" + i + "' />";
+                            //vDynamicHtmlContent += '<input type="radio" name="radioChild_' + index + '" class="radio-custom PerformIndipendentWithAssist_' + index + '"  id = "' + index + "_" + i + '" onclick="AffectOfWithAnsware(\'' + index + "_" + i + '\')" />';
+
+                            vDynamicHtmlContent += "<label for='" + index + "_" + i + "' id='lbl" + index + "_" + i + "'class='radio-custom-label'>" + i + "% Assist</label>";
+                            vDynamicHtmlContent += "</div>";
+                            j++;
+                            if (j % 3 == 1) {
+                                vDynamicHtmlContent += "<div class='clearfix'></div>";
+                            }
+                        }
+                        vDynamicHtmlContent += "<div class='clearfix'></div>";
+                        vDynamicHtmlContent += "<div style='float:left'>";
+                        vDynamicHtmlContent += "<input type='button' class='btn btn-primary btn-lg' value='<< Previous' onclick='fn_MovePrevious(" + totalNoDiv + "," + index + "," + i + ")' />";
+                        vDynamicHtmlContent += "</div>";
+                        vDynamicHtmlContent += "<div style='float:right'>";
+                        vDynamicHtmlContent += "<input type='button' id='btnNext" + index + "' class='btn btn-primary btn-lg' value='Next >>' onclick='fn_MoveNext(" + totalNoDiv + "," + index + ")' />";
+                        vDynamicHtmlContent += "</div>";
+                        vDynamicHtmlContent += "</div>";
+                        vDynamicHtmlContent += "</div>";
+                        vDynamicHtmlContent += "<div class='clearfix'></div>"
+
+                        $('#dvid_3').append(vDynamicHtmlContent);
+
+
+
+                    })
+
+                    //------------ Hide All Divs Within Same Class Except First One -------------------//
+                    //alert(" Hide All Divs Within Same Class Except First One " + $('.div_AffetcsOfName').length);
+                    //debugger;
+                    if ($('.div_AffetcsOfName').length > 1) {
+                        //alert($('.div_AffetcsOfName').length);
+                        for (var i = 1; i <= $('.div_AffetcsOfName').length; i++) {
+                            $("#div_" + i).hide();
+                        }
+                    }
+                    var _WithAffect = '@ViewBag.PercentageWithAffect';
+                    var _PercentageWithAffect1 = _WithAffect.split(',');
+                    var _PercentageWithAffect2 = _PercentageWithAffect1.length;
+                    if (_PercentageWithAffect2 == totalNoDiv) {
+
+                        if ('@ViewBag.PercentageWithAffect' != null) {
+                            @*var equal = "";
+                var selected3 = '@ViewBag.PercentageWithAffect'
+                if ($('.PatientAffetcs_of').filter(':checked').length > totalNoDiv) {
+                    equal = "more";
+                    alert(more);
+                    var chkRadio = selected3.split(',');
+                    var chkRadioLength = chkRadio.length;
+                    for (var i = 0; i < chkRadioLength; i++) {
+                        //alert(chkRadio[i]);
+                        var arr1 = chkRadio[i].split('|');
+                        for (var j = 0; j < 10; j++) {
+                            //alert("arr1[0] = " + arr1[0] + "  " + "arr1[1] = " + arr1[1]);
+                            if (arr1[0] == j) {
+                                $("#" + i + "_" + arr1[1]).prop("checked", "checked");
+                                break;
+                            }
+
+                        }
+                    }
+                }
+                else if ($('.PatientAffetcs_of').filter(':checked').length < totalNoDiv) {
+                    equal = "less";
+                    alert(less);
+                    var chkRadio = selected3.split(',');
+                    var chkRadioLength = chkRadio.length;
+                    for (var i = 0; i < chkRadioLength; i++) {
+                        //alert(chkRadio[i]);
+                        var arr1 = chkRadio[i].split('|');
+                        for (var j = 0; j < 10; j++) {
+                            //alert("arr1[0] = " + arr1[0] + "  " + "arr1[1] = " + arr1[1]);
+                            if (arr1[0] == j) {
+                                $("#" + i + "_" + arr1[1]).prop("checked", "checked");
+                                break;
+                            }
+
+                        }
+                    }
+
+                }*@
+                            if ($('.PatientAffetcs_of').filter(':checked').length == totalNoDiv) {
+                                if (Affetcs_of == '@ViewBag.PercentageWithAffectvalue') {
+                                    var equal = "";
+                                    var selected3 = '@ViewBag.PercentageWithAffect'
+                                    equal = "equal";
+                                    //alert(equal);
+                                    var chkRadio = selected3.split(',');
+                                    var chkRadioLength = chkRadio.length;
+                                    for (var i = 0; i < chkRadioLength; i++) {
+                                        // alert(chkRadio[i]);
+                                        var arr1 = chkRadio[i].split('|');
+                                        // alert(arr1);
+                                        for (var j = 0; j < 17; j++) {
+                                            // alert("arr1[0] = " + arr1[0] + "  " + "arr1[1] = " + arr1[1]);
+                                            if (arr1[0] == j) {
+                                                $("#" + i + "_" + arr1[1]).prop("checked", "checked");
+                                                break;
+                                            }
+
+                                        }
+
+                                        $("#SubjectiveAffect_Id_with_PercentageAssist_list").val('@ViewBag.withaffect');
+                                    }
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+            </script>
+        </div>
+
+        <div id="dvid_4">
+            <h2>Intensity of symptoms is at present</h2>
+            <div>
+                <div class="radiosec">
+                    @Html.RadioButtonFor(m => m.PresentIntensitySymptom, 1, new { @class = "radio-custom Present_Intensity_Symptom", @id = "rdoMild1" })
+                    <label for="rdoMild1" class="radio-custom-label">Mild</label>
+                </div>
+                <div class="radiosec">
+                    @Html.RadioButtonFor(m => m.PresentIntensitySymptom, 2, new { @class = "radio-custom Present_Intensity_Symptom", @id = "rdoModerate1" })
+                    <label for="rdoModerate1" class="radio-custom-label">Moderate</label>
+                </div>
+                <div class="radiosec">
+                    @Html.RadioButtonFor(m => m.PresentIntensitySymptom, 3, new { @class = "radio-custom Present_Intensity_Symptom", @id = "rdoSevere1" })
+                    <label for="rdoSevere1" class="radio-custom-label">Severe</label>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <h2>At worst intensity of symptoms is</h2>
+
+            <div>
+                <div class="radiosec">
+                    @Html.RadioButtonFor(m => m.WorstIntensitySymptom, 1, new { @class = "radio-custom Worst_Intensity_Symptom", @id = "rdoMild3" })
+                    <label for="rdoMild3" class="radio-custom-label">Mild</label>
+                </div>
+                <div class="radiosec">
+                    @Html.RadioButtonFor(m => m.WorstIntensitySymptom, 2, new { @class = "radio-custom Worst_Intensity_Symptom", @id = "rdoModerate3" })
+                    <label for="rdoModerate3" class="radio-custom-label">Moderate</label>
+                </div>
+                <div class="radiosec">
+                    @Html.RadioButtonFor(m => m.WorstIntensitySymptom, 3, new { @class = "radio-custom Worst_Intensity_Symptom", @id = "rdoSevere3" })
+                    <label for="rdoSevere3" class="radio-custom-label">Severe</label>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+            <h2>At best intensity of symptoms is</h2>
+
+            <div>
+                <div class="radiosec">
+                    @Html.RadioButtonFor(m => m.BestIntensitySymptom, 1, new { @class = "radio-custom Best_Intensity_Symptom", @id = "rdoMild2" })
+                    <label for="rdoMild2" class="radio-custom-label">Mild</label>
+                </div>
+                <div class="radiosec">
+                    @Html.RadioButtonFor(m => m.BestIntensitySymptom, 2, new { @class = "radio-custom Best_Intensity_Symptom", @id = "rdoModerate2" })
+                    <label for="rdoModerate2" class="radio-custom-label">Moderate</label>
+                </div>
+                <div class="radiosec">
+                    @Html.RadioButtonFor(m => m.BestIntensitySymptom, 3, new { @class = "radio-custom Best_Intensity_Symptom", @id = "rdoSevere2" })
+                    <label for="rdoSevere2" class="radio-custom-label">Severe</label>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+            <div style="float:left">
+                @*<input type="button" id="btnPrev4" class="btn btn-primary btn-lg" value="Previous" onclick="fnShowDiv2()" />*@
+                <input type="button" id="btnPrev4" class="btn btn-primary btn-lg" value="<< Previous" onclick="fnShowParentChildDiv3()" />
+
+            </div>
+            <div style="float:right">
+                <input type="button" id="btnNext4" class="btn btn-primary btn-lg" value="Next >>" onclick="fnShowDiv4()" />
+            </div>
+        </div>
+
+        <div id="dvid_5">
+            <h2>Onset of symptoms were</h2>
+            <div>
+                <div class="radiosec">
+                    @Html.RadioButtonFor(m => m.GradualOrSudden, 1, new { @class = "radio-custom GradualOrSudden", @id = "rdoGradual" })
+                    <label for="rdoGradual" class="radio-custom-label">Gradual</label>
+                </div>
+                <div class="radiosec">
+                    @Html.RadioButtonFor(m => m.GradualOrSudden, 0, new { @class = "radio-custom GradualOrSudden", @id = "rdoSudden" })
+                    <label for="rdoSudden" class="radio-custom-label">Sudden</label>
+                </div>
+
+            </div>
+            <div class="clearfix"></div>
+            <div style="float:left;">and began on or about</div>
+            <div style="float:left; padding-left:10px;">@Html.TextBoxFor(m => m.DateSymptomsBegan, new { @class = "form-control datepicker", style = "width:500px;" })</div>
+
+            <div class="clearfix"></div>
+
+            <div style="float:left">
+                <input type="button" class="btn btn-primary btn-lg" value="<< Previous" onclick="fnShowDivPrev()" />
+            </div>
+            <div style="float:right">
+                <input type="submit" id="btnSave" class="btn btn-orange btn-lg" value="Save & Next To Objective >>" />
+            </div>
+        </div>
+
+
+        <div class="clearfix"></div>
+
+        <div>
+            @*@Html.ActionLink("Back to List", "Index", new { id = "btnCreateLink" })*@
+            @*<a href="@Url.Action("Index", "Subjective")"><span class="btn btn-primary btn-lg">Back to list</span> </a>*@
+        </div>
+    }
+
+</div>
+@*</div>
+    </section>*@
+
+<!-- Modal -->
+@*@Html.Partial("~/Views/Shared/_SearchPatientPartial.cshtml")*@
+@{Html.RenderPartial("~/Views/Shared/_SearchPatientPartial.cshtml");}
+
+<!-- End Modal -->
+@*Move Next & Previous Section*@
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        if ('@ViewBag.IsCIAProcessStart' == 'No') {
+            alertify.alert("Cannot proceed for comprehensive initial assessment before appointment date").setHeader("AdvancePT Says");
+            @*window.location.href = '@Url.Action("PatientIndex", "PatientActivation", new { area = "Patient" })';*@
+
+            //---- Temporary basis ---//
+            $("#dvid_2").hide();
+            $("#dvid_3").hide();
+            $("#dvid_4").hide();
+            $("#dvid_5").hide();
+
+            $("#rdoSudden").prop("checked", false);
+            $("#DateSymptomsBegan").val("");
+            //---- Temporary basis ---//
+
+        }
+        else {
+            $("#dvid_2").hide();
+            $("#dvid_3").hide();
+            $("#dvid_4").hide();
+            $("#dvid_5").hide();
+
+            $("#rdoSudden").prop("checked", false);
+            $("#DateSymptomsBegan").val("");
+        }
+
+        if ('@ViewBag.Error' == "No") {
+            alertify.alert("Please complete the Assessment part again.").setHeader("AdvancePT Says");
+            window.location.href = '@Url.Action("Index", "InterimAssessment", new { area = "" })';
+        }
+
+        $("#rdoSudden").prop("checked", false);
+        $("#DateSymptomsBegan").val("");
+
+        var Selected = '@ViewBag.Subjectivecoplain'
+
+        if (Selected) {
+            var chkArray = Selected.split(',');
+            for (var i = 0; i < chkArray.length; i++) {
+                $('input#chk' + chkArray[i]).attr('checked', 'true');
+            }
+        }
+        var selected1 = '@ViewBag.APatient';
+
+        if (selected1) {
+            var chkArray = selected1.split(',');
+            for (var i = 0; i < chkArray.length; i++) {
+                $('input#chk1' + chkArray[i]).attr('checked', 'true');
+            }
+        }
+
+        //--- For Affected Options ----//
+        var selected2 = '@ViewBag.PercentageWithAffect'
+        if (selected2) {
+            //alert(selected2);
+            var chkRadio = selected2.split(',');
+            for (var i = 0; i < chkRadio.length; i++) {
+                //alert("Radio Button Name :  "+ "radioChild_"+chkRadio[i] + " " +" chkRadio : " + chkRadio[i]);
+                //$('input#radioChild_' + chkRadio[i]).attr('checked', 'true');
+                //$(".PerformIndipendentWithAssist_" + chkRadio[i]).prop("checked", true);
+                $("input[type=radio][name='radioChild_'" + chkRadio[i]).attr("checked", true);
+            }
+        }
+        //---- End of Affected Options ----//
+
+        $('input:radio[name="PresentIntensitySymptom"]').filter('[value="@ViewBag.PresentIntensitySymptom"]').attr('checked', true);
+        $('input:radio[name="WorstIntensitySymptom"]').filter('[value="@ViewBag.WorstIntensitySymptom"]').attr('checked', true);
+        $('input:radio[name="BestIntensitySymptom"]').filter('[value="@ViewBag.BestIntensitySymptom"]').attr('checked', true);
+        $('input:radio[name="PerformIndipendentWithAssist"]').filter('[value="@ViewBag.PerformIndipendentWithAssist"]').attr('checked', true);
+
+
+
+
+
+
+    });
+
+    function fnShowDiv1() {
+        totalNoDiv = 0;
+        $("#dvid_1").show();
+        $("#dvid_2").hide();
+        $("#dvid_3").hide();
+        $("#dvid_4").hide();
+        $("#dvid_5").hide();
+
+    }
+
+    function fnShowDiv2() {
+
+        var allChecked = true;
+        var validated = false;
+
+        //alert("totalNoDiv: " + totalNoDiv);
+        if (totalNoDiv > 1) {
+            var divCount = totalNoDiv - 1;
+            $("#div_" + divCount).show();
+            //$("#dvid_1").hide();
+            //$("#dvid_2").hide();
+            //$("#dvid_3").hide();
+            //$("#dvid_4").hide();
+            //$("#dvid_5").hide();
+            $('input:radio[name="PresentIntensitySymptom"]').filter('[value="@ViewBag.PresentIntensitySymptom"]').attr('checked', true);
+            $('input:radio[name="WorstIntensitySymptom"]').filter('[value="@ViewBag.WorstIntensitySymptom"]').attr('checked', true);
+            $('input:radio[name="BestIntensitySymptom"]').filter('[value="@ViewBag.BestIntensitySymptom"]').attr('checked', true);
+            $('input:radio[name="PerformIndipendentWithAssist"]').filter('[value="@ViewBag.PerformIndipendentWithAssist"]').attr('checked', true);
+
+        } else {
+
+            if ($('.PatientComplains_of').filter(':checked').length > 0) {
+                $("#dvid_1").hide();
+                $("#dvid_2").show();
+                $("#dvid_3").hide();
+                $("#dvid_4").hide();
+                $("#dvid_5").hide();
+                $('input:radio[name="PresentIntensitySymptom"]').filter('[value="@ViewBag.PresentIntensitySymptom"]').attr('checked', true);
+                $('input:radio[name="WorstIntensitySymptom"]').filter('[value="@ViewBag.WorstIntensitySymptom"]').attr('checked', true);
+                $('input:radio[name="BestIntensitySymptom"]').filter('[value="@ViewBag.BestIntensitySymptom"]').attr('checked', true);
+                $('input:radio[name="PerformIndipendentWithAssist"]').filter('[value="@ViewBag.PerformIndipendentWithAssist"]').attr('checked', true);
+
+            } else {
+                alertify.alert("Please select any options").setHeader('AdvancePT Says');
+                //return false;
+            }
+        }
+    }
+
+    function fnShowDiv3() {
+        //SelectedOPtionsForInterim();
+        if ($('.PatientAffetcs_of').filter(':checked').length > 0) {
+            //---- Get Selected CheckBox text ----//
+            //Affetcs_of = "";
+            //chkName = "";
+            //$('.PatientAffetcs_of:checked').each(function () {
+            //    Affetcs_of = Affetcs_of + "," + $(this).val();
+            //    chkName = chkName + "," + $(this).attr("name");
+            //    //alert(Affetcs_of);
+            //});
+
+            Affetcs_of = "";
+            chkName = "";
+            $('.PatientAffetcs_of:checked').each(function () {
+                Affetcs_of = Affetcs_of + "," + $(this).val();
+                chkName = chkName + "," + $(this).attr("name");
+            });
+
+
+            fn_CreateDivWithOptions();
+            //alert(Affetcs_of);
+
+            //alert(chkName);
+            $("#AffectsIds").val(Affetcs_of);
+            $("#dvid_1").hide();
+            $("#dvid_2").hide();
+            $("#dvid_3").show();
+            $("#dvid_4").hide();
+            $("#dvid_5").hide();
+        } else {
+            alertify.alert("Please select any options").setHeader('AdvancePT Says');
+            //return false;
+        }
+
+    }
+
+    function fnShowDiv4() {
+
+        if (($('.Present_Intensity_Symptom').filter(':checked').length > 0) && ($('.Worst_Intensity_Symptom').filter(':checked').length > 0) && ($('.Best_Intensity_Symptom').filter(':checked').length > 0)) {
+            $("#dvid_1").hide();
+            $("#dvid_2").hide();
+            $("#dvid_3").hide();
+            $("#dvid_4").hide();
+            $("#dvid_5").show();
+        } else {
+            alertify.alert("Please select any options").setHeader('AdvancePT Says');
+            //return false;
+        }
+    }
+
+    function fnShowDiv5() {
+
+        if (($('.PerformIndipendentWithAssist').filter(':checked').length > 0)) {
+            $("#dvid_1").hide();
+            $("#dvid_2").hide();
+            $("#dvid_3").hide();
+            $("#dvid_4").show();
+            $("#dvid_5").hide();
+        } else {
+            alertify.alert("Please select any options").setHeader('AdvancePT Says');
+            //return false;
+        }
+    }
+
+
+    function fnShowDivPrev() {
+        if ($('.GradualOrSudden').filter(':checked').length > 0) {
+            // if($('input:radio:checked').length > 0){
+            $("#dvid_1").hide();
+            $("#dvid_2").hide();
+            $("#dvid_3").hide();
+            $("#dvid_4").show();
+            $("#dvid_5").hide();
+        } else {
+            //alert("in else part");
+            alertify.alert("Please select any option").setHeader('AdvancePT Says');
+            return false;
+        }
+    }
+
+    function fnShowParentChildDiv3() {
+        //alert('ok');
+        $("#dvid_4").hide();
+        $("#dvid_3").show();
+        var num = $('.div_AffetcsOfName').length;
+        c1 = num;
+        for (var i = $('.div_AffetcsOfName').length; i <= $('.div_AffetcsOfName').length; i--) {
+            //alert(i);
+            $("#div_" + i).show();
+            if (i == ($('.div_AffetcsOfName').length - 1)) {
+                break;
+            }
+        }
+    }
+
+</script>
+
+@*Save Section*@
+
+<script type="text/javascript">
+
+    $("#btnSave").click(function () {
+
+        //---------------Check Radio Buttons Is Checked Or Not-----------------//
+        //alert($('.PerformIndipendentWithAssist').filter(':checked').length);
+        if ($('.GradualOrSudden').filter(':checked').length > 0) {
+            // if($('input:radio:checked').length > 0){
+            $("#dvid_1").hide();
+            $("#dvid_2").hide();
+            $("#dvid_3").hide();
+            $("#dvid_4").hide();
+            $("#dvid_5").show();
+        } else {
+            //alert("in else part");
+            alertify.alert("Please select any symptoms").setHeader('AdvancePT Says');
+            return false;
+        }
+
+        //-----------------------------------------------------//
+        var Complains_of = "";
+        $('.PatientComplains_of:checked').each(function () {
+            Complains_of = Complains_of + "," + $(this).val();
+        });
+
+        //alert(Complains_of);
+        $("#ComplainsIds").val(Complains_of);
+
+        //-------------------------------------------//
+        //------Check Patient TextBox Is Empty Or Not-------//
+        if ($("#PatientName").val().length == 0) {
+            alertify.alert("Please enter the patient name").setHeader('AdvancePT Says');
+            return false;
+        }
+        //---------------------------//
+        //var Affetcs_of = "";
+        //$('.PatientAffetcs_of:checked').each(function () {
+        //    Affetcs_of = Affetcs_of + "," + $(this).val();
+        //});
+
+
+
+
+    });
+
+
+
+    $("#btnReset").click(function () {
+        $("#tblPatientList tbody").html('');            // Clear the table body
+    });
+
+</script>
+
+@*Gradual or Sudden Section*@
+
+<script type="text/javascript">
+    $("#rdoGradual").click(function () {
+        $.ajax({
+            url: '@Url.Action("Get_Date_Symptoms_Began", "InterimAssessment")',
+            type: 'POST',
+            dataType: 'JSON',
+            data: { PatientId: $("#Patient_Id").val() },
+            success: function (data) {
+                if (data == "1") {
+                    //alert("Please select the patient");
+                    alertify.alert('Please select the patient').setHeader('AdvancePT Says');
+                }
+                else {
+                    $("#DateSymptomsBegan").val(data);
+                }
+
+            },
+            error: function (request, status, error) {
+                ///alert("Request: " + request.responseText);
+                //alert("Error Type: " + error.type);
+                alert("Error Type: " + status.State);
+            }
+        });
+    });
+
+    $("#rdoSudden").click(function () {
+        $.ajax({
+            url: '@Url.Action("Get_Date_Symptoms_Began", "InterimAssessment")',
+            type: 'POST',
+            dataType: 'JSON',
+            data: { PatientId: $("#Patient_Id").val() },
+            success: function (data) {
+                if (data == "1") {
+                    //alert("Please select the patient");
+                    alertify.alert('Please select the patient').setHeader('AdvancePT Says');
+                }
+                else {
+                    $("#DateSymptomsBegan").val(data);
+                }
+                //$("#GradualOrSudden").val();
+            },
+            error: function (request, status, error) {
+                ///alert("Request: " + request.responseText);
+                //alert("Error Type: " + error.type);
+               // alert("Error Type: " + status.State);
+            }
+        });
+    });
+</script>
+
+@*Move Next & Previous Section Runtime*@
+
+<script type="text/javascript">
+    function fn_MovePrevious(totalNoDiv, index, i) {
+        // alert(i);
+        if ($('.chk_AffetcsOfName').filter(':checked').length == 1) {
+            c1 = 1;
+            $("#dvid_1").hide();
+            $("#dvid_2").show();
+            $("#dvid_3").hide();
+            $("#dvid_4").hide();
+            $("#dvid_5").hide();
+
+        } else if (totalNoDiv > 1) {
+            for (var j = 0; j <= index; j++) {
+                if (index == j) {
+                    $("#div_" + j).hide();
+                    j--;
+                    if (j < 0) {
+                        // alert(totalNoDiv);
+                        //totalNoDiv = 0;
+                        //alert(totalNoDiv);
+                        $("#dvid_1").hide();
+                        $("#dvid_2").show();
+                        $("#dvid_3").hide();
+                        $("#dvid_4").hide();
+                        $("#dvid_5").hide();
+
+                        c1 = 1;
+                    }
+                    else {
+                        //totalNoDiv = j;
+                        //totalNoDiv = totalNoDiv - 1;
+                        //alert(totalNoDiv);
+                        $("#div_" + j).show();
+                        c1 = j+1;
+                     
+                    }
+                    break;
+                }
+            }
+
+        }
+        else {
+            alertify.alert("Please select any options").setHeader('AdvancePT Says');
+            //return false;
+        }
+    }
+
+
+    //totalNoDiv =>  no of options selected by the user
+    //index => currently selective option ( Div No )
+    function fn_MoveNext(totalNoDiv, index) {
+        //------------- Open Next Div Within Same Class ( Move Next Div ) ---------------//
+
+        //alert("totalNoDiv:" + totalNoDiv + "----" + "index ( Div No ): " + index);
+        // alert($('.PerformIndipendentWithAssist_' + index).filter(':checked').val());
+        AffectOfWithAnsware($('.PerformIndipendentWithAssist_' + index).filter(':checked').val());
+
+        if (($('.PerformIndipendentWithAssist_' + index).filter(':checked').length > 0)) {
+            //alert($('.PerformIndipendentWithAssist_' + index).filter(':checked').length);
+            if (totalNoDiv > 1) {
+                for (var i = 0; i < totalNoDiv; i++) {
+                    // alert(index);
+                    // alert(i);
+                    if (index == i) {
+                        i++;
+                        $("#div_" + i).show();
+                        if (c1 == totalNoDiv) {
+                            $("#dvid_1").hide();
+                            $("#dvid_2").hide();
+                            $("#dvid_3").hide();
+                            $("#dvid_4").show();
+                            $("#dvid_5").hide();
+                        }
+                        c1++;
+                        i--;
+                        $("#div_" + i).hide();
+                    }
+                }
+            }
+            else if (totalNoDiv == 1) {
+                $("#dvid_1").hide();
+                $("#dvid_2").hide();
+                $("#dvid_3").hide();
+                $("#dvid_4").show();
+                $("#dvid_5").hide();
+            }
+        }
+        else {
+            alertify.alert("Please select any options").setHeader('AdvancePT Says');
+            //return false;
+        }
+
+
+    }
+
+    function AffectOfWithAnsware(index) {
+        //alert($('#lbl' + index).text());
+        var OptionRangelist1 = "";
+        var affectsNo = index.charAt(0);
+        var orange = OptionRangelist.split(",");
+        var affectNolength = Affetcs_of.length;
+        var orangelength = orange.length;
+        if (affectsNo == orangelength) {
+            OptionRange = $('#lbl' + index).text();
+            OptionRangelist = OptionRangelist + "," + $('#lbl' + index).text();
+        }
+        else {
+
+
+            //for (k = 0; k <= affectsNo; k++) {
+            //OptionRange = $('#lbl' + index).text();
+            //splitOptionRangelist = OptionRangelist.split(",");
+            if (affectsNo == 0) {
+
+                OptionRangelist1 = "," + $('#lbl' + index).text();
+                OptionRangelist = OptionRangelist1;
+            }
+            if (affectsNo == 1) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + $('#lbl' + index).text();
+                // OptionRangelist = OptionRangelist2;
+            }
+            if (affectsNo == 2) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist3;
+            }
+            if (affectsNo == 3) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist4;
+            }
+            if (affectsNo == 4) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist5;
+            }
+            if (affectsNo == 5) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist1;
+            }
+            if (affectsNo == 6) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist7;
+            }
+            if (affectsNo == 7) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + "," + splitOptionRangelist[7] + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist8;
+            }
+            if (affectsNo == 8) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + "," + splitOptionRangelist[7] + splitOptionRangelist[8] + $('#lbl' + index).text();
+                // OptionRangelist = OptionRangelist9;
+            }
+            if (affectsNo == 9) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + "," + splitOptionRangelist[7] + "," + splitOptionRangelist[8] + "," + splitOptionRangelist[9] + "," + $('#lbl' + index).text();
+                // OptionRangelist = OptionRangelist10;
+            }
+            if (affectsNo == 10) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + "," + splitOptionRangelist[7] + "," + splitOptionRangelist[8] + "," + splitOptionRangelist[9] + "," + splitOptionRangelist[10] + "," + $('#lbl' + index).text();
+                // OptionRangelist = OptionRangelist11;
+            }
+            if (affectsNo == 11) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + "," + splitOptionRangelist[7] + "," + splitOptionRangelist[8] + "," + splitOptionRangelist[9] + "," + splitOptionRangelist[10] + "," + splitOptionRangelist[11] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist12;
+            }
+            if (affectsNo == 12) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + "," + splitOptionRangelist[7] + "," + splitOptionRangelist[8] + "," + splitOptionRangelist[9] + "," + splitOptionRangelist[10] + "," + splitOptionRangelist[11] + "," + splitOptionRangelist[12] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist13;
+            }
+            if (affectsNo == 13) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + splitOptionRangelist[7] + "," + splitOptionRangelist[8] + "," + splitOptionRangelist[9] + "," + splitOptionRangelist[10] + "," + splitOptionRangelist[11] + "," + splitOptionRangelist[12] + "," + splitOptionRangelist[13] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist14;
+            }
+            if (affectsNo == 14) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + "," + splitOptionRangelist[7] + "," + splitOptionRangelist[8] + "," + splitOptionRangelist[9] + "," + splitOptionRangelist[10] + "," + splitOptionRangelist[11] + "," + splitOptionRangelist[12] + "," + splitOptionRangelist[13] + "," + splitOptionRangelist[14] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist15;
+            }
+
+            else if (affectsNo == 15) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + "," + splitOptionRangelist[7] + "," + splitOptionRangelist[8] + "," + splitOptionRangelist[9] + "," + splitOptionRangelist[10] + "," + splitOptionRangelist[11] + "," + splitOptionRangelist[12] + "," + splitOptionRangelist[13] + "," + splitOptionRangelist[14] + "," + splitOptionRangelist[15] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist16;
+            }
+            else if (affectsNo == 16) {
+                splitOptionRangelist = OptionRangelist.split(",");
+                OptionRangelist = "," + splitOptionRangelist[1] + "," + splitOptionRangelist[2] + "," + splitOptionRangelist[3] + "," + splitOptionRangelist[4] + "," + splitOptionRangelist[5] + "," + splitOptionRangelist[6] + "," + splitOptionRangelist[7] + "," + splitOptionRangelist[8] + "," + splitOptionRangelist[9] + "," + splitOptionRangelist[10] + "," + splitOptionRangelist[11] + "," + splitOptionRangelist[12] + "," + splitOptionRangelist[13] + "," + splitOptionRangelist[14] + "," + splitOptionRangelist[15] + "," + splitOptionRangelist[16] + "," + $('#lbl' + index).text();
+                //OptionRangelist = OptionRangelist17;
+            }
+        }
+
+        //}
+
+
+        // alert(OptionRangelist);
+        //alert(optionafect);
+        //alert(Affetcs_of);
+
+        var Affetcs_of_list = Affetcs_of.substr(1);
+        Affetcs_of_list = Affetcs_of_list.split(",");
+
+        var Options = OptionRangelist.substr(1);
+        Options = Options.split(",");
+
+        var Affect_With_Answare_array = new Array();
+        for (var c2 = 0; c2 < Affetcs_of_list.length; c2++) {
+            Affect_With_Answare_array[c2] = Affetcs_of_list[c2] + "|" + Options[c2];
+        }
+
+        // alert(Affect_With_Answare_array);
+
+        $("#SubjectiveAffect_Id_with_PercentageAssist_list").val(Affect_With_Answare_array);
+
+
+        //alert("affectsNo: " + affectsNo + " --- OptionRange: " + OptionRange);
+        //Affect_With_Answare = Affect_With_Answare + affectsNo + "_" + OptionRange + ",";
+        // alert("Affect_With_Answare: " + Affect_With_Answare);
+    }
+
+ 
+
+</script>

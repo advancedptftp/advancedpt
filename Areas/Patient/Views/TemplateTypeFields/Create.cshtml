@@ -1,0 +1,207 @@
+﻿@model DataLayer.Models.tblMTemplateType
+
+@{
+    ViewBag.Title = "Create";
+}
+
+
+
+
+@if (ViewBag.Error != null)
+{
+    @Html.Raw(ViewBag.Error)
+}
+
+
+
+<section class="bodyinner">
+    <div class="container">
+        @*<div class="bodyleft">
+
+                @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+            </div>*@
+        @*<div class="bodyright">*@
+
+        <div class="report-form clearfix">
+            <h2 class="text-center">Template Type and Field Master</h2>
+            <br /><br />
+@using (Html.BeginForm("Create", "TemplateTypeFields", FormMethod.Post, new { name = "FormTemplateType", id = "FormTemplateType" }))
+
+           
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(e => e.TemplateType_Id)
+                  @Html.HiddenFor(e => e.TemplateContent)
+    @Html.HiddenFor(e => e.SystemName)
+                @Html.Hidden("TemplateFields")
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        @Html.Label("Template Type")
+ 
+                            @Html.TextBoxFor(m => m.TemplateType, new { @class = "applitextfield2" })
+
+                     
+                        @Html.ValidationMessageFor(model => model.TemplateType)
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+
+                        @Html.Label("Template Fields")
+
+
+
+                        <br />
+                        @foreach (var item in ViewBag.TemplateFieldsId)
+                        {
+                            <input id="chk@(item.Value)"
+                                   type="checkbox"
+                                   class="chk"
+                                   value="@item.Value"
+                                   checked="@item.Selected"
+                                   name="@item.Text" />
+                            @item.Text <br />
+                        }
+
+                    </div>
+                </div>
+                <div class="subbutt">
+                    @if (Model == null || Model.TemplateType_Id == 0) { 
+                    <input type="submit" value="Create" class="btn btn-orange pull-right" />
+                    }
+                    else
+                    {
+                        <input type="submit" value="Update" class="btn btn-orange pull-right" readonly />
+                    }
+                </div>
+                <p>@Html.ActionLink("Back to List", "Index")</p>
+            }
+        </div>
+
+        @*</div>*@
+        <div class="clearfix"></div>
+    </div>
+</section>
+<script>
+    $(document).ready(function () {
+
+        var selected = $("#TemplateFields").val();
+        //alert(selected);
+        if (selected) {
+            var chkArray = selected.split(',');
+            for (var i = 0; i < chkArray.length; i++) {
+                $('input#chk' + chkArray[i]).attr('checked', 'true');
+            }
+        }
+       
+    });
+
+</script>
+
+<script>
+
+
+    $("#FormTemplateType").submit(function () {
+       return getValueUsingClass();
+       
+      
+    })
+    function getValueUsingClass() {
+
+        var chkArray = [];
+        $(".chk:checked").each(function () {
+            chkArray.push($(this).val());
+        });
+        var selected;
+        selected = chkArray.join(',') + ",";
+        // alert(selected);
+        if (selected.length > 1) {
+            selected = selected.substring(0, selected.length - 1);
+            $("#TemplateFields").val(selected);
+        }
+        else {
+            alert("Please at least one of the checkbox");
+            $("#TemplateFields").val("");
+            return false;
+        }
+    }
+  
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<h2>Create</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>tblRTemplateTypeField</h4>
+            <hr />
+            @Html.ValidationSummary(true)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TemplateTypeId, "TemplateTypeId", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("TemplateTypeId", String.Empty)
+                    @Html.ValidationMessageFor(model => model.TemplateTypeId)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TemplateFieldsId, "TemplateFieldsId", new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("TemplateFieldsId", String.Empty)
+                    @Html.ValidationMessageFor(model => model.TemplateFieldsId)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>*@

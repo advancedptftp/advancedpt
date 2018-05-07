@@ -1,0 +1,166 @@
+﻿@model DataLayer.Models.PatientAppointment
+@using DataLayer.Models
+
+
+<section class="bodyinner">
+    <div class="bodyinner">
+        <div class="report-form clearfix">
+            <h2 class="text-center">Create Appointment</h2>
+            @using (Html.BeginForm("Create", "Appointment", FormMethod.Post, new { id = "Appointment", name = "Appointment" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(m => m.CreatedBy)
+                @Html.Hidden("CreatedOn", DateTime.Now)
+
+                if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+
+                <div class="row">
+                    <div class="col-sm-5 form-group">
+                        @Html.Label("Patient")
+                        @Html.DropDownListFor(m => m.Patient_Id, (SelectList)ViewBag.Patient, new { @class = "applitextfield2" })
+                    </div>
+                </div>
+                <div id="divSubSection">
+                    <div class="row">
+                        <div class="col-sm-5 form-group">
+                            @Html.Label("Location")
+                            <select id="drLocation" class="applitextfield2"></select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5 form-group">
+                            @Html.Label("Date")
+                            @Html.TextBoxFor(m => m.Date, new { @class = "form-control datepicker1 datepicker-bg" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-11 form-group">
+                            <div class="col-sm-5 form-group">
+                                @Html.Label("From Time")
+                                @Html.TextBoxFor(m => m.FromTime, new { @class = "form-control clockpicker", @onblur = "fnGetToTime();" })
+                            </div>
+                            <div class="col-sm-5 form-group">
+                                @Html.Label("To Time")
+                                @Html.TextBoxFor(m => m.ToTime, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-11 form-group">
+                            <div class="col-sm-5 form-group">
+                                @Html.Label("Resource")
+                                @Html.DropDownListFor(m => m.Resource_Id, (SelectList)ViewBag.Resource, new { @class = "applitextfield2" })
+                            </div>
+                            <div class="col-sm-5 form-group">
+                                @Html.Label("Employee")
+                                <select id="Employee_Id" name="Employee_Id" class="applitextfield2"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="divSave" class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Save" class="btn btn-orange pull-right" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+
+    $(document).ready(function () { $("#divSubSection").hide(); $("#divSave").hide(); });
+
+
+    $("#Patient_Id").change(function () {
+        $.ajax({
+            url: '@Url.Action("getLocation", "Appointment")',
+            type: "POST",
+            dataType: "JSON",
+            data: { PatientId: $("#Patient_Id").val() },
+            success: function (result) {
+                if (result != null) {
+                    $("#divSubSection").show();
+                    $("#drLocation").empty().append($("<option value=0>Select Location</option>"));
+                    for (i in result) {
+                        $("#drLocation").append($("<option></option>").val(result[i].Location_Id).text(result[i].Location_Name))
+                    }
+                }
+            },
+            error: function () {
+                $("#divSubSection").hide();
+                alert("Data Not Found!...")
+            }
+        });
+    });
+
+    function fnGetToTime() {
+        //alert('ok');
+        $.ajax({
+            url: '@Url.Action("getAppointmentToTime", "Appointment")',
+            type: "POST",
+            dataType: "JSON",
+            data: { PatientId: $("#Patient_Id").val() },
+            success: function (result) {
+                if (result != null) {
+                    var str = $("#FromTime").val().split(':');
+                    var hh =parseInt(str[0]);
+                    var mm = parseInt(str[1]);
+                    var mm1 = mm + parseInt(result);
+                    if (mm1 > 60) {
+                        hh = hh + 1;
+                        mm=(mm1 - 60);
+                    }
+                    if ((mm.toString()).length <= 1) {
+                        mm = "0" + mm;
+                    }
+                    $("#ToTime").val(hh + ":" + mm);
+                }
+            },
+            error: function () {
+                alert("Data Not Found!....");
+            }
+        });
+    }
+
+    $("#Resource_Id").change(function () {
+        $.ajax({
+            url: '@Url.Action("getEmployee", "Appointment")',
+            type: "POST",
+            dataType: "JSON",
+            data: { Resource_Id: $("#Resource_Id").val() },
+            success: function (result) {
+                if (result != null) {
+                    $("#Employee_Id").empty().append($("<option value=0>Select Employee</option>"));
+                    if (result.Msg) { alert(result.Msg); }
+                    else {
+                        for (i in result) {
+                            $("#Employee_Id").append($("<option></option>").val(result[i].EmployeeID).text(result[i].Name));
+                        }
+                    }
+                }
+            },
+            error: function (error) {
+                alert("Error: " + error);
+            },
+            statusCode: {
+                404: function () {
+                    alert("page not found");
+                }
+            }
+        });
+    });
+
+
+    $("#Employee_Id").change(function () {
+        $("#divSave").show();
+    });
+</script>

@@ -1,0 +1,115 @@
+﻿@model DataLayer.Models.DMEOfficeStaffOrderSpinomedIVTLSOForm
+@using DataLayer;
+
+@{
+    ViewBag.Title = "Spinomed IV TLSO Order Form";
+}
+<section class="bodyinner">
+
+    <div class="bodyleft">
+
+        @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+    </div>
+    <div class="bodyright">
+
+        <div class="report-form clearfix">
+            <h2>Spinomed IV TLSO Order Form: In Stock HCPCS Code: L0456</h2>
+            <div class="p_bot15"><strong>*MEDICARE PATIENTS: DO NOT PROCEED IF THEY HAVE BEEN ISSUED A ‘BACK BRACE’IN THE PAST 5 YEARS.</strong></div>
+
+            <hr>
+            @using (Html.BeginForm("Create4", "SpinomedIVTLSOForm", FormMethod.Post, new { name = "OfficeStaffMC_TLSO_Step4", id = "OfficeStaffMC_TLSO_Step4" }))
+            {
+                <div id="dvFirst">
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(e => e.Order.DMEForm_Id)
+                    @Html.HiddenFor(e => e.Order.DMEFormCode)
+                    @Html.HiddenFor(e => e.Order.CreatedOn)
+                    @Html.HiddenFor(e => e.Order.IsFaxLOMN)
+                    @Html.HiddenFor(e => e.Order.FaxLOMN_Date)
+                    @Html.HiddenFor(e => e.Order.DMEOfficeStaffOrder_Id)
+
+                    @if (ViewBag.Error != null)
+                    {
+                        @Html.Raw(ViewBag.Error)
+                    }
+
+
+                    <div id="dvOrder" class="todo_inner">
+
+
+                        <div class="outerf">
+                            <div class="stepheading"><strong>4. Office Staff </strong> <i>order</i></div>
+                            <div class="hiddenform">
+
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12 form-group">
+                                        <label class="checkbox-inline">
+
+                                            @Html.CheckBoxFor(e => e.Order.IsReceiveLOMN, new { @class = "checkbox-inline" })
+                                            Receive Letter of Med.Nec.
+                                            <span id="IsReceiveLOMN" class="validateMsg"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="row form-group">
+                                        <div class="col-sm-3 p_top10">Date</div>
+                                        <div class="col-sm-5">
+                                            @Html.TextBoxFor(m => m.Order.ReceiveLOMN_Date, new { @class = "form-control datepicker datepicker-bg", @placeholder = "MM/dd/YYYY", style = "width:100%;", @Value = @Model.Order.ReceiveLOMN_Date.GetExactValue() })
+                                            <span id="ReceiveLOMN_Date" class="validateMsg"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="subbutt">
+                                @*<button type="button" class="btn btn-primary pull-left" onclick="GotoMC()">Back</button>*@
+                                <button type="submit" class="btn btn-orange pull-right" onclick="return validateInputs();">Submit</button>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+    <div class="clearfix"></div>
+
+</section>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#Order_IsReceiveLOMN").focus();
+        $('#Order_ReceiveLOMN_Date').datepicker('setEndDate', new Date());
+
+        $("#ReceiveLOMN_Date").hide();
+        $('#IsReceiveLOMN').hide();
+    });
+
+    function validateInputs() {
+        var ReceiveLOMN_Date = document.getElementById("Order_ReceiveLOMN_Date");
+        var IsReceive = document.getElementById("Order_IsReceiveLOMN");
+
+        if (!IsReceive.checked) {
+            $("#IsReceiveLOMN").show();
+            $("#IsReceiveLOMN").text("Please checked the checkbox.........");
+            IsReceive.focus();
+            return false;
+        }
+        else {
+            $("#IsReceiveLOMN").hide();
+        }
+        if (Order_ReceiveLOMN_Date.value == "") {
+            $("#ReceiveLOMN_Date").show();
+            $("#ReceiveLOMN_Date").text("Enter ReceiveLOMN Date");
+            ReceiveLOMN_Date.focus();
+            return false;
+        }
+
+    }
+</script>
+

@@ -1,0 +1,144 @@
+﻿@model DataLayer.Models.tblTGoodDeedForm
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>tblTGoodDeedForm</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TodaysDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TodaysDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EmpFirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EmpFirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EmpLastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EmpLastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.JobTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.JobTitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GoodDeedPerformed)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GoodDeedPerformed)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WitnessFirstLastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WitnessFirstLastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GoodDeedDt)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GoodDeedDt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GoodDeedTm)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GoodDeedTm)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ApprovedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ApprovedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMLocation.Location_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMLocation.Location_Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMUser.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMUser.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMUser1.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMUser1.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMUser2.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMUser2.UserName)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

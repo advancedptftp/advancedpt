@@ -1,0 +1,184 @@
+﻿@model DataLayer.Models.tblTLumbosacralOrthosisForm
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>tblTLumbosacralOrthosisForm</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.HCPCSCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HCPCSCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Product_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Product_Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Product_No)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Product_No)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Manufacturer_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Manufacturer_Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LSOFitting_HipCirc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LSOFitting_HipCirc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Model_No)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Model_No)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Patient_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Patient_Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DOB)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DOB)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Revised_Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Revised_Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMDMEFormStatu.DMEForm_Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMDMEFormStatu.DMEForm_Status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMLSOFittingSize.Size)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMLSOFittingSize.Size)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMUser.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMUser.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMUser1.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMUser1.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblRDMEClinicalStaffPrescription.DMEFormCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblRDMEClinicalStaffPrescription.DMEFormCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblRDMEClinicAndOfficeStaffDeliver.DMEFormCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblRDMEClinicAndOfficeStaffDeliver.DMEFormCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblRDMEOfficeStaffMC.DMEFormCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblRDMEOfficeStaffMC.DMEFormCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblRDMEOfficeStaffOrder.DMEFormCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblRDMEOfficeStaffOrder.DMEFormCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblRDMEOfficeStaffPaperwork.DMEFormCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblRDMEOfficeStaffPaperwork.DMEFormCode)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

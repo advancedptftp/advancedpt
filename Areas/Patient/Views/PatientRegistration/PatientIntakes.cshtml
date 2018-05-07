@@ -1,0 +1,308 @@
+﻿@model PagedList.IPagedList<DataLayer.Models.IntakeListPage>
+@using PagedList.Mvc;
+@using DataLayer;
+@{
+    ViewBag.Title = "PatientIntakes";
+    var CanViewPatient = ViewContext.Controller.CheckAccess(405, PermissionType.View);
+}
+<style>
+    .NewPatient {
+        background-color: rgba(205, 216, 36, 0.68) !important;
+    }
+</style>
+<script>
+    function DoProceed(obj) {
+        //alert($(obj).parent().parent().parent().children()[0].innerText);
+        if ($(obj).parent().parent().parent().children()[0].innerText != "") {
+            if ($(obj).parent().parent().parent().children()[1].innerText != "") {
+                if ($(obj).parent().parent().parent().children()[2].innerText != "") {
+                            var _Patient = {
+
+                                "Patient_FirstName": $(obj).parent().parent().parent().children()[0].innerText,
+                                "Patient_LastName": $(obj).parent().parent().parent().children()[1].innerText,
+                                "Patient_DOB": $(obj).parent().parent().parent().children()[2].innerText
+                            };
+                            $.ajax({
+                                type: 'POST',
+                                url: '/PatientActivation/CheckKareoData',
+                                data: JSON.stringify(_Patient),
+                                contentType: "application/json; charset=utf-8",
+                                dataType: 'json',
+                                success: function (data) {
+                                    if (data.success == 0) {
+                                    }
+                                    else if (data.success == 1) {
+                                        var LiTempID = data.KareoPatientID;
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: '/PatientActivation/PutSessionKID',
+                                            data: { TempID: LiTempID },
+                                            success: function (sdata) {
+                                                if (sdata.success == 1) {
+                                                }
+                                            }
+                                        });
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: '/PatientActivation/CheckKareoRecord',
+                                            data: { TempID: LiTempID },
+                                            success: function (cdata) {
+                                                if (cdata.success == 1) {
+                                                    $.ajax({
+                                                        type: 'POST',
+                                                        url: '/PatientActivation/PutSessionKID',
+                                                        data: { TempID: LiTempID },
+                                                        success: function (kdata) {
+                                                            if (kdata.success == 1) {
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        });
+                                    }
+                                    else
+                                    {                                        
+                                        var LiTempID = $(obj).parent().parent().parent().children()[5].innerText;
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: '/PatientActivation/PutSessionKID',
+                                            data: { TempID: LiTempID },
+                                            success: function (sdata) {
+                                                if (sdata.success == 1) {
+                                                }
+                                            }
+                                        });
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: '/PatientActivation/CheckKareoRecord',
+                                            data: { TempID: LiTempID },
+                                            success: function (cdata) {
+                                                if (cdata.success == 1) {
+                                                    $.ajax({
+                                                        type: 'POST',
+                                                        url: '/PatientActivation/PutSessionKID',
+                                                        data: { TempID: LiTempID },
+                                                        success: function (kdata) {
+                                                            if (kdata.success == 1) {
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+        }
+</script>
+<center><h2 style="margin-top:20px;">Pending Intake List</h2></center>
+<section class="bodyinner2">
+    <div>
+        
+            @using (Html.BeginForm("PatientIntakes", "PatientActivation", FormMethod.Get))
+            {
+                <div class="searchsec">
+                    @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search by First Name" })
+                    <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                    <div class="clearfix"></div>
+                </div>
+            }
+        
+             
+
+                    @using (Html.BeginForm("PatientIntakes", "PatientActivation", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+                    {
+                        @Html.DropDownList("PageSize1")
+                    }
+        @{
+            bool? direction1 = ViewBag.SortDirection;
+            if (direction1 == null) { direction1 = false; }
+        }
+               
+        <div class="pull-left" style=" padding:10px;">
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        </div>
+              
+               
+          
+
+            <div class="clearfix"></div>
+        </div>
+
+        <div>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                @{ var classname = "botharrow";}
+                                @if ((ViewBag.CurrentSort == "Patient_FirstName" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                                {
+                                    classname = "bottarrow";
+                                }
+                                else if ((ViewBag.CurrentSort == "Patient_FirstName" && ViewBag.SortDirection == false))
+                                {
+                                    classname = "toparrow";
+                                }
+                                @Html.ActionLink("First Name", "PatientIntakes", new { sortOrder = "Patient_FirstName", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname })
+
+
+                            </th>
+                            <th>
+                                @{ var classname2 = "botharrow";}
+                                @if ((ViewBag.CurrentSort == "Patient_LastName" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                                {
+                                    classname2 = "bottarrow";
+                                }
+                                else if ((ViewBag.CurrentSort == "Patient_LastName" && ViewBag.SortDirection == false))
+                                {
+                                    classname2 = "toparrow";
+                                }
+                                @Html.ActionLink("Last Name", "PatientIntakes", new { sortOrder = "Patient_LastName", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname2 })
+
+
+                            </th>
+                            <th>
+                                DOB
+                            </th>
+
+
+                            <th>
+                                Mobile Number
+                            </th>
+                            <th>
+                                @{ var classname1 = "botharrow";}
+                                @if ((ViewBag.CurrentSort == "CreatedOn" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                                {
+                                    classname1 = "bottarrow";
+                                }
+                                else if ((ViewBag.CurrentSort == "CreatedOn" && ViewBag.SortDirection == false))
+                                {
+                                    classname1 = "toparrow";
+                                }
+                                @Html.ActionLink("Created On", "PatientIntakes", new { sortOrder = "CreatedOn", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname1 })
+
+
+                            </th>
+                            <th style="display:none;">Kareo ID</th>
+                            <th>
+                                @{ var classname3 = "botharrow";}
+                                @if ((ViewBag.CurrentSort == "Pending" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                                {
+                                    classname3 = "bottarrow";
+                                }
+                                else if ((ViewBag.CurrentSort == "Pending" && ViewBag.SortDirection == false))
+                                {
+                                    classname3 = "toparrow";
+                                }
+                                @Html.ActionLink("Pending Step", "PatientIntakes", new { sortOrder = "Pending", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname3 })
+
+
+                            </th>
+                        </tr>
+
+                    </thead>
+                    @foreach (var item in Model)
+                    {
+
+                        <tr>
+                            <th>
+                                @Html.DisplayFor(modelItem => item.Patient_FirstName)
+                            </th>
+                            <th>
+                                @Html.DisplayFor(modelItem => item.Patient_LastName)
+                            </th>
+                            <th>
+                                @item.DOB
+                            </th>
+                            <th>
+                                @Html.DisplayFor(modelItem => item.MobNo)
+                            </th>
+
+                            <th>
+                                @item.CreatedOn.GetExactValue()
+                            </th>
+                            <th style="display:none;">
+                                @item.KareoID.GetExactValue()
+                            </th>
+                            <th>
+                                <a href="@Url.Action("Create", "PatientActivation", new { id = item.Temp_Id })">
+                                <input type="button" class="btn btn-primary btn-lg" value="Proceed To Complete" onclick="DoProceed(this)">
+                                </a>
+
+                            </th>
+
+                            
+                        </tr>
+                    }
+
+                </table>
+
+            </div>
+            <div>
+                <br />
+                @using (Html.BeginForm("PatientIntakes", "PatientActivation", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+                {
+                    @Html.DropDownList("PageSize")
+                }
+                @{
+                    bool? direction = ViewBag.SortDirection;
+                    if (direction == null) { direction = false; }
+                }
+                <div class="pull-left" style=" padding:10px;">
+                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                </div>
+
+                @Html.PagedListPager(Model, page => Url.Action("PatientIntakes",
+                      new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction }))
+            </div>
+        </div>
+
+</section>
+
+
+@*<script>
+
+    function fnShowDetail(id) {
+        var url = "@Url.Action("PatientActivation", "PatientActivation", new { Area = "Patient" })" + "?id=" + id;
+        //fnShowPopupForDetail(url);
+        popupwindow(url, 'Activation', 1000, 800);
+    }
+    function fnShowAOBPdf(id) {
+        var url = "@Url.Action("AOB", "PatientRegistration", new { Area = "Patient" })" + "?id=" + id;
+        popupwindow(url, 'AOB', 1000, 800);
+    }
+    function fnShowAutoInjuryAOBPdf(id) {
+        var url = "@Url.Action("AutoInjuryAOB", "PatientRegistration", new { Area = "Patient" })" + "?id=" + id;
+        popupwindow(url, 'AutoInjuryAOBPdf', 1000, 800);
+    }
+    function fnShowAttorneyPdf(id) {
+        var url = "@Url.Action("PatientAttorney", "PatientRegistration", new { Area = "Patient" })" + "?id=" + id;
+        popupwindow(url, 'PatientAttorney', 1000, 800);
+    }
+
+</script>*@
+
+
+
+<script>
+    $("#PageSize").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+    $("#PageSize1").addClass("form-control");
+    $('#PageSize1').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });   
+    
+</script>

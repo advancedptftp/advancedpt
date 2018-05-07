@@ -1,0 +1,348 @@
+﻿<!-- saved from url=(0072)http://karmickproduction.com/designer/advanced/html/admin-dashboard.html -->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>myadvancedpt.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="http://karmickproduction.com/designer/advanced/html/favicon.png">
+    @Styles.Render("~/SiteContent/Css")
+    @Styles.Render("~/RS/CSS")
+    
+    <script>
+    var __NotificationRelated = {
+        _GetNotification: "@Url.Action("GetNotifications", "Home", new { Area=""})",
+        _MarkAsReadNotification: "@Url.Action("MarkAsReadNotification", "Home", new { Area=""})",
+        _DeleteNotification: "@Url.Action("DeleteNotification", "Home", new { Area = "" })"
+    };
+    var __ImageRelated = {
+        _arrowtop: "@Url.Content("~/Images/arrowtop.png")",
+        _arrowbott: "@Url.Content("~/Images/arrowbott.png")"
+    };
+    var __MenuRelated = {
+        _GetMenu: "@Url.Action("GetMenu", "Home", new { Area = "" })",
+        };
+        var __pdfRelated = {
+            _embededpdf: "@Url.Action("PDFEmbeded", "Home", new { Area = "" })",
+        _ShowPdfInPopup: "@Url.Action("PDFPopUp", "Home", new { Area = "" })",
+        _showPdfInWinPopup: "@Url.Action("showPdfInWinPopup", "Home", new { Area = "" })",
+        };
+
+        //$(document).ready(function () {
+        //    window.history.forward(1);
+        //});
+    </script>
+    <script type="text/javascript">
+        function toggle1() {
+            var ele = document.getElementById("toggleText1");
+            var text = document.getElementById("displayText1");
+            $("#toggleText1").slideToggle(300);
+        }
+    </script>   
+    @Scripts.Render("~/SiteContent/Js")
+    @Scripts.Render("~/RS/JS")
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="@Url.Action("Index", new { Controller="Home", Area=""})"><img src="@Url.Content("~/Images/logo.png")" title="myadvancedpt.com" alt=""></a>
+            </div>
+            <div class="rightlink">
+                <div class="menu-btn">&nbsp;</div>
+            </div>
+            <div class="rightlink">
+                <div class="authorsec">
+                    <div class="dropdown">
+                        <a href="http://karmickproduction.com/designer/advanced/html/admin-dashboard.html#" id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="@Url.Content("~/Images/profilepic.jpg")" class="profilepic" alt="">
+                            @{
+                                if (Session["LogedInUser"] != null)
+                                {
+                                    @Html.Label(((DataLayer.Models.tblMUser)Session["LogedInUser"]).UserName)<i class="fa fa-chevron-down" aria-hidden="true"></i>
+                                }
+                            }
+
+                            @*Lorem Ipsum &nbsp;&nbsp;<i class="fa fa-chevron-down" aria-hidden="true"></i>*@
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dLabel">
+                            @*<li>@Html.ActionLink("My Profile", "MyProfile", new { Area = "", Controller = "Home" })</li>*@
+                            <li>@Html.ActionLink("Change Password", "Forgot", new { Area = "", Controller = "Home" })</li>
+                            <li>@Html.ActionLink("Log Out", "Logout", new { Area = "", Controller = "Home" })</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="rightlink">
+                <div class="authorsec1">
+                    <div id="dvNotificationContainer" class="dropdown">
+                        <a href="#" id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-bell" aria-hidden="true"></i><span id="sNotificationCount" class="noticount">...</span>
+                        </a>
+                        <ul id="uNotification" class="dropdown-menu" aria-labelledby="dLabel"></ul>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="rightlink">
+                <div class="helpbutt" id="helpbutton">
+                    <span id="spanhelpcount" class="helpcount"></span>
+                    <a href="javascript:toggle1();" id="displayText1" onclick="gethelplist();">HELP</a>
+                    <div class="search_link" id="toggleText1" style="display:none;">
+                        <table id="tblHelpList" width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <thead>
+                                <tr>
+                                    <th>Request From</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @*<tr>
+                            <td>Deviece 1</td>
+                            <td><a onclick ="abc();" class="okbut">OK</a></td>
+                        </tr>
+                        <tr>
+                            <td>Deviece 2</td>
+                            <td><a href="#" class="okbut">OK</a></td>
+                        </tr>
+                        <tr>
+                            <td>Deviece 3</td>
+                            <td><a href="#" class="okbut">OK</a></td>
+                        </tr>
+                        <tr>
+                            <td>Deviece 4</td>
+                            <td><a href="#" class="okbut">OK</a></td>
+                        </tr>*@
+                            </tbody>
+                        </table>
+
+
+
+
+                    </div>
+                </div>
+                <div id="div_noRecforHelp" style="text-align: center; vertical-align: middle; line-height: 38px; padding-bottom: 22px; display: none;"><label style='color:red'>There is no one who needs help!!</label></div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="pushy pushy-left">
+                <div class="rightinnermenu">
+                    <div class="menulogo"><a href="@Url.Action("Index", new { Controller="Home", Area=""})"><img src="@Url.Content("~/Images/logo.png")" title="myadvancedpt.com" alt=""></a> </div>
+                    <a href="#" class="cross"><i class="fa fa-close" aria-hidden="true"></i></a>
+
+                    <ul class="topnav">
+
+                        <li class="active"><a href="#">Patients</a></li>
+                        <li>
+                            <a href="#" class="parent">Physicians</a>
+                            <ul>
+                                <li><a href="#">Physicians 1</a></li>
+                                <li>
+                                    <a href="#" class="parent">Physicians 2</a>
+                                    <ul>
+                                        <li><a href="#">Physicians 1</a></li>
+                                        <li>
+                                            <a href="#" class="parent">Physicians 2</a>
+                                            <ul>
+                                                <li><a href="#">Physicians 1</a></li>
+                                                <li><a href="#">Physicians 2</a></li>
+                                                <li><a href="#">Physicians 3</a></li>
+                                                <li><a href="#">Physicians 4</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#">Physicians 3</a></li>
+                                        <li><a href="#">Physicians 4</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#">Physicians 3</a></li>
+                                <li><a href="#">Physicians 4</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">Schedule</a></li>
+                        <li><a href="#">Reports</a></li>
+                        <li><a href="#">User Manager</a></li>
+                        <li><a href="#">Employee Handbook</a></li>
+
+
+                    </ul>
+
+
+                </div>
+
+
+            </div>
+
+            <div class="site-overlay"></div>
+
+
+
+        </div>
+    </header>
+    <div class="navouter">
+        <nav id="sidebar-wrapper">
+        </nav>
+    </div>
+    <section class="bodyinner">
+        <div class="container">
+            @RenderBody()
+            <div class="clearfix"></div>
+        </div>
+    </section>
+    <footer>© Copyright 2017. All Rights Reserved</footer>
+    <style type="text/css">
+        .thelanguage {
+            display: none;
+        }
+
+        a.hiddenajaxlink {
+            display: none;
+        }
+
+        #uNotification {
+            min-width: 400px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+            #uNotification .alert {
+                margin-bottom: 3px;
+                padding-top: 1px;
+                padding-bottom: 1px;
+            }
+
+        .form-control.input-validation-error {
+            background-color: rgba(239, 21, 21, 0.06);
+        }
+
+        .form-control.valid {
+            background-color: rgba(29, 234, 111, 0.08);
+        }
+    </style>
+    <!--for accordion-->
+</body>
+
+</html>
+<script>
+    var timeout = null;
+    $(document).ready(function () {
+        clearTimeout(timeout);
+        timeout = setTimeout(function () {
+
+            fnShowSessionOutAlert();
+
+        }, 30*60*1000);
+
+    });
+    $(document).on('mousemove', function () {
+
+        clearTimeout(timeout);
+        timeout = setTimeout(function () {
+        fnShowSessionOutAlert();
+
+        }, 30*60*1000);
+    });
+    function fnShowSessionOutAlert() {
+        var link = "@Url.Action("Logout", "Home",new{Area=""})";
+        var closable = alertify.alert().setting('closable');
+
+        alertify.alert().setHeader('AdvancePT Says')
+          .setting({
+              'label': 'OK',
+              'message': 'Your session has been expired, please login again',
+              'onok': function () { window.location = link; }
+          }).show();
+
+    }
+</script>
+<script>
+    function gethelplist() {
+        //alert("1");
+        
+        $.ajax({
+            url: '@Url.Action("GetHelpList", "Patient", new {Area="" })',
+            type: 'POST',
+            data: { },
+            success: function (result) {
+                //alert(result);
+                $("#spanhelpcount").text(result.length);
+                if (result.length >= 1) {
+                    $("#helpbutton").removeClass("noblink");
+                    $("#toggleText1").html('<table id="tblHelpList" width="100%" border="0" cellspacing="0" cellpadding="0"><thead><tr><th>Request From</th><th>Action</th></tr></thead><tbody></tbody></table>');
+                    //$('.search_link div').remove();
+                    $("#tblHelpList tbody").html('');
+                    for (var i = 0; i < result.length; i++) {
+                        //var re = result[i].split(" ");
+                        var re = result[i].DeviceID;
+                        //alert(re[0]);
+                        var row = "<tr>" +
+                                            
+                                              " <td>  " + re + "</td>" + " <td> <a id='"+re +"' onclick='goforhelp(this.id);' class='okbut'>OK</a></td>" +
+                                        "</tr>";
+                        $("#tblHelpList tbody").append(row);
+                    }
+                   // $("#div_noRecforHelp").hide();
+                }
+                else {
+
+                    $("#helpbutton").addClass("noblink");
+                    $("#toggleText1").html('<div id="div_noRecforpayment" style="text-align: center; padding:8px;"><label style="color:red">There is no one who needs help!!</label></div>');
+                   // $("#div_noRecforHelp").show();
+                  
+                }
+            },
+            error: function (msg) {
+                //alert("2");
+               // alert(msg);
+            }
+        });
+
+       
+    }
+    function goforhelp(deviceName) {
+        //debugger;
+       // alert(deviceName);
+        $.ajax({
+            url: '@Url.Action("GoForHelp", "Patient",new {Area="" })',
+            type: 'POST',
+            data: { deviceName: deviceName },
+            success: function (result) {
+                //alert(result.length);
+                $("#spanhelpcount").text(result.length);
+                if (result.length >= 1) {
+                   
+                    $("#helpbutton").removeClass("noblink");
+
+                    $("#toggleText1").html('<table id="tblHelpList" width="100%" border="0" cellspacing="0" cellpadding="0"><thead><tr><th>Request From</th><th>Action</th></tr></thead><tbody></tbody></table>');
+                    //$('.search_link div').remove();
+                    $("#tblHelpList tbody").html('');
+                    for (var i = 0; i < result.length; i++) {
+                        // var re = result[i].split(" ");
+                        var re = result[i];
+                        var row = "<tr>" +
+
+                                              " <td>  " + re + "</td>" + " <td> <a id='" + re + "' onclick='goforhelp(this.id);' class='okbut'>OK</a></td>" +
+                                        "</tr>";
+                        $("#tblHelpList tbody").append(row);
+                    }
+                    $("#div_noRecforHelp").hide();
+                }
+                else {
+                    $("#helpbutton").addClass("noblink");
+                    $("#toggleText1").html('<div id="div_noRecforpayment" style="text-align: center; padding:8px;"><label style="color:red">There is no one who needs help!!</label></div>');
+                    //$("#div_noRecforHelp").show();
+
+                }
+            },
+            error: function (msg) {
+                //alert(msg);
+            }
+        });
+    }
+
+
+    $(document).ready(function () {
+        gethelplist();
+        setInterval(function () { gethelplist(); }, 10000);
+        
+    });
+</script>

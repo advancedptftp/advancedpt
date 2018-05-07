@@ -1,0 +1,257 @@
+﻿@{
+    Layout = null;
+}
+<script src="~/Scripts/jquery.js"></script>
+<script src="~/Scripts/jquery-ui.js"></script>
+<script src="~/Scripts/moment.js"></script>
+<script src="~/Scripts/fullcalendar.js"></script>
+<link href="~/Content/fullcalendar.css" rel="stylesheet" />
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.1.0/bootstrap.min.js"></script>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" />
+<style>
+    .fc-slats > table {
+        height: 580px;
+    }
+</style>
+<style>
+    .loadingdiv {
+        display: block;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 9998;
+        background-color: rgba(0,0,0,.3);
+        -webkit-animation: fade 500ms;
+        -moz-animation: fade 500ms;
+        -o-animation: fade 500ms;
+        animation: fade 500ms;
+    }
+
+    .loadingcontainere {
+        width: 100%;
+        text-align: center;
+        padding-top: 26%;
+    }
+    /*forpopup*/
+    .container {
+        padding: 20px;
+    }
+
+    .form-control {
+        width: 120px;
+    }
+
+    .popover {
+        width: 400px;
+        height:100px;
+    }
+</style>
+
+<div id="loading" class="loadingdiv">
+    <div class="loadingcontainere">
+        <img src="~/Images/pageloader1.gif" width="200" height="200" />
+    </div>
+</div>
+
+<div class="container">
+    <h3>Bootstrap 3 Popover HTML Example</h3>
+    <ul class="list-unstyled">
+        <li><a data-placement="bottom" data-toggle="popover" data-trigger="hover" data-container="body" type="button" data-html="true" href="#" id="login"><span class="glyphicon glyphicon-search" style="margin:3px 0 0 0"></span></a></li>
+        <div id="popover-content" class="hide">
+            <form class="form-inline" role="form">
+                <div >sdfsdf fsdf sdvgsw svgs swvg svsw evf d vgef</div>
+            </form>
+        </div>
+    </ul>
+</div>
+@*<a id="popoverData" class="btn" href="#" data-content="Popover with data-trigger" rel="popover" data-placement="bottom" data-original-title="Title" data-trigger="hover">Popover with data-trigger</a>*@
+<div id='calendar'></div>
+
+@*<div>
+    <span id="coord"></span>
+    <div id="divImageDisplay" style="position:absolute;">
+    </div>
+    <label onmouseover="showDivImageDisplay(this);" onmouseout="hideDivImageDisplay();">Test</label>
+</div>
+
+
+<script type="text/javascript">
+    function getTop(e) {
+        var offset = e.offsetTop;
+        if (e.offsetParent != null) offset += getTop(e.offsetParent);
+        return offset;
+    }
+    function getLeft(e) {
+        var offset = e.offsetLeft;
+        if (e.offsetParent != null) offset += getLeft(e.offsetParent);
+        return offset;
+    }
+    function hideDivImageDisplay() {
+        $('#divImageDisplay').html();
+    }
+
+    function showDivImageDisplay(img) {
+       // alert(11);
+       // var grid = $('#<%=DataList1.ClientID %>');
+        var leftPos = getLeft(img) + 80;
+        var topPos = getTop(img) + 20;
+        $('#divImageDisplay').offset({ top: topPos, left: leftPos })
+        $('#divImageDisplay').html("fsfgff");
+
+        //print the coordinates
+        $('#coord').text('Image ID: aa left: ' + leftPos + ' top: ' + topPos);
+    }
+
+</script>*@
+
+
+
+<script>
+       // $("#popover").popover({ trigger: "hover" });
+    $(document).ready(function () {
+        //$('#calendar').fullCalendar({
+        //    header: {
+        //        left: 'prev,next today',
+        //        center: 'title',
+        //        right: 'month,agendaWeek,agendaDay,listMonth'
+        //    },
+        //    minTime: "10:00:00",
+        //    maxTime: "18:00:00",
+        //    defaultView :"agendaWeek",
+        //    editable: false,
+        //    eventLimit: true,
+        //    events: [],
+        //    viewRender: function (view, element) {
+        //        fnRenderEvent(view.start.format(), view.end.format());
+        //    },
+        //});
+        var createFC = function () {
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay,listMonth'
+                },
+                minTime: "10:00:00",
+                maxTime: "18:00:00",
+                defaultView: "agendaWeek",
+                editable: false,
+               // contentHeight: 766, //This fit the content expanding only last row
+                eventLimit: true,
+                slotDuration: '00:30:00',
+                events: [],
+                viewRender: function (view, element) {
+                    fnRenderEvent(view.start.format(), view.end.format());
+                },
+                eventMouseover: function (calEvent, jsEvent) {
+                    $.ajax({
+                        url: '@Url.Action("GetCalHoverDataTest", "Calendar")' + "?EventID=" + calEvent.id,
+                        type: 'GET',
+                        datatype: 'json',
+                        data: {
+                        },
+                        success: function (result) {
+                            // alert(result);
+                            test = result;
+                            $('#tstsde').html(result);
+                            //return result;//"<div style='width:500px;height:500px;'>sudeep asdfasdf adsfasdfasdf adsfasdf</div>";
+                        },
+                        error: function (e) {
+
+                        }
+                    });
+                }
+            });
+        }
+        //addGlobalStyle = function (css) {
+        //    var head, style;
+        //    head = document.getElementsByTagName('head')[0];
+        //    if (!head) { return; }
+        //    style = document.createElement('style');
+        //    style.type = 'text/css';
+        //    style.innerHTML = css;
+        //    head.appendChild(style);
+        //}
+
+        //createFC();
+        //var bottomDifference = 0;
+        //var currentHeight = $(".fc-slats > table").css("height");
+        //var newHeight = parseInt(currentHeight) + bottomDifference;
+        ////$( ".fc-slats > table" ).css( "height", newHeight );
+        //addGlobalStyle(".fc-slats > table {height:" + newHeight + "px}");
+
+
+        $('#calendar').fullCalendar('destroy');
+        createFC();
+    });
+    function fnRenderEvent(start, end) {
+        $('#loading').show();
+        $.ajax({
+            url: '@Url.Action("GetEventsTest", "Calendar")' + "?start=" + start + "&end=" + end,
+            type: 'GET',
+            datatype: 'json',
+            data: {
+            },
+            success: function (result) {
+                //alert(result.id);
+                $('#loading').hide();
+                $('#calendar').fullCalendar('removeEvents');
+                $(result).each(function () {
+                    //alert(result.id);
+                    delete_null_properties(this, true);
+                    $('#calendar').fullCalendar('renderEvent', this);
+                })
+                $(".fc-event").popover({
+                    html: true,
+                    trigger: "hover",
+                    placement: function (context, source) {
+                        var position = $(source).position();
+                        //alert(position.left);
+                        if (position.left > 515) {
+                            return "left";
+                        }
+
+                        if (position.left < 300) {
+                            return "right";
+                        }
+
+                        if (position.top < 110) {
+                            return "bottom";
+                        }
+
+                        return "top";
+                    }
+    ,
+                    content: function () {
+                        return "<div id='tstsde'>Loading....</div>";
+
+                    }
+                });
+            },
+            error: function (e) {
+
+            }
+        });
+    }
+    function delete_null_properties(test, recurse) {
+       
+        for (var i in test) {
+            if (test[i] === null) {
+                delete test[i];
+            } else if (recurse && typeof test[i] === 'object') {
+                delete_null_properties(test[i], recurse);
+            }
+            if (test[i] && Object.keys(test[i]).length === 0) {
+                delete test[i]
+            }
+        }
+    }
+</script>
+<script>
+    var test = "";
+   // $("#popover").popover({ trigger: "hover" });
+    //$('#login').popover();
+   
+</script>

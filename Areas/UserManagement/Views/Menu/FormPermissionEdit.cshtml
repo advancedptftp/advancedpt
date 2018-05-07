@@ -1,0 +1,187 @@
+﻿@model DataLayer.Models.tblCEmpFormApproval
+
+@{
+    ViewBag.Title = "Create";
+}
+@if (ViewBag.Error != null)
+{
+    @Html.Raw(ViewBag.Error)
+}
+<center><h2 style="margin-top:20px;">Employee Form Permission</h2></center>
+<section class="bodyinner">
+    <div class="container">
+        <div class="bodyleft">
+
+            @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+        </div>
+        <div class="bodyright">
+
+            <div class="report-form clearfix">
+
+
+
+
+
+
+                @using (Html.BeginForm("FormPermissionEdit", "Menu", FormMethod.Post, new { name = "FormPermission", id = "FormPermission" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(e => e.EmpForm_Id)
+                    @Html.HiddenFor(e => e.CreatedBy)
+                    @Html.HiddenFor(e => e.ApprovedBy)
+
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6 form-group">
+                            @Html.Label("Form name")
+                            @Html.DropDownList("Form_Id", String.Empty)
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6 form-group">
+
+
+
+                            @Html.Label("Created By")
+                            <br />
+                            @foreach (var item in ViewBag.formrole)
+                            {
+                                <input id="chk@(item.Value)"
+                                       type="checkbox"
+                                       class="chk"
+                                       value="@item.Value"
+                                       checked="@item.Selected"
+                                       name="@item.Text" />
+                                @item.Text <br />
+                            }
+                        </div>
+                        <div class="col-sm-6 col-md-6 form-group">
+                            @Html.Label("Approved By")
+                            <br />
+                            @foreach (var item in ViewBag.formrole)
+                            {
+                                <input id="chkapp@(item.Value)"
+                                       type="checkbox"
+                                       class="chk1"
+                                       value="@item.Value"
+                                       checked="@item.Selected" />
+
+                                @item.Text <br />
+                            }
+                        </div>
+                    </div>
+                    <div class="row">
+                      
+                        <div class="col-sm-6 col-md-4 form-group" style="display:inline-flex">
+                            @Html.Label("Can Edit") &nbsp;&nbsp; &nbsp;&nbsp;
+                            @Html.CheckBox("Can_Edit", new { @class = "checkbox" }) Edit
+
+                    </div>
+                      
+                    <div class="col-sm-6 col-md-4 form-group" style="display:inline-flex">
+                      
+                        @Html.Label("Can View")  &nbsp;&nbsp; &nbsp;&nbsp;
+                        @Html.CheckBox("Can_View", new { @class = "checkbox" }) Edit
+
+
+                    </div>
+
+
+                </div>
+                <hr>
+
+
+
+                <div class="subbutt">
+                    <input type="submit" value="Save" class="btn btn-orange pull-right" />
+
+
+                    <div class="clearfix"></div>
+                </div>
+                <p>@Html.ActionLink("Back to List", "FormPermissionIndex")</p>
+                }
+            </div>
+
+
+
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</section>
+<script>
+    $(document).ready(function () {
+
+        var selected = $("#CreatedBy").val();
+
+        if (selected) {
+            var chkArray = selected.split(',');
+            for (var i = 0; i < chkArray.length; i++) {
+                $('input#chk' + chkArray[i]).attr('checked', 'true');
+            }
+        }
+        var selected = $("#ApprovedBy").val();
+
+        if (selected) {
+            var chkArray = selected.split(',');
+            for (var i = 0; i < chkArray.length; i++) {
+                $('input#chkapp' + chkArray[i]).attr('checked', 'true');
+            }
+        }
+        $('#Form_Id').prop('disabled', true);
+    });
+
+</script>
+
+<script>
+
+
+    $("#FormPermission").submit(function () {
+        getValueUsingClass();
+        getValueUsingClasses();
+        $('#Form_Id').prop('disabled', false);
+    })
+    function getValueUsingClass() {
+
+        var chkArray = [];
+        $(".chk:checked").each(function () {
+            chkArray.push($(this).val());
+        });
+        var selected;
+        selected = chkArray.join(',') + ",";
+        // alert(selected);
+        if (selected.length > 1) {
+            selected = selected.substring(0, selected.length - 1);
+            $("#CreatedBy").val(selected);
+        }
+        else {
+            alert("Please at least one of the checkbox");
+            $("#CreatedBy").val("");
+            return false;
+        }
+    }
+    function getValueUsingClasses() {
+
+        var chkArray = [];
+        $(".chk1:checked").each(function () {
+            chkArray.push($(this).val());
+        });
+        var selected;
+        selected = chkArray.join(',') + ",";
+        // alert(selected);
+        if (selected.length > 1) {
+            selected = selected.substring(0, selected.length - 1);
+            $("#ApprovedBy").val(selected);
+        }
+        else {
+            alert("Please at least one of the checkbox");
+            $("#ApprovedBy").val("");
+            return false;
+        }
+
+    }
+
+</script>
+<script>
+    $('#Form_Id').addClass('form-control');
+
+</script>

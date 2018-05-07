@@ -1,0 +1,224 @@
+﻿@*@model IEnumerable<DataLayer.Models.tblTLumbosacralOrthosisForm>*@
+@model PagedList.IPagedList<DataLayer.Models.tblTLumbosacralOrthosisForm>
+@using PagedList.Mvc;
+@using DataLayer;
+@{
+    ViewBag.Title = "Index";
+    var currentuserid = ViewContext.Controller.CurrentUserID();
+    var lStatus = ViewContext.Controller.DmePermittedStatusList(9);
+}
+<center><h2 style="margin-top:20px;">Lumbosacral Orthosis Order List</h2></center>
+@*<h2>Index</h2>*@
+
+<section class="bodyinner2">
+    <div>
+        <p class="pull-right">
+            @Html.ActionLink("Create New Record", "Create1", null, new { @class = "btn btn-primary" })
+        </p>
+        @using (Html.BeginForm("Index", "LumbosacralOrthosisForm", FormMethod.Get))
+        {
+            <div class="searchsec">
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search by Patient Name" })
+                <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                <div class="clearfix"></div>
+            </div>
+        }
+        <div class="clearfix"></div>
+    </div>
+
+    <div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayName("Patient Name")
+                        </th>
+                        <th>
+                            @Html.DisplayName("DOB")
+                        </th>
+                        <th>
+                            @Html.DisplayName("HCPCS Code")
+                        </th>
+
+                        <th>
+                            @Html.DisplayName("Status")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Last Review Date")
+                        </th>
+                        <th>
+
+                        </th>
+                        <th>
+
+                        </th>
+                        <th>
+
+                        </th>
+                        <th>
+
+                        </th>
+                        <th>
+
+                        </th>
+                    </tr>
+
+                </thead>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Patient_Name)
+                        </td>
+                        <td>
+                            @if (item.DOB != null)
+                            {
+                                @item.DOB.Value.GetExactValue()
+                            }
+                        </td>
+                        @*<td>
+                                @Html.DisplayFor(modelItem => item.DMEClinicalStaffPrescription_Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DMEClinicalStaffPrescription_Id)
+                            </td>*@
+                        <td>
+                            @if (item.HCPCSCode != null)
+                            {
+                                @Html.DisplayFor(modelItem => item.HCPCSCode)
+                            }
+                        </td>
+
+                        <td>
+                            @if (item.DMEForm_Status_Id != null)
+                            {
+                                @item.tblMDMEFormStatu.DMEForm_Status
+                            }
+                        </td>
+                        <td>
+                            @if (item.Revised_Date != null)
+                            {
+                                @item.Revised_Date.Value.GetExactValue()
+                            }
+                        </td>
+                        @*<td>
+                                @if (item.CreatedOn != null)
+                                {
+                                    @item.CreatedOn.ToString("MM/dd/yyyy")
+                                }
+                            </td>*@
+
+
+
+                        <td>
+
+                            @if (item.DMEForm_Status_Id != null && item.DMEForm_Status_Id < 5 && lStatus.Contains(item.DMEForm_Status_Id.Value + 1))
+                            {
+                                <a href="@Url.Action("Create", "LumbosacralOrthosisForm", new { id = item.LumbosacralOrthosisForm_Id })">
+                                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                </a>
+
+                            }
+                             else if(item.DMEForm_Status_Id==4){
+                                 <a href="@Url.Action("Create", "LumbosacralOrthosisForm", new { id = item.LumbosacralOrthosisForm_Id})">
+                                    <i class="fa fa-angle-double-up" aria-hidden="true"></i>
+                                </a>
+                            }
+                            @*else if(item.DMEForm_Status_Id==5){
+                                 <a href="@Url.Action("Create", "PurchaseOrder", new { DME_Id = item.LumbosacralOrthosisForm_Id, DMEType = "L0637" })">
+                                    <i class="fa fa-angle-double-up" aria-hidden="true"></i>
+                                </a>
+                            }*@
+                        </td>
+                        @*<td>
+                            @if (item.DMEForm_Status_Id != null && ((item.DMEForm_Status_Id == 1 && item.CreatedBy == currentuserid) || (item.DMEForm_Status_Id != 1 && item.ModifiedBy == currentuserid)))
+                            {
+                                <a href="@Url.Action("Edit", "LumbosacralOrthosisForm", new { id = item.LumbosacralOrthosisForm_Id })">
+                                    <i class="fa fa-edit" aria-hidden="true"></i>
+                                </a>
+
+
+
+
+                            }
+                        </td>*@
+
+                        @*@if(item.DMEForm_Status_Id==9){<td>&nbsp;</td>}
+                        else
+                        {*@
+                       
+                        <td>
+                            @if (item.DMEForm_Status_Id != null && item.DMEForm_Status_Id <5 && ((item.DMEForm_Status_Id == 1 && item.CreatedBy == currentuserid) || (item.DMEForm_Status_Id != 1 && item.ModifiedBy == currentuserid)))
+                            {
+                                <a href="@Url.Action("Edit", "LumbosacralOrthosisForm", new { id = item.LumbosacralOrthosisForm_Id })">
+                                    <i class="fa fa-edit" aria-hidden="true"></i>
+                                </a>
+
+
+
+
+                            }
+                        </td>
+                        @*}*@
+                        <td>
+                            <a href="@Url.Action("Details", "LumbosacralOrthosisForm", new { id = item.LumbosacralOrthosisForm_Id })">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                        @if (item.DMEForm_Status_Id == 5)
+                        {
+                            <td class="tdList_PDF">
+                                <a href="javascript:void(0);" onclick="fnShowDetail(@item.LumbosacralOrthosisForm_Id);">
+                                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                        }
+                    </tr>
+                }
+
+            </table>
+
+        </div>
+        <div>
+            <br />
+            @using (Html.BeginForm("Index", "LumbosacralOrthosisForm", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+            {
+                @Html.DropDownList("PageSize")
+            }
+            @{
+                bool? direction = ViewBag.SortDirection;
+                if (direction == null) { direction = false; }
+            }
+            <div class="pull-left" style=" padding:10px;">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                      new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction }))
+        </div>
+    </div>
+
+</section>
+
+<script>
+    function fnShowDetail(KneeBraceFusionLigamentForm_Id) {
+        //alert(KneeBraceFusionLigamentForm_Id);
+        var url = "@Url.Action("LumbosacralOrthosisFormPdf", "LumbosacralOrthosisForm", new { Area = "DmeForm" })" + "?id=" + KneeBraceFusionLigamentForm_Id;
+        //fnShowPopupForDetail(url);
+        popupwindow(url, 'LumbosacralOrthosisForm', 1000, 800);
+    }
+</script>
+
+
+
+<script>
+    $("#PageSize").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+</script>

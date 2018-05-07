@@ -1,0 +1,216 @@
+﻿
+
+@{
+    ViewBag.Title = "Index";
+    var cap = (string)ViewBag.capture;
+}
+@{
+    //Layout = "~/Views/Shared/_PatientPortal.cshtml";
+}
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<h2>Upload Patient’s Identification</h2>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <style type="text/css">
+        body {
+            font-family: Arial;
+            font-size: 10pt;
+        }
+    </style>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="~/Webcam_Plugin/jquery.webcam.js"></script>
+    <style>
+        #view_data {
+            padding: 10px 0;
+            color: #ff0000;
+            word-wrap: break-word;
+        }
+
+        #authenticationError {
+            color: #ff0000;
+        }
+
+        .method-test {
+            margin-left: 30px;
+        }
+
+        .glyphicon {
+            float: left;
+            margin-top: 2px;
+            margin-right: 10px;
+        }
+
+        form {
+            margin-left: 30px;
+        }
+
+        #loader {
+            display: none;
+            width: 250px;
+            float: left;
+        }
+
+        .outwebcamp {
+            text-align: center;
+            padding: 0 14%;
+        }
+
+       
+    </style>
+</head>
+<body>
+    
+    <script type="text/javascript">
+    var pageUrl = '@Url.Action("Camera", "WebCam")'
+        $(function () {
+            jQuery("#webcam").webcam({
+                width: 320,
+                height: 240,
+                mode: "save",
+                swffile: '/Webcam_Plugin/jscam.swf',
+                debug: function (type, status) {
+                    $('#camStatus').append(type + ": " + status + '<br /><br />');
+                },
+                onSave: function (data) {
+                    $.ajax({
+                        url: '@Url.Action("GetCapturedImage", "WebCam")',
+                    type: "POST",
+                    data: '',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (r) {
+                        $("[id*=imgCapture]").css("visibility", "visible");
+                        var img = new Image();
+                        img.src = r;
+                        img.onload = function () {
+                            $("[id*=imgCapture]")[0].src = img.src;
+                            enterApiKeys()
+
+                        }
+                        //$("[id*=imgCapture]").attr("src", r.d);
+                    },
+                    failure: function (response) {
+                        alert(response.d);
+                    }
+                });
+            },
+            onCapture: function () {
+                webcam.save(pageUrl);
+            }
+        });
+    });
+    function Capture() {
+        webcam.capture();
+        return false;
+    }
+    //function enterApiKeys() {
+
+    //    $("#loader").show();
+    //    if ($("#app_id").val() != "" && $("#app_key").val() != "") {
+    //        self.kairos = new Kairos("f6b70a30", "fbdd7d9eed5f3f852ac90b306fdf1d0c");
+    //        self.kairos.checkAuthentication(function (cb) {
+    //            if (cb.statusText != "error") {
+    //                $("#loader").hide();
+    //                $("#apiMethodsTests").show();
+    //                testDetect();
+    //            }
+    //            else {
+    //                $("#loader").hide();
+    //                $("#apiMethodsTests").hide();
+    //                $("#authenticationError").html("Authentication Error")
+    //            }
+    //        });
+    //    }
+    //    else {
+    //        $("#loader").hide();
+    //        $("#apiMethodsTests").hide();
+    //        $("#authenticationError").html("Plese enter your API keys")
+    //    }
+    //};
+    //function testDetect() {
+    //    //$("#view_data").empty();
+    //    // if (self.validateMe($("#detectForm")) == true) {
+    //    //self.startTimer();
+    //    $("#loader").show();
+    //    if ($("#imgCapture").val() != "") {
+    //        var file = $("[#imgCapture]")[0].files[0];
+    //        var reader = new FileReader();
+    //        reader.readAsDataURL(file);
+    //        reader.onloadend = function () {
+    //            var fileData = parseImageData(reader.result);
+    //            self.kairos.detect(fileData, self.success_cb);
+    //        }
+    //    }
+    //    else {
+    //        image = $("#detectForm .image").val();
+    //        self.kairos.detect(image, self.success_cb);
+    //    }
+    //    //}
+    //};
+    </script>
+
+    @*<table border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td align="center">
+                <u>Live Camera</u>
+            </td>
+            <td></td>
+            <td align="center">
+                <u>Captured Picture</u>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div id="webcam">
+
+                </div>
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+             
+                <img id="imgCapture" style="visibility:hidden; width:320px; height:240px;" />
+            </td>
+        </tr>
+    </table>*@
+    <br />
+
+    <div class="outwebcamp">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="webheading">Live Camera</div> 
+                <div id="webcam">
+
+                </div>
+
+
+
+            </div>
+            <div class="col-sm-6">
+                <div class="webheading">Captured Picture</div>
+                <img id="imgCapture" style="visibility:hidden; width:320px; height:240px;" /></div>
+        </div>
+    </div>
+
+
+
+    <div style="text-align:center; padding-top:20px;"><input type="button" class="btn btn-primary" id="btnCapture" value="Capture" onclick="return Capture();" /></div>
+    <br />
+    <span id="camStatus"></span>
+
+
+
+
+ 
+</body>
+</html>
+
+
+
+
+

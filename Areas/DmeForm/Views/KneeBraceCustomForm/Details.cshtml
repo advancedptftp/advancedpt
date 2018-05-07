@@ -1,0 +1,978 @@
+﻿@model DataLayer.Models.KneeBraceCustomFormDetail
+@using DataLayer;
+@{
+    ViewBag.Title = "Details";
+}
+
+<section class="bodyinner">
+    <div class="container">
+        <div class="report-form clearfix">
+            @using (Html.BeginForm("Index", "KneeBraceCustomForm", FormMethod.Post, new { name = "Index", id = "Index" }))
+            {
+            @Html.AntiForgeryToken()
+
+            @Html.HiddenFor(e => e.Prescription.DMEForm_Id)
+            @*@Html.Hidden("CreatedOn", DateTime.Now)*@
+            @Html.Hidden("HCPCSCode", "L1846")
+            @Html.HiddenFor(e => e.Prescription.DMEFormCode)
+            @Html.HiddenFor(e => e.Prescription.CreatedOn)
+            @Html.HiddenFor(e => e.KneeBraceCustomForm.KneeBraceCustomForm_Id)
+            @Html.HiddenFor(e => e.Prescription.DMEClinicalStaffPrescription_Id)
+            @Html.HiddenFor(e => e.KneeBraceCustomForm.CreatedOn)
+            @Html.HiddenFor(e => e.KneeBraceCustomForm.CreatedBy)
+            @Html.HiddenFor(e => e.PurchaseOrderItemDetail.DMEForm_Id)
+            @Html.HiddenFor(e => e.KneeBraceCustomForm.HCPCSCode)
+            @Html.HiddenFor(e => e.KneeBraceCustomForm.Patient_Id)
+            @Html.HiddenFor(e => e.CustomBrace.CustomBrace_Desc)
+            @Html.HiddenFor(e => e.PreviousTreatment.PreviousTreatment_Desc)
+            @Html.HiddenFor(e => e.Prescription.IsItemReqByTherapist)
+            @Html.HiddenFor(e => e.Prescription.IsItemReqByDoctor)
+            @Html.HiddenFor(e => e.Prescription.IsItemReqByPatient)
+            @Html.HiddenFor(e => e.Order.DMEFormCode)
+            @Html.HiddenFor(e => e.Order.CreatedOn)
+            @Html.HiddenFor(e => e.Order.DMEOfficeStaffOrder_Id)
+            @Html.HiddenFor(e => e.KneeBraceCustomForm.Patient_Id)
+            @Html.HiddenFor(e => e.KneeBraceCustomForm.KneeBraceCustomForm_Id)
+            @Html.HiddenFor(e => e.MCPreApproval.DMEForm_Id)
+            @Html.HiddenFor(e => e.MCPreApproval.DMEFormCode)
+            @Html.HiddenFor(e => e.MCPreApproval.CreatedOn)
+            @Html.HiddenFor(e => e.MCPreApproval.DMEOfficeStaffMC_Id)
+            @Html.HiddenFor(e => e.Order.IsFaxLOMN)
+                    @Html.HiddenFor(e => e.Order.IsOrderOrthosis)  
+                    @Html.HiddenFor(e => e.Order.IsReceiveLOMN)
+                 @Html.HiddenFor(e => e.Deliver.IsReceivedOrthosis)
+                    @Html.HiddenFor(e => e.Deliver.DMEClinicAndOfficeStaffDeliver_Id)
+
+    <div class="bodyright" style="width:100%;">
+
+        <div class="report-form clearfix">
+            <h2>BREG Custom Knee Brace Order Form (HCPCS Code: L1846)</h2>
+            <div class="p_bot15"><strong>*MEDICARE PATIENTS: DO NOT PROCEED IF THEY HAVE BEEN ISSUED A ‘KNEE BRACE’ IN THE PAST 5 YEARS.</strong></div>
+
+            <hr>
+
+            @Html.Hidden("HCPCSCode", "L1846")
+            <div id="dvFirst">
+
+                <div id="dvPrescription">
+
+                    <div id="div_1">
+                        <div class="row">
+                            <div class="col-sm-12">
+
+
+                                <div class="borderbox">
+                                    <div class="row">
+                                        <div class="col-md-12">
+
+
+                                            <div class="col-sm-4  form-group">
+                                                <label>Patient Name</label>
+                                                @Html.TextBoxFor(m => m.KneeBraceCustomForm.Patient_Name, new { @class = "form-control" ,@readonly = "readonly"})
+                                                <span id="Patient_Name" class="validateMsg"></span>
+                                                <br />
+                                                @Html.ValidationMessageFor(m => m.KneeBraceCustomForm.Patient_Name)
+                                            </div>
+                                            <div class="col-sm-4 form-group">
+                                                <label for="date">DOB</label>
+                                                @Html.TextBoxFor(m => m.KneeBraceCustomForm.DOB, new { @class = "form-control", @readonly = "readonly", style = "width:100%;", @Value = @Model.KneeBraceCustomForm.DOB.GetExactValue() })
+                                                <span id="PatientDOB" class="validateMsg"></span>
+                                                <br />
+                                                @Html.ValidationMessageFor(m => m.KneeBraceCustomForm.DOB)
+                                            </div>
+
+
+                                           
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+                        <div class="borderbox">
+                            <div class="outerf">
+                                @*<div class="stepheading"><strong>1. Clinical Staff </strong> <i>prescription</i></div>*@
+                                <div class="hiddenform">
+                                    
+                                    <div class="row">
+                                        <div class="col-sm-4 col-md-5">
+                                            Diagnosis
+                                        </div>
+                                        <div class="col-sm-4 col-md-5">
+                                            ICD-10 Code
+                                        </div>
+                                        <div class="col-sm-4 col-md-2">
+
+                                        </div>
+                                    </div>
+                                    <div id="dvDiagnosis">
+                                        <script>
+                                            var counter = 0;
+                                        </script>
+                                        @for (int i = 0; i < Model.DMEDiognosis.Count; i++)
+                                        {
+                                            <div class="row">
+                                                <div class="col-sm-4 col-md-5 form-group">
+                                                    @Html.TextBoxFor(e => e.DMEDiognosis[i].Diagnosis_Desc, new { @class = "form-control Disease_nameForICD", @readonly = "readonly"})
+                                                    <span id="Diagnosis_Desc" class="validateMsg"></span>
+                                                </div>
+                                                <div class="col-sm-4 col-md-5 form-group">
+                                                    @Html.TextBoxFor(e => e.DMEDiognosis[i].ICD10Code, new { @class = "form-control ICD_CodeForICD", @readonly = "readonly"})
+                                                    <span id="ICD10Code" class="validateMsg"></span>
+                                                </div>
+                                               
+                                            </div>
+                                            <script>
+                                                counter += 1;
+                                            </script>
+                                        }
+                                    </div>
+                                  
+
+                                    <div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-12"></div>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                       
+                    </div>
+
+                    <div id="div_2">
+
+                        @Html.HiddenFor(e => e.PurchaseOrderItemDetail.PO_Item_Desc, new { @id = "hdnItemDesc" })
+                        @Html.HiddenFor(e => e.PurchaseOrderItemDetail.PO_Item_Code, new { @id = "hdnItemCode" })
+
+
+                        <div class="clearfix"></div>
+
+                        <div class="row">
+
+                            <div class="col-sm-6">
+                                <h3>Description:</h3>
+                                <div class="rightgray">
+                                    <h4>L1846 Code Includes the Following:</h4>
+                                    <ul>
+                                        <li>Orthosis</li>
+                                        <li>All Straps, Closures and Padding</li>
+                                        <li>Fitting & Adjustment</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-sm-3" style="margin-top: 30px;"><img src="@Url.Content("~/Images/pic1.png")" alt="" /></div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-sm-12">
+                                <div class="col-sm-4 radiosec">
+
+
+                                    <input id="KneeBraceCustomForm_IsCustomOALateralOffLoader_01208" class="checkbox-custom checkone" name="IsCustomOAMedialOffLoader_01208" type="checkbox" value="true" disabled="disabled" onclick="fnchooseFreestyle('01208');">
+
+                                    <label for="KneeBraceCustomForm_IsCustomOALateralOffLoader_01208" class="checkbox-custom-label">
+                                        <span id="Desc_2">01208</span>
+                                        <span id="Desc_22">Custom OA Medial Off-Loader</span>
+                                    </label>
+                                </div>
+                                <div class="col-sm-4 radiosec">
+
+
+                                    <input id="KneeBraceCustomForm_IsCustomOALateralOffLoader_01300" class="checkbox-custom checkone" name="IsCustomOALateralOffLoader_01300" disabled="disabled" type="checkbox" value="true" readonly="readonly"  onclick="fnchooseFreestyle('01300');">
+
+                                    <label for="KneeBraceCustomForm_IsCustomOALateralOffLoader_01300" class="checkbox-custom-label">
+                                        <span id="Desc_2">01300</span>
+                                        <span id="Desc_22">Custom OA Lateral Off-Loader</span>
+                                    </label>
+                                </div>
+                                <div class="col-sm-4 radiosec">
+
+
+                                    <input id="KneeBraceCustomForm_IsCustomLigamentBrace_01207" class="checkbox-custom checkone" name="IsCustomLigamentBrace_01207" type="checkbox" disabled="disabled" value="true" readonly="readonly" onclick="fnchooseFreestyle('01207');">
+
+                                    <label for="KneeBraceCustomForm_IsCustomLigamentBrace_01207" class="checkbox-custom-label">
+                                        <span id="Desc_3">01207</span>
+                                        <span id="Desc_33">Custom OA Lateral Off-Loader</span>
+                                    </label>
+                                </div>
+                               
+                            </div>
+                            <span id="LateralOffLoader" class="validateMsg"></span>
+
+
+                        </div>
+
+                       
+                    </div>
+                    <div id="div_3">
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h3>Fitting</h3>
+                                <div class="borderbox">
+                                    <div class="row innerborder">
+                                        <div class="col-sm-5 p_top10"><strong>1. Thigh Circumference:</strong></div>
+                                        <div class="col-sm-7">
+
+                                            <div class="form-group">
+                                                @Html.TextBoxFor(m => m.KneeBraceCustomForm.Fitting_ThighCircumference, new { @class = "form-control shortfield",@readonly = "readonly" })
+                                                <label for="exampleInputName2" class=" p_left10">inches (6 inches above mid-patella)</label>
+                                                <br />
+                                                @Html.ValidationMessageFor(model => model.KneeBraceCustomForm.Fitting_ThighCircumference)
+                                                <span id="Fitting_ThighCircumference" class="validateMsg"></span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="row innerborder">
+                                        <div class="col-sm-5 p_top10"><strong>2. Calf Circumference:</strong></div>
+                                        <div class="col-sm-7">
+
+                                            <div class="form-group">
+                                                @Html.TextBoxFor(m => m.KneeBraceCustomForm.Fitting_CalfCircumference, new { @class = "form-control shortfield", @readonly = "readonly" })
+                                                <label for="exampleInputName2" class=" p_left10">inches (6 inches below mid-patella)</label>
+                                                <br />
+                                                @Html.ValidationMessageFor(model => model.KneeBraceCustomForm.Fitting_CalfCircumference)
+                                                <span id="Fitting_CalfCircumference" class="validateMsg"></span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="row innerborder">
+                                        <div class="col-sm-5 p_top10"><strong>3. Knee Offset:</strong></div>
+                                        <div class="col-sm-7">
+
+                                            <div class="form-group">
+                                                @Html.TextBoxFor(m => m.KneeBraceCustomForm.Fitting_KneeOffset, new { @class = "form-control shortfield", @readonly = "readonly" })
+                                                <label for="exampleInputName2" class=" p_left10">milimeter (push in plunger on tool)</label>
+                                                <br />
+                                                @Html.ValidationMessageFor(model => model.KneeBraceCustomForm.Fitting_KneeOffset)
+                                                <span id="Fitting_KneeOffset" class="validateMsg"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row innerborder">
+                                        <div class="col-sm-5 p_top10"><strong>4. Knee Width:</strong></div>
+                                        <div class="col-sm-7">
+
+                                            <div class="form-group">
+                                                @Html.TextBoxFor(m => m.KneeBraceCustomForm.Fitting_KneeWidth, new { @class = "form-control shortfield", @readonly = "readonly" })
+                                                <label for="exampleInputName2" class=" p_left10">milimeter (use width caliper)</label>
+
+                                                <br />
+                                                @Html.ValidationMessageFor(model => model.KneeBraceCustomForm.Fitting_KneeWidth)
+                                                <span id="Fitting_KneeWidth" class="validateMsg"></span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        
+                    </div>
+
+                    <div id="div_4">
+                        <div class="borderbox">
+                            <div class="row">
+                                <div id="mydiv" class="col-sm-12">
+                                    <h3>Reason for custom vs. off the shelf brace (select one or more):</h3>
+
+                                    <div class="col-sm-12">
+                                        <div class="col-sm-6 ">
+
+
+                                            <input id="KneeBraceCustomFormCustomBrace_Desc1" class="checkbox-custom" name="IsCustomBrace_Desc" disabled="disabled" type="checkbox" value="1" onclick="fnchooseFreestyle(1);">
+
+                                            <label for="KneeBraceCustomFormCustomBrace_Desc1" class="checkbox-custom-label">
+
+                                                <span>Disproportionate size of thigh and calf</span>
+                                            </label>
+                                        </div>
+
+                                        <div class="col-sm-6 ">
+
+
+                                            <input id="KneeBraceCustomFormCustomBrace_Desc2" class="checkbox-custom" name="IsCCustomBrace_Desc2" disabled="disabled" type="checkbox" value="2" onclick="fnchooseFreestyle(3);">
+
+                                            <label for="KneeBraceCustomFormCustomBrace_Desc2" class="checkbox-custom-label">
+                                                <span>Minimal muscle mass upon which to suspend an orthosis</span>
+
+                                            </label>
+                                        </div>
+                                        <div class="clearfix">&nbsp;</div>
+                                        <div class="col-sm-6 ">
+
+
+                                            <input id="KneeBraceCustomFormCustomBrace_Desc3" class="checkbox-custom" name="IsCustomBrace_Desc3" disabled="disabled" type="checkbox" value="3" onclick="fnchooseFreestyle(2);">
+
+                                            <label for="KneeBraceCustomFormCustomBrace_Desc3" class="checkbox-custom-label">
+                                                <span>A typical  thigh and calf dimensions due to obesity (BMI greater than or equal to 30)</span>
+
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-6 ">
+
+
+                                            <input id="KneeBraceCustomFormCustomBrace_Desc4" class="checkbox-custom" name="IsCustomBrace_Desc4" disabled="disabled" type="checkbox" value="4" onclick="fnchooseFreestyle(3);">
+
+                                            <label for="KneeBraceCustomFormCustomBrace_Desc4" class="checkbox-custom-label">
+                                                <span>Intimate fit is required for ligament protection or off-loading indication</span>
+
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <span id="Reasonforcustom" class="validateMsg"></span>
+                            </div>
+
+                        </div>
+
+                        
+                    </div>
+
+
+                    <div id="div_5">
+                        <div class="borderbox radiosection_with1">
+                            <div class="row">
+                                <div id="Previous" class="col-sm-12">
+                                    <h3>Previous Treatments/Medications (select one or more only if applicable):</h3>
+
+                                    <div style="margin-left:40px;" class="previoustreatment">
+                                        <div class="radiosec">
+
+
+                                            <input id="PreviousTreatments1" class="checkbox-custom" name="IsCustomOAMedialOffLoader_01208" disabled="disabled" type="checkbox" value="1" onclick="fnchooseFreestyle(1);">
+
+                                            <label for="PreviousTreatments1" class="checkbox-custom-label">
+
+                                                <span>Prior Surgery</span>
+                                            </label>
+                                        </div>
+
+                                        <div class="radiosec">
+
+
+                                            <input id="PreviousTreatments2" class="checkbox-custom" name="IsCustomLigamentBrace_01207" type="checkbox" disabled="disabled" value="2" onclick="fnchooseFreestyle(3);">
+
+                                            <label for="PreviousTreatments2" class="checkbox-custom-label">
+                                                <span>NSAIDS/Pain Medications</span>
+
+                                            </label>
+                                        </div>
+                                        <div class="clearfix">&nbsp;</div>
+                                        <div class="radiosec">
+
+
+                                            <input id="PreviousTreatments3" class="checkbox-custom" name="IsCustomOALateralOffLoader_01300" type="checkbox" disabled="disabled" value="3" onclick="fnchooseFreestyle(2);">
+
+                                            <label for="PreviousTreatments3" class="checkbox-custom-label">
+                                                <span>Injections</span>
+
+                                            </label>
+                                        </div>
+                                     
+                                        <div class="radiosec">
+
+
+                                            <input id="PreviousTreatments4" class="checkbox-custom" name="IsCustomLigamentBrace_01207" type="checkbox" value="4" disabled="disabled" onclick="fnchooseFreestyle(3);">
+
+                                            <label for="PreviousTreatments4" class="checkbox-custom-label">
+                                                <span>Physical Therapy </span>
+
+                                            </label>
+                                        </div>
+                                        <div class="clearfix">&nbsp;</div>
+                                    </div>
+                                    <span id="PreviousTreatments" class="validateMsg"></span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                      
+                    </div>
+
+                    <div id="div_6">
+                        <div class="borderbox ">
+                            <div class="row">
+                                <div class="col-sm-12">
+
+
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <h2>Right/Left:</h2>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <div class="radiosec">
+
+                                                @Html.RadioButtonFor(m => m.KneeBraceCustomForm.CirclePosition, "LEFT", new { @class = "radio-custom Present_Intensity_Symptom", @id = "LEFT", @disabled = "disabled" })
+
+                                                <label for="LEFT" class="radio-custom-label">LEFT</label>
+
+                                            </div>
+                                            <div class="radiosec">
+                                                @Html.RadioButtonFor(m => m.KneeBraceCustomForm.CirclePosition, "RIGHT", new { @class = "radio-custom Present_Intensity_Symptom", @id = "RIGHT", @disabled = "disabled" })
+
+                                                <label for="RIGHT" class="radio-custom-label">RIGHT</label>
+
+                                            </div>
+                                            <div class="clearfix"></div>
+
+                                        </div>
+
+
+
+
+                                    </div>
+                                    <div class="clearfix">&nbsp;</div>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <h2>Gender:</h2>
+                                        </div>
+                                        <div class="col-sm-4 radiosec">
+
+                                            @Html.RadioButtonFor(m => m.KneeBraceCustomForm.Gender, "M", new { @class = "radio-custom Present_Intensity_Symptom", @id = "Male", @disabled = "disabled" })
+
+                                            <label for="Male" class="radio-custom-label">Male</label>
+
+                                        </div>
+                                        <div class="col-sm-4 radiosec">
+                                            @Html.RadioButtonFor(m => m.KneeBraceCustomForm.Gender, "F", new { @class = "radio-custom Present_Intensity_Symptom", @id = "Female", @disabled = "disabled" })
+
+                                            <label for="Female" class="radio-custom-label">Female</label>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                      
+                    </div>
+
+
+                    <div id="div_7">
+                        <div class="borderbox">
+                            <div class="row">
+                                <div class="col-sm-12">
+
+                                    <h3>Item Requested By:</h3>
+                                    <div class="col-sm-12">
+
+                                        <div class="radiosec">
+                                            <input id="Prescription1" class="checkbox-custom checkone1" name="IsItemReqByTherapist" type="checkbox" value="true" disabled="disabled" onchange="fnEnableDisableTextbox(this,'');">
+                                            <label for="Prescription1" class="checkbox-custom-label">Therapist</label>
+                                        </div>
+                                        <div class="radiosec">
+                                            <input id="Prescription2" class="checkbox-custom checkone1" name="IsItemReqByPatient" type="checkbox" value="true" disabled="disabled" onchange="fnEnableDisableTextbox1(this,'Prescription_Doctor_Name');">
+                                            <label for="Prescription2" class="checkbox-custom-label">Patient</label>
+                                        </div>
+                                        <div class="radiosec">
+                                            <input id="Prescription3" class="checkbox-custom checkone1" name="IsItemReqByDoctor" type="checkbox" value="true" disabled="disabled" onchange="fnEnableDisableTextbox2(this,'Prescription_Doctor_Name');">
+                                            <label for="Prescription3" class="checkbox-custom-label">Doctor</label>
+                                        </div>
+                                    </div>
+                                    <div id="Doctor_Name" class="col-sm-12">
+                                        <div class="col-sm-12 col-md-8 form-group p_top10">
+                                            @Html.TextBoxFor(e => e.Prescription.Doctor_Name, new { @class = "form-control", @readonly = "readonly" })
+                                            <span id="Doctor_Name" class="validateMsg"></span>
+                                        </div>
+                                    </div>
+                                    <div id="Therapist_Name" class="col-sm-12">
+                                        <div class="col-sm-12 col-md-8 form-group p_top10">
+                                            @Html.TextBoxFor(e => e.Prescription.Therapist_Name, new { @class = "form-control", @readonly = "readonly" })
+                                            <span id="Doctor_Name" class="validateMsg"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                       
+                    </div>
+                </div>
+                <div id="dvMC">
+                    <div class="outerf">
+                        <div class="borderbox">
+                            <div class="hiddenform">
+                               
+                                <div>
+                                    <div class="row form-group">
+                                        <div class="col-sm-4">Patient’s MC#:</div>
+                                        <div class="col-sm-6">
+                                            @Html.TextBoxFor(m => m.MCPreApproval.PatientMCNo, new { @class = "form-control", @readonly = "readonly" })
+                                            <span id="PatientMCNo_Msg" class="validateMsg"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-sm-4">
+                                            <h3>Check Driver’s License Region C:</h3>
+                                        </div>
+                                        <div class="col-sm-3 radiosec">
+                                            @Html.RadioButtonFor(m => m.MCPreApproval.IsRegionC, true, new { @class = "radio-custom", @id = "IsRegionCYes" ,@disabled="disabled" })
+                                            <label for="IsRegionCYes" class="radio-custom-label">Yes</label>
+                                            @*<label class="radio-inline">@Html.RadioButtonFor(m => m.MCPreApproval.IsRegionC, Model.MCPreApproval.IsRegionC) Yes</label>
+                                                <label class="radio-inline">@Html.RadioButtonFor(m => m.MCPreApproval.IsRegionC, !Model.MCPreApproval.IsRegionC) No</label>*@
+                                        </div>
+                                        <div class="col-sm-3 radiosec">
+                                            @Html.RadioButtonFor(m => m.MCPreApproval.IsRegionC, false, new { @class = "radio-custom", @id = "IsRegionCNo", @disabled = "disabled" })
+                                            <label for="IsRegionCNo" class="radio-custom-label">N0</label>
+                                        </div>
+
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-sm-12">
+                                            Call MC Rep: 1-866-270-4909 Tax ID: 13056
+                                            PTAN#: 6240770001 NPI: 1265657555 REGION C
+                                            Confirm: “No L1846, etc. past 5 yrs.” SEE REF GUIDE
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-sm-4">
+                                            <h3>Same or similar device issued in the past 5 years?</h3>
+                                        </div>
+                                        <div class="col-sm-2 radiosec">
+                                            @Html.RadioButtonFor(m => m.MCPreApproval.IsSimilarDeviceIssued, true, new { @class = "radio-custom", @id = "IsSimilarDeviceIssuedYes", @disabled = "disabled" })
+                                            <label for="IsSimilarDeviceIssuedYes" class="radio-custom-label">Yes</label>
+
+                                        </div>
+                                        <div class="col-sm-2 radiosec">
+                                            @Html.RadioButtonFor(m => m.MCPreApproval.IsSimilarDeviceIssued, false, new { @class = "radio-custom", @id = "IsSimilarDeviceIssuedNo", @disabled = "disabled" })
+                                            <label for="IsSimilarDeviceIssuedNo" class="radio-custom-label">No</label>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        <div class="borderbox">
+                            <div class="hiddenform">
+
+                                <div class="row form-group">
+                                    <div class="col-sm-4"><h3>Letter of Medical Necessity:</h3></div>
+                                    <div class="radiosec">
+                                        <input id="Order_IsFaxLo" class="checkbox-custom" name="IsFax" type="checkbox" value="true" disabled="disabled" onclick="fnMedicalNecessity(@Model.Order.DMEForm_Id)">
+
+                                        <label for="Order_IsFaxLo" class="checkbox-custom-label">
+                                            <span>Generate</span>
+
+                                        </label>
+                                        <span id="Order_IsFaxLo" class="validateMsg"></span>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.Order.FaxLOMN_Date, new { @class = "form-control ", @placeholder = "MM/dd/YYYY", style = "width:100%;",@readonly = "readonly", @Value = @Model.Order.FaxLOMN_Date.GetExactValue() })
+                                        <span id="FaxLOMN_Date" class="validateMsg"></span>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        
+                    </div>
+                </div>
+
+                <div id="dvOrder">
+
+
+                    <div class="outerf">
+                        <div class="borderbox">
+                            <div class="hiddenform">
+
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12 form-group">
+                                        <div class="col-sm-4"><h3>Letter of Medical Necessity:</h3></div>
+                                        <div class="radiosec">
+                                            <input id="Order_IsReceive" class="checkbox-custom" name="IsReceiveLOMN" type="checkbox" value="true" disabled="disabled">
+                                            <label for="Order_IsReceive" class="checkbox-custom-label">
+                                                Received
+                                            </label>
+                                            @*<span id="IsReceiveLOMN" class="validateMsg"></span>*@
+                                        </div>
+                                        <div class="col-sm-4 radiosec">
+                                            @Html.TextBoxFor(m => m.Order.ReceiveLOMN_Date, new { @class = "form-control ",@readonly = "readonly", @placeholder = "MM/dd/YYYY", style = "width:100%;", @Value = @Model.Order.ReceiveLOMN_Date.GetExactValue() })
+                                            <span id="ReceiveLOMN_Date" class="validateMsg"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                        <div class="borderbox">
+                            <div class="hiddenform">
+
+                                <div class="row">
+                                    @*<div class="col-sm-12 col-md-12 form-group">
+                                        <div class="col-sm-4"><h3>Letter of Medical Necessity:</h3></div>
+                                        <div class="radiosec">
+                                            <input id="Order_IsOrderOr" class="checkbox-custom" name="IsOrderOrthosis" type="checkbox" value="true" disabled="disabled">
+                                            <label for="Order_IsOrderOr" class="checkbox-custom-label">
+                                                Generate
+                                            </label>
+                                           
+                                        </div>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(m => m.Order.OrderOrthosis_Date, new { @class = "form-control" ,@readonly = "readonly",@placeholder = "MM/dd/YYYY", style = "width:100%;", @Value = @Model.Order.OrderOrthosis_Date.GetExactValue() })
+                                            <span id="OrderOrthosis_Date" class="validateMsg"></span>
+                                        </div>
+                                    </div>*@
+
+                                    <div class="col-sm-12 col-md-12 form-group">
+
+                                        <p style="padding-bottom:8px;">
+                                            Ph# 800-321-0607 Acct#: 23298
+                                            <br /><strong>NOTE: Ground Shipping/UPS</strong>
+                                        </p>
+                                        <div class="row form-group">
+                                            <div class="col-sm-5">Confirmation#:</div>
+                                            <div class="col-sm-5">
+                                                @Html.TextBoxFor(m => m.Order.ConfirmationNo, new { @class = "form-control",@readonly = "readonly" })
+                                                <span id="ConfirmationNo" class="validateMsg"></span>
+                                            </div>
+                                        </div>
+
+                                        PO#: @Html.DisplayFor(m => m.KneeBraceCustomForm.tblMPatient.LastName)
+
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+
+                       
+                    </div>
+                </div>
+
+                <div id="dvDeliver">
+
+
+                    <div class="outerf">
+
+                        <div class="hiddenform">
+                            <div class="row">
+                                <div class="borderbox">
+                                    <div class="hiddenform">
+
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 form-group">
+                                                <div class="col-sm-4"><h3>Received DME Item:</h3></div>
+                                                <div class="radiosec">
+                                                    <input id="Order_IsReceiv" class="checkbox-custom" name="IsReceivedOrthosis" type="checkbox" value="true" disabled="disabled">
+                                                    <label for="Order_IsReceiv" class="checkbox-custom-label">
+                                                        Received
+                                                    </label>
+                                                    <span id="IsReceivedOrthosis" class="validateMsg"></span>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    @Html.TextBoxFor(m => m.Deliver.ReceivedOrthosis_Date, new { @class = "form-control ", @readonly = "readonly", @placeholder = "MM/dd/YYYY", style = "width:100%;", @Value = @Model.Deliver.ReceivedOrthosis_Date.GetExactValue() })
+                                                    <span id="ReceivedOrthosis_Date" class="validateMsg"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-12">
+                                                <div class="col-sm-4">
+                                                    <h2>Condition:</h2>
+                                                </div>
+                                                <div class="radiosec">
+
+                                                    @Html.RadioButtonFor(m => m.Deliver.Condition, "Good", new { @class = "radio-custom", @id = "Good", @disabled = "disabled" })
+
+                                                    <label for="Good" class="radio-custom-label">Good</label>
+
+                                                </div>
+                                                <div class="radiosec">
+                                                    @Html.RadioButtonFor(m => m.Deliver.Condition, "Bad", new { @class = "radio-custom Present_Intensity_Symptom", @id = "Bad", @disabled = "disabled" })
+
+                                                    <label for="Bad" class="radio-custom-label">Bad</label>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                       
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+            <div class="clearfix"></div>
+            }
+        </div>
+    </div>
+</section>
+@*<script type="text/javascript">
+    $(document).ready(function () {
+        $("#dvSecond").hide();
+    });
+
+    function GotoSecondPanel() {
+        $("#dvFirst").hide();
+        $("#dvSecond").show();
+    }
+
+    function GotoFirstPanel() {
+        $("#dvFirst").show();
+        $("#dvSecond").hide();
+    }
+
+</script>*@
+
+
+<script type="text/javascript">
+
+
+
+    $(function () {
+        $("#addRows").click(function () {
+            //counter = 2;
+            $("#dvDiagnosis").append("<div class='row'><div id='Div"
+                + counter + "' class='col-sm-4 col-md-5 form-group'>" +
+                "<input class='form-control Disease_nameForICD'  id='DMEDiognosis_" + counter + "__Diagnosis_Desc' name='DMEDiognosis[" + counter + "].Diagnosis_Desc' type='text'>" +
+                "</div><div id='Div1" + counter + "' class='col-sm-4 col-md-5 form-group'>" +
+                "<input class='form-control ICD_CodeForICD' id='DMEDiognosis_" + counter + "__ICD10Code' name='DMEDiognosis[" + counter + "].ICD10Code'  type='text'>" +
+                "</div><div id='Div2" + counter +
+                "' class='col-sm-4 col-md-2 form-group'> <button  class='addbutt' type='button' style='margin-top:0;' title='Remove New Diagnosis' onclick='removeRow("
+                + counter + ")'><i class='fa fa-remove' aria-hidden='true'></i></button><input type='hidden' id='DMEDiognosis_" + counter + "__DMEDiagnosis_Id' name='DMEDiognosis[" + counter + "].DMEDiagnosis_Id' value='' class='icdidForICD' /></div></div>")
+            BindOnFocusForICD();
+            counter++;
+        });
+    });
+
+    function removeRow(cnt) {
+        $("#Div" + cnt).remove();
+        $("#Div1" + cnt).remove();
+        $("#Div2" + cnt).remove();
+        counter--;
+    }
+    $('#Dialog-Box').dialog({
+        autoOpen: false,
+        height: 500,
+        width: 700,
+        modal: true
+    });
+
+    function OpenDialog() {
+
+        var name = $('#Name').val();
+        var address = $('#Address').val();
+        $('#Dialog-Name').val(name);
+        $('#Dialog-Address').val(address);
+        $('#Dialog-Box').dialog("open");
+    }
+
+
+    function SearchICD10() {
+
+        // $('#Dialog-Box').dialog("close");
+
+        @*$.ajax({
+            url: '@Url.Action("ActionName", "ControllerName")',
+            type: 'POST',
+            data: {
+                code: $('#Dialog-Name').val()
+
+            },
+            success: function (msg) {
+            },
+            error: function (msg) {
+            }
+        });*@
+
+
+        }
+
+
+
+    //var formData = $('#Create').serializeObject();
+    //$.extend(formData, { 'count': counter }); //Send Additional data
+
+
+
+
+
+    function closeDiv() {
+        $('#Dialog-Box').dialog("close");
+    }
+
+
+    $(document).ready(function () {
+        $("#KneeBraceCustomForm_IsCustomOAMedialOffLoader_01208").focus();
+        //alert($('#hdnItemCode').val());
+        if ($('#hdnItemCode').val() == '01208') {
+            $('#KneeBraceCustomForm_IsCustomOALateralOffLoader_01208').prop('checked', true);
+
+        }
+        else if ($('#hdnItemCode').val() == '01300') {
+            $('#KneeBraceCustomForm_IsCustomOALateralOffLoader_01300').prop('checked', true);
+
+        }
+        else if ($('#hdnItemCode').val() == '01207') {
+            //alert($('#hdnItemCode').val());
+            $('#KneeBraceCustomForm_IsCustomLigamentBrace_01207').prop('checked', true);
+
+        }
+
+        var selected = $("#CustomBrace_CustomBrace_Desc").val();
+
+        if (selected) {
+            var chkArray = selected.split(',');
+            for (var i = 0; i < chkArray.length; i++) {
+                // alert('KneeBraceCustomFormCustomBrace_Desc' + chkArray[i]);
+                $('#KneeBraceCustomFormCustomBrace_Desc' + chkArray[i]).prop('checked', 'true');
+            }
+
+        }
+        var selected1 = $("#PreviousTreatment_PreviousTreatment_Desc").val();
+        if (selected1) {
+            var chkPrevious = selected1.split(',');
+            for (var i = 0; i < chkPrevious.length; i++) {
+                // alert('PreviousTreatments1' + chkPrevious[i]);
+                $('#PreviousTreatments' + chkPrevious[i]).prop('checked', 'true');
+            }
+            PreviousTreatments1
+        }
+        //alert($("#Prescription_IsItemReqByTherapist").val());
+        //alert($("#Prescription_IsItemReqByDoctor").val());
+        //alert($("#Prescription_IsItemReqByPatient").val());
+        if ($("#Prescription_IsItemReqByTherapist").val() == "True") {
+            //alert("ok");
+            $('#Prescription1').prop('checked', true);
+            $("#Doctor_Name").hide();
+            $("#Therapist_Name").show();
+
+        }
+        else if ($("#Prescription_IsItemReqByDoctor").val() == "True") {
+            $("#Doctor_Name").show();
+            $("#Therapist_Name").hide();
+            $("#Prescription3").prop("checked", true);
+
+
+
+        }
+        else if ($("#Prescription_IsItemReqByPatient").val() == "True") {
+            $("#Doctor_Name").hide();
+            $("#Therapist_Name").hide();
+            $("#Prescription2").prop("checked", true);
+
+        }
+        else {
+            $("#Doctor_Name").hide();
+            $("#Therapist_Name").hide();
+        }
+
+   
+    //$("#div_2").hide();
+    //$("#pname").hide();
+    //$("#div_3").hide();
+    //$("#div_4").hide();
+    //$("#div_5").hide();
+    //$("#div_6").hide();
+    //$("#div_7").hide();
+    $("#Reasonforcustom").hide();
+    $("#CheckBoxAsRadioButton").hide();
+    $("#Patient_Name").hide();
+    $("#PatientDOB").hide();
+    $("#Fitting_ThighCircumference").hide();
+    $("#Fitting_CalfCircumference").hide();
+    $("#Fitting_KneeOffset").hide();
+    $("#Fitting_KneeWidth").hide();
+    $("#CirclePosition").hide();
+    $("#Gender").hide();
+    $("#CompleteLOMN_Initial").hide();
+    //$("#Therapist_Name").hide();
+    // $("#Doctor_Name").hide();
+    $("#Diagnosis_Desc").hide();
+    $("#ICD10Code").hide();
+
+    $('#KneeBraceCustomForm_DOB').datepicker('setEndDate', new Date());
+
+    $("#PatientMCNo_Msg").hide();
+    if ($("#Order_IsFaxLOMN").val() == "True") {
+        //alert("ok");
+        $('#Order_IsFaxLo').prop('checked', true);
+    }
+
+    var Fax_Date = document.getElementById("Order_FaxLOMN_Date").value;
+        //alert(Fax_Date);
+    $("#Order_ReceiveLOMN_Date").datepicker('setStartDate', new Date(Fax_Date));
+
+        //var Orthosis_Date = document.getElementById('Order_ReceiveLOMN_Date').value;
+        //alert(Orthosis_Date);
+        //$('#Order_OrderOrthosis_Date').datepicker('setStartDate', new Date(Orthosis_Date));
+
+    $("#Order_IsOrderOrthosis").focus();
+    $("#IsOrderOrthosis").hide();
+    $("#OrderOrthosis_Date").hide();
+    $("#ConfirmationNo").hide();
+    $("#Deliver_IsReceivedOrthosis").focus();
+    $("#Order_IsReceiveLOMN").focus();
+    //alert($("#Order_IsReceive").val());
+    if ($("#Order_IsReceive").val() == "true") {
+
+        $('#Order_IsReceive').prop('checked', true);
+    }
+   
+    $("#IsReceivedOrthosis").hide();
+    $("#ReceivedOrthosis_Date").hide();
+    $("#ReceivedOrthosisBy").hide();
+    $("#Condition").hide();
+    if ($("#Deliver_IsReceivedOrthosis").val() == "true") {
+
+        $('#Order_IsReceiv').prop('checked', true);
+    }
+    if ($("#Order_IsReceiv").val() == "true") {
+        $("#Deliver_IsReceivedOrthosis").val(true);
+    }
+    if ($("#Order_IsReceive").val() == "true") {
+
+        $('#Order_IsReceiv').prop('checked', true);
+        $('#Order_IsReceive').prop('checked', true);
+    }
+    if ($("#Order_IsOrderOrthosis").val() != "true") {
+
+        $('#Order_IsOrderOr').prop('checked', true);
+    }
+    });
+</script>

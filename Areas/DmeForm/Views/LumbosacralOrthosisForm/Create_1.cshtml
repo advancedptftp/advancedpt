@@ -1,0 +1,643 @@
+﻿@model DataLayer.Models.DMEClinicalStaffPrescriptionOA
+@using DataLayer;
+@{
+    ViewBag.Title = "Knee Brace Custom Order";
+}
+
+<section class="bodyinner">
+    @*@using (Html.BeginForm("Create", "KneeBraceCustomForm", FormMethod.Post, new { name = "Create", id = "Create" }))
+        {*@
+
+    <div class="bodyleft">
+
+
+        @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+    </div>
+    <div class="bodyright">
+
+        <div class="report-form clearfix">
+            <h2>Lumbosacral Orthosis Order Form: In Stock HCPCS Code: L0637</h2>
+            <div class="p_bot15"><strong>*MEDICARE PATIENTS: DO NOT PROCEED IF THEY HAVE BEEN ISSUED A ‘BACK BRACE’IN THE PAST 5 YEARS.</strong></div>
+
+            <hr>
+
+            <h3>LSO Description:</h3>
+            <div class="row p_bot20">
+
+                <div class="col-sm-12">
+                    <div class="rightgray">
+                        <ul>
+                            <li><strong>Prefabricated Base with Comfortable Pendulum Abdominal Design (6 Sizes Available).</strong></li>
+                            <li><strong>Rigid Anterior, Posterior and Lateral Panels.</strong></li>
+                            <li><strong>Posterior Frame Extends from T9 to S5 to PROTECT Joints, Discs and Muscle during Flexion and Extension.</strong></li>
+                            <li><strong>Lateral Panels Produce Pressure in the Abdominal Cavity to UNLOAD Joints and Discs.</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-3">
+                    <img src="images/pic4.jpg" alt="" />
+                </div>
+
+                <div class="col-sm-5">
+                    <div class="rightgray">
+                        <h4>L0637 Code Includes the Following:</h4>
+                        <ul>
+                            <li>Orthosis</li>
+                            <li>All Straps, Closures and Padding</li>
+                            <li>Fitting & Adjustment</li>
+                        </ul>
+                    </div>
+
+                </div>
+                <div class="col-sm-4">
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
+
+                            <tbody>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th>LSO</th>
+                                </tr>
+                                <tr>
+                                    <th>Product Number</th>
+                                    <th>453-LSO</th>
+                                </tr>
+                                <tr>
+                                    <th>Manufacturer</th>
+                                    <th>RCAI</th>
+                                </tr>
+                                <tr>
+                                    <th>Product Number</th>
+                                    <th>453-LSO</th>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+            <hr>
+
+            <h3>LSO Fitting</h3>
+            <div class="row">
+                <div class="col-md-7 col-sm-12">
+
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Size</th>
+                                    <th>Hip Circumference</th>
+                                    <th>Model #</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+
+
+
+
+                                <tr>
+                                    <th>Small</th>
+                                    <th>33 - 38 inches</th>
+                                    <th>453-LSO-S</th>
+
+                                </tr>
+                                <tr>
+                                    <th>Medium</th>
+                                    <th>33 - 38 inches</th>
+                                    <th>453-LSO-S</th>
+
+                                </tr>
+                                <tr>
+                                    <th>Large</th>
+                                    <th>33 - 38 inches</th>
+                                    <th>453-LSO-S</th>
+
+                                </tr>
+                                <tr>
+                                    <th>XLarge</th>
+                                    <th>33 - 38 inches</th>
+                                    <th>453-LSO-S</th>
+
+                                </tr>
+                                <tr>
+                                    <th>XXLarge</th>
+                                    <th>33 - 38 inches</th>
+                                    <th>453-LSO-S</th>
+
+                                </tr>
+                                <tr>
+                                    <th>XXXLarge</th>
+                                    <th>33 - 38 inches</th>
+                                    <th>453-LSO-S</th>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+
+                </div>
+                <div class="col-md-5 col-sm-12">
+
+                    <div class="borderbox">
+                        <div class="abovetext">
+
+                            <div class="pull-left">Hip Circ : <input type="text"> inches</div>
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="row p_bot15">
+                            <div class="col-sm-2 p_top10">Size </div>
+                            <div class="col-sm-5">
+                                <select class="form-control">
+                                    <option value="">S-2</option>
+                                    <option value="1 - Activations">M-3</option>
+                                    <option value="2 - Villages">L-4</option>
+                                    <option value="3 - Ocala East">XL-5</option>
+                                    <option value="4 - Belleview">XXL-6</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+
+                        <div class="row p_bot15">
+                            <div class="col-sm-2 p_top10">Model#</div>
+                            <div class="col-sm-5">
+                                <input class="form-control" id="" type="text">
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="subbutt">
+                <button type="submit" class="btn btn-orange pull-right">Next Step</button>
+                <div class="clearfix"></div>
+
+
+
+            </div>
+
+            <div class="secondstep">
+
+                <h3>To-Do-List</h3>
+
+                <div class="row">
+                    <div class="col-sm-6 col-md-4 form-group">
+                        <label>Patient Name</label>
+                        <input class="form-control" id="" type="text">
+                    </div>
+                    <div class="col-sm-6 col-md-4 form-group">
+                        <label for="date">DOB</label>
+                        <input name="date" class="form-control datepicker datepicker-bg" placeholder="mm/dd/yyyy" type="text">
+                    </div>
+
+
+
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="todo_inner">
+
+
+                            <div class="outerf">
+                                <div class="stepheading"><strong>1. Office Staff </strong> <i>(MC preapproval only)</i></div>
+                                <div class="hiddenform">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label class="checkbox-inline"><input name="optradio" type="checkbox">Verify Insurance Prior to Proceeding with MC</label>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-5 p_top10">Patient’s MC#:</div>
+                                            <div class="col-sm-7"><input class="form-control" id="" type="text"></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-7">Check Driver’s License Region C:</div>
+                                            <div class="col-sm-5"><label class="radio-inline"><input name="optradio" type="radio">YES</label> <label class="radio-inline"><input name="optradio" type="radio">NO</label></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-12">
+                                                Call MC Rep: 1-866-270-4909 Tax ID: 13056<br>
+                                                PTAN#: 6240770001 NPI: 1265657555 REGION C<br>
+                                                Confirm: “No L1846, etc. past 5 yrs.” SEE REF GUIDE
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-5 p_top10">MC Rep Name:</div>
+                                            <div class="col-sm-7"><input class="form-control" id="" type="text"></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-4 p_top10">MC Rep Badge#:</div>
+                                            <div class="col-sm-4"><input class="form-control" id="" type="text"></div>
+                                            <div class="col-sm-1 p_top10">Int:</div>
+                                            <div class="col-sm-3"><input class="form-control" id="" type="text"></div>
+
+
+                                        </div>
+                                    </div>
+
+
+
+
+
+                                </div>
+                            </div>
+                            <div class="outerf">
+                                <div class="stepheading"><strong>2. Clinical Staff </strong> <i>prescription</i></div>
+                                <div class="hiddenform">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label class="checkbox-inline"><input name="optradio" type="checkbox">Diagnosis</label>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-12"><textarea class="form-control"></textarea></div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label class="checkbox-inline"><input name="optradio" type="checkbox">Item Requested By</label>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="p_left15">
+                                            <label class="checkbox-inline"><input name="optradio" type="checkbox">Therapist</label>
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-12 form-group p_top10">
+                                                    <input class="form-control" id="" type="text">
+                                                </div>
+                                            </div>
+
+
+
+
+
+                                        </div>
+                                        <div class="p_left15">
+                                            <label class="checkbox-inline"><input name="optradio" type="checkbox">Patient</label>
+                                        </div>
+                                        <div class="p_left15">
+                                            <label class="checkbox-inline"><input name="optradio" type="checkbox">Doctor</label>
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-12 form-group p_top10">
+                                                    <input class="form-control" id="" type="text">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label class="checkbox-inline"><input name="optradio" type="checkbox">Complete <strong>Letter of Medical Necessity</strong></label>
+                                        </div>
+                                    </div>
+                                    <div class="p_left15">
+                                        <div class="row form-group">
+                                            <div class="col-sm-3 p_top10">Int</div>
+                                            <div class="col-sm-5"><input class="form-control" id="" type="text"></div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label class="checkbox-inline"><input name="optradio" type="checkbox">Give FORM & LETTER of Med.Nec. to Office Staff</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+
+
+
+
+                        </div>
+
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+
+                        <div class="todo_inner">
+
+
+                            <div class="outerf">
+                                <div class="stepheading"><strong>3. Office Staff </strong> <i>order</i></div>
+                                <div class="hiddenform">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label class="checkbox-inline"><input name="optradio" type="checkbox">Fax Letter of Med.Nec.</label>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-3 p_top10">Date</div>
+                                            <div class="col-sm-5"><input name="date" class="form-control datepicker datepicker-bg" placeholder="mm/dd/yyyy" type="text"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label class="checkbox-inline"><input name="optradio" type="checkbox">Receive Letter of Med.Nec.</label>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-3 p_top10">Date</div>
+                                            <div class="col-sm-5"><input name="date" class="form-control datepicker datepicker-bg" placeholder="mm/dd/yyyy" type="text"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label class="checkbox-inline"><input name="optradio" type="checkbox">Order Orthosis</label>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-3 p_top10">Date</div>
+                                            <div class="col-sm-5"><input name="date" class="form-control datepicker datepicker-bg" placeholder="mm/dd/yyyy" type="text"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row p_top15">
+                                        <div class="col-sm-12 col-md-12 form-group">
+
+                                            Ph# 800-321-0607 Acct#: 23298 <br>
+                                            <strong>NOTE: Ground Shipping/UPS</strong>
+                                            <div class="row form-group">
+                                                <div class="col-sm-5 p_top10">Confirmation#</div>
+                                                <div class="col-sm-7"><input class="form-control" id="" type="text"></div>
+                                            </div>
+
+                                            PO#: Last Name of the Patient
+
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+
+                            <div class="outerf">
+                                <div class="stepheading"><strong>4. Office Staff </strong> <i>paperwork</i></div>
+
+                                <div class="row p_top15">
+                                    <div class="col-sm-3 p_top10">Int</div>
+                                    <div class="col-sm-4"><input class="form-control" id="" type="text"></div>
+                                </div>
+
+
+                                <div class="hiddenform">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label class="checkbox-inline"><input name="optradio" type="checkbox">Delivery Ticket complete, pt signs, give pt carbon copy</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label class="checkbox-inline"><input name="optradio" type="checkbox">AOB complete, pt signs, give pt carbon copy</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label class="checkbox-inline"><input name="optradio" type="checkbox">Check List complete with staff initials, pt signs, keep in chart</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label class="checkbox-inline"><input name="optradio" type="checkbox">HIPPA #1 complete, pt signs, keep in chart</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label class="checkbox-inline"><input name="optradio" type="checkbox">HIPPA #2 give to pt</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label class="checkbox-inline"><input name="optradio" type="checkbox">Protocol for Complaints give to pt</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label class="checkbox-inline"><input name="optradio" type="checkbox">MC DMEPOS Supplier Standards give to pt</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+
+
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+                    <div class="col-sm-12 col-md-12">
+                        <div class="todo_inner">
+
+
+                            <div class="outerf">
+                                <div class="stepheading"><strong>5. Clinical & Office Staff </strong> <i>deliver</i></div>
+
+                                <div class="hiddenform">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label class="checkbox-inline"><input name="optradio" type="checkbox">Received Orthosis</label>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="p_left15 p_bot15">
+                                            <div class="row">
+                                                <div class="col-sm-1 p_top10">Date</div>
+                                                <div class="col-sm-3"><input name="date" class="form-control datepicker datepicker-bg" placeholder="mm/dd/yyyy" style="width:100%;" type="text"></div>
+                                                <div class="col-sm-1 p_top10">By</div>
+                                                <div class="col-sm-3"><input class="form-control" id="" type="text"></div>
+                                                <div class="col-sm-4 p_top10">Condition: <label class="radio-inline"><input name="optradio" type="radio">Good</label> <label class="radio-inline"><input name="optradio" type="radio">Bad</label></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label class="checkbox-inline"><input name="optradio" type="checkbox">Fit & Instructed</label>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="p_left15 p_bot15">
+                                            <div class="row">
+                                                <div class="col-sm-1 p_top10">Date</div>
+                                                <div class="col-sm-3"><input name="date" class="form-control datepicker datepicker-bg" placeholder="mm/dd/yyyy" style="width:100%;" type="text"></div>
+                                                <div class="col-sm-1 p_top10">By</div>
+                                                <div class="col-sm-3"><input class="form-control" id="" type="text"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 form-group">
+                                            <label class="checkbox-inline"><input name="optradio" type="checkbox">Complete Paperwork</label>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="p_left15 p_bot15">
+                                            <div class="row">
+                                                <div class="col-sm-1 p_top10">Date</div>
+                                                <div class="col-sm-3"><input name="date" class="form-control datepicker datepicker-bg" placeholder="mm/dd/yyyy" style="width:100%;" type="text"></div>
+                                                <div class="col-sm-1 p_top10">By</div>
+                                                <div class="col-sm-3"><input class="form-control" id="" type="text"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+
+
+                <div class="subbutt">
+                    <button type="submit" class="btn btn-primary pull-left">Back</button>
+                    <button type="submit" class="btn btn-orange pull-right">Submit</button>
+                    <div class="clearfix"></div>
+
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+
+    <div class="clearfix"></div>
+    <div id="Dialog-Box" class="ICDSearch">
+        @Html.Partial("_ICDSearch")
+    </div>
+
+
+    @*}*@
+</section>
+
+
+<script type="text/javascript">
+
+
+
+    $(function () {
+        $("#addRows").click(function () {
+            //counter = 2;
+            $("#dvDiagnosis").append("<div class='row'><div id='Div"
+                + counter + "' class='col-sm-4 col-md-5 form-group'>" +
+                "<input class='form-control Disease_nameForICD'  id='DMEDiognosis_" + counter + "__Diagnosis_Desc' name='DMEDiognosis[" + counter + "].Diagnosis_Desc' type='text'>" +
+                "</div><div id='Div1" + counter + "' class='col-sm-4 col-md-5 form-group'>" +
+                "<input class='form-control ICD_CodeForICD' id='DMEDiognosis_" + counter + "__ICD10Code' name='DMEDiognosis[" + counter + "].ICD10Code'  type='text'>" +
+                "</div><div id='Div2" + counter +
+                "' class='col-sm-4 col-md-2 form-group'> <button  class='addbutt' type='button' style='margin-top:0;' title='Remove New Diagnosis' onclick='removeRow("
+                + counter + ")'><i class='fa fa-remove' aria-hidden='true'></i></button><input type='hidden' id='DMEDiognosis_" + counter + "__DMEDiagnosis_Id' name='DMEDiognosis[" + counter + "].DMEDiagnosis_Id' value='' class='icdidForICD' /></div></div>")
+            BindOnFocusForICD();
+            counter++;
+        });
+    });
+
+    function removeRow(cnt) {
+        $("#Div" + cnt).remove();
+        $("#Div1" + cnt).remove();
+        $("#Div2" + cnt).remove();
+        counter--;
+    }
+    $('#Dialog-Box').dialog({
+        autoOpen: false,
+        height: 500,
+        width: 700,
+        modal: true
+    });
+
+    function OpenDialog() {
+
+        var name = $('#Name').val();
+        var address = $('#Address').val();
+        $('#Dialog-Name').val(name);
+        $('#Dialog-Address').val(address);
+        $('#Dialog-Box').dialog("open");
+    }
+
+
+    function SearchICD10() {
+
+        // $('#Dialog-Box').dialog("close");
+
+        @*$.ajax({
+            url: '@Url.Action("ActionName", "ControllerName")',
+            type: 'POST',
+            data: {
+                code: $('#Dialog-Name').val()
+
+            },
+            success: function (msg) {
+            },
+            error: function (msg) {
+            }
+        });*@
+
+
+        }
+
+
+
+    //var formData = $('#Create').serializeObject();
+    //$.extend(formData, { 'count': counter }); //Send Additional data
+
+
+
+
+
+    function closeDiv() {
+        $('#Dialog-Box').dialog("close");
+    }
+</script>

@@ -1,0 +1,528 @@
+﻿@model DataLayer.Models.DMEOfficeStaffPaperworkFusionLigament
+@using DataLayer;
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    .sidenav {
+        height: 400px;
+        width: 0;
+        position: absolute;
+        z-index: 1;
+        top: 130px;
+        left: 0;
+        background-color: #f3f2f2;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 50px;
+    }
+
+        .sidenav a:hover, .offcanvas a:focus {
+            color: red;
+        }
+
+        .sidenav .closebtn {
+            position: absolute;
+            top: 2px;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+            padding-top: 20px;
+        }
+
+    #main {
+        transition: margin-left .5s;
+        padding: 16px;
+    }
+
+    .spanBorderRounded {
+        border-radius: 0px 50px 50px 0px;
+    }
+    /* mouse over link */
+    .selected {
+        color: #2a6bb0;
+        font-weight: 900;
+    }
+</style>
+
+<section class="bodyinner">
+
+    @using (Html.BeginForm("Create5", "KneeBraceFusionLigamentOrderForm", FormMethod.Post, new { name = "Create2", id = "Create2" }))
+    {
+       
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(e => e.Paperwork.DMEForm_Id)
+                    @Html.HiddenFor(e => e.Paperwork.DMEFormCode)
+                    @Html.HiddenFor(e => e.Paperwork.CreatedOn)
+                    @Html.HiddenFor(e => e.Paperwork.DMEPaperwork_Id)
+                    @Html.HiddenFor(e=>e.Paperwork.TherapistSignature)
+                    @Html.HiddenFor(e => e.Paperwork.PatientSignature)
+         @Html.HiddenFor(e=>e.Paperwork.TherapistSignatureDatetime)
+                    @Html.HiddenFor(e => e.Paperwork.PatientSignatureDateTime)
+                    if (ViewBag.Error != null)
+                    {
+                        @Html.Raw(ViewBag.Error)
+                    }
+        <div class="col-sm-12" style="text-align:center;">
+            <div id="main" style="float:left">
+                <span id="spn1" class="btn btn-info glyphicon glyphicon-circle-arrow-right spanBorderRounded" style="background-color: #f58f22;"></span>
+            </div>
+
+            <h3>DME Paperwork</h3>
+
+        </div>
+        <div class="col-md-10 col-sm-10" style="height:470px; text-align:left; padding-left:2%; background-color:white; color:black; font-family:Arial; padding-right:5%; overflow:scroll; width:100%;">
+            @*Content*@
+
+
+            @*<img src="~/Images/DME%20PAPERWORK.page4.jpg" />
+            <img src="~/Images/DME%20PAPERWORK.page6.jpg" />
+            <img src="~/Images/DME%20PAPERWORK.page7.jpg" />*@
+
+            <div style="padding: 77px 35px;">
+                <table width="100%" border="0">
+                    <tbody>
+
+                        <tr>
+                            <td style="text-align:center; font-size:20px; ">
+                                Advanced Physical Therapy of Central Florida, Inc.<br>
+                                <strong>Statement of Privacy Notice</strong><br>
+                                Effective June 1, 2003
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding:15px 55px; font-weight:bold;">THIS NOTICE DESCRIBES HOW MEDICAL INFORMATION ABOUT YOU MAY BE USED AND DISCLOSED AND HOW YOU CAN GET ACCESS TO THIS INFORMATION. PLEASE REVIEW IT CAREFULLY.</td>
+                        </tr>
+                        <tr>
+                            <table width="100%%" border="0" cellspacing="0" cellpadding="0" style="font-weight:bold;">
+                                <tr>
+                                    <td>
+                                        <table width="100%%" border="0" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td style="width:50%;">
+                                                    <p style="padding-bottom:15px; margin:0;">We may disclose your health care information to other healthcare professionals within our practice for the purpose of treatment, payment or healthcare operations.</p>
+
+                                                    <p style="padding-bottom:15px; margin:0;">We may disclose your health information to your insurance provider for the purpose of payment or health care operations.</p>
+
+                                                    <p style="padding-bottom:15px; margin:0;">We may disclose your health information as necessary to comply with State Workers' Compensation Laws.</p>
+
+                                                    <p style="padding-bottom:15px; margin:0;">We may disclose your health information to notify or assist in notifying a family member, or another person responsible for your care about your medical condition or in the event of an emergency or of your death.</p>
+
+                                                    <p style="padding-bottom:15px; margin:0;">As required by law, we may disclose your health information to public health authorities for purposes related to: preventing or controlling disease, injury or disability, reporting child abuse or neglect, reporting domestic violence, reporting to the Food and Drug Administration problems with products and reactions to medications, and reporting disease or infection exposure.</p>
+
+                                                    <p style="padding-bottom:15px; margin:0;">We may disclose your health information in the course of any administrative or judicial proceeding.</p>
+
+                                                    <p style="padding-bottom:15px; margin:0;">We may disclose your health information to a law enforcement official for purposes such as identifying or locating a suspect, fugitive, material witness or missing person, complying with a court order or subpoena, and other law enforcement purposes.</p>
+
+                                                    <p style="padding-bottom:15px; margin:0;">We may disclose your health information to coroners or medical examiners.</p>
+
+                                                    <p style="padding-bottom:15px; margin:0;">We may disclose your health information to organizations involved in procuring, banking, or transplanting organs and tissues.</p>
+
+                                                    <p style="padding-bottom:15px; margin:0;">We may disclose your health information to researchers conducting research that has been approved by an Institutional Review Board.</p>
+
+                                                    <p style="padding-bottom:15px; margin:0;">It may be necessary to disclose your health information to appropriate persons in order to prevent or lessen a serious and imminent threat to the health or safety of a particular person or to the general public.</p>
+
+                                                    <p style="padding-bottom:15px; margin:0;">We may disclose your health information for military, national security, prisoner and government benefits purposes.</p>
+
+                                                    <p style="padding-bottom:15px; margin:0;">We may leave a message on an automated answering device or person answering the phone for the purposes of scheduling appointments. No personal health information will be disclosed during this recording or message other than the date and time of your scheduled appointment along with a request to call our office if you need to cancel or reschedule your appointment."</p>
+
+                                                    <p style="padding-bottom:15px; margin:0;">We may contact you by phone, mail, or email. "It is our practice to participate in charitable and marketing events to raise awareness, food donations, gifts, money, etc. During these times, we may send you a letter, post card, invitation or call your home to invite you to participate in the charitable activity.</p>
+
+
+                                                    <p style="padding-left:20px;">
+                                                        You have the right to have your health information received
+                                                        or communicated through an alternative method or sent to
+                                                    </p>
+                                                    <p style="padding-bottom:15px; margin:0;">In the event that we are sold or merged with another organization, your health information/record will become the property of the new owner.</p>
+
+
+                                                </td>
+
+                                                <td valign="top" style="width:50%; padding-left:25px;">
+
+
+                                                    <p style="padding-left:20px;">You have the right to request restrictions on certain uses and disclosures of your health information. Please be advised, however, that we are not required to agree to the restriction that you requested.</p>
+
+                                                    <p style="padding-bottom:15px; margin:0;"> an alternative location other than the usual method of communication or delivery, upon your request.</p>
+
+                                                    <p style="padding-bottom:15px; margin:0;"> an alternative location other than the usual method of communication or delivery, upon your request.</p>
+
+                                                    <p style="padding-bottom:15px; margin:0;">
+                                                        You have a right to request that we amend your protected
+                                                        health information. Please be advised, however, that we are not required to agree to amend your protected health information. If your request to amend your health information has been denied, you will be provided with an explanation of our denial reason(s) and information about how you can disagree with the denial.
+                                                    </p>
+
+                                                    <p style="padding-bottom:15px; margin:0;">
+                                                        You have a right to receive an accounting of disclosures of
+                                                        your protected health information made by us.
+                                                    </p>
+
+                                                    <p style="padding-bottom:15px; margin:0;"> You have a right to a paper copy of this Notice of Privacy Practices at any time upon request.</p>
+
+                                                    <p style="padding-bottom:15px; margin:0;"> We reserve the right to amend this Notice of Privacy Practices at any time in the future, and will make the new provisions effective for all information that it maintains. Until such amendment is made, we are required by law to comply with this Notice.</p>
+
+                                                    <p style="padding-bottom:15px; margin:0;"> We are required by law to maintain the privacy of your health information and to provide you with notice of its legal duties and privacy practices with respect to your health information. If you have questions about any part of this notice or if you want more information about your privacy rights, please contact us by calling this office at (352) 693-3378, EXT 5. If our Privacy Officer is not available, you may make an appointment for a personal conference in person or by telephone within 2 working days.</p>
+
+                                                    <p style="padding-bottom:15px; margin:0;"> Complaints about your Privacy rights, or how we have handled your health information should be directed to our Privacy Officer by calling this office at (352) 693-3378, EXT 5. If our Privacy Officer is not available, you may make an appointment for a personal conference in person or by telephone within 2 working days.</p>
+
+                                                    <p style="padding-bottom:15px; margin:0;"> If you are not satisfied with the manner in which this office handles your complaint, you may submit a formal complaint to:
+                                                    <p style="padding-left:40px; text-align:left">
+                                                        DHHS, Office of Civil Rights<br>
+                                                        200 Independence Avenue, S.W.<br>
+                                                        Room 509F HHH Building<br>
+                                                        Washington, DC 20201
+                                                    </p>
+                                                 
+
+                                                    <p style="padding-bottom:15px; margin:0;"> I have read the Privacy Notice and understand my rights contained in the notice.</p>
+
+                                                    <p style="padding-bottom:1px; margin:0;"> By way of my signature, I provide Advanced Physical Therapy of Central Florida, Inc. with my authorization and consent to use and disclosed my protected health care information for the purposes of treatment, payment and health care operations as described in the Privacy Notice</p>
+
+
+
+                                                </td>
+                                            </tr>
+
+                                        </table>
+
+                                    </td>
+
+                                </tr>
+                            </table>
+
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <br>
+
+
+            <div style="padding: 0px 0px; ">
+                <table width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td style="text-align:center;">
+                                <img src="~/Images/advance-logo1.png" />
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td style="text-align: center; padding-top: 40px; ">
+                                <h2>
+                                    PROTOCOL FOR RESOLVING COMPLAINTS FROM
+                                    MEDICARE BENEFICIARIES
+                                </h2>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p style="padding-bottom:20px;">The patient has the right to freely voice grievances and recommend changes in care or service without fear of reprisal or unreasonable interruption of services. Service, equipment, and billing complaints will be communicated to management and upper management. These complaints will be documented in the Medicare Beneficiaries Complaint Log, and completed forms will include the patient's name, address, telephone number and health insurance claim number, a summary of the complaint, the date it was received, the name of the person receiving the complaint, and a summary of the actions taken to resolve the complaint.</p>
+
+                                <p style="padding-bottom:20px;">All complaints will be handled in a professional manner. All logged complaints will be investigated, acted upon, and responded to in writing or by telephone by a manager within a reasonable amount of time after the receipt of the complaint. If there is no satisfactory resolution of the complaint, the next level of management will be notified progressively and up to the president or owner of the company.</p>
+
+                                <p style="padding-bottom:20px;">The patient will be informed of this complaint resolution protocol at the time of setup of service.</p>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;"><h2>EQUIPMENT WARRANTY INFORMATION FORM</h2></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p style="padding-bottom:20px;">Every product sold or rented by our company carries a 1-year manufacturer's warranty.<strong> ADVANCED PHYSICAL THERAPY OF CENTRAL FLORIDA, INC.</strong> will notify all Medicare beneficiaries of the warranty coverage, and will honor all warranties under applicable law.</p>
+
+                                <p style="padding-bottom:20px;"><strong>ADVANCED PHYSICAL THERAPY OF CENTRAL FLORIDA, INC. </strong>will repair or replace, free of charge, Medicare-covered equipment that is under warranty. In addition, an owner's manual with warranty information will be provided to beneficiaries for all medical equipment where this manual is available.</p>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+            @*<div style="text-align:center; padding:0px 0 25px 0; color:#000">303 SE 17th Street, 0309-229 • Ocala, FL 34471-4421 • (352) 6934378 • Fax (888) 758-9646</div>*@
+
+            <br>
+            <br>
+            <br>
+
+            <div style="padding: 77px 35px; ">
+                <table width="100%" border="0">
+                    <tbody>
+
+                        <tr>
+                            <td style="text-align:center; padding-bottom:15px;">
+                                <h2 style="margin:0;">MEDICARE DMEPOS SUPPLIER STANDARDS</h2>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                Note: This is an abbreviated version of the supplier standards every Medicare DMEPOS supplier must meet in order to obtain and
+                                retain their billing privileges. These standards, in their entirety, are listed in 42 C.F.R. 424.57(c).
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <p style="padding-bottom:10px;padding-top:10px;">1. A supplier must be in compliance with all applicable Federal and State licensure and regulatory requirements.</p>
+
+                                <p style="padding-bottom:10px;">2. A supplier must provide complete and accurate information on the DMEPOS supplier application. Any changes to this information must be reported to the National Supplier Clearinghouse within 30 days.</p>
+
+                                <p style="padding-bottom:10px;">3. An authorized individual (one whose signature is binding) must sign the application for billing privileges.</p>
+
+                                <p style="padding-bottom:10px;">4. A supplier must fill orders from its own inventory, or must contract with other companies for the purchase of items necessary to fill the order. A supplier may not contract with any entity that is currently excluded from the Medicare program, any State health care programs, or from any other Federal procurement or non procurement programs.</p>
+
+                                <p style="padding-bottom:10px;">5. A supplier must advise beneficiaries that they may rent or purchase inexpensive or routinely purchased durable medical equipment. and of the purchase option for capped rental equipment.</p>
+
+                                <p style="padding-bottom:10px;">6. A supplier must notify beneficiaries of warranty coverage and honor all warranties under applicable State law, and repair or replace free of charge Medicare covered items that are under warranty.</p>
+
+                                <p style="padding-bottom:10px;">7. A supplier must maintain a physical facility on an appropriate site.</p>
+
+                                <p style="padding-bottom:10px;">8. A supplier must permit CMS, or its agents to conduct on-site inspections to ascertain the supplier's compliance with these standards. The supplier location must be accessible to beneficiaries during reasonable business bows, and must maintain a visible sign and posted hours of operation.</p>
+
+                                <p style="padding-bottom:10px;">9. A supplier must maintain a primary business telephone fisted under the name of the business in a local directory or a toll free number available through directory assistance. The exclusive use of a beeper, answering machine or cell phone is prohibited.</p>
+
+                                <p style="padding-bottom:10px;">10. A supplier must have comprehensive liability insurance in the amount of at least $300,000 that covers both the supplier's place of business and all customers and employees of the supplier. If the supplier manufactures its own items, this insurance must also cover product liability and completed operations.</p>
+
+                                <p style="padding-bottom:10px;">11. A supplier must agree not to initiate telephone contact with beneficiaries, with a few exceptions allowed. This standard prohibits suppliers from calling beneficiaries in order to solicit new business.</p>
+
+                                <p style="padding-bottom:10px;">12. A supplier is responsible for delivery and must instruct beneficiaries on use of Medicare covered items, and maintain proof of delivery.</p>
+
+                                <p style="padding-bottom:10px;">13. A supplier must answer questions and respond to complaints of beneficiaries, and maintain documentation of such contacts.</p>
+
+                                <p style="padding-bottom:10px;">14. A supplier must maintain and replace at no charge or repair directly, or through a service contract with another company, Medicare-covered items it has rented to beneficiaries.</p>
+
+                                <p style="padding-bottom:10px;">15. A supplier must accept returns of substandard (less than full quality for the particular item) or unsuitable items (inappropriate for the beneficiary at the time it was fitted and rented or sold) from beneficiaries.</p>
+
+                                <p style="padding-bottom:10px;">16. A supplier must disclose these supplier standards to each beneficiary to whom it supplies a Medicare-covered item.</p>
+
+                                <p style="padding-bottom:10px;">17. A supplier must disclose to the government any person having ownership, financial, or control interest in the supplier.</p>
+
+                                <p style="padding-bottom:10px;">18. A supplier must not convey or reassign a supplier number; i.e., the supplier may nor sell or allow another entity to use its Medicare billing number.</p>
+
+                                <p style="padding-bottom:10px;">19. A supplier must have a complaint resolution protocol established to address beneficiary complaints that relate to these standards. A record of these complaints must be maintained at the physical facility.</p>
+
+                                <p style="padding-bottom:10px;">20. Complaint records must include: the name, address, telephone number and health insurance claim number of the beneficiary, a summary of the complaint, and any actions taken to resolve it.</p>
+
+                                <p style="padding-bottom:10px;">21. A supplier must agree to furnish CMS any information required by the Medicare statute and implementing regulations.</p>
+
+                                <p style="padding-bottom:10px;">22. All suppliers must be accredited by a CMS-approved accreditation organization in order to receive and retain a supplier billing number. The accreditation must indicate the specific products and services, for which the supplier is accredited in order for the supplier to receive payment of those specific products and services (except for certain exempt pharmaceuticals).</p>
+
+                                <p style="padding-bottom:10px;">23. All suppliers must notify their accreditation organization when a new DMEPOS location is opened.</p>
+
+                                <p style="padding-bottom:10px;">24. All supplier locations, whether owned or subcontracted, must meet the DMEPOS quality standards and be separately accredited in order to bill Medicare.</p>
+
+                                <p style="padding-bottom:10px;">25. All suppliers must disclose upon enrollment all products and services, including the addition of new product lines for which they are seeking accreditation.</p>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="border-top:1px solid #000; padding-bottom:10px; text-align:center; padding-top:10px;">
+                <p>
+                    <span style="font-weight:bold;">Palmetto GBA </span><br>
+                    National Supplier Clearinghouse<br>
+                    P.O. Box 500142 • Columbia, South Carolina • 29202-3142 • (866) 2384652<br>
+                    <span style="font-size:17px; font-weight:bold; font-style:italic;">A CMS Contracted Intermediary and Carrier</span>
+                </p>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div id="dvSignature" class="col-md-12 col-sm-12" style="margin-top:20px;">
+            @*Signature*@
+            <div class="col-sm-12 col-md-12 form-group">
+                <div class="col-sm-12 col-md-12 form-group">
+                    <div class="col-sm-6">
+                        <h3>Signature of Claimant</h3>
+                        <div></div>
+                        @Html.Partial("_SignPad")
+
+                        @{var imgurl4 = Url.Content("~/Images/nosignature.png");
+                        if (Model.Paperwork.PatientSignature != null)
+                        {
+                            imgurl4 = "data:image/png;base64," + Convert.ToBase64String(Model.Paperwork.PatientSignature);
+                        }
+                        }
+                        <img src="@imgurl4" alt="Alternate Text" class="form-control optional" id="imgPatientSign" style="width:500px; height:200px;" />
+                        <div style="clear:both; padding-top:15px;"></div>
+                        <label id="lblTime"></label>
+                        <div>
+                            <span id="Signature_Validation" style="color:red"></span>
+                        </div>
+                        <div style="clear:both; padding-top:15px;"></div>
+                        <input type="hidden" name="name" value="" id="hdnImageVal2" />
+                        <input type="button" id="btnClaimantSignature" class="btn btn-primary" onclick="fnShowSignPad('imgPatientSign', 'Paperwork_PatientSignature', 'lblTime')" value="Click Here To Add Signature" />
+                    </div>
+                    <div class="col-sm-6">
+                        <h3> Signature of Therapist</h3>
+
+                        <div></div>
+
+                        @Html.Partial("_SignPad")
+
+                        @{var imgurl5 = Url.Content("~/Images/nosignature.png");
+                        if (Model.Paperwork.TherapistSignature != null)
+                        {
+                            imgurl5 = "data:image/png;base64," + Convert.ToBase64String(Model.Paperwork.TherapistSignature);
+                        }
+                        }
+                        <img src="@imgurl5" alt="Alternate Text" class="form-control optional" id="imgTherapistSign" style="width:500px; height:200px;" />
+                        <div style="clear:both; padding-top:15px;"></div>
+                        <label id="lblTime1"></label>
+                        <div>
+                            <span id="Signature_Validation" style="color:red"></span>
+                        </div>
+                        <div style="clear:both; padding-top:15px;"></div>
+                        <input type="hidden" name="name" value="" id="hdnImageVal2" />
+                        <input type="button" id="btnTherapistSignature" class="btn btn-primary" onclick="fnShowSignPad('imgTherapistSign', 'Paperwork_TherapistSignature', 'lblTime1')" value="Click Here To Add Signature" />
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-orange pull-right" onclick="return validateInputs();">Submit</button>
+            </div>
+
+        </div>
+        <div class="clearfix"></div>
+        <div id="mySidenav" class="sidenav" style="margin-top: 38px; height:auto;">
+            <a id="aClose" href="javascript:void(0)" class="closebtn">&times;</a>
+            <br />
+            @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+        </div>
+    }
+
+</section>
+<script type="text/javascript">
+
+    function validateInputs() {
+
+        var flag = true;
+        //debugger;
+        $('.optional').each(function () {
+            //alert("1");
+            var Source = this.src;
+            if (this.src.length > 0) {
+                if (Source.includes("nosignature.png") == true) {
+
+                    // alert("3");
+                    flag = false;
+                    $("#Signature_Validation").text("Please enter signature");
+                    // alert("Insert Image");
+
+                }
+                else {
+                    //alert("2");
+                    $("#Signature_Validation").text(" ");
+                    $("#Paperwork_PatientSignatureDateTime").val($("#lblTime").text())
+                    $("#Paperwork_TherapistSignatureDatetime").val($("#lblTime1").text())
+                    flag = true;
+
+                }
+            }
+            else {
+                $("#Signature_Validation").text("Please enter signature");
+                flag = false;
+                // alert("Insert Image");
+            }
+        });
+        return flag;
+    }
+
+    function openNav() {
+        document.getElementById("mySidenav").style.width = "350px";
+        document.getElementById("main").style.marginLeft = "350px";
+        $("#spn1").hide();
+        $(".closebtn").hide();
+        $("#divLeft").addClass("bodyleft");
+        $("#divRight").addClass("bodyright");
+    }
+
+    function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+        document.getElementById("main").style.marginLeft = "0";
+        $("#spn1").show();
+    }
+
+</script>
+<script>
+    $("#Hide").click(function () {
+        //$("#show").hide();
+        $("#deleteditems").hide();
+        $("#Show").show();
+        $("#Hide").hide();
+        $('#mySidenav').css("height", "400px");
+        //alert($("#divRight").height());
+    });
+    $("#Show").click(function () {
+        $("#deleteditems").show();
+        $("#Hide").show();
+        $("#Show").hide();
+        $('#mySidenav').css("height", $("#divRight").height() + "px");
+    });
+</script>
+<script type="text/javascript">
+    $("#spn1").click(function () {
+        openNav();
+        $("#divRight").removeClass("body-content");
+        $("#divRight").addClass("bodyright");
+    });
+    $("#spn1").hover(function () {
+        $(this).css('background-color', '#5bc0de');
+    },
+    function () {
+        $(this).css("background-color", "#f58f22")
+    });
+    //-------------
+    $(".closebtn").click(function () {
+        $("#divLeft").removeClass("bodyleft");
+        $("#divRight").removeClass("bodyright");
+        $("#divRight").addClass("body-content");
+        closeNav();
+    });
+    //---------------------
+    $(".closebtn").click(function () {
+        $.ajax({
+            url: '@Url.Action("ShowHideLeftPart", "Home")',
+            type: "POST",
+            dataType: "JSON",
+            data: { things: false },
+            success: function () {
+            },
+            error: function (error) { //alert("Error: " + error);
+            },
+            statusCode: {
+                404: function () {
+                    //alert("Page Not Found.");
+                }
+            }
+        });
+    });
+    //----------------------------
+    $("#spn1").click(function () {
+        $.ajax({
+            url: '@Url.Action("ShowHideLeftPart", "Home")',
+            type: "POST",
+            dataType: "JSON",
+            data: { things: true },
+            success: function () { },
+            error: function (error) {
+                //alert("Error: " + error);
+            },
+            statusCode: {
+                404: function () {
+                    //alert("Page Not Found.");
+                }
+            }
+        });
+    });
+    //-----------------------
+    $(".sidenav").hover(function () {
+        $(".closebtn").toggle();
+        $("#aClose").addClass("selected");
+    });
+</script>
+

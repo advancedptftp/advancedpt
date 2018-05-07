@@ -1,0 +1,97 @@
+﻿@model List<DataLayer.Models.Permission>
+@{
+    ViewBag.Title = "Permission";
+}
+
+@using (Html.BeginForm("Permission", "UserRole", FormMethod.Post, new { id = "formAnswerScheme" }))
+{
+    @Html.AntiForgeryToken()
+
+    <section class="bodyinner2">
+
+        <div>
+            <div class="searchsec">
+                <input class="form-control" placeholder="Search">
+                <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div>
+            <div class="table-responsive">
+
+                <table id="Menutable" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayName("Menu Name")
+                            </th>
+                            <th>
+                                Add
+                            </th>
+                            <th>
+                                Edit
+                            </th>
+                            <th>
+                                Delete
+                            </th>
+                            <th>
+                                View
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @for (int i = 0; i < Model.Count; i++)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.Hidden("per[" + @i + "].ID", Model[i].ID)
+                                    @Html.Hidden("per[" + @i + "].MenuID", Model[i].MenuID)
+                                    @Html.Hidden("per[" + @i + "].UserRole", Model[i].UserRole)
+                                    @Html.Label("per[" + @i + "].MenuName", Model[i].MenuName)
+                                </td>
+                                <td>
+                                    @Html.CheckBox("per[" + @i + "].Add", Model[i].Add, new { @class = "checkboxAdd" })
+                                </td>
+                                <td>
+                                    @Html.CheckBox("per[" + @i + "].Edit", Model[i].Edit, new { @class = "checkboxEdit" })
+                                </td>
+                                <td>
+                                    @Html.CheckBox("per[" + @i + "].Delete", Model[i].Delete, new { @class = "checkboxDelete" })
+                                </td>
+                                <td>
+                                    @Html.CheckBox("per[" + @i + "].View", Model[i].View, new { @class = "checkboxView" })
+
+                                </td>
+                            </tr>
+                        }
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="pull-right">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </section>
+}
+
+<script type="text/javascript">
+
+    //$(this).siblings('.checkboxView').prop('checked', $(this).is(':checked'));
+    //$(this).siblings('.checkboxAdd').prop('checked', $(this).is(':checked'));
+
+    $(":checkbox").click(function () {
+        var isChecked = $(this).prop('checked');
+        if ($(this).hasClass('checkboxAdd') || $(this).hasClass('checkboxEdit') || $(this).hasClass('checkboxDelete'))
+            if (isChecked) 
+                $($(this).parents('tr')[0]).find('.checkboxView').prop("checked", true);
+        if ($(this).hasClass('checkboxView')) 
+            if (!isChecked) $($(this).parents('tr')[0]).find('input[type=checkbox]').prop("checked", false);
+    });
+
+    
+    
+</script>

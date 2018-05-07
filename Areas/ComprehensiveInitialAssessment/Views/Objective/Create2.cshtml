@@ -1,0 +1,415 @@
+﻿@model DataLayer.Models.CIAInterim
+@using DataLayer;
+@using System.Data;
+
+
+
+<script type="text/javascript">
+    var counting = @ViewBag.counts;
+
+    //---- Script to disabled the back button of browser ----//
+    history.pushState(null, null, '');
+    window.addEventListener('popstate', function(event) {
+        history.pushState(null, null, '');
+    });
+
+    //---- End Script ----//
+</script>
+@{
+    ViewBag.Title = "Create";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    DataTable dtque = new DataTable();
+    DataTable dtObjOption = new DataTable();
+    int cnt = 1;
+
+    //if (TempData["Question"] != null)
+    //{
+    //    dtque = (DataTable)TempData["Question"];
+    //}
+    //if (TempData["dtDistinctQuestion"] != null)
+    //{
+    //    dtque = (DataTable)TempData["dtDistinctQuestion"];
+    //}
+    
+    //if (TempData["ObjectiveOption"] != null)
+    //{
+    //    dtObjOption = (DataTable)TempData["ObjectiveOption"];
+    //}
+
+
+    //if (TempData["FinalQuestionSet"] != null)
+    //{
+    //    dtque = (DataTable)TempData["FinalQuestionSet"];
+    //}
+    //if (TempData["ObjectiveOptionFinalSet"] != null)
+    //{
+    //    dtObjOption = (DataTable)TempData["ObjectiveOptionFinalSet"];
+    //}
+
+
+    if (Session["dtQuestionSet2"] != null)
+    {
+        dtque = (DataTable)Session["dtQuestionSet2"];
+    }
+    if (Session["ObjectiveOptionFinalSet"] != null)
+    {
+        dtObjOption = (DataTable)Session["ObjectiveOptionFinalSet"];
+    }
+    
+    
+}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<section class="bodyinner">
+    <div class="container">
+
+        <div class="report-form clearfix">
+            <h2 class="text-center">Comprehensive Initial Assessment</h2>
+            @using (Html.BeginForm("Create2", "Objective", FormMethod.Post, new { id = "Create", name = "Create" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(e => e.Patient_Id)
+                @Html.HiddenFor(e => e.patientconditionId)
+                @Html.HiddenFor(e => e.ObjectiveQuestion_Ids)
+                @Html.HiddenFor(e => e.ObjectiveOption_Ids)
+                @Html.HiddenFor(e => e.ObjectiveOption_Group_Ids)
+                @Html.HiddenFor(e => e.CreatedBy)
+                @Html.HiddenFor(e => e.CreatedOn)
+                @Html.HiddenFor(e => e.ModifiedBy)
+                @Html.HiddenFor(e => e.ModifiedOn)
+
+                if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+
+                <div class="topforn">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table width="100%" border="0">
+                                <tr>
+                                    <td width="22%"><h3><strong>OBJECTIVE</strong></h3></td>
+                                    <td width="78%"></td>
+                                </tr>
+                            </table>
+
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table width="100%" border="0">
+                                <tr>
+                                    <td width="20%"><h4><strong>Patient Name:</strong></h4></td>
+                                    <td width="35%">
+                                        @Html.TextBoxFor(m => m.PatientName, new { @class = "form-control", @readonly = true, @style = "font-size:24px;" })
+                                    </td>
+                                    <td width="45%">
+                                        <div class="col-sm-1 form-group" style="padding-top:25px;"></div>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">ICD-10 Details</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>Body Part(s) With ICD-10 Code(s):</p>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Body Part</th>
+                                            <th>ICD-10 Code</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                foreach (DataRow dr in dtque.Rows)
+                {
+                    string Desc = string.Empty;
+                    string BodyPart = string.Empty;
+                    Desc = @dr["BodyPart"].ToString();
+                    BodyPart = char.ToUpper(Desc[0]) + Desc.Substring(1);
+                    <tr>
+                        <td><span style="font-size:17px;color:#000">@BodyPart</span></td>
+                        <td><span style="font-size:17px;color:#000">@dr["ICD_Codes"].ToString()</span></td>
+                    </tr>
+                }
+                                        }
+
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                int questionDivCnt = dtque.Rows.Count;
+
+                foreach (DataRow dr in dtque.Rows)
+                {
+                    string dtqueKey = dr["Details_Id"].ToString();
+                    Int64 ObjectiveQuestion_Id = Convert.ToInt64(dr["ObjectiveQuestion_Id"]);
+                    string ICDCode = Convert.ToString(dr["ICD_Codes"]);
+                    int j = 1;
+
+                    <div id="dvQues_@cnt">
+                        <div class="textheading ObjectiveQuestionIds">
+
+                            <div id="divShowICD_CodeDtl" style="float:right">
+                                <input type="button" id="btnShowICD_CodeDtl" value="ICD Details" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" />
+                            </div>
+
+                            <div id="divQuesIcdCode">
+                                <h1><span id="span_@cnt" style="float:left;">@cnt. @dr["Questions"].ToString()</span></h1><span id="span_bodyPart" style="float:left;padding-top: 5px; padding-left: 14px;"> ( ICD Code: <strong> @ICDCode</strong> )</span>
+                                <input type="hidden" class="ObjectiveQuestionId" id="hdn_@dr["ObjectiveQuestion_Id"].ToString()" value=@dr["ObjectiveQuestion_Id"].ToString() />
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        @foreach (DataRow r1 in dtObjOption.Rows)
+                        {
+                            if (dtqueKey == r1["Details_Id"].ToString())
+                            {                              
+                                <div id="divId_@cnt.ToString()__@r1["ObjectiveOption_Id"].ToString()" class="radiosec">
+                                    <input id="chkQues_@cnt.ToString()#@ObjectiveQuestion_Id.ToString()!@r1["ObjectiveOption_Id"].ToString()$@ICDCode~" class="checkbox-custom ObjectiveOptionId dvQues_@cnt" name="chkQues" type="checkbox" value="@r1["ObjectiveOption_Id"].ToString()">
+                                    <label for="chkQues_@cnt.ToString()#@ObjectiveQuestion_Id.ToString()!@r1["ObjectiveOption_Id"].ToString()$@ICDCode~" class="checkbox-custom-label ObjectiveOption">@r1["ObjectiveOption"].ToString()</label>
+                                    <input type="hidden" id="hdn_@ObjectiveQuestion_Id.ToString()__@r1["ObjectiveOption_Id"].ToString()$@ICDCode~" value=@r1["ObjectiveOption_Id"].ToString() />
+                                </div>
+                                j++;
+
+                                if (j % 3 == 1)
+                                {
+                                    <div class="clearfix"></div>
+                                }
+
+                            }                           
+                        }
+                        <div class="clearfix"></div>
+                        <div id="btnNext_@cnt" style="float:right">
+                            <input type="button" id="btnNext1" value="Next >>" class="btn btn-primary btn-lg" onclick="Show(@cnt)" />
+                        </div>
+                        <div id="btnPrev_@cnt" style="float:left">
+                            <input type="button" value="<< Previous" class="btn btn-primary btn-lg" onclick="Previous(@cnt)" />
+                        </div>
+                    </div>
+
+                        //cnt += 1;
+                        cnt++;
+                }
+
+
+                @*<div style="float:left">
+                        <input type="button" id="btnPrev" class="btn btn-primary btn-lg" value="Previous" onclick="return fnPrev()" />
+                    </div>*@
+
+
+
+                <div id="btnSaves" style="float:right">
+                    <input type="submit" id="btnSave" class="btn btn-primary btn-lg" value="Next >>" />
+                </div>
+
+                <div class="clearfix"></div>
+                <div class="row" style="margin-top:10px;">
+                    @*<a href="@Url.Action("Index", "Subjective")" style="padding-left:15px;">Back to List</a>*@
+                    <a href="@Url.Action("Index", "Subjective")" style="padding-left:15px;"><span class="btn btn-primary btn-lg">Back to list</span> </a>
+                </div>
+
+            }
+        </div>
+    </div>
+
+</section>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ('@ViewBag.PatientName' != "") {
+            $("#PatientName").val('@ViewBag.PatientName');
+        }
+        //----- Hide ICD Details By Default -----//
+        //$("#ShowHideICD").html("");
+        $("#ShowHideICD").hide();
+    });
+
+    function fnPrev() {
+        $.ajax({
+            type: "post",
+            url: '@Url.Action("Create_Objective1", "Objective")',
+            datatype: "Json",
+            data: {Id: $('#patientconditionId').val() },
+            success: function (data) {
+                window.location.href = '@Url.Action("Create1", "Objective")?id='+data
+
+            }
+        });
+    }
+
+</script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        //alert(counting);
+        var counti = counting;
+        if(counti > 1)
+        {
+            for (cnts = 2; cnts <= counti; cnts++) {
+                $("#dvQues_" + cnts).hide();
+                $("#btnSaves").hide();
+            }
+        }
+        else{
+            $("#btnSaves").show();
+            $("#btnNext_" + counti).hide();
+        }
+        //cnts++;
+    });
+
+    function Show(cnt)
+    {
+        //alert("cnt : "+cnt);
+        //alert("counting : " + counting);
+        cnt++;
+        //var count = counting;
+        $("#dvQues_" + cnt).show();
+        var counti = counting;
+        var countings=cnt - 1;
+        //alert("countings : " + countings);
+        //alert("counti : " + counti);
+
+        if(countings < counti-1)
+        {
+            $("#btnNext_" + countings).hide();
+            $("#dvQues_" + countings).hide();
+            $("#btnSaves").hide();
+        }
+        else
+        {
+            $("#dvQues_" + countings).hide();
+            $("#btnNext_" + countings).hide();
+            $("#btnNext_" + counti).hide();
+            $("#btnSaves").show();
+        }
+    }
+    function Previous(cnt)
+    {
+
+        var presentCount = cnt;
+        cnt--;
+        var previousCount = cnt;
+
+        //alert('presentCount ' +presentCount);
+        //alert('previousCount ' +previousCount);
+
+        if(previousCount <= 0)
+        {
+            fnPrev();
+            $("#btnSaves").hide();
+        }
+        if(previousCount <= presentCount)
+        {
+            //alert('previousCount ' +previousCount);
+            $("#dvQues_" + previousCount).show();
+            $("#dvQues_" + presentCount).hide();
+            $("#btnSaves").hide();
+            $("#btnNext_"+previousCount).show();
+        }
+        else
+        {
+            fnPrev();
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    $("#btnSave").click(function () {
+        //--- Combind Options ---//
+        if ($('.ObjectiveOptionId').filter(':checked').length > 0) {
+
+            var ObjectiveQuestion_Ids = "";
+            $("input:hidden.ObjectiveQuestionId").each(function () {
+                ObjectiveQuestion_Ids = ObjectiveQuestion_Ids + "," + $(this).val();
+            });
+
+            var indx = ObjectiveQuestion_Ids.indexOf(",");
+            var strlen = ObjectiveQuestion_Ids.length;
+            var str1 = ObjectiveQuestion_Ids.substring(indx + 1, strlen);
+
+            $("#ObjectiveQuestion_Ids").val(str1);
+
+
+            var ObjectiveOption_Ids = "";
+            var ObjectiveOption_Group_Ids="";
+
+            $('.ObjectiveOptionId:checked').each(function () {
+                ObjectiveOption_Ids = ObjectiveOption_Ids + "," + $(this).val();
+                ObjectiveOption_Group_Ids=ObjectiveOption_Group_Ids+"|"+$(this).attr('id');     //QuestionId with Option Id
+            });
+
+            var indx2 = ObjectiveOption_Ids.indexOf(",");
+            var strlen2 = ObjectiveOption_Ids.length;
+            var str2 = ObjectiveOption_Ids.substring(indx2 + 1, strlen2);
+
+            var indx3=ObjectiveOption_Group_Ids.indexOf("|");
+            var strlen3=ObjectiveOption_Group_Ids.length;
+            var str3=ObjectiveOption_Group_Ids.substring(indx3+1,strlen3);
+
+            ObjectiveOption_Group_Ids="";
+
+            var str4=str3.split("|");
+            for(var i=0;i<str4.length;i++)
+            {
+                //alert(str4[i]);
+                ObjectiveOption_Group_Ids=ObjectiveOption_Group_Ids+"|"+str4[i].slice(8);
+            }
+
+            indx3="";
+            strlen3="";
+            str3="";
+
+            indx3=ObjectiveOption_Group_Ids.indexOf("|");
+            strlen3=ObjectiveOption_Group_Ids.length;
+            str3=ObjectiveOption_Group_Ids.substring(indx3+1,strlen3);
+
+            //alert(str3);
+
+
+            $("#ObjectiveOption_Ids").val(str2);
+            $("#ObjectiveOption_Group_Ids").val(str3);
+            //return false;
+
+        } else {
+            alertify.alert("Please select the options as per the questions").setHeader('AdvancePT Says');
+            return false;
+        }
+
+    });
+
+</script>
+
+<script type="text/javascript">
+    //---- Disabled the F5 Button ----//
+    $(function () {  
+        $(document).keydown(function (e) {  
+            return (e.which || e.keyCode) != 116;  
+        });  
+    });  
+
+</script>

@@ -1,0 +1,250 @@
+﻿@model DataLayer.Models.DMEOfficeStaffDeliverSpinomedIVTLSOForm
+@using DataLayer;
+
+@{
+    ViewBag.Title = "Spinomed IV TLSO Order Form";
+}
+<section class="bodyinner">
+
+    <div class="bodyright" style="width:100%;">
+
+        <div class="report-form clearfix">
+            <h2>Spinomed IV TLSO Order Form: In Stock HCPCS Code: L0456</h2>
+            <div class="p_bot15"><strong>*MEDICARE PATIENTS: DO NOT PROCEED IF THEY HAVE BEEN ISSUED A ‘BACK BRACE’IN THE PAST 5 YEARS.</strong></div>
+            <div class="row" id="pname">
+                <div class="col-sm-6">
+                    Patient Name: @Html.Label("patientname", (string)@ViewBag.patientname)
+                </div>
+                <div class="col-sm-6">
+                    DOB: @Html.Label("dob", (string)@ViewBag.dob)
+
+                </div>
+            </div>
+            <hr>
+            @using (Html.BeginForm("Create4", "SpinomedIVTLSOForm", FormMethod.Post, new { name = "OfficeStaffMC_TLSO_Step4", id = "OfficeStaffMC_TLSO_Step4" }))
+            {
+                <div id="dvFirst">
+                    @Html.AntiForgeryToken()
+                    @*@Html.HiddenFor(e => e.Order.DMEForm_Id)
+                    @Html.HiddenFor(e => e.Order.DMEFormCode)
+                    @Html.HiddenFor(e => e.Order.CreatedOn)
+                    @Html.HiddenFor(e => e.Order.IsFaxLOMN)
+                    @Html.HiddenFor(e => e.Order.FaxLOMN_Date)
+                    @Html.HiddenFor(e => e.Order.DMEOfficeStaffOrder_Id)*@
+
+                    @Html.HiddenFor(e => e.Deliver.DMEForm_Id)
+                    @Html.HiddenFor(e => e.Deliver.DMEFormCode)
+                    @Html.HiddenFor(e => e.Deliver.CreatedOn)
+                    @Html.HiddenFor(e => e.Deliver.IsReceivedOrthosis)
+                    @Html.HiddenFor(e => e.Deliver.DMEClinicAndOfficeStaffDeliver_Id)
+
+                    @if (ViewBag.Error != null)
+                    {
+                        @Html.Raw(ViewBag.Error)
+                    }
+
+
+                    <div id="dvOrder">
+
+
+                        <div class="outerf">
+                            <div class="hiddenform">
+                                <div class="row">
+                                    <div class="borderbox">
+                                        <div class="hiddenform">
+
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-12 form-group">
+                                                    <div class="col-sm-4"><h2>Received DME Item:</h2></div>
+                                                    <div class="radiosec">
+                                                        <input id="Order_IsReceiv" class="checkbox-custom" name="IsReceivedOrthosis" type="checkbox" value="true">
+                                                        <label for="Order_IsReceiv" class="checkbox-custom-label">
+                                                            Received
+                                                        </label>
+                                                        <span id="IsReceivedOrthosis" class="validateMsg"></span>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        @Html.TextBoxFor(m => m.Deliver.ReceivedOrthosis_Date, new { @class = "form-control", @placeholder = "MM/dd/YYYY", style = "width:100%;", @Value = @DateTime.Now.ToShortDateString() })
+                                                        <span id="ReceivedOrthosis_Date" class="validateMsg"></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-12">
+                                                    <div class="col-sm-4" style="margin-top:30px;">
+                                                        <h2>Condition:</h2>
+                                                    </div>
+                                                    <div class="radiosec">
+
+                                                        @Html.RadioButtonFor(m => m.Deliver.Condition, "Good", new { @class = "radio-custom", @id = "Good" })
+
+                                                        <label for="Good" class="radio-custom-label">Good</label>
+
+                                                    </div>
+                                                    <div class="radiosec">
+                                                        @Html.RadioButtonFor(m => m.Deliver.Condition, "Bad", new { @class = "radio-custom Present_Intensity_Symptom", @id = "Bad" })
+
+                                                        <label for="Bad" class="radio-custom-label">Bad</label>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <span id="Conditionss" class="validateMsg"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                            <div class="subbutt">
+                                @*<button type="button" class="btn btn-primary pull-left" onclick="GotoMC()">Back</button>*@
+                                <button type="submit" onclick="return validateInputs()" class="btn btn-orange pull-right">Submit</button>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+    <div class="clearfix"></div>
+
+</section>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        //$("#Order_IsReceiveLOMN").focus();
+        //$('#Order_ReceiveLOMN_Date').datepicker('setEndDate', new Date());
+
+        //$("#ReceiveLOMN_Date").hide();
+        //$('#IsReceiveLOMN').hide();
+
+        $("#IsReceivedOrthosis").hide();
+        $("#ReceivedOrthosis_Date").hide();
+        $("#ReceivedOrthosisBy").hide();
+        $("#Condition").hide();
+        if ($("#Deliver_IsReceivedOrthosis").val() == "true") {
+
+            $('#Order_IsReceiv').prop('checked', true);
+        }
+    });
+
+    if ($("#Order_IsReceiv").val() == "true") {
+        $("#Deliver_IsReceivedOrthosis").val(true);
+    }
+
+    function validateInputs() {
+
+        //alert("ok");
+
+        var Condition = document.getElementById("Good");
+        //alert(Condition);
+        var flag = true;
+
+
+
+        if ($("input:radio:checked").length > 0) {
+            // go on with script
+            $("#Condition").text("");
+            $("#Condition").hide();
+        } else {
+            // NOTHING IS CHECKED
+            $("#Condition").show();
+            $("#Conditionss").text("Please select condition");
+            Condition.focus();
+            flag = false;
+        }
+        return flag;
+    }
+    //function validateInputs() {
+
+
+    //    var IsReceivedOrthosis = document.getElementById("Deliver_IsReceivedOrthosis");
+    //    var ReceivedOrthosis_Date = document.getElementById("Deliver_ReceivedOrthosis_Date");
+    //    var ReceivedOrthosisBy = document.getElementById("Deliver_ReceivedOrthosisBy");
+    //    var Condition = document.getElementById("Deliver_Condition");
+
+    //    var flag = true;
+
+    //    if (ReceivedOrthosisBy != undefined) {
+    //        if (!(ReceivedOrthosisBy.value == null || ReceivedOrthosisBy.value == "" || ReceivedOrthosisBy.value == '')) {
+    //            $("#ReceivedOrthosisBy").text("");
+    //        }
+    //    }
+    //    else {
+    //        //alert("PaperworkBy undefined");
+    //    }
+
+
+    //    if (!IsReceivedOrthosis.checked) {
+    //        $("#IsReceivedOrthosis").show();
+    //        $("#IsReceivedOrthosis").text("Please checked the checkbox.........");
+    //        IsReceivedOrthosis.focus();
+    //        flag = false;
+    //    }
+    //    else {
+    //        $("#IsReceivedOrthosis").hide();
+    //    }
+
+
+    //    if (ReceivedOrthosis_Date.value == "" || ReceivedOrthosis_Date.value == null || ReceivedOrthosis_Date.value == '') {
+    //        $("#ReceivedOrthosis_Date").show();
+    //        $("#ReceivedOrthosis_Date").text("Enter ReceivedOrthosis Date");
+    //        ReceivedOrthosis_Date.focus();
+    //        flag = false;
+    //    }
+    //    else {
+    //        $("#ReceivedOrthosis_Date").hide();
+    //        $("#ReceivedOrthosis_Date").text("");
+    //    }
+
+    //    if (ReceivedOrthosisBy.value == "" || ReceivedOrthosisBy.value == null || ReceivedOrthosisBy.value == '') {
+    //        $("#ReceivedOrthosisBy").show();
+    //        $("#ReceivedOrthosisBy").text("Enter ReceivedOrthosis Person");
+    //        ReceivedOrthosisBy.focus();
+    //        flag = false;
+    //    }
+
+    //    if ($("input:radio:checked").length > 0) {
+    //        // go on with script
+    //        $("#Condition").text("");
+    //        $("#Condition").hide();
+    //    } else {
+    //        // NOTHING IS CHECKED
+    //        $("#Condition").show();
+    //        $("#Condition").text("Please Select Condition");
+    //        Condition.focus();
+    //        flag = false;
+    //    }
+    //    return flag;
+    //}
+    //function validateInputs() {
+    //    var ReceiveLOMN_Date = document.getElementById("Order_ReceiveLOMN_Date");
+    //    var IsReceive = document.getElementById("Order_IsReceiveLOMN");
+
+    //    if (!IsReceive.checked) {
+    //        $("#IsReceiveLOMN").show();
+    //        $("#IsReceiveLOMN").text("Please checked the checkbox.........");
+    //        IsReceive.focus();
+    //        return false;
+    //    }
+    //    else {
+    //        $("#IsReceiveLOMN").hide();
+    //    }
+    //    if (Order_ReceiveLOMN_Date.value == "") {
+    //        $("#ReceiveLOMN_Date").show();
+    //        $("#ReceiveLOMN_Date").text("Enter ReceiveLOMN Date");
+    //        ReceiveLOMN_Date.focus();
+    //        return false;
+    //    }
+
+    //}
+</script>
+

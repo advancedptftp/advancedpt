@@ -1,0 +1,884 @@
+﻿@model DataLayer.Models.tblMPatSchdResource
+@using DataLayer
+@{
+    ViewBag.Title = "Create";
+    var _SStart = Model.ShiftStart;
+    var _SEnd = Model.ShiftEnd;
+    var _LunchSt = Model.LunchStart;
+    var _LunchE = Model.LunchEnd;
+    var _ClientMinute = Model.MassageClientMinute;
+}
+
+<style>
+    #slider-range, #SlideMax {
+        width: 400px;
+    }
+
+    #slider-range, #time, #SlideMax, table {
+        margin: 10px;
+        display: block;
+    }
+
+    #slider-range1, #SlideMax1 {
+        width: 400px;
+    }
+
+    #slider-range1, #time1, #SlideMax1, table {
+        margin: 10px;
+        display: block;
+    }
+</style>
+
+<section class="bodyinner">
+    <div class="container">
+        @*<div class="bodyleft">
+
+                @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+            </div>*@
+        @*<div class="bodyright">*@
+
+        <div class="report-form clearfix">
+            <h2 class="text-center">Resource Detail</h2>
+            <br /><br />
+            @using (Html.BeginForm("Edit", "Resource", FormMethod.Post, new { name = "Resource", id = "Resource" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+
+                if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+                <div class="row">
+                    @Html.HiddenFor(e => e.Resource1AppointmentType)
+                    @Html.HiddenFor(e => e.Resource2AppointmentType)
+                    @Html.HiddenFor(e => e.ShiftStart)
+                    @Html.HiddenFor(e => e.ShiftEnd)
+                    @Html.HiddenFor(e => e.LunchStart)
+                    @Html.HiddenFor(e => e.LunchEnd)
+                    @Html.HiddenFor(e => e.Resource_Id)
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <div class="col-sm-12 form-group">
+                            <div class="col-sm-6 form-group">
+                                @Html.Label("Location")
+                                @Html.DropDownList("Location")
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                @Html.Label("Resource")
+                                @Html.DropDownListFor(m => m.ResourceType, from Resource Resou in Enum.GetValues(typeof(Resource))
+                                                                           select new SelectListItem() { Text = Resou.ToCustomString(), Value = ((int)Resou).ToCustomString() }, new { @class = "form-control", @disabled = "disabled" })
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                <div class="headrightcont" id="PT"></div>
+                                <div class="headrightcont" id="PTA"></div>
+                                <div class="headrightcont" id="LMT"></div>
+                                <div class="headrightcont" id="PersonalTrainerOnly"></div>
+                                @Html.DropDownList("Resource1")
+
+                                @*@Html.DropDownListFor(e => e.Resource1, (SelectList)ViewBag.Resource1, new { @class = "form-control" })*@
+                                @*<select id="Resource1"></select>*@
+                                @*@Html.DropDownListFor(m => m.Resource1, from Resource Resou in Enum.GetValues(typeof(Resource))
+                                    select new SelectListItem() { Text = Resou.ToCustomString(), Value = ((int)Resou).ToCustomString() }, new { @class = "form-control" })*@
+                                @*@Html.DropDownListFor(m => m.Resource2, from Resource Resou in Enum.GetValues(typeof(Resource))
+                                    select new SelectListItem() { Text = Resou.ToCustomString(), Value = ((int)Resou).ToCustomString() }, new { @class = "form-control" })*@
+
+                                @*@Html.DropDownListFor(m => m.tblMUser.Password, from Resource Resou in Enum.GetValues(typeof(Resource))
+                                    select new SelectListItem() { Text = Resou.ToCustomString(), Value = ((int)Resou).ToCustomString() }, new { @class = "form-control" })*@
+
+
+
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                <div class="headrightcont" id="TECH"></div>
+                                @*@if (Model.Resource2 != null) {
+                                    @Html.DropDownList("Resource2")
+                                    }*@
+                                @Html.DropDownList("Resource2")
+                            </div>
+                        </div>
+
+
+                        <div class="col-sm-12 col-md-12 form-group">
+                            <div class="col-sm-6 form-group">
+                                @Html.Label("Working Time ")
+                                <div id="slider-range"></div>
+                                <span id="SlideMax"></span>
+                                <br />
+                                <div class="col-sm-6 form-group">
+
+                                    @Html.TextBoxFor(m => m.tblMEmployee1.Address1, new { @class = "form-control", @disabled = "disabled" })
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    @Html.TextBoxFor(m => m.tblMEmployee1.Address2, new { @class = "form-control", @disabled = "disabled" })
+                                </div>
+                                @*<div class="col-sm-6 form-group">
+
+                                        <input type="submit" name="scheduleSubmit" value="Submit" id="scheduleSubmit" class="ui-button ui-state-default ui-corner-all" />
+                                    </div>*@
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                @Html.Label("Lunch Break ")
+                                <div id="slider-range1"></div>
+                                <span id="SlideMax1" ></span>
+                                <br />
+                                <div class="col-sm-6 form-group">
+                                    @Html.TextBoxFor(m => m.tblMEmployee.Address1, new { @class = "form-control", @disabled = "disabled" })
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    @Html.TextBoxFor(m => m.tblMEmployee.Address2, new { @class = "form-control", @disabled = "disabled" })
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-sm-12 col-md-12 form-group">
+                            <div id="Massage">
+                                <div class="col-sm-6 form-group">
+                                    <div class="headrightcont">
+                                        <label>Is the tech a Licensed Massage Therapist?</label><br />
+                                        <label class="radio-inline">@Html.RadioButtonFor(m => m.IsTechLMT, 1, new { @disabled = true })Yes</label>
+                                        <label class="radio-inline">@Html.RadioButtonFor(m => m.IsTechLMT, 0, new { @disabled = true })No</label>
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-6 form-group" id="minutes1">
+
+                                    <label>How many minutes of the <span id="minutes"></span> minute day would you like for this LMT to have Massage Only clients?</label>
+                                    @Html.TextBoxFor(m => m.MassageClientMinute, new { @class = "form-control", @style = "width:100px;", @disabled = "disabled" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-12 form-group">
+                            <div id="Personal_Trainer">
+                                <div class="col-sm-6 form-group">
+                                    <div class="headrightcont">
+                                        <label>Is the tech a Certified Personal Trainer?</label><br />
+                                        <label class="radio-inline">@Html.RadioButtonFor(m => m.IsTechCPT, 1, new { @disabled = true })Yes</label>
+                                        <label class="radio-inline">@Html.RadioButtonFor(m => m.IsTechCPT, 0, new { @disabled = true })No</label>
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-6 form-group" id="minutes2">
+
+                                    <label>How many minutes of the <span id="Client"></span> minute day would you like for this Trainer to have Personal Training clients? </label>
+                                    @Html.TextBoxFor(m => m.PersonalTrainingClient, new { @class = "form-control", @style = "width:100px;", @disabled = "disabled" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-12 form-group">
+                            <div class="col-sm-6 form-group">
+                                <label>
+                                    What Appointment Types should be allowed for
+                                    the P.T. portion of this Resource?
+                                </label>
+                                <br />
+                                @foreach (var item in ViewBag.AppointmentType)
+                                {
+                                    <input id="chk@(item.Value)"
+                                           type="checkbox"
+                                           class="chk"
+                                           value="@item.Value"
+                                           checked="@item.Selected"
+                                           name="@item.Text"
+                                           disabled="disabled" />
+                                    @item.Text <br />
+                                }
+
+                            </div>
+                            <div class="col-sm-6 form-group" id="Appointment">
+                                <label>
+                                    What Appointment Types should be allowed for the
+                                    Tech portion of this Resource?
+                                </label>
+                                <br />
+                                @foreach (var item in ViewBag.AppointmentType)
+                                {
+                                    <input id="chk1@(item.Value)"
+                                           type="checkbox"
+                                           class="chk1"
+                                           value="@item.Value"
+                                           checked="@item.Selected"
+                                           disabled="disabled" />
+
+                                    @item.Text <br />
+                                }
+
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                <label>
+                                    What type of scheduling would you like to use for the
+                                    P.T. portion of this Resource?
+                                </label>
+                                @Html.DropDownListFor(m => m.TypeOfScheduling, from TypeOfScheduling PT in Enum.GetValues(typeof(TypeOfScheduling))
+                                                                               select new SelectListItem() { Text = PT.ToCustomString(), Value = ((int)PT).ToCustomString() }, new { @class = "form-control", @disabled = "disabled" })
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 form-group">
+                                    @Html.Label("Is Active")
+                                    @Html.CheckBoxFor(model => model.IsActive, new {  @disabled = "disabled" })
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-sm-12 col-md-12 form-group">
+                            <div class="col-sm-6 form-group" id="PatientVisit">
+
+                                <label>Maximum Number of Patient Visit</label>
+                                @Html.TextBoxFor(m => m.MaxNoPatientVisit, new { @class = "form-control", @disabled = "disabled" })
+                            </div>
+                            <div class="col-sm-6 form-group" id="ShortName">
+
+                                <label>Short Name</label>
+                                @Html.TextBoxFor(m => m.ShortName, new { @class = "form-control", @disabled = "disabled" })
+                            </div>
+                        </div>
+
+
+
+                        <div style="clear:both;"></div>
+
+                    </div>
+
+                </div>
+
+                
+                <p>@Html.ActionLink("Back to List", "Index")</p>
+            }
+        </div>
+
+        @*</div>*@
+        <div class="clearfix"></div>
+    </div>
+</section>
+<script>
+
+    $("#Resource").submit(function () {
+        getValueUsingClass();
+        getValueUsingClasses();
+    })
+    function getValueUsingClass() {
+
+        var chkArray = [];
+        $(".chk:checked").each(function () {
+            chkArray.push($(this).val());
+        });
+        var selected;
+        selected = chkArray.join(',') + ",";
+        //alert(selected);
+        if (selected.length > 1) {
+            selected = selected.substring(0, selected.length - 1);
+            $("#Resource1AppointmentType").val(selected);
+            getValueUsingClasses1()
+        }
+        else {
+            alert("Please at least one of the checkbox");
+            return false;
+        }
+    }
+    function getValueUsingClasses1() {
+
+        var chkArray = [];
+        $(".chk1:checked").each(function () {
+            chkArray.push($(this).val());
+        });
+        var selected;
+        selected = chkArray.join(',') + ",";
+        //alert(selected);
+        if (selected.length > 1) {
+            selected = selected.substring(0, selected.length - 1);
+            $("#Resource2AppointmentType").val(selected);
+        }
+        //else {
+        //    alert("Please at least one of the checkbox");
+        //    return false;
+        //}
+
+    }
+
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        //fnGetRelatedQuestion();
+        //fnGetRelatedQuestion1();
+
+        var selected = $("#Resource1AppointmentType").val();
+
+        if (selected) {
+            var chkArray = selected.split(',');
+            for (var i = 0; i < chkArray.length; i++) {
+                $('input#chk' + chkArray[i]).attr('checked', 'true');
+            }
+        }
+        var selected1 = $("#Resource2AppointmentType").val();
+
+        if (selected1) {
+            var chkArray = selected1.split(',');
+            for (var i = 0; i < chkArray.length; i++) {
+                $('input#chk1' + chkArray[i]).attr('checked', 'true');
+            }
+        }
+
+
+
+        var Start = '@_SStart';
+        $('#tblMEmployee1_Address1').val(Start);
+
+        var End = '@_SEnd';
+        $('#tblMEmployee1_Address2').val(End);
+
+        var LunchSt = '@_LunchSt';
+        $('#tblMEmployee_Address1').val(LunchSt);
+
+        var LunchE = '@_LunchE';
+        $('#tblMEmployee_Address2').val(LunchE);
+
+        @*var Resour = '@_Resour';
+        $('#Resource1').val(Resour);*@
+        $("#slider-range1").slider({
+            range: true, min: 0, max: 1440, values: [840, 1020], step: 1, slide: SetLunchSlideTime, change: checkMax1
+        });
+
+
+        //$("#tblMUser_MobNo").hide();
+        $("#LMT").hide();
+        //$("#tblMUser_CreatedOn").hide();
+        $("#PersonalTrainerOnly").hide();
+        //$("#tblMUser_Password").hide();
+        $("#Massage").hide();
+        $("#minutes1").hide();
+        $("#minutes2").hide();
+        // $("#Client").hide();
+        $("#Personal_Trainer").hide();
+        if ($("input:radio[name='IsTechLMT']:checked").val() == 1) {
+            $("#minutes1").show();
+        }
+        else {
+            $("#Personal_Trainer").show();
+        }
+
+        if ($("input:radio[name='IsTechCPT']:checked").val() == 1) {
+            $("#minutes2").show();
+            var ClientMinute = '@_ClientMinute';
+            $('#MassageClientMinute1').val(ClientMinute);
+
+        }
+        else {
+            $("#minutes2").hide();
+        }
+
+        //if ($("#ShiftStart").val() != null) {
+        //    alert($("#ShiftStart").val());
+        //    $("#abc").val($("#ShiftStart").val());
+        //}
+        //else {
+        //    $("#Personal_Trainer").show();
+        //}
+
+        if ($("#ResourceType").val() == 2) {
+
+            document.getElementById("TECH").innerHTML = "Select tech";
+            document.getElementById("PT").innerHTML = "Select P.T";
+            $("#TECH").show();
+            $("#PT").show();
+            $("#Resource1").show();
+            $("#Resource2").show();
+            $("#Appointment").show();
+            $("#Massage").show();
+            $("#PatientVisit").hide();
+
+        }
+        else if ($("#ResourceType").val() == 1) {
+
+            document.getElementById("PT").innerHTML = "Select P.T";
+            $("#PT").show();
+            $("#Resource1").show();
+            $("#Resource2").hide();
+            $("#Appointment").hide();
+            $("#Personal_Trainer").hide();
+            $("#PatientVisit").show();
+
+        }
+        else if ($("#ResourceType").val() == 3) {
+
+            document.getElementById("PTA").innerHTML = "Select P.T.A";
+            $("#PTA").show();
+            $("#Resource1").show();
+            $("#Resource2").hide();
+            $("#Appointment").hide();
+            $("#PatientVisit").hide();
+        }
+        else if ($("#ResourceType").val() == 4) {
+
+            document.getElementById("PTA").innerHTML = "Select P.T.A";
+            $("#PTA").show();
+            document.getElementById("TECH").innerHTML = "Select tech";
+            $("#TECH").show();
+            $("#Resource1").show();
+            $("#Resource2").show();
+            $("#Appointment").show();
+            $("#Massage").show();
+            $("#PatientVisit").hide();
+        }
+        else if ($("#ResourceType").val() == 5) {
+
+            document.getElementById("LMT").innerHTML = "Select L.M.T";
+            $("#LMT").show();
+            $("#Resource1").show();
+            $("#Resource2").hide();
+            $("#Appointment").hide();
+            $("#PatientVisit").hide();
+        }
+        else if ($("#ResourceType").val() == 6) {
+
+            document.getElementById("PersonalTrainerOnly").innerHTML = "Select Personal Trainer Only";
+            $("#PersonalTrainerOnly").show();
+            $("#Resource1").show();
+            $("#Appointment").hide();
+            $("#Resource2").hide();
+            $("#PatientVisit").hide();
+        }
+        //else if ($("#Resource2").val() != null && $("#Resource1").val() != null) {
+        //    alert($("#Resource2").val())
+        //    alert($("#Resource1").val())
+        //    $("#Resource2").show();
+        //    $("#Appointment").show();
+        //    $("#Resource1").show();
+        //}
+        //else {
+        //    $("#Resource2").hide();
+        //    $("#Appointment").hide();
+        //    $("#Resource1").hide();
+        //}
+
+    });
+</script>
+<script>
+
+
+    var startTime;
+    var endTime;
+    var val0;
+    var val1;
+    var val3;
+    var val4;
+
+    $("#slider-range").slider({
+        range: true, min: 0, max: 1440, values: [540, 1020], step: 1, slide: slideTime, change: checkMax
+    });
+
+    function SetLunchTime() {
+        // alert('inside SetLunchTime');
+
+        //val0 = $("#slider-range1").slider("values", 0);
+        //val1 = $("#slider-range").slider("values", 1);
+        //minutes0 = parseInt(val0 % 60, 10);
+        //hours0 = parseInt(val0 / 60 % 24, 10);
+        //minutes1 = parseInt(val1 % 60, 10);
+        //hours1 = parseInt(val1 / 60 % 24, 10);
+        //startTime1 = getTime1(hours0, minutes0);
+        //endTime1 = getTime1(hours1, minutes1);
+        //$("#ModifiedOn").val(startTime1 + ' - ' + endTime1);
+
+        //alert(val1);
+        $("#slider-range1").slider({
+            range: true, min: val0, max: val1, values: [540, 1020], step: 1, slide: SetLunchSlideTime, change: checkMax1
+        });
+    }
+
+    function SetLunchSlideTime() {
+        val3 = $("#slider-range1").slider("values", 0),
+        val4 = $("#slider-range1").slider("values", 1),
+          minutes0 = parseInt(val3 % 60, 10),
+          hours0 = parseInt(val3 / 60 % 24, 10),
+          minutes1 = parseInt(val4 % 60, 10),
+          hours1 = parseInt(val4 / 60 % 24, 10);
+        startTime1 = getTime1(hours0, minutes0);
+        endTime1 = getTime1(hours1, minutes1);
+        star1 = getTime3(hours0, minutes0);
+        end1 = getTime3(hours1, minutes1);
+        $("#tblMEmployee_Address1").val(startTime1);
+        $("#tblMEmployee_Address2").val(endTime1);
+        $("#LunchStart").val(star1);
+        $("#LunchEnd").val(end1);
+    }
+
+
+    //$("#slider-range").change(function () {
+
+    //    val0 = $("#slider-range").slider("values", 0);
+    //    val1 = $("#slider-range").slider("values", 1);
+    //    alert('val' + val0);
+
+    //    var minutes0 = parseInt(val0 % 60, 10),
+    //     hours0 = parseInt(val0 / 60 % 24, 10),
+    //     minutes1 = parseInt(val1 % 60, 10),
+    //     hours1 = parseInt(val1 / 60 % 24, 10);
+    //    startTime = getTime(hours0, minutes0);
+    //    endTime = getTime(hours1, minutes1);
+    //    $("#time").val(startTime);
+    //    $("#ModifiedBy").val(endTime);
+
+    //    console.log(startTime);
+    //    console.log(endTime);
+
+
+    //});
+
+    function slideTime(event, ui) {
+        val0 = $("#slider-range").slider("values", 0);
+        val1 = $("#slider-range").slider("values", 1);
+        var minutes0 = parseInt(val0 % 60, 10),
+         hours0 = parseInt(val0 / 60 % 24, 10),
+         minutes1 = parseInt(val1 % 60, 10),
+         hours1 = parseInt(val1 / 60 % 24, 10);
+        startTime = getTime(hours0, minutes0);
+        endTime = getTime(hours1, minutes1);
+        start = getTime2(hours0, minutes0);
+        end = getTime2(hours1, minutes1);
+        //alert(startTime);
+        //alert(endTime);
+        $("#ShiftStart").val(start);
+        $("#ShiftEnd").val(end);
+        $("#tblMEmployee1_Address1").val(startTime);
+        $("#tblMEmployee1_Address2").val(endTime);
+
+        SetLunchTime();
+    }
+    function getTime(hours, minutes) {
+        var time = null;
+        minutes = minutes + "";
+        if (hours < 12) { time = "AM"; }
+        else { time = "PM"; }
+        if (hours == 0) { hours = 12; }
+        if (hours > 12) { hours = hours - 12; }
+        if (minutes.length == 1) { minutes = "0" + minutes; }
+        return hours + ":" + minutes + " " + time;
+    }
+    function getTime2(hours, minutes) {
+        //var time = null;
+        //minutes = minutes + "";
+        //if (hours < 12) { time = "AM"; }
+        //else { time = "PM"; }
+        //if (hours == 0) { hours = 12; }
+        //if (hours > 12) { hours = hours - 12; }
+        //if (minutes.length == 1) { minutes = "0" + minutes; }
+        return hours + ":" + minutes;// + " " + time;
+    }
+    function checkMax() {
+        var size = $("#slider-range").slider("values", 1) - $("#slider-range").slider("values", 0);
+        if (size >= 1435) {
+            $("#slider-range div")
+                .addClass("ui-state-error")
+                .removeClass("ui-widget-header");
+            $("#scheduleSubmit")
+                .attr("disabled", "disabled")
+                .addClass("ui-state-disabled")
+                .removeClass("ui-state-default");
+            // $("#SlideMax").text("Cannot be more than 24 hours");
+        }
+        else {
+            $("#slider-range div")
+                .addClass("ui-widget-header")
+                .removeClass("ui-state-error");
+            $("#scheduleSubmit")
+                .removeAttr("disabled")
+                .addClass("ui-state-default")
+                .removeClass("ui-state-disabled");
+            $("#SlideMax").text("");
+        }
+    }
+
+    slideTime();
+
+
+    var startTime1;
+    var endTime1;
+    //$("#scheduleSubmit").on('click', function () {
+    //    console.log(startTime);
+    //    console.log(endTime);
+
+    //    $("#slider-range1").slider({
+    //        range: true, min: val0 , max: val1, values: [540, 1020], step: 5, slide: slideTime1, change: checkMax1
+    //    });
+    //});
+
+    //$("#slider-range1").slider({
+    //    range: true, min: val0, max: val1 + 5, values: [540, 1020], step: 5, slide: slideTime1, change: checkMax1
+    //});
+
+
+    //$(".ui-widget-header").bind("change", function (event, ui) {
+    //    alert('ok');
+    //});
+    //$("#slider-range").on("change", ".ui-widget-header", function () {
+    //    alert('ok');
+    //});
+
+    //function slideTime1(event, ui) {
+    //    var val0 = $("#slider-range1").slider("values", 0),
+    //        val1 = $("#slider-range1").slider("values", 1),
+    //        minutes0 = parseInt(val0 % 60, 10),
+    //        hours0 = parseInt(val0 / 60 % 24, 10),
+    //        minutes1 = parseInt(val1 % 60, 10),
+    //        hours1 = parseInt(val1 / 60 % 24, 10);
+    //    startTime1 = getTime1(hours0, minutes0);
+    //    endTime1 = getTime1(hours1, minutes1);
+    //    $("#ModifiedOn").val(startTime1);
+    //    $("#CreatedBy").val(endTime1);
+    //}
+    function getTime1(hours, minutes) {
+        var time = null;
+        minutes = minutes + "";
+        if (hours < 12) { time = "AM"; }
+        else { time = "PM"; }
+        if (hours == 0) { hours = 12; }
+        if (hours > 12) { hours = hours - 12; }
+        if (minutes.length == 1) { minutes = "0" + minutes; }
+        return hours + ":" + minutes + " " + time;
+    }
+    function getTime3(hours, minutes) {
+        //var time = null;
+        //minutes = minutes + "";
+        //if (hours < 12) { time = "AM"; }
+        //else { time = "PM"; }
+        //if (hours == 0) { hours = 12; }
+        //if (hours > 12) { hours = hours - 12; }
+        //if (minutes.length == 1) { minutes = "0" + minutes; }
+        return hours + ":" + minutes;// + " " + time;
+    }
+    function checkMax1() {
+        var size = $("#slider-range1").slider("values", startTime) - $("#slider-range1").slider("values", endTime);
+        if (size >= 600) {
+            $("#slider-range1 div")
+                .addClass("ui-state-error")
+                .removeClass("ui-widget-header");
+
+            $("#SlideMax1").text("Cannot be more than 24 hours");
+        }
+        else {
+            $("#slider-range1 div")
+                .addClass("ui-widget-header")
+                .removeClass("ui-state-error");
+
+            $("#SlideMax1").text("");
+        }
+    }
+
+    slideTime();
+
+
+
+    $(function () {
+
+        $("#ResourceType").change(function () {
+            var status = this.value;
+            //alert(status);
+            if (status == "1") {
+                //$("#AppointmentMinute").val("test");
+                document.getElementById("PT").innerHTML = "Select P.T";
+                $("#Resource1").show();
+                $("#Resource2").hide();
+                $("#TECH").hide();
+                $("#PT").show();
+                $("#PTA").hide();
+                //$("#tblMUser_MobNo").hide();
+                $("#LMT").hide();
+                //$("#tblMUser_CreatedOn").hide();
+                $("#PersonalTrainerOnly").hide();
+                //$("#tblMUser_Password").hide();
+                $("#Massage").hide();
+                $("#Personal_Trainer").hide();
+                $("#Appointment").hide();
+
+            }
+
+            else if (status == "2") {
+                document.getElementById("PT").innerHTML = "Select P.T";
+                document.getElementById("TECH").innerHTML = "Select tech";
+                $("#Resource1").show();
+                $("#Resource2").show();
+                $("#TECH").show();
+                $("#PT").show();
+                $("#PTA").hide();
+                //$("#tblMUser_Email").show();
+                //$("#tblMUser_MobNo").hide();
+                $("#LMT").hide();
+                //$("#tblMUser_CreatedOn").hide();
+                $("#PersonalTrainerOnly").hide();
+                // $("#tblMUser_Password").hide();
+                $("#Massage").show();
+                $("#Personal_Trainer").hide();
+                $("#Appointment").show();
+            }
+            else if (status == "3") {
+                document.getElementById("PTA").innerHTML = "Select P.T.A";
+                //document.getElementById("Related_query4").innerHTML = "Select tech";
+                // $("#tblMUser_MobNo").show();
+                $("#Resource1").show();
+                $("#Resource2").hide();
+                $("#TECH").hide();
+                $("#PTA").show();
+                $("#PT").hide();
+                $("#LMT").hide();
+                //$("#tblMUser_CreatedOn").hide();
+                $("#PersonalTrainerOnly").hide();
+                //$("#tblMUser_Password").hide();
+                $("#Massage").hide();
+                $("#Appointment").hide();
+            }
+
+            else if (status == "4") {
+                document.getElementById("PTA").innerHTML = "Select P.T.A";
+                document.getElementById("TECH").innerHTML = "Select tech";
+                //$("#tblMUser_MobNo").show();
+                $("#Resource1").show();
+                $("#Resource2").show();
+                $("#PT").hide();
+                $("#TECH").show();
+                $("#PTA").show();
+                $("#LMT").hide();
+                //$("#tblMUser_CreatedOn").hide();
+                $("#PersonalTrainerOnly").hide();
+                //$("#tblMUser_Password").hide();
+                $("#Massage").show();
+                $("#Appointment").show();
+            }
+            else if (status == "5") {
+                document.getElementById("LMT").innerHTML = "Select L.M.T";
+                // document.getElementById("TECH").innerHTML = "Select tech";
+                //$("#tblMUser_CreatedOn").show();
+                //$("#tblMUser_MobNo").hide();
+                $("#Resource1").show();
+                $("#Resource2").hide();
+                $("#PT").hide();
+                $("#TECH").hide();
+                $("#PTA").hide();
+                $("#LMT").show();
+                $("#PersonalTrainerOnly").hide();
+                //$("#tblMUser_Password").hide();
+                $("#Massage").hide();
+                $("#Appointment").hide();
+            }
+            else if (status == "6") {
+                document.getElementById("PersonalTrainerOnly").innerHTML = "Select Personal Trainer Only";
+                // document.getElementById("TECH").innerHTML = "Select tech";
+                $("#Resource1").show();
+                $("#Resource2").hide();
+                //$("#tblMUser_MobNo").hide();
+                //$("#Resource1").hide();
+                //$("#tblMUser_Email").hide();
+                $("#PT").hide();
+                $("#TECH").hide();
+                $("#PTA").hide();
+                $("#LMT").hide();
+                $("#PersonalTrainerOnly").show();
+                $("#Massage").hide();
+                $("#Appointment").hide();
+            }
+            fnGetRelatedQuestion();
+            fnGetRelatedQuestion1();
+        });
+
+    });
+    $("input:radio[name='IsTechLMT']").change(function () {
+        if ($("input:radio[name='IsTechLMT']:checked").val() == 1) {
+
+
+            $("#minutes1").show();
+
+            var hours = val1 - val0;
+            var Lunchhours = val4 - val3;
+
+            var totalhours = hours - Lunchhours;
+
+            $("#minutes").text(totalhours);
+            $("#Personal_Trainer").hide();
+            $("#minutes2").hide();
+        }
+        if ($("input:radio[name='IsTechLMT']:checked").val() == 0) {
+
+            $("#Personal_Trainer").show();
+            $("#minutes1").hide();
+
+        }
+    });
+    $("input:radio[name='IsTechCPT']").change(function () {
+        if ($("input:radio[name='IsTechCPT']:checked").val() == 1) {
+
+
+            $("#minutes2").show();
+
+            var hours = val1 - val0;
+            var Lunchhours = val4 - val3;
+
+            var totalhours = hours - Lunchhours;
+            //alert(totalhours);
+            $("#Client").text(totalhours);
+
+        }
+        if ($("input:radio[name='IsTechCPT']:checked").val() == 0) {
+
+
+            $("#minutes2").hide();
+            //alert("0");
+        }
+    });
+
+</script>
+
+<script>
+    function fnGetRelatedQuestion() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetResource1", "Resource")',
+            datatype: "Json",
+            data: { ReferralSource_Id: $('#ResourceType').val() },
+            success: function (data) {
+                var items = '<option>Select a Employee name</option>';
+                $.each(data, function (i, Related_query) {
+                    items += "<option value='" + Related_query.id + "'>" + Related_query.firstname + "</option>";
+                });
+                $('#Resource1').html(items);
+            }
+
+        });
+    }
+</script>
+<script>
+    function fnGetRelatedQuestion1() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetResource2", "Resource")',
+            datatype: "Json",
+            data: { ReferralSource_Id: $('#ResourceType').val() },
+            success: function (data) {
+                var items = '<option  value="0">Select a Employee name</option>';
+                $.each(data, function (i, Related_query) {
+                    items += "<option value='" + Related_query.id + "'>" + Related_query.firstname + "</option>";
+                });
+                $('#Resource2').html(items);
+            }
+
+        });
+    }
+</script>
+<script>
+
+
+
+    //$('#ReferralSource').change(function () { fnGetRelatedQuestion(); });
+    $('#Resource2').addClass('form-control');
+    $('#Resource1').addClass('form-control', disabled = true);
+    $('#Location').addClass('form-control', disabled = true);
+    $('#Resource2').attr("disabled", "true");
+    $('#Resource1').attr("disabled", "true");
+    $('#Location').attr("disabled", "true");
+
+
+</script>

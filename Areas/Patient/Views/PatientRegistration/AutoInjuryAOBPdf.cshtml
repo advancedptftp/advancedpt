@@ -1,0 +1,1344 @@
+﻿@model DataLayer.Models.PatientAutoInjuryPaymentInfo
+@using DataLayer;
+@{
+    var ScenarioType1 = Model.ScenarioType == 1 ? "checked" : "";
+    var ScenarioType2 = Model.ScenarioType == 2 ? "checked" : "";
+    var ScenarioType3 = Model.ScenarioType == 3 ? "checked" : "";
+    var AutoInsuranceExhaustedNotifiedForScenario1 = Model.IsAutoInsuranceExhaustedNotifiedForScenario1 == 1 ? "checked" : "";
+    var PayByHealthInsuranceOrAttorneyLienForScenario1_1 = Model.PayByHealthInsuranceOrAttorneyLienForScenario1_1 == 1 ? "checked" : "";
+    var PayByHealthInsuranceOrAttorneyLienForScenario1_2 = Model.PayByHealthInsuranceOrAttorneyLienForScenario1_2 == 2 ? "checked" : "";
+    var IsAutoInsuranceExhaustedNotifiedForScenario1 = Model.IsAutoInsuranceExhaustedNotifiedForScenario1 == 2 ? "checked" : "";
+    var isPayByHealthInsuranceOrAttorneyLienForScenario1_1 = Model.PayByHealthInsuranceOrAttorneyLienForScenario1_1 == 1 ? "checked" : "";
+    var issPayByHealthInsuranceOrAttorneyLienForScenario1_2 = Model.PayByHealthInsuranceOrAttorneyLienForScenario1_2 == 2 ? "checked" : "";
+    var AutoInsuranceExhaustedNotifiedForScenario2 = Model.IsAutoInsuranceExhaustedNotifiedForScenario2 == 1 ? "checked" : "";
+    var IsAutoInsuranceExhaustedNotifiedForScenario2 = Model.IsAutoInsuranceExhaustedNotifiedForScenario2 == 2 ? "checked" : "";
+    var isPayWithForScenario3 = Model.PayWithForScenario3 == 1 ? "checked" : "";
+    var issPayWithForScenario3 = Model.PayWithForScenario3 == 2 ? "checked" : "";
+    var PayWithForScenario3 = Model.PayWithForScenario3 == 3 ? "checked" : "";
+}
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>myadvancedpt.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="favicon.png">
+
+    <!-- Bootstrap core CSS -->
+
+
+</head>
+
+<body>
+
+
+    <div style="width:95%; margin:0 auto; padding:5px 0; font-family:verdana; font-size:20px; color:#333;">
+
+
+        <div style="padding:55px 0 8px 0; font-size:33px; font-weight:bold; border-bottom:5px solid #0c57a1; color:#0c57a1; position:relative;">
+            <div style="position:absolute; right:0; top:-12px;">
+                <span>
+                    @{
+                        var imgurl51 = "";
+                        if (ViewBag.AdvanceptLogo != null)
+                        {
+                            imgurl51 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.AdvanceptLogo);
+                        }
+                    }
+                    <img src="@imgurl51" alt="Alternate Text" id="imgWitnessSignature" width="200px" height="103px" />
+                </span>
+            </div>
+            Accident &amp; Injury Assignment of Benefits
+        </div>
+        <div style="padding:15px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="10%" height="22">Patient&nbsp;Name:</td>
+                    <td width="20%"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:7px;">@Html.DisplayFor(m => m.PatientName)</div></td>
+                    <td width="12%">Date&nbsp;of&nbsp;Birth:</td>
+                    <td width="13%"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:7px;">@Model.DOB.GetExactValue()</div></td>
+                    <td width="6%">Date:</td>
+                    <td width="23%"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:7px;">@Model.Date.GetExactValue()</div></td>
+                </tr>
+            </table>
+
+        </div>
+        <div style="padding:18px 0; border-bottom:5px solid #0c57a1; position:relative;">
+            <div style="position:absolute; background:#0c57a1; padding:6px 20px; color:#fff; font-size:25px; font-weight:bold; left:0; top:18px;">BENEFIT&nbsp;INFORMATION</div>
+        </div>
+
+
+        <div style="padding-top:25px;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td>
+                        @if (Model.ScenarioType != 1)
+                        {
+                            <span>
+                                @{
+                            var imgurl1 = "";
+                            if (ViewBag.box != null)
+                            {
+                                imgurl1 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.box);
+                            }
+                                }
+                                <img src="@imgurl1" alt="Alternate Text" id="imgWitness" />
+                            </span>
+                        }
+                        else
+                        {
+                            <span>
+                                @{
+                            var imgurl11 = "";
+                            if (ViewBag.boxtick != null)
+                            {
+                                imgurl11 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.boxtick);
+                            }
+                                }
+                                <img src="@imgurl11" alt="Alternate Text" id="imgWitness" />
+                            </span>
+                        }
+
+                    </td>
+                    <td><strong>Scenario #1: I have Auto Insurance, Health Insurance and an Attorney.</strong></td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="padding:15px 0 0 20px;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="5%">
+                        @if (Model.IsAutoInsuranceExhaustedNotifiedForScenario1 != 1)
+                        {
+                            <span>
+                                @{
+                            var imgurl1 = "";
+                            if (ViewBag.box != null)
+                            {
+                                imgurl1 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.box);
+                            }
+                                }
+                                <img src="@imgurl1" alt="Alternate Text" id="imgWitness" />
+                            </span>
+                        }
+                        else
+                        {
+                            <span>
+                                @{
+                            var imgurl11 = "";
+                            if (ViewBag.boxtick != null)
+                            {
+                                imgurl11 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.boxtick);
+                            }
+                                }
+                                <img src="@imgurl11" alt="Alternate Text" id="imgWitness" />
+                            </span>
+                        }
+                    </td>
+                    <td width="95%">
+                        1. To my knowledge, I still have Auto Insurance benefits available. I am electing to have my auto
+                        insurance billed until my benefits have exhausted. Once my benefits have exhausted, I am electing
+                        to have:
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="padding:15px 0 0 50px;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="5%" valign="top">
+                        @if (@AutoInsuranceExhaustedNotifiedForScenario1 != "checked")
+                        {
+                            <span>
+                                @{
+                            var imgurl1 = "";
+                            if (ViewBag.box != null)
+                            {
+                                imgurl1 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.box);
+                            }
+                                }
+                                <img src="@imgurl1" alt="Alternate Text" id="imgWitness" />
+                            </span>
+                        }
+                        else
+                        {
+                            <span>
+                                @{
+                            var imgurl11 = "";
+                            if (ViewBag.boxtick != null)
+                            {
+                                imgurl11 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.boxtick);
+                            }
+                                }
+                                <img src="@imgurl11" alt="Alternate Text" id="imgWitness" />
+                            </span>
+                        }
+                    </td>
+                    <td width="95%">
+                        a. My Health Insurance billed. I understand I will be responsible for paying my deductible and/or copays in full at the time of service.
+
+
+
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="padding:10px 0 0 50px;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="5%" valign="top">
+                        @if (@PayByHealthInsuranceOrAttorneyLienForScenario1_1 != "checked")
+                        {
+                            <span>
+                                @{
+                            var imgurl1 = "";
+                            if (ViewBag.box != null)
+                            {
+                                imgurl1 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.box);
+                            }
+                                }
+                                <img src="@imgurl1" alt="Alternate Text" id="imgWitness" />
+                            </span>
+                        }
+                        else
+                        {
+                            <span>
+                                @{
+                            var imgurl11 = "";
+                            if (ViewBag.boxtick != null)
+                            {
+                                imgurl11 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.boxtick);
+                            }
+                                }
+                                <img src="@imgurl11" alt="Alternate Text" id="imgWitness" />
+                            </span>
+                        }
+                    </td>
+                    <td width="95%">
+                        b. I am declining to have my Health Insurance billed and electing to have any and all balances that I incurred billed to my Attorney Lien.
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="padding:15px 0 0 20px;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="5%">
+                        @if (@IsAutoInsuranceExhaustedNotifiedForScenario1 != "checked")
+                        {
+                            <span>
+                                @{
+                            var imgurl1 = "";
+                            if (ViewBag.box != null)
+                            {
+                                imgurl1 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.box);
+                            }
+                                }
+                                <img src="@imgurl1" alt="Alternate Text" id="imgWitness" />
+                            </span>
+                        }
+                        else
+                        {
+                            <span>
+                                @{
+                            var imgurl11 = "";
+                            if (ViewBag.boxtick != null)
+                            {
+                                imgurl11 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.boxtick);
+                            }
+                                }
+                                <img src="@imgurl11" alt="Alternate Text" id="imgWitness" />
+                            </span>
+                        }
+                    </td>
+                    <td width="95%">2. I have been notified that my Auto Insurance benefits have been exhausted. I am electing to have:</td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="padding:15px 0 0 50px;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="5%" valign="top">
+                        @if (@isPayByHealthInsuranceOrAttorneyLienForScenario1_1 != "checked")
+                        {
+                            <span>
+                                @{
+                            var imgurl1 = "";
+                            if (ViewBag.box != null)
+                            {
+                                imgurl1 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.box);
+                            }
+                                }
+                                <img src="@imgurl1" alt="Alternate Text" id="imgWitness" />
+                            </span>
+                        }
+                        else
+                        {
+                            <span>
+                                @{
+                            var imgurl11 = "";
+                            if (ViewBag.boxtick != null)
+                            {
+                                imgurl11 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.boxtick);
+                            }
+                                }
+                                <img src="@imgurl11" alt="Alternate Text" id="imgWitness" />
+                            </span>
+                        }
+                    </td>
+                    <td width="95%">
+                        a. My Health Insurance billed. I understand I will be responsible for paying my deductible<br>
+                        and/or copays in full at the time of service.
+
+
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="padding:10px 0 0 50px;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="5%" valign="top">
+                        @if (@issPayByHealthInsuranceOrAttorneyLienForScenario1_2 != "checked")
+                        {
+                            <span>
+                                @{
+                            var imgurl1 = "";
+                            if (ViewBag.box != null)
+                            {
+                                imgurl1 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.box);
+                            }
+                                }
+                                <img src="@imgurl1" alt="Alternate Text" id="imgWitness" />
+                            </span>
+                        }
+                        else
+                        {
+                            <span>
+                                @{
+                            var imgurl11 = "";
+                            if (ViewBag.boxtick != null)
+                            {
+                                imgurl11 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.boxtick);
+                            }
+                                }
+                                <img src="@imgurl11" alt="Alternate Text" id="imgWitness" />
+                            </span>
+                        }
+                    </td>
+                    <td width="95%">
+                        b. I am declining to have my Health Insurance billed and electing to have any and all balances<br>
+                        that I incurred billed to my Attorney Lien.
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+
+        <div style="padding-top:25px;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="5%">
+                        @if (Model.ScenarioType != 2)
+                        {
+                            <span>
+                                @{
+                            var imgurl1 = "";
+                            if (ViewBag.box != null)
+                            {
+                                imgurl1 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.box);
+                            }
+                                }
+                                <img src="@imgurl1" alt="Alternate Text" id="imgWitness" />
+                            </span>
+                        }
+                        else
+                        {
+                            <span>
+                                @{
+                            var imgurl11 = "";
+                            if (ViewBag.boxtick != null)
+                            {
+                                imgurl11 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.boxtick);
+                            }
+                                }
+                                <img src="@imgurl11" alt="Alternate Text" id="imgWitness" />
+                            </span>
+                        }
+                    </td>
+                    <td width="95%"><strong>Scenario #2: I have Auto Insurance and an Attorney, but I do not have Health Insurance at this time.</strong></td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="padding:15px 0 0 20px;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="5%" valign="top">
+                        @if (@AutoInsuranceExhaustedNotifiedForScenario2 != "checked")
+                        {
+                            <span>
+                                @{
+                            var imgurl1 = "";
+                            if (ViewBag.box != null)
+                            {
+                                imgurl1 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.box);
+                            }
+                                }
+                                <img src="@imgurl1" alt="Alternate Text" id="imgWitness" />
+                            </span>
+                        }
+                        else
+                        {
+                            <span>
+                                @{
+                            var imgurl11 = "";
+                            if (ViewBag.boxtick != null)
+                            {
+                                imgurl11 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.boxtick);
+                            }
+                                }
+                                <img src="@imgurl11" alt="Alternate Text" id="imgWitness" />
+                            </span>
+                        }
+                    </td>
+                    <td width="95%">
+                        1. To my knowledge, I still have Auto Insurance benefits available. I am electing to have my Auto<br>
+                        Insurance billed until my benefits have exhausted. Once my benefits have exhausted, I am electing<br>
+                        to have any and all balances that I incurred billed to my Attorney Lien.
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="padding:15px 0 0 20px;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="5%">
+                        @if (@IsAutoInsuranceExhaustedNotifiedForScenario2 != "checked")
+                        {
+                            <span>
+                                @{
+                            var imgurl1 = "";
+                            if (ViewBag.box != null)
+                            {
+                                imgurl1 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.box);
+                            }
+                                }
+                                <img src="@imgurl1" alt="Alternate Text" id="imgWitness" />
+                            </span>
+                        }
+                        else
+                        {
+                            <span>
+                                @{
+                            var imgurl11 = "";
+                            if (ViewBag.boxtick != null)
+                            {
+                                imgurl11 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.boxtick);
+                            }
+                                }
+                                <img src="@imgurl11" alt="Alternate Text" id="imgWitness" />
+                            </span>
+                        }
+                    </td>
+                    <td width="95%">
+                        2. I have been notified that my Auto Insurance benefits have been exhausted. I am electing to have<br>
+                        any and all balances that I incurred billed to my Attorney Lien.
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+
+        <div style="padding-top:25px;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="5%">
+                        @if (Model.ScenarioType != 3)
+                        {
+                            <span>
+                                @{
+                            var imgurl1 = "";
+                            if (ViewBag.box != null)
+                            {
+                                imgurl1 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.box);
+                            }
+                                }
+                                <img src="@imgurl1" alt="Alternate Text" id="imgWitness" />
+                            </span>
+                        }
+                        else
+                        {
+                            <span>
+                                @{
+                            var imgurl11 = "";
+                            if (ViewBag.boxtick != null)
+                            {
+                                imgurl11 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.boxtick);
+                            }
+                                }
+                                <img src="@imgurl11" alt="Alternate Text" id="imgWitness" />
+                            </span>
+                        }
+                    </td>
+                    <td width="95%"><strong>Scenario #3: I do not have Auto Insurance but I was injured in a Motor Vehicle Accident.</strong></td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="padding:15px 0 0 20px;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="5%" valign="top">
+                        @if (@isPayWithForScenario3 != "checked")
+                        {
+                            <span>
+                                @{
+                            var imgurl1 = "";
+                            if (ViewBag.box != null)
+                            {
+                                imgurl1 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.box);
+                            }
+                                }
+                                <img src="@imgurl1" alt="Alternate Text" id="imgWitness" />
+                            </span>
+                        }
+                        else
+                        {
+                            <span>
+                                @{
+                            var imgurl11 = "";
+                            if (ViewBag.boxtick != null)
+                            {
+                                imgurl11 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.boxtick);
+                            }
+                                }
+                                <img src="@imgurl11" alt="Alternate Text" id="imgWitness" />
+                            </span>
+                        }
+                    </td>
+                    <td width="95%">
+                        1. Please bill my Health Insurance. I understand I will be responsible for paying my deductible and/or<br>
+                        copays in full at the time of service.
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="padding:15px 0 0 20px;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="5%">
+                        @if (@issPayWithForScenario3 != "checked")
+                        {
+                            <span>
+                                @{
+                            var imgurl1 = "";
+                            if (ViewBag.box != null)
+                            {
+                                imgurl1 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.box);
+                            }
+                                }
+                                <img src="@imgurl1" alt="Alternate Text" id="imgWitness" />
+                            </span>
+                        }
+                        else
+                        {
+                            <span>
+                                @{
+                            var imgurl11 = "";
+                            if (ViewBag.boxtick != null)
+                            {
+                                imgurl11 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.boxtick);
+                            }
+                                }
+                                <img src="@imgurl11" alt="Alternate Text" id="imgWitness" />
+                            </span>
+                        }
+                    </td>
+                    <td width="95%">2. Please bill my Attorney Lien.</td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="padding:15px 0 0 20px;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="5%" valign="top">
+                        @if (@PayWithForScenario3 != "checked")
+                        {
+                            <span>
+                                @{
+                            var imgurl1 = "";
+                            if (ViewBag.box != null)
+                            {
+                                imgurl1 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.box);
+                            }
+                                }
+                                <img src="@imgurl1" alt="Alternate Text" id="imgWitness" />
+                            </span>
+                        }
+                        else
+                        {
+                            <span>
+                                @{
+                            var imgurl11 = "";
+                            if (ViewBag.boxtick != null)
+                            {
+                                imgurl11 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.boxtick);
+                            }
+                                }
+                                <img src="@imgurl11" alt="Alternate Text" id="imgWitness" />
+                            </span>
+                        }
+                    </td>
+                    <td width="95%">
+                        3. Please bill my Health Insurance. Anything that is not covered by my Health Insurance, please bill to<br>
+                        my Attorney Lien. I understand I will be responsible for paying my deductible and/or copays in full at<br>
+                        the time of service.
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="padding:15px 0; border-bottom:5px solid #0c57a1; position:relative;">
+            <div style="position:absolute; background:#0c57a1; padding:6px 20px; color:#fff; font-size:17px; font-weight:bold; left:0; top:18px;">POLICY INFORMATION</div>
+        </div>
+
+        <div style="padding:25px 0 0 0;">
+            <table width="100%" border="0">
+                <tbody>
+                    <tr>
+                        <td width="45%" valign="top"><strong>Auto Insurance:</strong> Name of Insurance Company:</td>
+                        <td width="55%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; ">@Html.DisplayFor(m => m.AutoInsuranceCompanyName)</div></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div style="padding:0 0 25px 30px;">
+
+            <div>
+                <table width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td width="15%" valign="top">Policy Number:</td>
+                            <td width="35%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">@Html.DisplayFor(m => m.AutoPolicyNumber)</div></td>
+                            <td width="17%" valign="top">Group Number:</td>
+                            <td width="36%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; ">@Html.DisplayFor(m => m.AutoEmployerClaimNo)</div></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <strong>Policy Holder Information (If policy holder is someone other than patient.)</strong>
+            <div style="padding-top:12px;">
+                <table width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td width="7%" valign="top">Name:</td>
+                            <td width="33%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">@Html.DisplayFor(m => m.AutoHolderName)</div></td>
+                            <td width="23%" valign="top">Relationship to Patient :</td>
+                            @if (Model.AutoPatientRelationship == 1)
+                            {
+
+                                <td width="38%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; ">Spouse</div></td>
+                            }
+                            else if (Model.AutoPatientRelationship == 2)
+                            {
+
+                                <td width="38%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; "> Parent</div></td>
+                            }
+                            else if (Model.AutoPatientRelationship == 3)
+                            {
+
+                                <td width="10%" valign="top">
+                                    <div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; "> Other</div>
+                                </td>
+
+                                <td width="25%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; ">@Html.DisplayFor(m => m.AutoPatientRelationshipIfOther)</div></td>
+                            }
+
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div style="padding-top:6px;">
+                <table width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td width="14%" valign="top">Date of Birth:</td>
+                            <td width="26%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">@Model.AutoHolderDOB.GetExactValue()</div></td>
+                            <td width="7%" valign="top">SSN :</td>
+                            <td width="23%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; ">@Html.DisplayFor(m => m.AutoSSN)</div></td>
+                            <td width="5%" valign="top">Phone:</td>
+                            <td width="23%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; ">@Html.DisplayFor(m => m.AutoEmployerPhone)</div></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div style="padding-top:6px;">
+                <table width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td width="10%" valign="top">Address:</td>
+                            <td width="90%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">@Html.DisplayFor(m => m.AutoEmployerAddressLine1),@Html.DisplayFor(m => m.AutoEmployerAddressLine1),@Html.DisplayFor(m => m.AutoEmployerCity),@Html.DisplayFor(m => m.AutoEmployerState),@Html.DisplayFor(m => m.AutoEmployerZipCode)</div></td>
+
+
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div style="padding-top:12px;">
+                <table width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td width="10%" valign="top">Employer:</td>
+                            <td width="37%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">@Html.DisplayFor(m => m.AutoEmployer)</div></td>
+                            <td width="17%" valign="top">Employer Phone:</td>
+                            <td width="35%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; ">@Html.DisplayFor(m => m.AutoEmployerPhone)</div></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div>
+                <table width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td width="10%">Deductible:</td>
+                            <td width="42%"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:7px;">@Html.DisplayFor(m => m.AutoDeductible)</div></td>
+                            <td width="5%">Copay:</td>
+                            <td width="35%"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:7px;">@Html.DisplayFor(m => m.AutoCoPay)</div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+
+    <br>
+    <br>
+    <br>
+
+
+    <div style="width:95%; margin:0 auto; padding:35px 0 0 0; font-family:verdana; font-size:17px; color:#333;">
+
+
+        <div style="padding:35px 0 8px 0; font-size:30px; font-weight:bold; border-bottom:5px solid #0c57a1; color:#0c57a1; position:relative;">
+
+            Accident & Injury Assignment of Benefits Continued
+        </div>
+        <div style="padding:15px 0;">
+            <table width="100%" border="0">
+                <tr>
+                    <td width="10%" height="22">Patient&nbsp;Name:</td>
+                    <td width="30%"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:7px;">@Html.DisplayFor(m => m.PatientName)</div></td>
+                    <td width="12%">Date&nbsp;of&nbsp;Birth:</td>
+                    <td width="18%"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:7px;">@Model.DOB.GetExactValue()</div></td>
+                    <td width="6%">Date:</td>
+                    <td width="23%"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:7px;">@Model.Date.GetExactValue()</div></td>
+                </tr>
+            </table>
+
+        </div>
+        <div style="padding:18px 0; border-bottom:5px solid #0c57a1; position:relative;">
+            <div style="position:absolute; background:#0c57a1; padding:6px 20px; color:#fff; font-size:18px; font-weight:bold; left:0; top:18px;">POLICY INFORMATION CONTINUED</div>
+        </div>
+
+
+        <div style="padding:25px 0 0 0;">
+            <table width="100%" border="0">
+                <tbody>
+                    <tr>
+                        <td width="48%" valign="top"><strong>Primary Medical Insurance:</strong> Name of Insurance Company:</td>
+                        <td width="52%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; ">@Html.DisplayFor(m => m.PrimaryInsuranceCompanyName)</div></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div style="padding:0 0 25px 30px;">
+
+            <div>
+                <table width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td width="10%" valign="top">Policy&nbsp;Number:</td>
+                            <td width="35%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">@Html.DisplayFor(m => m.PrimaryPolicyNumber)</div></td>
+                            <td width="12%" valign="top">Group&nbsp;Number:</td>
+                            <td width="36%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; ">@Html.DisplayFor(m => m.PrimaryGroupNumber)</div></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <strong>Policy Holder Information (If policy holder is someone other than patient.)</strong>
+            <div style="padding-top:12px;">
+                <table width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td width="7%" valign="top">Name:</td>
+                            @if (Model.PrimaryInsuranceCompanyName != null)
+                            {
+                                <td width="33%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">@Html.DisplayFor(m => m.PrimaryHolderName)</div></td>
+                            }
+                            else
+                            {
+                                <td width="33%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;"></div></td>
+                            }
+                            <td width="20%" valign="top">Relationship&nbsp;to&nbsp;Patient :</td>
+                            @if (Model.PrimaryPatientRelationship == 1)
+                            {
+
+                                <td width="38%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; ">Spouse</div></td>
+                            }
+                            else if (Model.PrimaryPatientRelationship == 2)
+                            {
+
+                                <td width="38%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; "> Parent</div></td>
+                            }
+                            else if (Model.PrimaryPatientRelationship == 3)
+                            {
+
+                                <td width="10%" valign="top">
+                                    <div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; "> Other</div>
+                                </td>
+
+                                <td width="25%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; ">@Html.DisplayFor(m => m.PrimaryPatientRelationshipIfOther)</div></td>
+                            }
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div style="padding-top:6px;">
+                <table width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td width="13%" valign="top">Date&nbsp;of&nbsp;Birth:</td>
+                            <td width="35%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">@Model.PrimaryHolderDOB.GetExactValue()</div></td>
+                            <td width="5%" valign="top">SSN:</td>
+                            <td width="25%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; ">@Html.DisplayFor(m => m.PrimarySSN)</div></td>
+                            <td width="7%" valign="top">Phone:</td>
+                            <td width="23%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; ">@Html.DisplayFor(m => m.PrimaryHolderPhone)</div></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div style="padding-top:6px;">
+                <table width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td width="8%" valign="top">Address:</td>
+                            @if (Model.PrimaryInsuranceCompanyName != null)
+                            {
+                                <td width="92%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">@Html.DisplayFor(m => m.AutoEmployerAddressLine1),@Html.DisplayFor(m => m.PrimaryPolicyHolderAddressLine1),@Html.DisplayFor(m => m.PrimaryPolicyHolderAddressLine2),@Html.DisplayFor(m => m.PrimaryPolicyHolderEmployerCity),@Html.DisplayFor(m => m.PrimaryPolicyHolderEmployerState),@Html.DisplayFor(m => m.PrimaryPolicyHolderEmployerZipCode)</div></td>
+                            }
+                            else
+                            {
+                                <td width="92%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;"></div></td>
+                            }
+
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div>
+                <table width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td width="10%">Deductible:</td>
+                            <td width="42%"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:7px;">@Html.DisplayFor(m => m.PrimaryDeductible)</div></td>
+                            <td width="5%">Copay:</td>
+                            <td width="35%"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:7px;">@Html.DisplayFor(m => m.PrimaryCoPay)</div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+        <div style="padding:5px 0 0 0;">
+            <table width="100%" border="0">
+                <tbody>
+                    <tr>
+                        <td width="50%" valign="top"><strong>Secondary Medical Insurance:</strong> Name of Insurance Company:</td>
+                        <td width="58%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; ">@Html.DisplayFor(m => m.SecondaryInsuranceCompanyName)</div></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div style="padding:0 0 25px 30px;">
+
+            <div>
+                <table width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td width="15%" valign="top">Policy&nbsp;Number:</td>
+                            <td width="38%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">@Html.DisplayFor(m => m.SecondaryPolicyNumber)</div></td>
+                            <td width="15%" valign="top">Group&nbsp;Number:</td>
+                            <td width="36%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; ">@Html.DisplayFor(m => m.SecondaryGroupNumber)</div></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <strong>Policy Holder Information (If policy holder is someone other than patient.)</strong>
+            <div style="padding-top:12px;">
+                <table width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td width="7%" valign="top">Name:</td>
+                            @if (Model.SecondaryInsuranceCompanyName != null)
+                            {
+                                <td width="33%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">@Html.DisplayFor(m => m.SecondaryHolderName)</div></td>
+                            }
+                            else
+                            {
+                                <td width="33%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;"></div></td>
+                            }
+                            <td width="20%" valign="top">Relationship&nbsp;to&nbsp;Patient :</td>
+                            @if (Model.SecondaryPatientRelationship == 1)
+                            {
+
+                                <td width="38%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; ">Spouse</div></td>
+                            }
+                            else if (Model.SecondaryPatientRelationship == 2)
+                            {
+
+                                <td width="38%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; "> Parent</div></td>
+                            }
+                            else if (Model.SecondaryPatientRelationship == 3)
+                            {
+
+                                <td width="10%" valign="top">
+                                    <div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; "> Other</div>
+                                </td>
+
+                                <td width="25%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; ">@Html.DisplayFor(m => m.SecondaryPatientRelationshipIfOther)</div></td>
+                            }
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div style="padding-top:6px;">
+                <table width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td width="12%" valign="top">Date&nbsp;of&nbsp;Birth:</td>
+                            <td width="37%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">@Model.SecondaryHolderDOB.GetExactValue()</div></td>
+                            <td width="5%" valign="top">SSN:</td>
+                            <td width="25%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; ">@Html.DisplayFor(m => m.SecondarySSN)</div></td>
+                            <td width="6%" valign="top">Phone:</td>
+                            <td width="23%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; ">@Html.DisplayFor(m => m.SecondaryHolderPhone)</div></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div style="padding-top:6px;">
+                <table width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td width="8%" valign="top">Address:</td>
+                            @if (Model.SecondaryInsuranceCompanyName != null)
+                            {
+                                <td width="92%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">@Html.DisplayFor(m => m.SecondaryPolicyHolderAddressLine1),@Html.DisplayFor(m => m.SecondaryPolicyHolderAddressLine2),@Html.DisplayFor(m => m.SecondaryPolicyHolderState),@Html.DisplayFor(m => m.SecondaryPolicyHolderCity),@Html.DisplayFor(m => m.SecondaryPolicyHolderZipCode)</div></td>
+                            }
+                            else
+                            {
+                                <td width="92%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;"></div></td>
+                            }
+
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div>
+                <table width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td width="10%">Deductible:</td>
+                            <td width="42%"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:7px;">@Html.DisplayFor(m => m.SecondaryDeductible)</div></td>
+                            <td width="5%">Copay:</td>
+                            <td width="35%"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:7px;">@Html.DisplayFor(m => m.SecondaryDeductible)</div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <div style="padding:5px 0 0 0;">
+            <table width="100%" border="0">
+                <tbody>
+                    <tr>
+                        <td width="32%" valign="top"><strong>Attorney&nbsp;Information:</strong> Attorney&nbsp;Name:</td>
+                        <td width="68%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; ">@Html.DisplayFor(m => m.AttorneyName)</div></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div style="padding:0 0 25px 30px;">
+
+            <div>
+                <table width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td width="12%" valign="top">Claim&nbsp;Number:</td>
+                            @if (Model.AttorneyName !=null)
+                            {
+                                 <td width="35%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">@Html.DisplayFor(m => m.AutoEmployerClaimNo)</div></td>
+                            }
+                            else
+                            {
+                                 <td width="35%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;"></div></td>
+                            }
+                            <td width="13%" valign="top">Attorney&nbsp;Phone:</td>
+                            <td width="35%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; ">@Html.DisplayFor(m => m.AttorneyPhone)</div></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+
+            <div style="padding-top:6px;">
+                <table width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td width="8%" valign="top">Address:</td>
+                            <td width="92%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; ">@Html.DisplayFor(m => m.AttorneyAddress1),@Html.DisplayFor(m => m.AttorneyAddress2),@Html.DisplayFor(m => m.AttorneyCity),@Html.DisplayFor(m => m.AttorneyState),@Html.DisplayFor(m => m.AttorneyZip)</div></td>
+
+
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+
+        I hereby instruct and direct the above insurance company(s) to pay by check made out to: <strong>
+            Advanced Physical
+            Therapy of Central Florida
+        </strong> (P: 352-693-3378) and mailed to 303 SE 17th Street #309-229, Ocala, Florida 34471.
+        If my/this current policy prohibits direct payment to doctor/therapist, I hereby also instruct and direct you to
+        make out the check to me and mail it to the above address for the professional or medical expense benefits allowable,
+        and otherwise payable to me under my current insurance policy as payment toward the total charges
+        for the professional services rendered.
+
+        <div style="padding:10px 0; font-size:20px;"><strong>This is a direct assignment of my rights and benefits under this policy.</strong></div>
+
+
+        This payment will not exceed my indebtedness to the above-mentioned assignee, and I have agreed to pay,
+        in a current manner, any balance of said professional service charges over and above this insurance payment.
+        Please check each box and sign at the bottom.
+
+
+        <div style="padding:10px 0 0 20px;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="5%">
+                        <span>
+                            @{
+                                var imgurl12 = "";
+                                if (ViewBag.boxtick != null)
+                                {
+                                    imgurl12 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.boxtick);
+                                }
+                            }
+                            <img src="@imgurl12" alt="Alternate Text" id="imgWitness" />
+                        </span>
+                    </td>
+                    <td width="95%">A photocopy of this Assignment shall be considered as effective and valid as the original.</td>
+                </tr>
+            </table>
+
+        </div>
+        <div style="padding:10px 0 0 20px;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="5%" valign="top">
+                        <span>
+                            @{
+                                var imgurl13 = "";
+                                if (ViewBag.boxtick != null)
+                                {
+                                    imgurl13 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.boxtick);
+                                }
+                            }
+                            <img src="@imgurl13" alt="Alternate Text" id="imgWitness" />
+                        </span>
+                    </td>
+                    <td width="95%">
+                        I authorize the release of any medical or other information pertinent to my case to any insurance company,<br>
+                        adjuster, or attorney involved in this case for the purpose of processing claims and securing payment of benefits.
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+
+        <div style="padding:10px 0 0 20px;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="5%">
+                        <span>
+                            @{
+                                var imgurl14 = "";
+                                if (ViewBag.boxtick != null)
+                                {
+                                    imgurl14 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.boxtick);
+                                }
+                            }
+                            <img src="@imgurl14" alt="Alternate Text" id="imgWitness" />
+                        </span>
+                    </td>
+                    <td width="95%">I authorize the use of this signature on all insurance submissions.</td>
+                </tr>
+            </table>
+
+        </div>
+        <div style="padding:10px 0 0 20px;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="5%">
+                        <span>
+                            @{
+                                var imgurl15 = "";
+                                if (ViewBag.boxtick != null)
+                                {
+                                    imgurl15 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.boxtick);
+                                }
+                            }
+                            <img src="@imgurl15" alt="Alternate Text" id="imgWitness" />
+                        </span>
+                    </td>
+                    <td width="95%">I authorize the “Healthcare Provider” named above to deposit checks made in my name.</td>
+                </tr>
+            </table>
+
+        </div>
+        <div style="padding:10px 0 0 20px;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="5%">
+                        <span>
+                            @{
+                                var imgurl16 = "";
+                                if (ViewBag.boxtick != null)
+                                {
+                                    imgurl16 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.boxtick);
+                                }
+                            }
+                            <img src="@imgurl16" alt="Alternate Text" id="imgWitness" />
+                        </span>
+                    </td>
+                    <td width="95%">
+                        I authorize the “Healthcare Provider” named above to initiate a complaint to the Insurance Commissioner<br>
+                        for any reason on my behalf.
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <div style="padding:10px 0 15px 20px;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="5%">
+                        <span>
+                            @{
+                                var imgurl17 = "";
+                                if (ViewBag.boxtick != null)
+                                {
+                                    imgurl17 = "data:image/png;base64," + Convert.ToBase64String(ViewBag.boxtick);
+                                }
+                            }
+                            <img src="@imgurl17" alt="Alternate Text" id="imgWitness" />
+                        </span>
+                    </td>
+                    <td width="95%">I understand that I am financially responsible for all charges whether or not paid by insurance.</td>
+                </tr>
+            </table>
+
+        </div>
+        <div style="padding:0 0 0px 0;">
+            <table width="100%" border="0">
+                <tbody>
+                    <tr>
+                        <td style=" width:33%;">
+                            <div style="padding:8px 0 8px 0;  margin-bottom:0px; min-height:20px;">
+                                @{var imgurl2 = "";
+                                if (Model.SignOfPolicyholder != null)
+                                {
+                                    imgurl2 = "data:image/png;base64," + Convert.ToBase64String(Model.SignOfPolicyholder);
+                                }
+                                }
+                                <img src="@imgurl2" alt="Alternate Text" id="imgPolicyholderSign" style="width: 300px; height: 90px;" />
+
+
+                            </div>
+                            <div style="padding:8px 0 8px 0;  margin-bottom:5px; min-height:20px;">@Html.DisplayFor(m => m.PolicyholderSignatureDate, new { @class = "applitextfield1 ", @style = "width: 400px;", @readonly = "true" })</div>
+                            <strong>Signature of Policyholder</strong>
+
+
+                        </td>
+                        <td style="width:33%; text-align:center;">
+                            <div style="padding:8px 0 8px 0; margin-bottom:0px; min-height:20px;">
+                                @{var imgurl4 = "";
+                                if (Model.ClaimantSignature != null)
+                                {
+                                    imgurl4 = "data:image/png;base64," + Convert.ToBase64String(Model.ClaimantSignature);
+                                }
+                                }
+                                <img src="@imgurl4" alt="Alternate Text" id="imgClaimantSignature" style="width: 300px; height: 90px;" />
+                            </div>
+                            <div style="padding:8px 0 8px 0;margin-bottom:5px; min-height:20px;">@Html.DisplayFor(m => m.ClaimantSignatureDate)</div>
+                            <strong>Signature of Claimant</strong><br>
+                            (If other than Policyholder)
+
+
+                        </td>
+
+                        <td style="width:33%; text-align:right;">
+                            <div style="padding:8px 0 8px 0;  margin-bottom:0px; min-height:20px;">
+                                @{var imgurl3 = "";
+                                if (Model.WitnessSignature != null)
+                                {
+                                    imgurl3 = "data:image/png;base64," + Convert.ToBase64String(Model.WitnessSignature);
+                                }
+                                }
+                                <img src="@imgurl3" alt="Alternate Text" id="imgWitnessSignature" style="width: 300px; height: 90px; " />
+                            </div>
+                            <div style="padding:8px 0 8px 0; margin-bottom:5px; min-height:20px;">@Html.DisplayFor(m => m.WitnessSignatureDate)</div>
+                            <strong>Signature of Witness</strong>
+
+
+                        </td>
+                        @*<td style="padding-right:10px;" width="37%" valign="top"></td>*@
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+
+
+        @*<div style="padding:0 0 8px 0;">
+                        <table width="100%" border="0">
+                            <tbody>
+                                <tr>
+                                    <td width="25%" height="20"><strong>Signature of Policyholder:</strong></td>
+                                    <td width="43%">
+                                        <div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">
+                                            @{var imgurl2 = "";
+                                            if (Model.SignOfPolicyholder != null)
+                                            {
+                                                imgurl2 = "data:image/png;base64," + Convert.ToBase64String(Model.SignOfPolicyholder);
+                                            }
+                                            }
+                                            <img src="@imgurl2" alt="Alternate Text" id="imgPolicyholderSign" style="width: 200px; height: 120px;" />
+                                        </div>
+                                    </td>
+                                    <td width="7%">Date:</td>
+                                    <td width="25%"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">@Html.DisplayFor(m => m.PolicyholderSignatureDate)</div></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                    <div style="padding:0 0 8px 0;">
+                        <table width="100%" border="0">
+                            <tbody>
+                                <tr>
+                                    <td width="25%" height="20">
+                                        <strong>Signature of Claimant:</strong><br>
+                                        (If other than Policyholder)
+                                    </td>
+                                    <td width="43%">
+                                        <div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">
+                                            @{var imgurl4 = "";
+                                            if (Model.ClaimantSignature != null)
+                                            {
+                                                imgurl4 = "data:image/png;base64," + Convert.ToBase64String(Model.ClaimantSignature);
+                                            }
+                                        }
+                                        <img src="@imgurl4" alt="Alternate Text" id="imgClaimantSignature" style="width: 200px; height: 120px;" />
+                                    </div>
+                                </td>
+                                <td width="7%">Date:</td>
+                                <td width="25%"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">@Html.DisplayFor(m => m.ClaimantSignatureDate)</div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+                </div>
+                <div style="padding:0 0 8px 0;">
+                    <table width="100%" border="0">
+                        <tbody>
+                            <tr>
+                                <td width="25%" height="20"><strong>Signature of Witness:</strong></td>
+                                <td width="43%">
+                                    <div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">
+                                        @{var imgurl3 = "";
+                                        if (Model.WitnessSignature != null)
+                                        {
+                                            imgurl3 = "data:image/png;base64," + Convert.ToBase64String(Model.WitnessSignature);
+                                        }
+                                    }
+                                    <img src="@imgurl3" alt="Alternate Text" id="imgWitnessSignature" style="width: 200px; height: 120px; " />
+                                </div>
+                            </td>
+                            <td width="7%">Date:</td>
+                            <td width="25%"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">@Html.DisplayFor(m => m.WitnessSignatureDate)</div></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+            </div>*@
+
+    </div>
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,414 @@
+﻿@model PagedList.IPagedList<DataLayer.Models.tblCustomPatScheduleAppointment>
+@using PagedList.Mvc;
+@using DataLayer;
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+ int? _Paymentid=0;
+}
+<link href="/Content/semantic.css" rel="stylesheet">
+@*<body onload="setTimeout(function(){window.location.href = '@Url.Action("Index", "TodayAppointment")'}, 5000)">
+    
+</body>*@
+<section class="bodyinner2">
+    <div>
+        @*<p class="pull-right">
+                @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+            </p>*@
+
+        @{
+            bool? direction = ViewBag.SortDirection;
+            if (direction == null) { direction = false; }
+        }
+        @using (Html.BeginForm("Index", "TodayAppointment", FormMethod.Get))
+        {
+
+            <div class="searchsec">
+
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search by.." })
+                <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                <div class="clearfix"></div>
+            </div>
+        }
+        <div class="clearfix"></div>
+    </div>
+
+    <div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+
+                        <th>
+
+                            @Html.DisplayName("Patient name")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Appointment Date")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Appointment Start Time")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Appointment End Time")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Check In")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Check Out")
+                        </th>
+                        <th>
+                            @Html.DisplayName("No Show")
+                        </th>
+                        <th>
+                            @*@Html.DisplayName("Reset")*@
+                        </th>
+                        @*<th></th>*@
+
+                    </tr>
+
+                </thead>
+
+                @foreach (var item in Model)
+                {
+                    //For CurrentTime
+                    int CurrentHr = Convert.ToInt32(ViewBag.th);
+                    int currentMin = Convert.ToInt32(ViewBag.tm);
+                    int ConvertHrTomin = (Convert.ToInt32(ViewBag.th) * 60) + currentMin;
+                    //For FormTime
+                    string time = Convert.ToString(@item.FromTime);
+                    string[] t = time.Split(':');
+                    int hr = Convert.ToInt32(t[0]);
+                    int min = Convert.ToInt32(t[1]);
+                    int ConvertFromTime = (hr * 60) + min;
+                    int convertsub = (ConvertFromTime - 10);
+                    //For TOTime
+                    string Totime = Convert.ToString(@item.ToTime);
+                    string[] To = Totime.Split(':');
+                    int Tohr = Convert.ToInt32(To[0]);
+                    int Tomin = Convert.ToInt32(To[1]);
+                    int ConvertToTIme = (Tohr * 60) + Tomin;
+                    <tr>
+                        @*<td>
+
+                                @(((Resource)item.ResourceType).ToCustomString())
+                            </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PatientName) @*@Html.DisplayFor(modelItem => item.tblMPatient.LastName)*@
+                        </td>
+                        <td>
+                            @*@Html.DisplayFor(modelItem => item.PaymentDate)*@
+                            @item.AppointmentDate.GetExactValue()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FromTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ToTime)
+                        </td>
+                       
+                        @Html.HiddenFor(modelItem => item.AppointmentDate)
+
+                        @*@if (item.IsCheckedIn == false && hr >= Convert.ToInt32(ViewBag.th) && min >= Convert.ToInt32(ViewBag.tm) - 10 && Tohr >= Convert.ToInt32(ViewBag.th) && Tomin +60 >= Convert.ToInt32(ViewBag.tm))*@
+                       @*@if (convertsub <= ConvertHrTomin && ConvertToTIme >= ConvertHrTomin && item.IsCheckedIn == false)*@
+                        @if (ConvertFromTime <= ConvertHrTomin + 10 && ConvertToTIme >= ConvertHrTomin && item.IsCheckedIn == false && item.IsNoShow==false)
+                        {
+                             <td>
+                                 <button type="button" class="btn btn-primary" id="btnCheckIn_@item.Appointment_Id" onclick="fnConfirmationCheckIn('@item.Appointment_Id')"><i class="fa fa-calendar-check-o" aria-hidden="true"></i>&nbsp;Check-In</button>
+                                 @*<button type="button" class="btn btn-primary" id="btnCheckedIn" style="display:none" disabled="disabled"><i class="fa fa-calendar-check-o" aria-hidden="true"></i>&nbsp;Checked-In</button>*@
+                               
+                             </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <button type="button" class="btn btn-primary" disabled="disabled" id="btnCheckIn_@item.Appointment_Id" onclick="fnConfirmationCheckIn('@item.Appointment_Id')"><i class="fa fa-calendar-check-o" aria-hidden="true"></i>&nbsp;Check-In</button>
+                        </td>
+                        }
+                       
+                        @if (item.IsCheckedOut == false && item.IsCheckedIn == false)
+                        {
+                             <td>
+                                 <button type="button" class="btn btn-primary" disabled="disabled" id="btnCheckOut_@item.Appointment_Id" onclick="fnConfirmationCheckOut('@item.Appointment_Id')"><i class="fa fa-calendar-check-o" aria-hidden="true"></i>&nbsp;Check-Out</button>
+                             </td>
+                        }
+                        else if (item.IsCheckedOut == false && item.IsCheckedIn == true )
+                        {
+                             <td>
+                                 <button type="button" class="btn btn-primary" id="btnCheckOut_@item.Appointment_Id" onclick="fnConfirmationCheckOut('@item.Appointment_Id')"><i class="fa fa-calendar-check-o" aria-hidden="true"></i>&nbsp;Check-Out</button>
+                              
+                             </td>
+                        }
+                        else
+                        {
+                              <td>
+                                  <button type="button" class="btn btn-primary" disabled="disabled" id="btnCheckOut_@item.Appointment_Id" onclick="fnConfirmationCheckOut('@item.Appointment_Id')"><i class="fa fa-calendar-check-o" aria-hidden="true"></i>&nbsp;Check-Out</button>
+                              
+                             </td>
+
+                        }
+
+                        @if (item.IsNoShow == false && item.IsCheckedIn == false)
+                        {
+                            <td>
+                                <button type="button" class="btn btn-primary"   id="btnIsNoShow_@item.Appointment_Id" onclick="fnConfirmationNoShow('@item.Appointment_Id')"><i class="fa fa-calendar-check-o" aria-hidden="true"></i>&nbsp;No Show</button>
+                              
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <button type="button" class="btn btn-primary" disabled="disabled" id="btnIsNoShow_@item.Appointment_Id" onclick="fnConfirmationNoShow('@item.Appointment_Id')"><i class="fa fa-calendar-check-o" aria-hidden="true"></i>&nbsp;No Show</button>
+                              
+                            </td>
+                        }
+                        @if (item.IsTreatmentComplete == false || item.IsTreatmentComplete == null)
+                        {
+                            if (ConvertFromTime <= ConvertHrTomin + 10 && ConvertToTIme >= ConvertHrTomin)
+                        {
+                            <td>
+                                
+                                <button type="button" class="btn btn-primary" id="btnReset_@item.Appointment_Id" onclick="fnConfirmationReset('@item.Appointment_Id')"><i class="fa fa-calendar-check-o" aria-hidden="true"></i>&nbsp;Reset</button>
+
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <button type="button" class="btn btn-primary" disabled="disabled" id="btnReset_@item.Appointment_Id" onclick="fnConfirmationReset('@item.Appointment_Id')"><i class="fa fa-calendar-check-o" aria-hidden="true"></i>&nbsp;Reset</button>
+
+                            </td>
+                        }
+                        }
+                        else
+                        {
+                             <td>
+                                 <button type="button" class="btn btn-primary" disabled="disabled" id="btncomplete_@item.Appointment_Id"><i class="fa fa-calendar-check-o" aria-hidden="true"></i>&nbsp;Completed</button>
+
+                            </td>
+                        }
+                       
+                    </tr>
+                }
+
+            </table>
+
+        </div>
+        <div>
+            <br />
+            @using (Html.BeginForm("Index", "TodayAppointment", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+            {
+                @Html.DropDownList("PageSize")
+            }
+            <div class="pull-left" style=" padding:10px;">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                      new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction }))
+        </div>
+    </div>
+
+</section>
+<div class="modal fade" id="_duepaymentforRescheduleorCancelAdmin" role="dialog">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="padding-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 id="headingSearchPatient" class="modal-title">Payment Due</h3>
+            </div>
+            <div class="modal-body" style="width:95%; padding-left:60px;">
+                <div>
+                    <div class="totalpayableanddue" style="padding-bottom: 15px; position: relative; left: -17px; font-weight: bold">
+                        This patient has not paid his/her previous reschedule/Cancellation charge still now, so he/she should pay the charge before doing it
+                        <a id="proced_extrapayment" class="procedbuttNew" href="#">
+                            Proceed to pay
+                        </a>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer" style="padding:20px 0px;">
+
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+@*<script>
+        function fnShowDetail(Doctor_Id) {
+            var url = "@Url.Action("Doctor", "Resource", new { Area = "Patient" })" + "?id=" + Doctor_Id;
+            //fnShowPopupForDetail(url);
+            popupwindow(url, 'Doctor', 1000, 800);
+        }
+    </script>*@
+<script>
+    $(document).ready(function () {
+
+        //$("#btnCheckIn").css("display", "block");
+        //$("#btnCheckedIn").css("display", "block");
+        //$('#btnCheckedIn').attr("disabled", "true");
+       // $("#btnCheckOut").css("display", "none");
+       // $("#btnCheckedOut").css("display", "block");
+        //$('#btnCheckedOut').attr("disabled", "true");
+    });
+    $("#PageSize").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+</script>
+<script>
+    function fnConfirmationCheckIn(Appointment_Id) {
+
+        var btnCheckInId = "#btnCheckIn_" + Appointment_Id;
+        var btnCheckNoShowedId = "#btnIsNoShow_" + Appointment_Id;
+        var btnCheckOutId = "#btnCheckOut_" + Appointment_Id;
+        var btnReset = "#btnReset_" + Appointment_Id;
+        $.ajax({
+
+            url: "@Url.Action("Todayscheckin", "TodayAppointment")",
+            type: "POST",
+            dataType: "JSON",
+            data: { PatientAppointment_Id: Appointment_Id },
+            success: function (data) {
+                if (data.flag == "dueofextracharge") {
+                    //alert(data.PaymentID);
+                    //$('#myModal').modal('hide');
+                    //$("#btnCheckIn").css("display", "none");
+                    //$("#btnCheckOut").css("display", "block");
+                    _Paymentid = data.PaymentID;
+                    //alert(_Paymentid);
+                    var vhref = "Payment_AdminPayment/Create/"+_Paymentid;
+                    $("#proced_extrapayment").attr('href', vhref);
+                    
+                  
+                    $('#_duepaymentforRescheduleorCancelAdmin').modal();
+                }
+                else {
+                    //previous code..............
+
+                    alert(data.flag);
+               // $('#myModal').modal('hide');
+                //$("#btnCheckIn").css("display", "none");
+                //$("#btnCheckedIn").css("display", "block");
+
+                $(btnCheckOutId).prop("disabled", false);
+                $(btnCheckNoShowedId).prop("disabled", "disabled");
+                $(btnCheckInId).attr("disabled", "disabled");
+                //alert(data.Appointment_Id);
+                //  $('#hdnAppointmentId').val("");
+                //$('#hdnCheckIn').val("");
+
+                    ///////////////previous code end
+                }
+
+            },
+            error: function (error) { alert("Error: " + error); },
+            statusCode: {
+                404: function () {
+                    alert("Page Not Found.");
+                }
+            }
+        });
+
+    }
+
+</script>
+<script>
+    function fnConfirmationCheckOut(Appointment_Id) {
+        var btnCheckOutId = "#btnCheckOut_" + Appointment_Id;
+        var btnCheckInId = "#btnCheckIn_" + Appointment_Id;
+        //alert("ok");
+        $.ajax({
+            url: "@Url.Action("Todayscheckout", "TodayAppointment")",
+            type: "POST",
+            dataType: "JSON",
+            data: { PatientAppointment_Id: Appointment_Id, DateTimeNew: $('#item_AppointmentDate').val() },
+            success: function (data) {
+                alert(data);
+                //$('#myModal').modal('hide');
+                $(btnCheckInId).attr("disabled", "disabled");
+                $(btnCheckOutId).attr("disabled", "disabled");
+               
+            },
+            error: function (error) { alert("Error: " + error); },
+            statusCode: {
+                404: function () {
+                    alert("Page Not Found.");
+                }
+            }
+        });
+
+    }
+    function fnConfirmationNoShow(Appointment_Id) {
+        var btnCheckOutId = "#btnCheckOut_" + Appointment_Id;
+        var btnCheckInId = "#btnCheckIn_" + Appointment_Id;
+        var btnCheckNoShowId = "#btnIsNoShow_" + Appointment_Id;
+        var btnCheckNoShowedId = "#btnIsNoShowed_" + Appointment_Id;
+        $.ajax({
+            url: "@Url.Action("TodaysNoshow", "TodayAppointment")",
+            type: "POST",
+        dataType: "JSON",
+        data: { PatientAppointment_Id: Appointment_Id, DateTimeNew: $('#item_AppointmentDate').val() },
+        success: function (data) {
+           // alert(data);
+            //$('#myModal').modal('hide');
+            //$("#btnCheckIn").css("display", "none");
+            $(btnCheckInId).prop("disabled", "disabled");
+            $(btnCheckOutId).attr("disabled", "disabled");
+            $(btnCheckNoShowId).attr("disabled", "disabled");
+            $(btnCheckNoShowedId).attr("disabled", "disabled");
+        },
+        error: function (error) { alert("Error: " + error); },
+        statusCode: {
+            404: function () {
+                alert("Page Not Found.");
+            }
+        }
+    });
+
+    }
+    function fnConfirmationReset(Appointment_Id) {
+        var btnCheckOutId = "#btnCheckOut_" + Appointment_Id;
+        var btnCheckInId = "#btnCheckIn_" + Appointment_Id;
+        var btnCheckNoShowId = "#btnIsNoShow_" + Appointment_Id;
+        //alert("ok");
+        $.ajax({
+            url: "@Url.Action("TodayscheckReset", "TodayAppointment")",
+            type: "POST",
+        dataType: "JSON",
+        data: { PatientAppointment_Id: Appointment_Id, DateTimeNew: $('#item_AppointmentDate').val() },
+        success: function (data) {
+            
+            if (data == "CheckInCheckoutTrue") {
+                $(btnCheckInId).attr("disabled", "disabled");
+                $(btnCheckOutId).attr("disabled", false);
+                $(btnCheckNoShowId).attr("disabled", "disabled");
+            }
+            else {
+                $(btnCheckInId).attr("disabled", false);
+                $(btnCheckOutId).attr("disabled", "disabled");
+                $(btnCheckNoShowId).attr("disabled", false);
+            }
+            //$('#myModal').modal('hide');
+            alert("Your Reset successfully Applied");
+
+        },
+        error: function (error) { alert("Error: " + error); },
+        statusCode: {
+            404: function () {
+                alert("Page Not Found.");
+            }
+        }
+    });
+
+    }
+</script>

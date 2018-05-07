@@ -1,0 +1,453 @@
+﻿@model DataLayer.Models.PurchaseOrderDetails
+@{
+    ViewBag.Title = "Purchase Order";
+
+
+}
+
+
+<section class="bodyinner">
+
+    @*<div class="bodyleft">
+
+
+        @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+    </div>*@
+    <div class="bodyright" style="width:100%;">
+
+
+        <div class="report-form clearfix">
+            <h2>Purchase Order Form  <span>(INTERNAL USE ONLY-NOT A VALID ORDER)</span></h2>
+
+            @using (Html.BeginForm("Create", "PurchaseOrder", FormMethod.Post, new { name = "Create1", id = "Create1" }))
+            {
+                @Html.AntiForgeryToken()
+                if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+                <div class="row">
+
+                    @if (ViewBag.VendorId != null)
+                    {
+                        @Html.TextBoxFor(model => model.PO.Vendor_Id, new { @Value = ViewBag.VendorId, @style = "display:none" })
+
+                    }
+                    @Html.HiddenFor(m => m.PO.Shipping_Location)
+                    @*@Html.HiddenFor(m => m.PO.Shipping_Id)*@
+
+                    <div class="col-sm-6 col-md-6 form-group">
+                        <h3>Vendor</h3>
+
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 form-group">
+                                <label for="date">@*Location*@ Vendor Name: </label>
+                                @if (ViewBag.VendorName != null)
+                                {
+                                    @ViewBag.VendorName
+                                }
+                                @*@if (ViewBag.Flag != null)
+                                    {
+                                        if (ViewBag.Flag == "DetailsView")
+                                        {
+                                            @Html.DropDownListFor(m => m.PO.Vendor_Id, (SelectList)ViewBag.Vender_Name, new { @class = "form-control", @id = "PO_Vendor_Id", @readonly = true, @disabled = "disabled" })
+                                        }
+                                        else
+                                        {
+                                            @Html.DropDownListFor(m => m.PO.Vendor_Id, (SelectList)ViewBag.Vender_Name, new { @class = "form-control", @id = "PO_Vendor_Id" })
+                                        }
+                                    }
+                                    else
+                                    {
+                                        @Html.DropDownListFor(m => m.PO.Vendor_Id, (SelectList)ViewBag.Vender_Name, new { @class = "form-control", @id = "PO_Vendor_Id" })
+                                    }*@
+                            </div>
+                            <div id="dvVendorDetails" class="col-sm-12 col-md-12 form-group">
+                                <span id="spanVendorDetails">
+                                    @if (ViewBag.VendorAddress != null)
+                                    {
+
+
+                                        <p> <label for="date"> Street Address: </label>  @ViewBag.VendorAddress </p>
+                                        <p> <label for="date"> City: </label> @ViewBag.City </p>
+                                        <p> <label for="date"> State: </label>  @ViewBag.State </p>
+                                        <p> <label for="date"> ZIP Code: </label>  @ViewBag.ZIP </p>
+                                        <p> <label for="date"> Phone: </label> @ViewBag.Phone </p>
+                                        <p> <label for="date"> Fax: </label>  @ViewBag.FAX </p>
+                                        <p> <label for="date"> Customer ID: </label>  @ViewBag.CustomerID </p>
+                                    }
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-6 col-md-6 form-group">
+                        <h3>Ship To</h3>
+
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 form-group">
+                                <label for="date">Location </label>
+                                @if (ViewBag.Flag != null)
+                                {
+                                    if (ViewBag.Flag == "DetailsView")
+                                    {
+                                        @Html.DropDownListFor(m => m.PO.Shipping_Id, (SelectList)ViewBag.Shipping_Name,"Select Location", new { @class = "form-control"})
+                                    }
+                                    else
+                                    {
+                                        @Html.DropDownListFor(m => m.PO.Shipping_Id, (SelectList)ViewBag.Shipping_Name, "Select Location", new { @class = "form-control" })
+                                    }
+                                }
+                                else
+                                {
+                                    @Html.DropDownListFor(m => m.PO.Shipping_Id, (SelectList)ViewBag.Shipping_Name, "Select Location", new { @class = "form-control" })
+                                }
+                            </div>
+                            <div id="dvShippingDetails" class="col-sm-12 col-md-12 form-group">
+                                <span id="spanShippingDetails"></span>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+                @Html.HiddenFor(e => e.PO.PO_Id)
+
+                <script type="text/javascript">
+                    var counter = 0;
+                </script>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th width="22%">Item</th>
+                                <th width="20%">Quantity</th>
+                                @*<th width="10%">Unit of Measure</th>*@
+                                <th width="31%">Description</th>
+                                <th width="11%">Unit Price</th>
+                                <th width="11%">Line Price</th>
+
+                            </tr>
+                        </thead>
+
+
+                        <tbody id="tbody_Item">
+
+                            @if (ViewBag.Flag != null)
+                            {
+                                if (ViewBag.Flag == "DetailsView")
+                                {
+                                    for (int i = 0; i < Model.ItemDetails.Count; i++)
+                                    {
+                                        @Html.HiddenFor(m => m.ItemDetails[i].DMEForm_Code)
+                                        @Html.HiddenFor(m => m.ItemDetails[i].DMEForm_Id)
+                                        <tr id="tr_0">
+                                            <td>
+                                                @Html.TextBoxFor(m => m.ItemDetails[i].Item_Name, new { @class = "form-control", @style = "width:98%;", @readonly = "readonly" })
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.ItemDetails[i].Item_Qty, new { @class = "form-control", @style = "width:80px;", @readonly = "readonly", @Value = "1" })
+                                            </td>
+                                            @*<td>
+                                                    @Html.TextBoxFor(m => m.ItemDetails[i].Measure_Unit, new { @class = "form-control", @style = "width:80px;", @readonly = "readonly" })
+                                                </td>*@
+                                            <td>
+                                                @Html.TextAreaFor(m => m.ItemDetails[i].Item_Desc, new { @class = "form-control", @style = "height:80px;", @readonly = "readonly" })
+                                            </td>
+                                            @if (@ViewBag.UNITPRICE != null)
+                                            {
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.ItemDetails[i].Unit_Price, new { @class = "form-control", @style = "width:80px;", onblur = "fn_LinePriceCalculate();", @readonly = "readonly", @Value = @ViewBag.UNITPRICE })
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td>
+                                                @Html.TextBoxFor(m => m.ItemDetails[i].Unit_Price, new { @class = "form-control", @style = "width:80px;", onblur = "fn_LinePriceCalculate();", @readonly = "readonly" })
+                                            </td>
+                                            }
+                                            
+                                            <td>
+                                                @Html.TextBoxFor(m => m.ItemDetails[i].Line_Total_Price, new { @class = "form-control", @style = "width:80px;", @readonly = "readonly" })
+                                            </td>
+
+                                        </tr>
+
+
+                                        <script> counter += 1; </script>
+
+                                    }
+
+                                }
+                                else
+                                {
+                                    for (int i = 0; i < Model.ItemDetails.Count; i++)
+                                    {
+                                        @Html.HiddenFor(m => m.ItemDetails[i].DMEForm_Code)
+                                        @Html.HiddenFor(m => m.ItemDetails[i].DMEForm_Id)
+                                        <tr id="tr_0">
+                                            <td>
+                                                @Html.TextBoxFor(m => m.ItemDetails[i].Item_Name, new { @class = "form-control", @style = "width:98%;", @readonly = "readonly" })
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(m => m.ItemDetails[i].Item_Qty, new { @class = "form-control numbersOnly", @style = "width:80px;", @Value = "1" })
+                                            </td>
+                                            @*<td>
+                                                    @Html.TextBoxFor(m => m.ItemDetails[i].Measure_Unit, new { @class = "form-control", @style = "width:80px;" })
+                                                </td>*@
+                                            <td>
+                                                @Html.TextAreaFor(m => m.ItemDetails[i].Item_Desc, new { @class = "form-control", @style = "height:65px;", @readonly = "readonly" })
+                                            </td>
+                                            @if (@ViewBag.UNITPRICE != null)
+                                            {
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.ItemDetails[i].Unit_Price, new { @class = "form-control numbersOnly", @style = "width:80px;", onblur = "fn_LinePriceCalculate();", @Value = @ViewBag.UNITPRICE })
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                 <td>
+                                                @Html.TextBoxFor(m => m.ItemDetails[i].Unit_Price, new { @class = "form-control numbersOnly", @style = "width:80px;", onblur = "fn_LinePriceCalculate();" })
+                                            </td>
+                                            }
+                                           
+                                            <td>
+                                                @Html.TextBoxFor(m => m.ItemDetails[i].Line_Total_Price, new { @class = "form-control numbersOnly", @style = "width:80px;", @readonly = "readonly" })
+                                            </td>
+
+                                        </tr>
+
+
+                                        <script> counter += 1; </script>
+
+                                    }
+
+                                }
+                            }
+                            else
+                            {
+                                for (int i = 0; i < Model.ItemDetails.Count; i++)
+                                {
+                                    @Html.HiddenFor(m => m.ItemDetails[i].DMEForm_Code)
+                                    @Html.HiddenFor(m => m.ItemDetails[i].DMEForm_Id)
+                                    <tr id="tr_0">
+                                        <td>
+                                            @Html.TextBoxFor(m => m.ItemDetails[i].Item_Name, new { @class = "form-control", @style = "width:98%;", @readonly = "readonly" })
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.ItemDetails[i].Item_Qty, new { @class = "form-control numbersOnly", @style = "width:80px;", @Value = "1" })
+                                        </td>
+                                        @*<td>
+                                                @Html.TextBoxFor(m => m.ItemDetails[i].Measure_Unit, new { @class = "form-control", @style = "width:80px;" })
+                                            </td>*@
+                                        <td>
+                                            @Html.TextAreaFor(m => m.ItemDetails[i].Item_Desc, new { @class = "form-control", @style = "height:65px;", @readonly = "readonly" })
+                                        </td>
+                                        @if (@ViewBag.UNITPRICE != null)
+                                        {
+                                             <td>
+                                            @Html.TextBoxFor(m => m.ItemDetails[i].Unit_Price, new { @class = "form-control numbersOnly", @style = "width:80px;", onblur = "fn_LinePriceCalculate();", @Value = @ViewBag.UNITPRICE })
+                                        </td>
+                                        }
+                                        else
+                                        {
+                                             <td>
+                                            @Html.TextBoxFor(m => m.ItemDetails[i].Unit_Price, new { @class = "form-control numbersOnly", @style = "width:80px;", onblur = "fn_LinePriceCalculate();" })
+                                        </td>
+                                        }
+                                       
+                                        <td>
+                                            @Html.TextBoxFor(m => m.ItemDetails[i].Line_Total_Price, new { @class = "form-control numbersOnly", @style = "width:80px;", @readonly = "readonly" })
+                                        </td>
+
+                                    </tr>
+
+
+                                    <script> counter += 1; </script>
+
+                                }
+
+                            }
+
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class="subbutt">
+                    @if (ViewBag.AllowSubmit == true)
+                    {
+                        <button type="submit" class="btn btn-orange pull-right">Submit</button>
+                    }
+                    else
+                    {
+
+                        <button type="button" class="btn btn-orange pull-right" onclick="RedirectToAnotherAction();">Print</button>
+                        @*<button type="button" class="btn btn-orange pull-right" onclick="RedirectToAnotherAction();">Print</button>*@
+                    }
+
+                </div>
+
+            }
+        </div>
+
+
+
+
+    </div>
+
+    <div class="clearfix"></div>
+
+
+
+</section>
+
+
+<script type="text/javascript">
+
+    function RedirectToAnotherAction() {
+        var hdnval = $('#PO_PO_Id').val();
+        //alert(hdnval);
+        var url = '@Url.Action("PurchaseOrderPdf", "PurchaseOrder")?id=' + hdnval;
+        //window.location.href = url
+        popupwindow(url, 'PurchaseOrder', 1000, 800);
+    }
+
+</script>
+
+<script type="text/javascript">
+
+    $('.numbersOnly').keyup(function () {
+        if (this.value != this.value.replace(/[^0-9\.]/g, '')) {
+            this.value = this.value.replace(/[^0-9\.]/g, '');
+        }
+    });
+
+    function fn_LinePriceCalculate() {
+        var qty = $('#ItemDetails_0__Item_Qty').val();
+        var unitPrice = $('#ItemDetails_0__Unit_Price').val();
+        var linePrice = (qty * unitPrice).toFixed(2);
+        //$('#ItemDetails_0__Unit_Price').val(unitPrice).toFixed(2);
+        $('#ItemDetails_0__Line_Total_Price').val(linePrice).toFixed(2);
+    }
+
+</script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        @*if ('@ViewBag.Allow' == '1') {
+            RedirectToAnotherAction();
+        }*@
+        $("#dvShippingDetails").hide();
+        var ddlShipping = $("#PO_Shipping_Id");
+        var shippingId = ddlShipping.val();
+
+        $('#PO_Shipping_Id').change(function () {
+            shippingId = this.value;
+            //alert(this.value);
+            LoadShipping(shippingId);
+        });
+        if ('@ViewBag.UNITPRICE' != null)
+        {
+            fn_LinePriceCalculate();
+        }
+        
+        //$("#dvVendorDetails").hide();
+        // var ddlVendor = $('#PO_Vendor_Id');
+        // var vendrId = ddlVendor.val();
+
+        //$('#PO_Vendor_Id').change(function () {
+        //    vendrId = this.value;
+        //    //alert(this.value);
+        //    LoadVendor(vendrId);
+        //});
+        @*var vendrId = @ViewBag.VendorId
+            alert(vendrId);
+        LoadVendor(vendrId);*@
+        LoadShipping(shippingId);
+
+    });
+
+    function LoadVendor(vendrId) {
+        alert(vendorID);
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetVendorDetails", "PurchaseOrder")',
+            data: "{'id':'" + vendrId + "'}",
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                //alert(data);
+                $("#dvVendorDetails").show();
+
+                $.each(data, function (index, element) {
+                    $("#spanVendorDetails").html("");
+
+                    $("#spanVendorDetails").append(
+                          '<p> <label for="date"> Street Address: </label> ' + element.Street_Address + '</p>'
+                         + '<p> <label for="date"> City: </label> ' + element.City + '</p>'
+                         + '<p> <label for="date"> State: </label> ' + element.State + '</p>'
+                         + '<p> <label for="date"> ZIP Code: </label> ' + element.ZIP_Code + '</p>'
+                         + '<p> <label for="date"> Phone: </label> ' + element.Phone + '</p>'
+                          + '<p> <label for="date"> Fax: </label> ' + element.FAX + '</p>'
+                         + '<p> <label for="date"> Customer ID: </label> ' + element.Customer_ID + '</p>'
+                        )
+                });
+
+
+                //$.each(data.target, function (index, value) {
+                //    alert(index + ': ' + value.Street_Address);
+                //});
+            },
+            error: function () {
+                alert("Failed to load Item");
+            }
+        });
+
+    }
+
+
+    function LoadShipping(shippingId) {
+        //alert(shippingId);
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetShippingDetails", "PurchaseOrder")',
+            data: "{'id':'" + shippingId + "'}",
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                //alert(data);
+                $("#dvShippingDetails").show();
+
+                $.each(data, function (index, element) {
+                    $("#spanShippingDetails").html("");
+
+                    $("#spanShippingDetails").append(
+                          '<p> <label for="date"> Street Address: </label> ' + element.Street_Address + '</p>'
+                         + '<p> <label for="date"> City: </label> ' + element.City + '</p>'
+                         + '<p> <label for="date"> State: </label> ' + element.State + '</p>'
+                         + '<p> <label for="date"> ZIP Code: </label> ' + element.ZIP_Code + '</p>'
+                         //+ '<p> <label for="date"> Phone: </label> ' + element.Phone + '</p>'
+                         //+ '<p> <label for="date"> Customer ID: </label> ' + element.Customer_ID + '</p>'
+                        )
+                });
+
+            },
+            error: function () {
+                alert("Failed to load Item");
+            }
+        });
+
+    }
+
+</script>

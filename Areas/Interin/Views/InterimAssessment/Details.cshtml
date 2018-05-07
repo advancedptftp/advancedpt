@@ -1,0 +1,467 @@
+﻿@model DataLayer.Models.CIAInterim
+@using DataLayer;
+@using System.Data;
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var Countr = 1;
+    DataTable dtque = new DataTable();
+    DataTable dtObjOption = new DataTable();
+
+    if (TempData["Question"] != null)
+    {
+        dtque = (DataTable)TempData["Question"];
+    }
+    if (TempData["ObjectiveOption"] != null)
+    {
+        dtObjOption = (DataTable)TempData["ObjectiveOption"];
+    }
+}
+
+
+<style>
+    .selectedRow {
+        background-color: rgba(249, 159, 62, 0.65);
+        color: white;
+    }
+</style>
+<style type="text/css">
+    .table-fixed thead {
+        width: 97%;
+    }
+
+    .table-fixed tbody {
+        height: 230px;
+        overflow-y: auto;
+        width: 100%;
+    }
+
+    .table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
+        display: block;
+    }
+
+        .table-fixed tbody td, .table-fixed thead > tr > th {
+            float: left;
+            border-bottom-width: 0;
+        }
+</style>
+<style>
+    .loadingdivschedule {
+        display: block;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 9998;
+        background-color: rgba(0,0,0,.3);
+        -webkit-animation: fade 500ms;
+        -moz-animation: fade 500ms;
+        -o-animation: fade 500ms;
+        animation: fade 500ms;
+    }
+
+    .loadingcontainerschedule {
+        width: 100%;
+        text-align: center;
+        padding-top: 26%;
+    }
+</style>
+
+<section class="bodyinner">
+    <div class="container">
+
+        <div class="report-form clearfix">
+            <h2 class="text-center">Detail's For Interim Assessment</h2>
+            @using (Html.BeginForm("Edit", "InterimAssessment", FormMethod.Post, new { id = "Create", name = "Create" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(e => e.CreatedBy)
+                @Html.HiddenFor(e => e.CreatedOn)
+                @Html.HiddenFor(e => e.ModifiedBy)
+                @Html.HiddenFor(e => e.ModifiedOn)
+                @Html.HiddenFor(e => e.Patient_Id)
+                @Html.HiddenFor(e => e.INTRM_Subjective_Id)
+                @Html.HiddenFor(e => e.ComplainsIds)
+                @Html.HiddenFor(e => e.AffectsIds)
+                @Html.HiddenFor(e => e.Patient_Id)
+                @Html.HiddenFor(e => e.ComplainsIds)
+
+
+                if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+
+                <div class="topforn">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table width="100%" border="0">
+                                <tr>
+                                    <td width="40%"><h3><strong>Interim Assessment for Subjective</strong></h3></td>
+                                    <td width="60%"></td>
+                                </tr>
+                            </table>
+
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table width="100%" border="0">
+                                <tr>
+                                    <td width="20%"><h4><strong>Patient Name:</strong></h4></td>
+                                    <td width="35%">
+                                        @*@Html.TextBox("patient_name", "", new { @class = "form-control" })<br />*@
+                                        @Html.TextBox("PatientName", (string)ViewBag.name, new { @class = "form-control", @readonly = true })
+
+
+                                    </td>
+                                    <td width="45%" style="display:none;">
+                                        <div class="col-sm-1 form-group" style="padding-top:25px;">
+
+                                            <button type="button" id="btnTo" class="btn btn-info btn-lg PatientSearchModal" data-toggle="modal" data-id="To" data-target="#PatientSearchModal">Search Patient</button>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div id="dvid_1" class="col-sm-12">
+                    <p class="pHeaderText">
+                        Patient Complains Of:
+                    </p>
+                    <div class="inlinetext" style="font-size:x-large; padding-left:20px;">
+
+                        <div class="row">
+                            @if (ViewBag.SubjectiveComplainChk != null)
+                            {
+                                foreach (var item in ViewBag.SubjectiveComplainChk)
+                                {
+
+                                    <div class="col-sm-3 checkpad">
+                                        <label> <input type="checkbox" id="chk@(item.Value)" class="chk PatientComplains_of" checked="@item.Selected" name="@item.Text" value="@item.Value"  disabled="disabled" /><span style="padding-left:5px;">@item.Text</span></label>
+                                    </div>
+                                }
+                            }
+                        </div>
+                        <div class="clearfix"></div>
+
+                        @*<div style="float:right">
+                            <input type="button" id="btnNext1" class="btn btn-primary btn-lg" value="Next" onclick="fnShowDiv2()" />
+                        </div>*@
+                    </div>
+                </div>
+
+                <div id="dvid_2" class="col-sm-12">
+                    <p class="pHeaderText">
+                        That affects patient:
+                    </p>
+                    <div class="inlinetext" style="font-size:x-large; padding-left:20px;">
+
+                        @if (ViewBag.AffectPatient != null)
+                        {
+                            foreach (var item1 in ViewBag.AffectPatient)
+                            {
+                                <div class="col-sm-4 checkpad">
+                                    <label><input type="checkbox" id="chk1@(item1.Value)" class="chk PatientAffetcs_of" name="@item1.Text" checked="@item1.Selected" value="@item1.Value"  disabled="disabled"/><span style="padding-left:5px;">@item1.Text</span></label>
+                                </div>
+                            }
+                        }
+
+                    </div>
+                    <div class="clearfix"></div>
+                    @*<div style="float:left">
+                        <input type="button" class="btn btn-primary btn-lg" value="Previous" onclick="fnShowDiv1()" />
+                    </div>
+                    <div style="float:right">
+                        <input type="button" id="btnNext3" class="btn btn-primary btn-lg" value="Next" onclick="fnShowDiv3()" />
+                    </div>*@
+                </div>
+
+                <div id="dvid_3" class="col-sm-12">
+                    <p class="pHeaderText">Intensity of symptoms is at present</p>
+                    <div class="inlinetext" style="font-size:x-large; padding-left:20px;">
+
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label>
+                                    <label class="radio-inline checkpad">@Html.RadioButtonFor(m => m.PresentIntensitySymptom, 1, new { @class = "Present_Intensity_Symptom", disabled = "disabled" })<span>Mild</span></label>
+                                </label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="radio-inline checkpad">@Html.RadioButtonFor(m => m.PresentIntensitySymptom, 2, new { @class = "Present_Intensity_Symptom", disabled = "disabled" })<span>Moderate</span></label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="radio-inline checkpad">@Html.RadioButtonFor(m => m.PresentIntensitySymptom, 3, new { @class = "Present_Intensity_Symptom", disabled = "disabled" })<span>Severe</span></label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="clearfix"></div>
+                    <p class="pHeaderText">At worst intensity of symptoms is</p>
+                    <div class="inlinetext" style="font-size:x-large; padding-left:20px;">
+
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label>
+                                    <label class="radio-inline checkpad">@Html.RadioButtonFor(m => m.WorstIntensitySymptom, 1, new { @class = "Worst_Intensity_Symptom", disabled = "disabled" })<span>Mild</span></label>
+                                </label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="radio-inline checkpad">@Html.RadioButtonFor(m => m.WorstIntensitySymptom, 2, new { @class = "Worst_Intensity_Symptom", disabled = "disabled" })<span>Moderate</span></label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="radio-inline checkpad">@Html.RadioButtonFor(m => m.WorstIntensitySymptom, 3, new { @class = "Worst_Intensity_Symptom", disabled = "disabled" })<span>Severe</span></label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="clearfix"></div>
+                    <p class="pHeaderText">At best intensity of symptoms is</p>
+                    <div class="inlinetext" style="font-size:x-large; padding-left:20px;">
+
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label>
+                                    <label class="radio-inline checkpad">@Html.RadioButtonFor(m => m.BestIntensitySymptom, 1, new { @class = "Best_Intensity_Symptom", disabled = "disabled" })<span>Mild</span></label>
+                                </label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="radio-inline checkpad">@Html.RadioButtonFor(m => m.BestIntensitySymptom, 2, new { @class = "Best_Intensity_Symptom", disabled = "disabled" })<span>Moderate</span></label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="radio-inline checkpad">@Html.RadioButtonFor(m => m.BestIntensitySymptom, 3, new { @class = "Best_Intensity_Symptom", disabled = "disabled" })<span>Severe</span></label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="clearfix"></div>
+                    @*<div style="float:left">
+                        <input type="button" class="btn btn-primary btn-lg" value="Previous" onclick="fnShowDiv2()" />
+                    </div>
+                    <div style="float:right">
+                        <input type="button" id="btnNext4" class="btn btn-primary btn-lg" value="Next" onclick="fnShowDiv4()" />
+                    </div>*@
+                </div>
+
+                <div id="dvid_4" class="col-sm-12">
+                    <p class="pHeaderText">Prior to onset of symptoms, patient was able to perform independently</p>
+                    <div class="inlinetext" style="font-size:x-large; padding-left:20px;">
+
+                        <div class="row">
+
+                            <div class="col-sm-12">
+                                <label class="radio-inline checkpad redbut">@Html.RadioButtonFor(m => m.PerformIndipendentWithAssist, 10, new { @name = "optAssist", @class = "PerformIndipendentWithAssist", disabled = "disabled" })<span>With 10% Assist</span></label>
+                            </div>
+                            <div class="col-sm-12">
+                                <label class="radio-inline checkpad redbut">@Html.RadioButtonFor(m => m.PerformIndipendentWithAssist, 20, new { name = "optAssist", @class = "PerformIndipendentWithAssist", disabled = "disabled" })<span>With 20% Assist</span></label>
+                            </div>
+                            <div class="col-sm-12">
+                                <label class="radio-inline checkpad redbut">@Html.RadioButtonFor(m => m.PerformIndipendentWithAssist, 30, new { name = "optAssist", @class = "PerformIndipendentWithAssist", disabled = "disabled" })<span>With 30% Assist</span></label>
+                            </div>
+                            <div class="col-sm-12">
+
+                                <label class="radio-inline checkpad redbut">@Html.RadioButtonFor(m => m.PerformIndipendentWithAssist, 40, new { name = "optAssist", @class = "PerformIndipendentWithAssist", disabled = "disabled" })<span>With 40% Assist</span></label>
+                            </div>
+                            <div class="col-sm-12">
+
+                                <label class="radio-inline checkpad redbut">@Html.RadioButtonFor(m => m.PerformIndipendentWithAssist, 50, new { name = "optAssist", @class = "PerformIndipendentWithAssist", disabled = "disabled" })<span>With 50% Assist</span></label>
+                            </div>
+                            <div class="col-sm-12">
+
+                                <label class="radio-inline checkpad redbut">@Html.RadioButtonFor(m => m.PerformIndipendentWithAssist, 60, new { name = "optAssist", @class = "PerformIndipendentWithAssist", disabled = "disabled" })<span>With 60% Assist</span></label>
+                            </div>
+                            <div class="col-sm-12">
+
+                                <label class="radio-inline checkpad redbut">@Html.RadioButtonFor(m => m.PerformIndipendentWithAssist, 70, new { name = "optAssist", @class = "PerformIndipendentWithAssist", disabled = "disabled" })<span>With 70% Assist</span></label>
+                            </div>
+                            <div class="col-sm-12">
+
+                                <label class="radio-inline checkpad redbut">@Html.RadioButtonFor(m => m.PerformIndipendentWithAssist, 80, new { name = "optAssist", @class = "PerformIndipendentWithAssist", disabled = "disabled" })<span>With 80% Assist</span></label>
+                            </div>
+                            <div class="col-sm-12">
+
+                                <label class="radio-inline checkpad redbut">@Html.RadioButtonFor(m => m.PerformIndipendentWithAssist, 90, new { name = "optAssist", @class = "PerformIndipendentWithAssist", disabled = "disabled" })<span>With 90% Assist</span></label>
+                            </div>
+                            <div class="col-sm-12">
+
+                                <label class="radio-inline checkpad redbut">@Html.RadioButtonFor(m => m.PerformIndipendentWithAssist, 100, new { name = "optAssist", @class = "PerformIndipendentWithAssist", disabled = "disabled" })<span>With 100% Assist</span></label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <div class="clearfix"></div>
+                    @*<div style="float:left">
+                        <input type="button" class="btn btn-primary btn-lg" value="Previous" onclick="fnShowDiv3()" />
+                    </div>
+                    <div style="float:right">
+                      
+                        <input type="submit" id="btnSave" class="btn btn-orange btn-lg" value="Save" />
+                    </div>*@
+                </div>
+                 <div>
+                    @Html.ActionLink("Back to List", "Index_Detail", new { id = "btnCreateLink" })
+                </div>
+                <div class="clearfix"></div>
+                 <a href="@Url.Action("Create_Objective_Detail", "InterimAssessment")">
+                                <i class="btn btn-primary" aria-hidden="true" >Detail of Objective</i>
+                            </a>
+               
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Modal -->
+@*@Html.Partial("~/Views/Shared/_SearchPatientPartial.cshtml")*@
+@{Html.RenderPartial("~/Views/Shared/_SearchPatientPartial.cshtml");}
+
+<!-- End Modal -->
+
+
+<script>
+    $(document).ready(function () {
+        //$("#dvid_2").hide();
+        //$("#dvid_3").hide();
+        //$("#dvid_4").hide();
+
+    });
+
+
+    function fnShowDiv1() {
+
+        //$("#dvid_1").show();
+        //$("#dvid_2").hide();
+        //$("#dvid_3").hide();
+        //$("#dvid_4").hide();
+    }
+
+    //function fnShowDiv2() {
+
+    //    var allChecked = true;
+    //    var validated = false;
+
+    //    if ($('.PatientComplains_of').filter(':checked').length > 0) {
+    //        $("#dvid_1").hide();
+    //        $("#dvid_2").show();
+    //        $("#dvid_3").hide();
+    //        $("#dvid_4").hide();
+    //    } else {
+    //        alertify.alert("Please select any options.").setHeader('AdvancePT Says');
+    //        //return false;
+    //    }
+    //}
+
+    //function fnShowDiv3() {
+
+    //    if ($('.PatientAffetcs_of').filter(':checked').length > 0) {
+    //        $("#dvid_1").hide();
+    //        $("#dvid_2").hide();
+    //        $("#dvid_3").show();
+    //        $("#dvid_4").hide();
+    //    } else {
+    //        alertify.alert("Please select any options.").setHeader('AdvancePT Says');
+    //        //return false;
+    //    }
+
+    //}
+    //function fnShowDiv4() {
+
+    //    if (($('.Present_Intensity_Symptom').filter(':checked').length > 0) && ($('.Worst_Intensity_Symptom').filter(':checked').length > 0) && ($('.Best_Intensity_Symptom').filter(':checked').length > 0)) {
+    //        $("#dvid_1").hide();
+    //        $("#dvid_2").hide();
+    //        $("#dvid_3").hide();
+    //        $("#dvid_4").show();
+    //    } else {
+    //        alertify.alert("Please select any options.").setHeader('AdvancePT Says');
+    //        //return false;
+    //    }
+
+
+    //}
+</script>
+
+<script type="text/javascript">
+
+    $("#btnSave").click(function () {
+
+        //---------------Check Radio Buttons Is Checked Or Not-----------------//
+        //alert($('.PerformIndipendentWithAssist').filter(':checked').length);
+        if ($('.PerformIndipendentWithAssist').filter(':checked').length > 0) {
+            // if($('input:radio:checked').length > 0){
+            $("#dvid_1").hide();
+            $("#dvid_2").hide();
+            $("#dvid_3").hide();
+            $("#dvid_4").show();
+        } else {
+            //alert("in else part");
+            alertify.alert("Please select any perform independent with assist options.").setHeader('AdvancePT Says');
+            return false;
+        }
+
+        //-----------------------------------------------------//
+        var Complains_of = "";
+        $('.PatientComplains_of:checked').each(function () {
+            Complains_of = Complains_of + "," + $(this).val();
+        });
+        //alert(Complains_of);
+        $("#ComplainsIds").val(Complains_of);
+
+        //-------------------------------------------//
+        //------Check Patient TextBox Is Empty Or Not-------//
+        if ($("#PatientName").val().length == 0) {
+            alertify.alert("Please enter the patient name.").setHeader('AdvancePT Says');
+            return false;
+        }
+        //---------------------------//
+        var Affetcs_of = "";
+        $('.PatientAffetcs_of:checked').each(function () {
+            Affetcs_of = Affetcs_of + "," + $(this).val();
+        });
+
+        //alert(Affetcs_of);
+
+        $("#AffectsIds").val(Affetcs_of);
+
+    });
+
+    $("#btnReset").click(function () {
+        $("#tblPatientList tbody").html('');            // Clear the table body
+    });
+
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        // fnGetRelatedQuestion();
+        // fnGetRelatedQuestion1();
+
+        var selected = $("#ComplainsIds").val();
+
+        if (selected) {
+            var chkArray = selected.split(',');
+            for (var i = 0; i < chkArray.length; i++) {
+                $('input#chk' + chkArray[i]).attr('checked', 'true');
+            }
+        }
+
+        var selected1 = $("#AffectsIds").val();
+
+        if (selected1) {
+            var chkArray = selected1.split(',');
+            for (var i = 0; i < chkArray.length; i++) {
+                $('input#chk1' + chkArray[i]).attr('checked', 'true');
+            }
+        }
+    });
+</script>

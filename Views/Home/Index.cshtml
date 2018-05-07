@@ -1,0 +1,1250 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<style type="text/css">
+    .droppable {
+        float: left;
+        margin-left: 20px;
+        width: 360px;
+        margin-top: 10px;
+        height: 220px;
+        /*border: 1px solid red;
+        padding-bottom: 15px;
+        padding-top: 15px;
+        padding: 5px;*/
+    }
+
+    .draggable {
+        width: 360px;
+        height: 220px;
+        background: #f8f8f8;
+        text-align: center;
+        line-height: 50px;
+        padding-bottom: 5px;
+        padding-top: 5px;
+    }
+
+    .ui-draggable-dragging {
+        background: #f8f8f8;
+    }
+
+    .hoverClass {
+        border: 1px solid #1d86c8;
+    }
+
+
+    .dashboardbox1 {
+        width: 360px;
+        height: 220px;
+        float: left;
+        /*margin: 0 7px 16px 7px;*/
+        text-align: center;
+        position: relative;
+    }
+
+        .dashboardbox1 a {
+            display: block;
+            padding: 15px;
+            border: 1px solid #dbdbdb;
+            width: 360px;
+            height: 220px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            transition: all 0.5s ease 0s;
+        }
+
+            .dashboardbox1 a:hover {
+                border: 1px solid #f8f8f8;
+                box-shadow: inset 0 0 25px #d5d5d5;
+            }
+
+        .dashboardbox1 h3 {
+            color: #195fab;
+            font-size: 18px;
+            line-height: 30px;
+            height: 60px;
+            line-height: 22px;
+            padding-top: 15px;
+        }
+
+        .dashboardbox1 a {
+            display: block;
+            padding: 15px;
+            border: 1px solid #dbdbdb;
+            width: 100%;
+            height: 220px;
+            background: #f9f9f9;
+            border-radius: 0;
+            transition: all 0.5s ease 0s;
+        }
+
+            .dashboardbox1 a:hover {
+                border: 1px solid #dad9d8;
+                box-shadow: inset 0 0 25px #d5d5d5;
+            }
+
+        .dashboardbox1 h3 {
+            color: #195fab;
+            font-size: 18px;
+            line-height: 30px;
+            height: 60px;
+            line-height: 22px;
+            padding-top: 15px;
+        }
+
+        .dashboardbox1 a:hover h3 {
+            color: #e17d0b;
+        }
+</style>
+
+<script type="text/javascript">
+    function binddragable() {
+        window.startPos = window.endPos = {};
+
+        makeDraggable();
+
+        $('.droppable').droppable({
+            hoverClass: 'hoverClass',
+            drop: function (event, ui) {
+                var $from = $(ui.draggable),
+                    $fromParent = $from.parent(),
+                    $to = $(this).children(),
+                    $toParent = $(this);
+
+                window.endPos = $to.offset();
+
+                swap($from, $from.offset(), window.endPos, 200);
+                swap($to, window.endPos, window.startPos, 1000, function () {
+                    $toParent.html($from.css({ position: 'relative', left: '', top: '', 'z-index': '' }));
+                    $fromParent.html($to.css({ position: 'relative', left: '', top: '', 'z-index': '' }));
+                    makeDraggable(); fnSaveDashboardChanges();
+                });
+            }
+        });
+
+        function makeDraggable() {
+            $('.draggable').draggable({
+                zIndex: 99999,
+                revert: 'invalid',
+                start: function (event, ui) {
+                    window.startPos = $(this).offset();
+                }
+            });
+        }
+
+        function swap($el, fromPos, toPos, duration, callback) {
+            $el.css('position', 'absolute')
+              .css(fromPos)
+              .animate(toPos, duration, function () {
+                  if (callback) callback();
+              });
+        }
+    }
+
+    //$(document).ready(function () {
+    //    window.history.forward(1);
+    //});
+</script>
+
+<style type="text/css">
+    body {
+        font-family: "Lato", sans-serif;
+    }
+
+    .sidenav {
+        height: 400px;
+        width: 0;
+        position: absolute;
+        z-index: 1;
+        top: 130px;
+        left: 0;
+        background-color: #f3f2f2;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 50px;
+    }
+
+        .sidenav a:hover, .offcanvas a:focus {
+            color: red;
+        }
+
+        .sidenav .closebtn {
+            position: absolute;
+            top: 2px;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+            padding-top: 20px;
+        }
+
+    #main {
+        transition: margin-left .5s;
+        padding: 16px;
+    }
+
+    .spanBorderRounded {
+        border-radius: 0px 50px 50px 0px;
+    }
+    /* mouse over link */
+    .selected {
+        color: #2a6bb0;
+        font-weight: 900;
+    }
+</style>
+
+<script type="text/javascript">
+    function openNav() {
+        document.getElementById("mySidenav").style.width = "350px";
+        document.getElementById("main").style.marginLeft = "350px";
+        $("#spn1").hide();
+        $(".closebtn").hide();
+        $("#divLeft").addClass("bodyleft");
+        $("#divRight").addClass("bodyright");
+    }
+
+    function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+        document.getElementById("main").style.marginLeft = "0";
+        $("#spn1").show();
+    }
+
+</script>
+@if (ViewBag.Error != null)
+{
+    <script>
+        alertify.alert('@ViewBag.Error').setHeader('AdvancePT Says');
+    </script>
+
+}
+<section class="bodyinner">
+  
+    <div id="mySidenav" class="sidenav" style="margin-top: 38px; height:auto;">
+        <a id="aClose" href="javascript:void(0)" class="closebtn">&times;</a>
+        <br />
+        @*@Html.Partial("~/Views/Shared/_LeftPart.cshtml")*@
+        @if (ViewBag.userrole ==13)
+        {
+            <div class="leftaccordian" style="">
+
+            <div class="technology">Employee Forms</div>
+            <div class="thelanguage">
+                <ul class="accorlist">
+                    <li><a href="@Url.Action("Index", new { Area = "EmployeeForm", Controller = "IncidentForm" })">Incident Report Form</a></li>
+                    <li><a href="@Url.Action("Index", new { Area = "EmployeeForm", Controller = "EmployeePayroll" })">Payroll Addendum Form</a></li>
+                    <li><a href="@Url.Action("Index", new { Area = "EmployeeForm", Controller = "GoodDeed" })">Performance Good Deed Form</a></li>
+                    <li><a href="@Url.Action("Index", new { Area = "EmployeeForm", Controller = "MaintenanceRequestForm" })">Maintenance Request Form</a></li>
+                    <li><a href="@Url.Action("Index", new { Area = "EmployeeForm", Controller = "NewEmpQuestionair" })">New Employee Questionnaire</a></li>
+                    <li><a href="@Url.Action("Index", new { Area = "EmployeeForm", Controller = "BusinessCardOrder" })">Business Card Order Form</a></li>
+                    <li><a href="@Url.Action("Index", new { Area = "EmployeeForm", Controller = "PurchaseRequest" })">Purchase Request</a></li>
+                    @*<li><a href="@Url.Action("Index", new { Area = "PurchaseRequest", Controller = "PurchaseRequest" })">Purchase Request</a></li>*@
+                </ul>
+            </div>
+
+            <div class="technology">DME Forms</div>
+            <div class="thelanguage">
+                <ul class="accorlist">
+                    <li><a href="@Url.Action("Create1", new { Area = "DmeForm", Controller = "KneeBraceCustomForm" })">BREG Custom Knee Brace Order Form</a></li>
+                    <li><a href="@Url.Action("Create1", new { Area = "DmeForm", Controller = "KneeBraceFreeStyleOASoftForm" })">FreeStyle OA Soft Knee Brace Order Form</a></li>
+                    <li><a href="@Url.Action("Create1", new { Area = "DmeForm", Controller = "KneeBraceFusionLigamentOrderForm" })">Fusion Ligament Knee Brace Order Form </a></li>
+                    <li><a href="@Url.Action("Create1", new { Area = "DmeForm", Controller = "KneeBraceFusionOAForm" })">Fusion OA Knee Brace Order Form </a></li>
+                    <li><a href="@Url.Action("Create1", new { Area = "DmeForm", Controller = "LumbosacralOrthosisForm" })">Lumbosacral Orthosis Order Form </a></li>
+                    <li><a href="@Url.Action("Create1", new { Area = "DmeForm", Controller = "SpinomedIVTLSOForm" })">Spinomed IV TLSO Order Form </a></li>
+                    @*<li><a href="@Url.Action("Index", new { Area = "DmeForm", Controller = "GenericForm" })">Generic Form </a></li>*@
+                    <li><a href="@Url.Action("Index", new { Area = "DmeForm", Controller = "PurchaseOrder" })">Purchase Order </a></li>
+                    @*<li><a href="@Url.Action("Index", new { Area = "DmeForm", Controller = "DMEPaperwork" })">DME Paperwork</a></li>*@
+                    <li><a href="@Url.Action("Index", new { Area = "DmeForm", Controller = "DMEPatient" })">DME Patient List</a></li>
+                    <li><a href="@Url.Action("Index", new { Area = "DmeForm", Controller = "DMEUnitPrice" })">DME Unit Price List</a></li>
+                    <li><a href="@Url.Action("Index", new { Area = "DmeForm", Controller = "DMECoverageNotAvailableList" })">DME Coverage Not Available List</a></li>
+                </ul>
+            </div>
+
+            <div style="display:none;" class="technology">Patient Intake Forms</div>
+            <div style="display:none;" class="thelanguage">
+                <ul class="accorlist">
+                    <li><a href="@Url.Action("CreatePersonalInfo", new { Area = "Patient", Controller = "PatientRegistration" })">Patient Registration Form</a></li>
+                    <li><a href="@Url.Action("Create", new { Area = "Patient", Controller = "PatientActivation" })">Patient Activation Form</a></li>
+                    <li><a href="@Url.Action("Index", new { Area = "Patient", Controller = "Doctor" })">Doctor registration Form</a></li>
+                </ul>
+            </div>
+           
+        </div>
+        }
+        else
+        {
+            <div class="leftaccordian" style="">
+
+            <div class="technology">Employee Forms</div>
+            <div class="thelanguage">
+                <ul class="accorlist">
+                    <li><a href="@Url.Action("Index", new { Area = "EmployeeForm", Controller = "IncidentForm" })">Incident Report Form</a></li>
+                    <li><a href="@Url.Action("Index", new { Area = "EmployeeForm", Controller = "EmployeePayroll" })">Payroll Addendum Form</a></li>
+                    <li><a href="@Url.Action("Index", new { Area = "EmployeeForm", Controller = "GoodDeed" })">Performance Good Deed Form</a></li>
+                    <li><a href="@Url.Action("Index", new { Area = "EmployeeForm", Controller = "MaintenanceRequestForm" })">Maintenance Request Form</a></li>
+                    <li><a href="@Url.Action("Index", new { Area = "EmployeeForm", Controller = "NewEmpQuestionair" })">New Employee Questionnaire</a></li>
+                    <li><a href="@Url.Action("Index", new { Area = "EmployeeForm", Controller = "BusinessCardOrder" })">Business Card Order Form</a></li>
+                    <li><a href="@Url.Action("Index", new { Area = "EmployeeForm", Controller = "PurchaseRequest" })">Purchase Request</a></li>
+                    @*<li><a href="@Url.Action("Index", new { Area = "PurchaseRequest", Controller = "PurchaseRequest" })">Purchase Request</a></li>*@
+                </ul>
+            </div>
+
+            <div class="technology">DME Forms</div>
+            <div class="thelanguage">
+                <ul class="accorlist">
+                    <li><a href="@Url.Action("Index", new { Area = "DmeForm", Controller = "DMEPatient" })">BREG Custom Knee Brace Order Form</a></li>
+                    <li><a href="@Url.Action("Index", new { Area = "DmeForm", Controller = "DMEPatient" })">FreeStyle OA Soft Knee Brace Order Form</a></li>
+                    <li><a href="@Url.Action("Index", new { Area = "DmeForm", Controller = "DMEPatient" })">Fusion Ligament Knee Brace Order Form </a></li>
+                    <li><a href="@Url.Action("Index", new { Area = "DmeForm", Controller = "DMEPatient" })">Fusion OA Knee Brace Order Form </a></li>
+                    <li><a href="@Url.Action("Index", new { Area = "DmeForm", Controller = "DMEPatient" })">Lumbosacral Orthosis Order Form </a></li>
+                    <li><a href="@Url.Action("Index", new { Area = "DmeForm", Controller = "DMEPatient" })">Spinomed IV TLSO Order Form </a></li>
+                    @*<li><a href="@Url.Action("Index", new { Area = "DmeForm", Controller = "GenericForm" })">Generic Form </a></li>*@
+                    <li><a href="@Url.Action("Index", new { Area = "DmeForm", Controller = "PurchaseOrder" })">Purchase Order </a></li>
+                    @*<li><a href="@Url.Action("Index", new { Area = "DmeForm", Controller = "DMEPaperwork" })">DME Paperwork</a></li>*@
+                    <li><a href="@Url.Action("Index", new { Area = "DmeForm", Controller = "DMEPatient" })">DME Patient List</a></li>
+                    <li><a href="@Url.Action("Index", new { Area = "DmeForm", Controller = "DMEUnitPrice" })">DME Unit Price List</a></li>
+                </ul>
+            </div>
+
+            <div style="display:none;" class="technology">Patient Intake Forms</div>
+            <div style="display:none;" class="thelanguage">
+                <ul class="accorlist">
+                    <li><a href="@Url.Action("CreatePersonalInfo", new { Area = "Patient", Controller = "PatientRegistration" })">Patient Registration Form</a></li>
+                    <li><a href="@Url.Action("Create", new { Area = "Patient", Controller = "PatientActivation" })">Patient Activation Form</a></li>
+                    <li><a href="@Url.Action("Index", new { Area = "Patient", Controller = "Doctor" })">Doctor registration Form</a></li>
+                </ul>
+            </div>
+           
+        </div>
+        }
+    </div>
+
+    <div id="main">
+        <span id="spn1" class="btn btn-info glyphicon glyphicon-circle-arrow-right spanBorderRounded" style="background-color: #f58f22;"></span>
+    </div>
+    <script type="text/javascript">
+        $("#spn1").click(function () {
+            openNav()
+            $("#divRight").removeClass("body-content");
+            $("#divRight").addClass("bodyright");
+        });
+        $("#spn1").hover(function () {
+            $(this).css('background-color', '#5bc0de');
+        },
+        function () {
+            $(this).css("background-color", "#f58f22")
+        });
+        //-------------
+        $(".closebtn").click(function () {
+            $("#divLeft").removeClass("bodyleft");
+            $("#divRight").removeClass("bodyright");
+            $("#divRight").addClass("body-content");
+            closeNav()
+        });
+        //---------------------
+        $(".closebtn").click(function () {
+            $.ajax({
+                url: '@Url.Action("ShowHideLeftPart", "Home")',
+                type: "POST",
+                dataType: "JSON",
+                data: { things: false },
+                success: function () {
+                },
+                error: function (error) { alert("Error: " + error); },
+                statusCode: {
+                    404: function () {
+                        alert("Page Not Found.");
+                    }
+                }
+            });
+        });
+        //----------------------------
+        $("#spn1").click(function () {
+            $.ajax({
+                url: '@Url.Action("ShowHideLeftPart", "Home")',
+                type: "POST",
+                dataType: "JSON",
+                data: { things: true },
+                success: function () { },
+                error: function (error) { alert("Error: " + error); },
+                statusCode: {
+                    404: function () {
+                        alert("Page Not Found.");
+                    }
+                }
+            });
+        });
+        //-----------------------
+        $(".sidenav").hover(function () {
+            $(".closebtn").toggle();
+            $("#aClose").addClass("selected");
+        });
+    </script>
+    @*<div id="divLeft" class="bodyleft">
+            @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+        </div>*@
+    <div id="divRight" class="">
+        @*<a href="#" target="_blank" download="file.txt">Download</a>*@
+       
+            
+            <div class="dashboardinner">
+                
+                @*<h2>Admin dashboard</h2>*@
+
+                <div id="divMenuContainer" class="divMenuContainer">
+                    @*@{
+                        if (ViewContext.Controller.IsSuperAdmin())
+                        {
+                            <div class="droppable">
+                                <div class="draggable">
+                                    <div class="dashboardbox1 divPos_1">
+                                        <a href="@Url.Action("Index", "Handbook", new { Area = "HandBook" })">
+                                            <span class="icon"><img src="@Url.Content("~/Images/collection.png")" onclick=SaveScreen(); alt=""></span>
+                                            <h3>Employee Handbook</h3>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    @{
+                        if (ViewContext.Controller.IsSuperAdmin())
+                        {
+                            <div class="droppable">
+                                <div class="draggable">
+                                    <div class="dashboardbox1 divPos_2">
+                                        <a href="@Url.Action("Index", "Userrole", new { Area = "UserManagement" })">
+                                            <span class="icon"><img src="@Url.Content("~/Images/collection.png")" onclick=SaveScreen(); alt=""></span>
+                                            <h3>User Role Permission</h3>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    @{
+                        if (ViewContext.Controller.IsSuperAdmin())
+                        {
+                            <div class="droppable">
+                                <div class="draggable">
+                                    <div class="dashboardbox1 divPos_3">
+                                        <a href="@Url.Action("Index","User",new{Area="UserManagement"})">
+                                            <span class="icon"><img src="@Url.Content("~/Images/collection.png")" onclick=SaveScreen(); alt=""></span>
+                                            <h3>Users</h3>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    @{
+                        if (ViewContext.Controller.CheckAccess(1))
+                        {
+                            <div class="droppable">
+                                <div class="draggable">
+                                    <div class="dashboardbox1 divPos_4">
+                                        <a href="@Url.Action("Create", "PatientActivation", new { Area = "Patient" })">
+                                            <span class="icon"><img src="@Url.Content("~/Images/intake.png")" onclick=SaveScreen(); alt=""></span>
+                                            <h3>Intake</h3>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    @{
+                        if (ViewContext.Controller.CheckAccess(2))
+                        {
+                            <div class="droppable">
+                                <div class="draggable">
+                                    <div class="dashboardbox1 divPos_5">
+                                        <a href="http://karmickproduction.com/designer/advanced/html/admin-dashboard.html#">
+                                            <span class="icon"><img src="@Url.Content("~/Images/billing.png")" onclick=SaveScreen(); alt ="" /></span>
+                                            <h3>Billing</h3>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+
+                    @{
+                        if (ViewContext.Controller.CheckAccess(106))
+                        {
+                            <div class="droppable">
+                                <div class="draggable">
+                                    <div class="dashboardbox1 divPos_6">
+                                        <a href="@Url.Action("CallRecordIndex", "PatientActivation", new { Area = "Patient" })">
+                                            <span class="icon"><img src="@Url.Content("~/Images/insurance-verification.png")" onclick=SaveScreen(); alt =""></span>
+                                            <h3>
+                                                Call Record Index
+                                            </h3>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    @{
+                        if (ViewContext.Controller.CheckAccess(104))
+                        {
+                            <div class="droppable">
+                                <div class="draggable">
+                                    <div class="dashboardbox1 divPos_7">
+                                        <a href="@Url.Action("PatientIndex", "PatientActivation", new { Area = "Patient" })">
+                                            <span class="icon"><img src="@Url.Content("~/Images/insurance-verification.png")" onclick=SaveScreen(); alt=""></span>
+                                            <h3>
+                                                Patient <br>
+                                                List
+                                            </h3>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+
+                    @{
+                        if (ViewContext.Controller.CheckAccess(27))
+                        {
+                            <div class="droppable">
+                                <div class="draggable">
+                                    <div class="dashboardbox1 divPos_8">
+                                        <a href="#" data-toggle="modal" data-target="#myModal">
+                                            <span class="icon"><img src="@Url.Content("~/Images/intake.png")" onclick=SaveScreen(); alt="" /></span>
+                                            <div class="PendingCount" id="PendingCount"></div>
+                                            <h3>Pending Approval</h3>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+
+
+
+
+                    @if (ViewContext.Controller.IsSuperAdmin())
+                    {
+                        <div class="droppable">
+                            <div class="draggable">
+                                <div class="dashboardbox1 divPos_9">
+                                    <a href="@Url.Action("Index", "Doctor", new { Area = "Patient" })">
+                                        <span class="icon"><img src="@Url.Content("~/Images/insurance-verification.png")" onclick=SaveScreen(); alt=""></span>
+                                        <h3>
+                                            Physician<br>
+
+                                        </h3>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }*@
+
+
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+
+
+
+                <div class="clearfix"></div>
+                <div id="deleteditemssssss" class="divMenuContainerssss" style="border:1px solid black; margin-top:20px; background-color:#1d86c8;">
+
+
+                    <button id="Show" class="btn btn-orange" style="width:100%"><strong>Show Rest Items</strong></button>
+
+
+                    <button id="Hide" class="btn" style="width: 100%; background-color: #1d86c8;"><strong style="color:white;">Hide Rest Items</strong></button>
+
+
+
+                </div>
+
+
+
+
+                <div id="deleteditems" class="divMenuContainer" style=" margin-top: 20px;">
+
+                </div>
+                <div class="clearfix"></div>
+                <div class="iFrame">
+                    @*<iframe src="http://localhost:1605/PS_ScheduleSettings/LocationWiseBookingStatus" name="iframe1" id="iframe1" height="100%" width="100%;"></iframe>*@
+                    <iframe src="http://expert-dotnet-developers.com/ptotslp/PS_ScheduleSettings/LocationWiseBookingStatus" name="iframe1" id="iframe1" height="100%" width="100%;"></iframe>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+            @*<div class="dashboardinner">
+                        <h2>Admin dashboard</h2>
+                        @{
+                            if (ViewContext.Controller.IsSuperAdmin())
+                            {
+                                <div class="dashboardbox">
+                                    <a href="@Url.Action("Index", "Handbook", new { Area = "HandBook" })">
+                                        <span class="icon"><img src="@Url.Content("~/Images/collection.png")" alt=""></span>
+                                        <h3>Employee Handbook</h3>
+                                    </a>
+                                </div>
+                            }
+                        }
+                        @{
+                            if (ViewContext.Controller.IsSuperAdmin())
+                            {
+                                <div class="dashboardbox">
+                                    <a href="@Url.Action("Index", "Userrole", new { Area = "UserManagement" })">
+                                        <span class="icon"><img src="@Url.Content("~/Images/collection.png")" alt=""></span>
+                                        <h3>User Role Permission</h3>
+                                    </a>
+                                </div>
+                            }
+                        }
+                        @{
+                            if (ViewContext.Controller.IsSuperAdmin())
+                            {
+                                <div class="dashboardbox">
+                                    <a href="@Url.Action("Index","User",new{Area="UserManagement"})">
+                                        <span class="icon"><img src="@Url.Content("~/Images/collection.png")" alt=""></span>
+                                        <h3>Users</h3>
+                                    </a>
+                                </div>
+                            }
+                        }
+                        @{
+                            if (ViewContext.Controller.CheckAccess(1))
+                            {
+                                <div class="dashboardbox">
+                                    <a href="@Url.Action("Create", "PatientActivation", new { Area = "Patient" })">
+                                        <span class="icon"><img src="@Url.Content("~/Images/intake.png")" alt=""></span>
+                                        <h3>Intake</h3>
+                                    </a>
+                                </div>
+                            }
+                        }
+                        @{
+                            if (ViewContext.Controller.CheckAccess(2))
+                            {
+                                <div class="dashboardbox">
+                                    <a href="http://karmickproduction.com/designer/advanced/html/admin-dashboard.html#">
+                                        <span class="icon"><img src="@Url.Content("~/Images/billing.png")" alt="" /></span>
+                                        <h3>Billing</h3>
+                                    </a>
+                                </div>
+                            }
+                        }
+
+                        @{
+                            if (ViewContext.Controller.CheckAccess(106))
+                            {
+                                <div class="dashboardbox">
+                                    <a href="@Url.Action("CallRecordIndex", "PatientActivation", new { Area = "Patient" })">
+                                        <span class="icon"><img src="@Url.Content("~/Images/insurance-verification.png")" alt=""></span>
+                                        <h3>
+                                            Call Record Index
+                                        </h3>
+                                    </a>
+                                </div>
+                            }
+                        }
+                        @{
+                            if (ViewContext.Controller.CheckAccess(104))
+                            {
+                                <div class="dashboardbox">
+                                    <a href="@Url.Action("PatientIndex", "PatientActivation", new { Area = "Patient" })">
+                                            <span class="icon"><img src="@Url.Content("~/Images/insurance-verification.png")" alt=""></span>
+                                            <h3>
+                                                Patient <br>
+                                                List
+                                            </h3>
+                                        </a>
+            </div>
+                            }
+                        }
+
+                        @{
+                            if (ViewContext.Controller.CheckAccess(27))
+                            {
+                                <div class="dashboardbox">
+                                    <a href="#" data-toggle="modal" data-target="#myModal">
+                                        <span class="icon"><img src="@Url.Content("~/Images/intake.png")" alt="" /></span>
+                                        <div class="PendingCount" id="PendingCount"></div>
+                                        <h3>Pending Approval</h3>
+                                    </a>
+                                </div>
+                            }
+                        }
+
+
+
+
+                           @if (ViewContext.Controller.IsSuperAdmin())
+                            {
+                                <div class="dashboardbox">
+                                    <a href="@Url.Action("Index", "Doctor", new { Area = "Patient" })">
+                                        <span class="icon"><img src="@Url.Content("~/Images/insurance-verification.png")" alt=""></span>
+                                        <h3>
+                                            Physician<br>
+
+                                        </h3>
+                                    </a>
+                                </div>
+                            }
+
+
+                        <div class="clearfix"></div>
+                    </div>*@
+            <div class="row" style="display:none;">
+                <div class="col-sm-6">
+                    <h2>Heading 1</h2>
+                    <div class="graph"><img src="@Url.Content("~/Images/graph1.jpg")" alt=""></div>
+                </div>
+                <div class="col-sm-6">
+                    <h2>Heading 2</h2>
+                    <div class="graph"><img src="@Url.Content("~/Images/graph1.jpg")" alt=""></div>
+                </div>
+            </div>
+            <div class="row"></div>
+            <div class="clearfix"></div>
+
+</div>
+    <div class="clearfix"></div>
+</section>
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><center>Pending Approval</center></h4>
+            </div>
+            <div class="modal-body">
+
+
+                <div class=" dashboardbox" id="Incident_Form_Id">
+                    <a href="@Url.Action("Index", new { Area = "EmployeeForm", Controller = "IncidentForm" })">
+                        <span class="icon">
+                            <img src="@Url.Content("~/Images/intake.png")" alt=""><h5>Incident Form</h5>
+                        </span>
+                        <div class="PendingCount" id="Incident_Form"></div>
+                    </a>
+                </div>
+                <div class=" dashboardbox" id="Payroll_Form_Id">
+                    <a href="@Url.Action("Index", new { Area = "EmployeeForm", Controller = "EmployeePayroll" })">
+                        <span class="icon">
+                            <img src="@Url.Content("~/Images/intake.png")" alt=""><h5>Payroll Form</h5>
+                        </span>
+                        <div class="PendingCount" id="Payroll_Form"></div>
+                    </a>
+                </div>
+                <div class=" dashboardbox" id="Good_Deed_Form_Id">
+                    <a href="@Url.Action("Index", new { Area = "EmployeeForm", Controller = "GoodDeed" })">
+                        <span class="icon">
+                            <img src="@Url.Content("~/Images/intake.png")" alt=""><h5>Good Deed Form</h5>
+                        </span>
+                        <div class="PendingCount" id="Good_Deed_Form"></div>
+                    </a>
+                </div>
+
+
+                <div class="dashboardbox" id="Maintainance_Request_Form_Id">
+                    <a href="@Url.Action("Index", new { Area = "EmployeeForm", Controller = "MaintenanceRequestForm" })">
+                        <span class="icon">
+                            <img src="@Url.Content("~/Images/intake.png")" alt=""><h5>Maintainance Request Form</h5>
+                        </span>
+                        <div class="PendingCount" id="Maintainance_Request_Form"></div>
+                    </a>
+                </div>
+                <div class="dashboardbox" id="New_Employee_Id">
+                    <a href="@Url.Action("Index", new { Area = "EmployeeForm", Controller = "NewEmpQuestionair" })">
+                        <span class="icon">
+                            <img src="@Url.Content("~/Images/intake.png")" alt=""><h5>New Employee</h5>
+                        </span>
+                        <div class="PendingCount" id="New_Employee"></div>
+                    </a>
+                </div>
+
+                <div class=" dashboardbox" id="Bussiness_Card_Order_Id">
+                    <a href="@Url.Action("Index", new { Area = "EmployeeForm", Controller = "BusinessCardOrder" })">
+                        <span class="icon">
+                            <img src="@Url.Content("~/Images/intake.png")" alt=""><h5>Bussiness Card Order</h5>
+                        </span>
+                        <div class="PendingCount" id="Bussiness_Card_Order"></div>
+                    </a>
+                </div>
+                <div class=" dashboardbox" id="Purchase_Request_Id">
+                    <a href="@Url.Action("Index", new { Area = "EmployeeForm", Controller = "PurchaseRequest" })">
+                        <span class="icon">
+                            <img src="@Url.Content("~/Images/intake.png")" alt=""><h5>Purchase Request</h5>
+                        </span>
+                        <div class="PendingCount" id="Purchase_Request"></div>
+                    </a>
+                </div>
+                <div class="clearfix"></div>
+
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div id="dashboardid">
+
+</div>
+<script>
+    //$(document).ready(function () {
+    //    GetFormsCountPendingForApproval();
+
+    //});
+    function GetFormsCountPendingForApproval() {
+        var options = {};
+        options.url = "@Url.Action("GetFormsCountPendingForApproval", "Home", new { Area = "" })";
+        options.type = "Get";
+        options.dataType = "json";
+        options.contentType = "application/json";
+        options.success = function (data) {
+            if (data.Incident_Form) {
+                $('#Incident_Form').html(data.Incident_Form);
+            }
+            else {
+                $('#Incident_Form_Id').hide();
+            }
+
+            if (data.Payroll_Form) {
+                $('#Payroll_Form').html(data.Payroll_Form);
+            } else {
+                $('#Payroll_Form_Id').hide();
+            }
+
+            if (data.Good_Deed_Form) {
+                $('#Good_Deed_Form').html(data.Good_Deed_Form);
+            }
+            else {
+                $('#Good_Deed_Form_Id').hide();
+            }
+
+            if (data.Maintainance_Request_Form) {
+                $('#Maintainance_Request_Form').html(data.Maintainance_Request_Form);
+            }
+            else {
+                $('#Maintainance_Request_Form_Id').hide();
+            }
+
+            if (data.New_Employee) {
+                $('#New_Employee').html(data.New_Employee);
+            }
+            else {
+                $('#New_Employee_Id').hide();
+            }
+
+            if (data.Bussiness_Card_Order) {
+                $('#Bussiness_Card_Order').html(data.Bussiness_Card_Order);
+            }
+            else { $('#Bussiness_Card_Order_Id').hide(); }
+
+            if (data.Purchase_Request) {
+                $('#Purchase_Request').html(data.Purchase_Request);
+            }
+            else {
+                $('#Purchase_Request_Id').hide();
+            }
+
+            $('#PendingCount').html(data.PendingCount);
+
+        };
+        options.error = function () { };
+        $.ajax(options);
+    }
+
+</script>
+
+@*<script type="text/javascript">
+        function SaveScreen() {
+            //alert('test');
+            if (confirm('Are You Want To Save The Screen?')) {
+                var txt = $(".divMenuContainer").html();
+                data = [];
+                data.push(txt);
+                properties = { type: 'plain/text' };
+                    try {
+                        // Specify the filename using the File constructor, but ...
+                        file = new File(data, "file.txt", properties);
+                    } catch (e) {
+                        // ... fall back to the Blob constructor if that isn't supported.
+                        file = new Blob(data, properties);
+                    }
+                    var url = '/Users/Administrator/Downloads/file.txt'; //C:\Users\Administrator\Downloads
+                    $("a").on('mousedown', function () {
+                        $(this).attr("href", url);
+                        alert('ok');
+                    });
+
+                //url = URL.createObjectURL(file);
+                //document.getElementById('link').href = url;
+                //alert(txt);
+            }
+        }
+    </script>*@
+
+<script>
+    $(document).ready(function () {
+        var msg = '@ViewBag.selfschedulemsg';
+        if (msg == "") {
+        }
+        else {
+            alertify.alert(msg).setHeader('AdvancePT Says');
+        }
+        var msg1 = '@ViewBag.msgreachgoal';
+        if (msg1 == "") {
+        }
+        else {
+            alertify.alert(msg1).setHeader('AdvancePT Says');
+        }
+        var msg2 = '@ViewBag.msg';
+        if (msg2 == "") {
+        }
+        else {
+            alertify.alert(msg2).setHeader('AdvancePT Says');
+        }
+
+        GetDashboard();
+        GetFormsCountPendingForApproval();
+        $("#deleteditem").hide();
+        $("#Hide").hide();
+    });
+    function GetDashboard() {
+        var options = {};
+        options.url = "@Url.Action("GetDashboard", "Home", new { Area = "" })";
+        options.type = "Get";
+        options.dataType = "json";
+        options.contentType = "application/json";
+        options.success = function (data) {
+            $('#divMenuContainer').append(data.html);
+            $('#deleteditems').append(data.deleteditems);
+            $('#deleteditems').hide();
+            if (data.ShowLeftPart) {
+                openNav()
+                $("#divRight").removeClass("body-content");
+                $("#divRight").addClass("bodyright");
+            }
+            else {
+                $("#divLeft").removeClass("bodyleft");
+                $("#divRight").removeClass("bodyright");
+                $("#divRight").addClass("body-content");
+                closeNav()
+            }
+            binddragable();
+            $(".crosable").css('cursor', 'pointer');
+            $(".crosable").hide();
+            $(".dashboardbox1").hover(function () {
+                $(this).find(".crosable").toggle();
+            });
+        };
+        options.error = function () { };
+        $.ajax(options);
+    }
+    function fnSaveDashboardChanges() {
+        @*var DashbaordItems = [];
+
+        var deleteditems = [];
+        $('#divMenuContainer .dyMenuItem').each(function (index) {
+            var menu = { MenuId: $(this).attr('id') , MenuName:""};
+            DashbaordItems.push(menu);
+        });
+        DashbaordItems = JSON.stringify({ 'DashbaordItems': DashbaordItems });
+        var options = {};
+        options.url = "@Url.Action("SetDashboard", "Home", new { Area = "" })";
+        options.type = "post";
+        options.data = { DashbaordItems: DashbaordItems } ;
+        options.dataType = "json";
+        options.contentType = "application/json; charset=utf-8";
+        options.success = function (data) {
+            // $('#divMenuContainer').append(data);
+            //binddragable();
+        };
+        options.error = function () { };
+        $.ajax(options);*@
+
+
+        // var things = [
+        //{ MenuId: 1, MenuName: 'yellow' },
+        //{ MenuId: 2, MenuName: 'blue' },
+        //{ MenuId: 3, MenuName: 'red' }
+        // ];
+        var things = [];
+        $('#divMenuContainer .dyMenuItem').each(function (index) {
+            var menu = { MenuId: $(this).attr('id'), MenuName: "" };
+            things.push(menu);
+        });
+        things = JSON.stringify({ 'things': things });
+        var options = {};
+        options.contentType = "application/json; charset=utf-8";
+        options.dataType = "json";
+        options.type = "post";
+        options.url = "@Url.Action("SetDashboard", "Home", new { Area = "" })";
+        options.data = things;
+
+
+        options.success = function (data) {
+            // $('#divMenuContainer').append(data);
+            //binddragable();
+            $(".crosable").css('cursor', 'pointer');
+            $(".crosable").hide();
+            $(".dashboardbox1").hover(function () {
+                $(this).find(".crosable").toggle();
+            });
+        };
+        options.error = function () { };
+        $.ajax(options);
+        @*$.ajax({
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            type: 'POST',
+            url:"@Url.Action("SetDashboard", "Home", new { Area = "" })",
+            data: things,
+            success: function () {
+
+            },
+            failure: function (response) {
+
+            }
+        });*@
+    }
+
+    function fnDeleteDashboardChanges(obj, menuId) {
+
+
+        var menu = { MenuId: menuId, MenuName: "" };
+
+        things = JSON.stringify({ 'things': menu });
+        var options = {};
+        options.contentType = "application/json; charset=utf-8";
+        options.dataType = "json";
+        options.type = "post";
+        options.url = "@Url.Action("DeleteFromDashboard", "Home", new { Area = "" })";
+        options.data = things;
+
+
+        options.success = function (data) {
+            $('#divMenuContainer').html(data.html);
+            $('#deleteditems').html(data.deleteditems);
+
+            binddragable();
+            $(".crosable").css('cursor', 'pointer');
+            $(".crosable").hide();
+            $(".dashboardbox1").hover(function () {
+                $(this).find(".crosable").toggle();
+            });
+        };
+        options.error = function () { };
+        $.ajax(options);
+
+    }
+    function fnRestoreeDashboardChanges(obj, menuId) {
+
+
+        var menu = { MenuId: menuId, MenuName: "" };
+
+        things = JSON.stringify({ 'things': menu });
+        var options = {};
+        options.contentType = "application/json; charset=utf-8";
+        options.dataType = "json";
+        options.type = "post";
+        options.url = "@Url.Action("RestoreFromDashboard", "Home", new { Area = "" })";
+        options.data = things;
+
+
+        options.success = function (data) {
+            $('#divMenuContainer').html(data.html);
+            $('#deleteditems').html(data.deleteditems);
+
+            binddragable();
+            $(".crosable").css('cursor', 'pointer');
+            $(".crosable").hide();
+            $(".dashboardbox1").hover(function () {
+                $(this).find(".crosable").toggle();
+            });
+        };
+        options.error = function () { };
+        $.ajax(options);
+
+    }
+</script>
+<script>
+    $("#Hide").click(function () {
+        //$("#show").hide();
+        $("#deleteditems").hide();
+        $("#Show").show();
+        $("#Hide").hide();
+        $('#mySidenav').css("height", "400px");
+        //alert($("#divRight").height());
+    });
+    $("#Show").click(function () {
+        $("#deleteditems").show();
+        $("#Hide").show();
+        $("#Show").hide();
+        $('#mySidenav').css("height", $("#divRight").height() + "px");
+    });
+    //$(document).ready(function () {        
+    //    var weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    //    var a = null;
+    //    var a = new Date();
+    //    currda = weekday[a.getDay()];
+    //    if (currda == "Friday") {
+    //        $("#DivLocation").show();
+    //    }
+    //    else {
+    //        $("#DivLocation").hide();
+    //    }
+
+    //});
+</script>
+
+
+<style>
+    #demo {
+        width: 100%;
+        margin: 30px auto;
+    }
+
+    .calendar-hd {
+        padding: 10px 0;
+        height: 35px;
+        line-height: 30px;
+    }
+
+    .calendar .calendar-views .now {
+        color: #fff;
+        background: #f58f22 !important;
+    }
+    /*.calender {
+        padding: 0 0 0 0;
+    }*/
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var fullDate = new Date();
+        var twoDigitMonth = fullDate.getMonth() + 1 + ""; if (twoDigitMonth.length == 1) twoDigitMonth = "0" + twoDigitMonth;
+        var twoDigitDate = fullDate.getDate() + ""; if (twoDigitDate.length == 1) twoDigitDate = "0" + twoDigitDate;
+        var currentDate = fullDate.getFullYear() + "-" + twoDigitMonth;
+        $(".responsive-calendar").responsiveCalendar({
+            time: currentDate,
+            events: {
+                "2017-04-30": {},//{ "number": 5, "url": "/schduler" },
+                "2017-04-26": {},//{ "number": 1, "url": "/schduler" },
+                "2017-05-03": {},
+                "2017-06-12": {}
+            }
+        });
+
+    });
+
+</script>
+<script>
+    var now = new Date();
+    var year = now.getFullYear();
+    var month = now.getMonth() + 1;
+    var date = now.getDate();
+
+
+    //var data = [{
+    //    date: year + '-' + month + '-' + (date - 1),
+    //    value: 'hello'
+    //}, {
+    //    date: year + '-' + month + '-' + date,
+    //    value: '上班'
+    //}, {
+    //    date: new Date(year, month - 1, date + 1),
+    //    value: '吃饭睡觉打豆豆'
+    //}, {
+    //    date: '2016-10-31',
+    //    value: '2016-10-31'
+    //}];
+
+    // inline
+    var $ca = $('#one').calendar({
+        //view: 'month',
+        // width: 280,
+        //  height: 280,
+        // startWeek: 0,
+        // selectedRang: [new Date(), null],
+        //data: data,
+        date: new Date(),
+        onSelected: function (view, date, data) {
+            console.log('view:' + view)
+            console.log('date:' + date)
+            console.log('data:' + (data || '无'));
+        },
+        viewChange: function (view, y, m) {
+            console.log(view, y, m)
+
+        }
+    });
+
+    //// Dynamic elements
+    //var $demo = $('#demo');
+    //var UID = 1;
+    //$('#add').click(function () {
+    //    $demo.append('<input id="input-' + UID + '"><div id="ca-' + UID + '"></div>');
+    //    $('#ca-' + UID).calendar({
+    //        trigger: '#input-' + UID++
+    //    })
+    //})
+</script>
+
+
+@*<script>
+    function fnShowSessionOutAlert() {
+        var link = "@Url.Action("Logout", "Home")";
+        var closable = alertify.alert().setting('closable');
+        //grab the dialog instance using its parameter-less constructor then set multiple settings at once.
+        alertify.alert().setHeader('System sagt')
+          .setting({
+              'label': 'OK',
+              'message': 'Deine Sessiontime ist abgelaufen, du wurdest ausgeloggt. Logge dich erneut ein.',
+              'onok': function () { window.location = link; }
+          }).show();
+        //alertify.alert('session out').setHeader('System sagt');
+    }
+
+    function intervalTrigger() {
+        //setInterval(function () {CheckSession() }, 1000);
+        //setInterval(function () { CheckSession() }, 20 * 60 * 1000);
+        alert("interval");
+        setInterval(function () { CheckSession() }, 15000);
+
+    }
+    var intervalid;
+    function CheckSession() {
+        fnShowSessionOutAlert();
+        window.clearInterval(intervalid);
+    }
+</script>
+@if (Session["Test"] != null)
+{
+
+    <script>
+        $(function () {
+            intervalid = intervalTrigger();
+
+        });
+
+    </script>
+
+}*@

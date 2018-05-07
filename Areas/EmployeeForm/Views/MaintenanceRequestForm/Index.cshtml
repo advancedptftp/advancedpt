@@ -1,0 +1,148 @@
+﻿@model PagedList.IPagedList<DataLayer.Models.tblTMaintenanceRequestForm>
+@using PagedList.Mvc;
+@using DataLayer;
+@{
+    ViewBag.Title = "Index";
+    var IsApprover = ViewContext.Controller.IsApprover(4);
+
+}
+
+<center><h2 style="margin-top:20px;">Maintenance Request List</h2></center>
+
+@*<p>
+        @Html.ActionLink("Create New", "Create")
+    </p>*@
+<section class="bodyinner2">
+    <div>
+        <p class="pull-right">
+            @Html.ActionLink("Create New Record", "Create", null, new { @class = "btn btn-primary" })
+        </p>
+        @using (Html.BeginForm("Index", "MaintenanceRequestForm", FormMethod.Get))
+        {
+            <div class="searchsec">
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search by First Name,Last Name" })
+                <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                <div class="clearfix"></div>
+            </div>
+        }
+        <div class="clearfix"></div>
+    </div>
+
+    <div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayName("Todays Date")
+                        </th>
+                        <th>
+                            @Html.DisplayName("First Name")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Last Name")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Approved By")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Approved On")
+                        </th>
+                        <th class="tdList_Edit"></th>
+                        <th class="tdList_Details"></th>
+                        <th class="tdList_PDF"></th>
+                        <th class="tdList_Approve"></th>
+                    </tr>
+                </thead>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.Label(@item.TodaysDate.Value.GetExactValue())
+                        </td>
+                        <td>
+                            @Html.Label(@item.EmpFirstName)
+                        </td>
+                        <td>
+                            @Html.Label(@item.EmpLastName)
+                        </td>
+                        <td>
+                            @if (item.ApprovedBy != null)
+                            {
+                                @item.tblMUser.Name
+                            }
+                        </td>
+                        <td>
+                            @if (item.ApprovedOn != null)
+                            {
+                                @item.ApprovedOn.Value.GetExactValue()
+                            }
+                        </td>
+                        <td class="tdList_Edit">
+                            @if (item.ApprovedBy == null)
+                            {
+                                <a href="@Url.Action("Edit", "MaintenanceRequestForm", new { id = item.RequestForm_Id })">
+                                    <i class="fa fa-edit" aria-hidden="true"></i>
+                                </a>
+                            }
+                        </td>
+                        <td class="tdList_Details">
+
+                            <a href="@Url.Action("Details", "MaintenanceRequestForm", new { id = item.RequestForm_Id })">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                        <td class="tdList_PDF">
+                            <a href="javascript:void(0);" onclick="fnShowDetail(@item.RequestForm_Id);">
+                                <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                        <td class="tdList_Approve">
+                            @if (item.ApprovedBy == null && IsApprover)
+                            {
+                                @Html.ActionLink("Approve", "Approve", new { id = item.RequestForm_Id }, new { @class = "btn btn-success" })
+                            }
+
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+        <div>
+            <br />
+            @using (Html.BeginForm("Index", "MaintenanceRequestForm", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+            {
+                @Html.DropDownList("PageSize")
+            }
+            @{
+                bool? direction = ViewBag.SortDirection;
+                if (direction == null) { direction = false; }
+            }
+            <div class="pull-left" style=" padding:10px;">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                      new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction }))
+        </div>
+    </div>
+</section>
+
+<script>
+    function fnShowDetail(RequestForm_Id) {
+        var url = "@Url.Action("MaintenanceRequestForm", "MaintenanceRequestForm", new { Area = "EmployeeForm" })" + "?id=" + RequestForm_Id;
+        popupwindow(url, 'MaintenanceRequestForm', 1000, 800);
+        //fnShowPopupForDetail(url);
+    }
+</script>
+
+
+<script>
+    $("#PageSize").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+</script>

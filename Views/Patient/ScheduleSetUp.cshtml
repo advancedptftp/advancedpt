@@ -1,0 +1,166 @@
+﻿
+@{
+    ViewBag.Title = "ScheduleSetUp";
+    Layout = "~/Views/Shared/_PatientPortal.cshtml";
+}
+
+<section class="selfscheduleheader">
+
+
+    <div class="activationform_fullpage">
+        @using (Html.BeginForm())
+        {
+            <div class="report-form clearfix">
+                <h2> Schedule Setup </h2>
+             
+
+                <div id="dvid_1" class="inlinetext">
+
+                    <div class="headrightcont">
+                        @*Which is better, mornings or afternoons?*@
+
+
+                    </div>
+                    <div>
+                        
+
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6 form-group">
+                                <label>No of week(s)</label>
+                                <input type="text" class="form-control" id="txtNoOfWeeks" name="txtNoOfWeeks" />
+                                      </div>
+                            <div class="col-sm-12 col-md-6 form-group">
+                              
+                            </div>
+                          
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6 form-group">
+                                <label>No of day(s) per week</label>
+                                <input type="text" class="form-control" id="txtNoOfdaysperWeeks" name="txtNoOfdaysperWeeks" />
+                            </div>
+                            <div class="col-sm-12 col-md-6 form-group">
+                             
+                            </div>
+
+
+                        </div>
+
+
+
+
+                        <div class="clearfix"></div>
+                        <div class="subbutt" id="btn_div1">
+
+                            <input type="submit" id="btnsubmit" value="Submit" class="btn btn-primary pull-left" onclick="return fun_Validation();"  />
+
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+                </div>
+                @*<div id="dvid_2" class="inlinetext">
+
+                    <div id="availableslot">
+
+
+                    </div>
+                    <div class="subbutt" id="btn_div2">
+
+                        <input type="button" id="_btnprev" value="Previous" class="btn btn-primary pull-left" style="color:white" />
+                        <input type="button" class="btn btn-primary pull-left" id="btnnextoption" value="Next Availability" onclick="functionnextoptionByPriority();" />
+                        <input type="button" class="btn btn-primary pull-left" id="btnnextoptionbydate" value="Save & Next Week" onclick="GetAvailableSlotByDate('Nextdatewise');" />
+                        <input type="button" id="_btnSave" value="Save & Exit" class="btn btn-orange pull-right" style="color:white" />
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>*@
+
+
+
+
+
+            </div>
+
+
+        }
+    </div>
+
+</section>
+<script>
+    $(document).ready(function () {
+        var _varMsgScheduleSetup = '@ViewBag.MsgScheduleSetup';
+        if (_varMsgScheduleSetup != "") {
+            alertify.alert(_varMsgScheduleSetup).setHeader('AdvancePT Says');
+        }
+    });
+
+
+</script>
+<script>
+    function fun_Validation() {
+        //var status = true;
+        if ($("#txtNoOfWeeks").val() == "")
+        {
+            alert("Please enter no of week(s)"); //.setHeader('AdvancePT Says');            
+            $("#txtNoOfWeeks").focus();
+            return false;
+        }
+       
+        if ($("#txtNoOfdaysperWeeks").val() == "")
+        {
+            alert("Please enter no of day(s) per Week"); //.setHeader('AdvancePT Says');    
+            $("#txtNoOfdaysperWeeks").focus();
+            return false;
+        }
+       
+        if ($("#txtNoOfWeeks").val() != "" && $("#txtNoOfdaysperWeeks").val() != "")
+        {
+            return true;
+        }
+        
+    }
+
+</script>
+
+@*<script>
+    var timeout = null;
+    $(document).ready(function () {
+        //alert(1);
+        clearTimeout(timeout);
+        timeout = setTimeout(function () {
+
+            fnShowSessionOutAlert();
+
+        },10000);
+
+    });
+    //$(document).on('mousemove', function () {
+
+    //    clearTimeout(timeout);
+    //    timeout = setTimeout(function () {
+    //        fnShowSessionOutAlert();
+
+    //    },10000);
+    //});
+    function fnShowSessionOutAlert() {
+        var r = confirm("Do you want to something");
+        if (r == true) {
+            clearTimeout(timeout);
+               timeout = setTimeout(function () {
+                    fnShowSessionOutAlert();
+
+               },10000);
+        }
+        else {
+            clearTimeout(timeout);
+            timeout = setTimeout(function () {
+                fnShowSessionOutAlert();
+
+            }, 10000);
+        }
+    }
+</script>*@

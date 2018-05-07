@@ -1,0 +1,123 @@
+﻿@model DataLayer.Models.tblTPatSchdAppointment
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>tblTPatSchdAppointment</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AppointmentDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AppointmentDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FromTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FromTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ToTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ToTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PatientConditionId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PatientConditionId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ResourceID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ResourceID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsTreatmentComplete)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsTreatmentComplete)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMEmployee.First_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMEmployee.First_Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMPatient.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMPatient.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblMPatSchdAppointmentType.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblMPatSchdAppointmentType.Name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Appointment_Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,133 @@
+﻿@model DataLayer.Models.tblMHandBookChapter
+
+@{
+    ViewBag.Title = "Create";
+}
+
+
+<section class="bodyinner">
+    <div class="container">
+        <div class="bodyleft">
+
+          
+            @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+        </div>
+        <div class="bodyright">
+
+            <div class="report-form clearfix">
+
+
+
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.ValidationSummary(true)
+                    @Html.Hidden("CreatedOn", DateTime.Now)
+                   if (ViewBag.Error != null)
+                {
+                    @Html.Raw(ViewBag.Error)
+                }
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6 form-group">
+                            
+                            @Html.Label("Chapter No")
+                            @Html.TextBoxFor(model => model.ChapterNo, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.ChapterNo)
+                        </div>
+
+                        <div class="col-sm-6 col-md-6 form-group">
+
+
+                            @Html.Label("Chapter Name")
+                            @Html.TextBoxFor(model => model.ChapterName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.ChapterName)
+                        </div>
+                    </div>
+
+                    <div class="subbutt">
+                        <input type="submit" value="Create" class="btn btn-orange pull-right" />
+   
+                        <div class="clearfix"></div>
+                    </div>
+                    <p>@Html.ActionLink("Back to List", "Index")</p>
+                }
+            </div>
+
+
+
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</section>
+
+
+@*<h2>Create</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>tblMHandBookChapter</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ChapterNo, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+               
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ChapterName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+               
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CreatedOn, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CreatedOn)
+                @Html.ValidationMessageFor(model => model.CreatedOn)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CreatedBy, "CreatedBy", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("CreatedBy", String.Empty)
+                @Html.ValidationMessageFor(model => model.CreatedBy)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ModifiedOn, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ModifiedOn)
+                @Html.ValidationMessageFor(model => model.ModifiedOn)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ModifiedBy, "ModifiedBy", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("ModifiedBy", String.Empty)
+                @Html.ValidationMessageFor(model => model.ModifiedBy)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>*@

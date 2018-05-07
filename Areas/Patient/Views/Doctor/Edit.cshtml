@@ -1,0 +1,124 @@
+﻿@model DataLayer.Models.tblMDoctor
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+
+<section class="bodyinner">
+    <div class="container">
+        <div class="bodyleft">
+
+            @Html.Partial("~/Views/Shared/_LeftPart.cshtml")
+        </div>
+        <div class="bodyright">
+
+            <div class="report-form clearfix">
+                <h2 class="text-center">Edit Physician List</h2>
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(model => model.Doctor_Id)
+                    @Html.HiddenFor(model => model.ModifiedBy)
+                    @Html.Hidden("ModifiedOn", DateTime.Now)
+                    @Html.HiddenFor(model => model.CreatedOn)
+                    @Html.HiddenFor(model => model.CreatedBy)
+                    if (ViewBag.Error != null)
+                    {
+                        @Html.Raw(ViewBag.Error)
+                    }
+                    <div class="row">
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("First Name")
+                            @Html.TextBoxFor(model => model.First_Name, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.First_Name)
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Last Name")
+                            @Html.TextBoxFor(model => model.Last_Name, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Last_Name)
+                        </div>
+                    </div>
+                    <div class="row">                        
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("DoctorType")
+                            @*@Html.DropDownListFor(m => m.DoctorType, from DataLayer.DoctorType state in Enum.GetValues(typeof(DataLayer.DoctorType))
+                                                                   select new SelectListItem() { Text = state.ToString(), Value = ((int)state).ToString() }, string.Empty, new { @class = "form-control" })*@
+
+                            @*@Html.TextBoxFor(model => model.DoctorType, new { @class = "form-control" })*@
+
+                            @Html.DropDownListFor(m => m.DoctorType, from DataLayer.DoctorType state in Enum.GetValues(typeof(DataLayer.DoctorType))
+                                                                     select new SelectListItem() { Text = state.ToString(), Value = ((int)state).ToString() },new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.DoctorType)
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("NPI No")
+                            @Html.TextBoxFor(model => model.NPI_No, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.NPI_No)
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="row">                        
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Phone1")
+                            @Html.TextBoxFor(model => model.Phone1, new { @class = "form-control UsCellFormat" })
+                            @Html.ValidationMessageFor(model => model.Phone1)
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Phone2")
+                            @Html.TextBoxFor(model => model.Phone2, new { @class = "form-control UsCellFormat" })
+                            @Html.ValidationMessageFor(model => model.Phone2)
+                        </div>
+                    </div>
+                    
+                    
+                    
+                    <div class="row">                        
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Fax")
+                            @Html.TextBoxFor(model => model.Fax, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Fax)
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("City")
+                            @Html.TextBoxFor(model => model.City, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.City)
+                        </div>
+                    </div>
+                    
+                    <div class="row">                        
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("State")
+                            @Html.DropDownListFor(e => e.State, (SelectList)ViewBag.StateName, new { @class = "form-control" })
+                           
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            @Html.Label("Zip Code")
+                            @Html.TextBoxFor(model => model.ZipCode, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.ZipCode)
+                        </div>
+                    </div>
+
+                    <div class="subbutt">
+                        <input type="submit" value="Save" class="btn btn-orange pull-right" />
+
+
+                    </div>
+                    <p>@Html.ActionLink("Back to List", "Index")</p>
+                }
+
+            </div>
+
+
+
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</section>
+
+
+
+
+

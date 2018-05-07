@@ -1,0 +1,261 @@
+﻿@model PagedList.IPagedList<DataLayer.Models.PatientListPage>
+@using PagedList.Mvc;
+@using DataLayer;
+@{
+    ViewBag.Title = "PatientIndex";
+    var CanViewPatient = ViewContext.Controller.CheckAccess(103, PermissionType.View);
+}
+<style>
+    .NewPatient {
+        background-color: rgba(205, 216, 36, 0.68) !important;
+    }
+</style>
+
+<center><h2 style="margin-top:20px;">Patient List</h2></center>
+<section class="bodyinner2">
+    <div>
+        <p class="pull-right">
+            @Html.ActionLink("Create New Record", "Create", null, new { @class = "btn btn-primary" })
+        </p>
+        
+            @using (Html.BeginForm("PatientIndex", "PatientActivation", FormMethod.Get))
+            {
+                <div class="searchsec">
+                    @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Search by First Name" })
+                    <button><i class="fa fa-search" aria-hidden="true"></i></button>
+                    <div class="clearfix"></div>
+                </div>
+            }
+        
+             
+
+                    @using (Html.BeginForm("PatientIndex", "PatientActivation", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+                    {
+                        @Html.DropDownList("PageSize1")
+                    }
+        @{
+            bool? direction1 = ViewBag.SortDirection;
+            if (direction1 == null) { direction1 = false; }
+        }
+               
+        <div class="pull-left" style=" padding:10px;">
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        </div>
+              
+               
+          
+
+            <div class="clearfix"></div>
+        </div>
+
+        <div>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                @{ var classname = "botharrow";}
+                                @if ((ViewBag.CurrentSort == "FirstName" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                                {
+                                    classname = "bottarrow";
+                                }
+                                else if ((ViewBag.CurrentSort == "FirstName" && ViewBag.SortDirection == false))
+                                {
+                                    classname = "toparrow";
+                                }
+                                @Html.ActionLink("First Name", "PatientIndex", new { sortOrder = "FirstName", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname })
+
+
+                            </th>
+                            <th>
+                                @{ var classname2 = "botharrow";}
+                                @if ((ViewBag.CurrentSort == "LastName" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                                {
+                                    classname2 = "bottarrow";
+                                }
+                                else if ((ViewBag.CurrentSort == "LastName" && ViewBag.SortDirection == false))
+                                {
+                                    classname2 = "toparrow";
+                                }
+                                @Html.ActionLink("Last Name", "PatientIndex", new { sortOrder = "LastName", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname2 })
+
+
+                            </th>
+                            <th>
+                                DOB
+                            </th>
+
+
+                            <th>
+                                Mobile Number
+                            </th>
+                            <th>
+                                @{ var classname1 = "botharrow";}
+                                @if ((ViewBag.CurrentSort == "CreatedOn" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                                {
+                                    classname1 = "bottarrow";
+                                }
+                                else if ((ViewBag.CurrentSort == "CreatedOn" && ViewBag.SortDirection == false))
+                                {
+                                    classname1 = "toparrow";
+                                }
+                                @Html.ActionLink("Created On", "PatientIndex", new { sortOrder = "CreatedOn", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname1 })
+
+
+                            </th>
+                            @*<th>
+
+                                </th>*@
+                            <th>
+                                @{ var classname3 = "botharrow";}
+                                @if ((ViewBag.CurrentSort == "Pending" && ((ViewBag.SortDirection == true || ViewBag.SortDirection == null) && ViewBag.PageLoad != null)))
+                                {
+                                    classname3 = "bottarrow";
+                                }
+                                else if ((ViewBag.CurrentSort == "Pending" && ViewBag.SortDirection == false))
+                                {
+                                    classname3 = "toparrow";
+                                }
+                                @Html.ActionLink("Pending Step", "PatientIndex", new { sortOrder = "Pending", CurrentSort = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, IsAsc = ViewBag.SortDirection }, new { @class = "SortHeader " + classname3 })
+
+
+                            </th>
+                            <th></th>
+                        </tr>
+
+                    </thead>
+                    @foreach (var item in Model)
+                    {
+
+                        <tr>
+                            <th>
+                                @Html.DisplayFor(modelItem => item.FirstName)
+                            </th>
+                            <th>
+                                @Html.DisplayFor(modelItem => item.LastName)
+                            </th>
+                            <th>
+                                @item.DOB.GetExactValue()
+                            </th>
+                            <th>
+                                @Html.DisplayFor(modelItem => item.MobNo)
+                            </th>
+
+                            <th>
+                                @item.CreatedOn.GetExactValue()
+                            </th>
+                            <th>
+                                @if (item.NextStep != PatientCurrentState.Complete && item.NextStep != PatientCurrentState.Condition_Not_Found)
+                                {
+                                    <a href="@Url.Action("PatientCurrentState", "PatientRegistration", new { id = item.PatientConditionID })">
+                                        <input type="button" class="btn btn-primary btn-lg" value="@item.NextStep.ToCustomString()">
+                                    </a>
+                                    @*<i class="fa fa-arrow-right" aria-hidden="true"></i>*@
+                                }
+                                else
+                                {
+                                    @item.NextStep.ToCustomString()
+                                }
+
+                            </th>
+
+                            <th>
+                                @if (CanViewPatient)
+                                {
+
+                                    <a href="@Url.Action("PatientProfile", "PatientActivation", new { id = item.Patient_Id })">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                    </a>
+                                }
+                                @if (item.NextStep != PatientCurrentState.Condition_Not_Found)
+                                {
+                                    <a href="javascript:void(0);" onclick="fnShowDetail(@item.Patient_Id);">
+                                        <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                    </a>
+                                }
+
+                                @if (item.IsShowAOBPdf)
+                                {
+                                    <a href="javascript:void(0);" onclick="fnShowAOBPdf(@item.Patient_Id);" title="AOB.pdf">
+                                        <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                    </a>
+                                }
+                                @if (item.IsShowAutoInjuryAOBPdf)
+                                {
+                                    <a href="javascript:void(0);" onclick="fnShowAutoInjuryAOBPdf(@item.PatientConditionID);" title="AutoInjuryAOB.pdf">
+                                        <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                    </a>
+                                }
+
+                            </th>
+                        </tr>
+                    }
+
+                </table>
+
+            </div>
+            <div>
+                <br />
+                @using (Html.BeginForm("PatientIndex", "PatientActivation", new { sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort }, FormMethod.Post, new { @style = "float:left;width:80px;" }))
+                {
+                    @Html.DropDownList("PageSize")
+                }
+                @{
+                    bool? direction = ViewBag.SortDirection;
+                    if (direction == null) { direction = false; }
+                }
+                <div class="pull-left" style=" padding:10px;">
+                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                </div>
+
+                @Html.PagedListPager(Model, page => Url.Action("PatientIndex",
+                      new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, CurrentSort = ViewBag.CurrentSort, IsAsc = !direction }))
+            </div>
+        </div>
+
+</section>
+
+
+<script>
+
+    function fnShowDetail(id) {
+        var url = "@Url.Action("PatientActivation", "PatientActivation", new { Area = "Patient" })" + "?id=" + id;
+        //fnShowPopupForDetail(url);
+        popupwindow(url, 'Activation', 1000, 800);
+    }
+    function fnShowAOBPdf(id) {
+        var url = "@Url.Action("AOB", "PatientRegistration", new { Area = "Patient" })" + "?id=" + id;
+        popupwindow(url, 'AOB', 1000, 800);
+    }
+    function fnShowAutoInjuryAOBPdf(id) {
+        var url = "@Url.Action("AutoInjuryAOB", "PatientRegistration", new { Area = "Patient" })" + "?id=" + id;
+        popupwindow(url, 'AutoInjuryAOBPdf', 1000, 800);
+    }
+    function fnShowAttorneyPdf(id) {
+        var url = "@Url.Action("PatientAttorney", "PatientRegistration", new { Area = "Patient" })" + "?id=" + id;
+        popupwindow(url, 'PatientAttorney', 1000, 800);
+    }
+    //fnShowEmbededPDF(pdf, $('#dvPDF'));
+    //fnShowPdfInWinPopup(pdf);
+    //fnShowPdfInPopup(pdf, 'show detail for emp');
+
+</script>
+
+
+
+<script>
+    $("#PageSize").addClass("form-control");
+    $('#PageSize').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+    $("#PageSize1").addClass("form-control");
+    $('#PageSize1').on('change', function (event) {
+
+        var form = $(event.target).parents('form');
+
+        form.submit();
+    });
+</script>

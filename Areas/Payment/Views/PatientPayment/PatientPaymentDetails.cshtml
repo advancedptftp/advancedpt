@@ -1,0 +1,576 @@
+﻿@model DataLayer.Models.tblTPaymtHardShip
+
+@{
+    ViewBag.Title = "Payment HardShip Approval";
+    Layout = "~/Views/Shared/_PatientPortal.cshtml";
+    bool IsPatientUnEmployed = false;
+    bool IsSpouseUnEmployed = false;
+    int intHouseHoldCount = 0;
+    
+    string[] strArrHouseholdContributedBy = new string[4];
+    string strPatientName = string.Empty;
+
+    bool IsPatient = false;
+    bool IsResponsibleParty = false;
+    bool IsChildrenWorking = false;
+    bool IsSpouse = false;
+}
+
+<div class="body">
+    <div class="report-form clearfix">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div id="dvid_4">
+                <div>
+
+                    <div style="padding:20px 0 5px 0;">
+                        <h3 style="padding:0 0 5px 0; margin:0; font-size:19px;">Instruction Page</h3>
+                        <p style="padding:0 0 15px 0; margin:0; font-size:15px; font-weight:bold;">All information relating to financial hardship requests will be kept confidential.</p>
+
+                        <p style="padding:0 0 15px 0; margin:0;">The patient will need to complete a financial disclosure form and provide documentation of proof of income. Appropriate documentation of financial hardship would be one or more of the following:</p>
+
+                        <p style="padding:0 0 8px 0; margin:0;">1) Documented proof that patient is at or below 200% of the current federal poverty guidelines (see attachment B for 2008 guidelines). This can include documents such as</p>
+                        <div style="padding:0 0 20px 20px;">
+                            a. W-2 withholding statements<br>
+                            b. Pay check stubs<br>
+                            c. Income tax return<br>
+                            d. Forms from Medicaid or other State-funded medical assistance<br>
+                            e. Forms from employers or welfare agencies.
+                        </div>
+
+                        <p style="padding:0 0 8px 0; margin:0;">2) Patient has other circumstances that indicate financial hardship. These can be situations such as:</p>
+                        <div style="padding:0 0 20px 20px;">
+                            a. proof of bankruptcy settlement<br>
+                            b. catastrophic situations (death or disability in family, divorce)<br>
+                            c. or other documentation that shows that patient would be unable to pay medical bill and still be able to pay for other basic necessary expenses.
+                        </div>
+
+                        <p style="padding:0 0 12px 0; margin:0;">Income shall be annualized from the date of request based on documentation provided and upon verbal information provided by the patient. The annualization process will also take into consideration seasonal employment and temporary increases and/or decreases to income.</p>
+
+                        <p style="padding:0 0 12px 0; margin:0;">Any denial of “financial hardship” discount request will be written and will include instructions for reconsideration. If additional documentation of financial need is received to support charity care, the request will be reviewed and considered per the above guidelines.</p>
+
+
+
+                    </div>
+
+                </div>
+            </div>
+            <div id="dvid_9">
+                <div>
+                    <div style="padding:15px 0 15px 0; margin-top:20px; text-align:center; font-size:17px; font-weight:bold;">
+                        <p>
+                            2014 POVERTY GUIDELINES FOR THE 48 CONTIGUOUS STATES
+                            AND THE DISTRICT OF COLUMBIA
+                        </p>
+
+                    </div>
+
+                    <table style="width:100%; text-align:center; font-size:14px;" border="1" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td style="padding:5px; background:#000; color:#fff; font-size:15px;"><strong>Persons In Household</strong></td>
+                            <td style="padding:5px; background:#000; color:#fff; font-size:15px;"><strong>Poverty Guideline</strong></td>
+                        </tr>
+                        <tr>
+                            <td style="padding:6px;">1</td>
+                            <td style="padding:6px;">$11,670</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:6px;">2</td>
+                            <td style="padding:6px;">$15,730</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:6px;">3</td>
+                            <td style="padding:6px;">$19,790</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:6px;">4</td>
+                            <td style="padding:6px;">$23,850</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:6px;">5</td>
+                            <td style="padding:6px;">$27,910</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:6px;">6</td>
+                            <td style="padding:6px;">$31,970</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:6px;">7</td>
+                            <td style="padding:6px;">$36,030</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:6px;">8</td>
+                            <td style="padding:6px;">$40,090</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="padding:8px;"><strong>For households with more than 8 persons, add $4,060 for each additional person.</strong></td>
+                        </tr>
+                    </table>
+
+                    <div style="text-align:center; padding:25px 0 25px 0;">SOURCE: Federal Register, Vol. 77, No. 17, January 26, 2012, pp. 4034-4035</div>
+
+                    <div style="padding:0 0 45px 0;">
+                        OIG Special Fraud Alert (1994). OIG Advisory Opinion 97-4. Federal Register, Vol 65, No. 81, 4-26-00 pages 24401-2440742 CFR, section 1001.952 (k)HIPAA, section 231(h), section 1128A42 USC, Section 1320a-7aBBA, section 4331 False Claims Act, Public Law 104-191, Kennedy v Connecticut General Life Ins. Co (Case Law) 924 F.2d 698 (7th Cir. 1991) Managed Care Contracts
+                    </div>
+                </div>
+            </div>
+            <div id="dvid_10">
+                <div class="row">
+                    <div class="col-sm-6 col-md-5 form-group">
+                        <div class=headrightcont>Patient Name</div>
+                        @{
+            strPatientName = Model.tblMPatient.FirstName + " " + Model.tblMPatient.LastName;
+                        }
+                        <input type="text" value="@strPatientName" class="form-control" id="Tbl_PatientName" disabled="disabled" />
+                        <span id="PatientName" style="color:red;" class="validateMsg"></span>
+                        @*// @Html.TextBox(, new { @class = "form-control" })>*@
+                    </div>
+                    <div class="col-sm-6 col-md-5 form-group">
+                        <div class=headrightcont>Date</div>
+                        @Html.TextBoxFor(m => m.HardShipDate, "{0:MM/dd/yyyy}", new { @class = "form-control datepicker datepicker-bg", @disabled = true })
+                        <span id="HardShipDate" style="color:red;" class="validateMsg"></span>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-sm-6 col-md-5 form-group">
+                        <div class=headrightcont>Name of Responsible Party</div>
+                        @Html.TextBoxFor(e => e.ResponsiblePartyName, new { @class = "form-control", @disabled = true })
+                        <span id="ResponsibleParty" style="color:red;" class="validateMsg"></span>
+                    </div>
+                    <div class="col-sm-6 col-md-5 form-group">
+                        <div class=headrightcont>Relationship to Patien</div>
+                        @Html.TextBoxFor(m => m.RelationShipToPatient, new { @class = "form-control", @disabled = true })
+                        <span id="RelationshipPatien" style="color:red;" class="validateMsg"></span>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-sm-6 col-md-5 form-group">
+                        <div class=headrightcont>Patient’s Home Address</div>
+                        @Html.TextBoxFor(e => e.PatientHomeAddress, new { @class = "form-control", @disabled = true })
+                        <span id="PatientHomeAddress" style="color:red;" class="validateMsg"></span>
+                    </div>
+                    <div class="col-sm-6 col-md-5 form-group">
+                        <div class=headrightcont>Patient’s Phone Number</div>
+                        @Html.TextBoxFor(m => m.PatientPhoneNo, new { @class = "form-control UsCellFormat", @disabled = true })
+                        <span id="PatientPhoneNo" style="color:red;" class="validateMsg"></span>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-sm-6 col-md-5 form-group">
+                        <div class=headrightcont>Patient’s Employer Name</div>
+                        @Html.TextBoxFor(e => e.PatientEmployerName, new { @class = "form-control", @disabled = true })
+                        <span id="PatientEmployerName" style="color:red;" class="validateMsg"></span>
+                    </div>
+                    <div class="col-sm-6 col-md-5 form-group">
+                        <div class=headrightcont>Patient’s Employer Address</div>
+                        @Html.TextBoxFor(m => m.PatientEmployerAddress, new { @class = "form-control", @disabled = true })
+                        <span id="PatientEmployerAddress" style="color:red;" class="validateMsg"></span>
+                    </div>
+                </div>
+            </div>
+            <div id="dvid_14">
+                <div class="row">
+                    <div class=headrightcont><label><strong>Is the Patient Unemployed?</strong></label></div>
+
+                    <div class="col-sm-6 col-md-5 form-group">
+
+                        @{
+            IsPatientUnEmployed = Model.IsPatientUnEmployed == null ? false : Convert.ToBoolean(Model.IsPatientUnEmployed);
+                        }
+                        @if (IsPatientUnEmployed)
+                        {
+                            <input type="radio" name="PatUnemp" id="PatUnemp1" value="1" checked="checked" disabled="disabled" />@:YES &nbsp;&nbsp;
+                            <input type="radio" name="PatUnemp" id="PatUnemp2" value="0" disabled="disabled" />@:NO
+                        }
+                        else
+                        {
+                            <input type="radio" name="PatUnemp" id="PatUnemp1" value="1" disabled="disabled" />@:YES &nbsp;&nbsp;
+                            <input type="radio" name="PatUnemp" id="PatUnemp2" value="0" checked="checked" disabled="disabled" />@:NO
+                        }
+                    </div>
+                    <div class="col-sm-6 col-md-5 form-group">
+                        @if (IsPatientUnEmployed)
+                        {
+                            <div class="row">
+                                <div class="col-sm-3">How Long?</div>
+                                <div class="col-sm-9">
+                                    @Html.TextBoxFor(e => e.HowLongPatientUnEmployed, new { @class = "form-control", @disabled = true })
+                                    <span id="HowLongPatientUnEmployed" style="color:red;" class="validateMsg"></span>
+                                </div>
+
+                            </div>
+                        }
+                    </div>
+                    @if (IsPatientUnEmployed)
+                    {
+                        <div class="col-sm-6 col-md-5 form-group">
+                            <div class=headrightcont>Spouse’s Name</div>
+                            @Html.TextBoxFor(e => e.SpouseName, new { @class = "form-control", @disabled = true })
+                            <span id="SpouseName" style="color:red;" class="validateMsg"></span>
+                        </div>
+                        <div class="col-sm-6 col-md-5 form-group">
+                            <div class=headrightcont>Spouse’s Phone Number</div>
+                            @Html.TextBoxFor(m => m.SpousePhoneNo, new { @class = "form-control UsCellFormat", @disabled = true })
+                            <span id="SpousePhoneNo" style="color:red;" class="validateMsg"></span>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-sm-6 col-md-5 form-group">
+                            <div class=headrightcont>Spouse’s Employer Name</div>
+                            @Html.TextBoxFor(m => m.SpouseEmployerName, new { @class = "form-control", @disabled = true })
+                            <span id="SpouseEmployerName" style="color:red;" class="validateMsg"></span>
+                        </div>
+                        <div class="col-sm-6 col-md-5 form-group">
+                            <div class=headrightcont>Spouse’s Employer Address</div>
+                            @Html.TextBoxFor(m => m.SpouseEmployerAddress, new { @class = "form-control", @disabled = true })
+                            <span id="SpouseEmployerAddress" style="color:red;" class="validateMsg"></span>
+                        </div>
+
+                    }
+                </div>
+            </div>
+            <div id="dvid_17">
+                <div class="row">
+                    <div class=headrightcont><label><strong>Is the Spouse Unemployed?</strong></label></div>
+                    <div class="col-sm-6 col-md-5 form-group">
+                        @{
+            IsSpouseUnEmployed = Model.IsSpouseUnEmployed == null ? false : Convert.ToBoolean(Model.IsSpouseUnEmployed);
+                        }
+                        @if (IsSpouseUnEmployed)
+                        {
+                            <input type="radio" name="SpouseEmp" id="SpouseEmp1" value="1" checked="checked" disabled="disabled" />@:YES &nbsp;&nbsp;
+                            <input type="radio" name="SpouseEmp" id="SpouseEmp2" value="0" disabled="disabled" />@:NO
+                        }
+                        else
+                        {
+                            <input type="radio" name="SpouseEmp" id="SpouseEmp1" value="1" disabled="disabled" />@:YES &nbsp;&nbsp;
+                            <input type="radio" name="SpouseEmp" id="SpouseEmp2" value="0" checked="checked" disabled="disabled" />@:NO
+                        }
+                    </div>
+                    <div class="col-sm-6 col-md-5 form-group">
+                        @if (IsSpouseUnEmployed)
+                        {
+                            <div class="row">
+                                <div class="col-sm-3">How Long?</div>
+                                <div class="col-sm-9">
+                                    @Html.TextBoxFor(e => e.HowLongSpouseUnEmployed, new { @class = "form-control", @disabled = true })
+                                    <span id="HowLongSpouseUnEmployed" style="color:red;" class="validateMsg"></span>
+                                </div>
+
+                            </div>
+                        }
+                    </div>
+
+                </div>
+            </div>
+            if (Model.tblTPaymtHouseholdMembers != null)
+            {
+                intHouseHoldCount = Model.tblTPaymtHouseholdMembers.Count;
+            }
+            <div id="dvid_19">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 form-group">
+                        <div id="PatientRestrictedToDo">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-7 form-group">
+                                    <div class=headrightcont>How many people are living in your household?</div>
+                                    <input type="text" id="HouseHoldMembersCount" value="@intHouseHoldCount" class="form-control" disabled="disabled" />
+                                </div>
+                            </div>
+                            @if (intHouseHoldCount > 0)
+                            {
+                                Int32 intRecordCount = 0;
+                                foreach (var item in Model.tblTPaymtHouseholdMembers)
+                                {
+                                    <div class="row preexamin">
+                                        <div id="divRestrictedToDo_@intRecordCount">
+                                            <div class="clearfix"></div>
+                                            <div class="col-sm-4 form-group">
+                                                <div class=headrightcont>Household Member Name</div>
+                                                <input type="text" name="@item.HouseholdMemberName" value="@item.HouseholdMemberName" class="form-control" disabled="disabled" />
+                                            </div>
+                                            <div class="col-sm-3 form-group">
+                                                <div class=headrightcont>Employer</div>
+                                                <input type="text" name="@item.Employer" value="@item.Employer" class="form-control" disabled="disabled" />
+                                            </div>
+                                            <div class="col-sm-3 form-group">
+                                                <div class=headrightcont>Employer Address</div>
+                                                <input type="text" name="@item.EmployerAddress" value="@item.EmployerAddress" class="form-control" disabled="disabled" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    intRecordCount++;
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="dvid_20">
+                <div class="row">
+                    <div class=headrightcont> <label><strong>Who Contributes to the Monthly Household Income?</strong></label></div>
+                    <div class="col-sm-12 col-md-12 form-group">
+                        @{
+            if (Model.HouseholdContributedBy != null)
+            {
+                if (Model.HouseholdContributedBy.Contains(","))
+                {
+                    string[] tempstrArrHouseholdContributedBy = Model.HouseholdContributedBy.Split(',');  
+                    for (int i = 0; i < tempstrArrHouseholdContributedBy.Length; i++)
+			        {
+			            strArrHouseholdContributedBy[i] = tempstrArrHouseholdContributedBy[i];
+			        }
+                }
+                else
+                {
+                    strArrHouseholdContributedBy[0] = Model.HouseholdContributedBy;
+                }
+            }
+                        }
+                        @for (int i = 0; i < 4; i++)
+                        {
+                            if (strArrHouseholdContributedBy[i] != null)
+                            {
+                                if (strArrHouseholdContributedBy[i].Trim() == "Patient")
+                                {
+                                    IsPatient = true;
+                                }
+                                else if (strArrHouseholdContributedBy[i].Trim() == "Spouse")
+                                {
+                                    IsSpouse = true;
+                                }
+                                else if (strArrHouseholdContributedBy[i].Trim() == "Responsible Party")
+                                {
+                                    IsResponsibleParty = true;
+                                }
+                                else if (strArrHouseholdContributedBy[i].Trim() == "Children Working")
+                                {
+                                    IsChildrenWorking = true;
+                                }
+                            }
+                        }
+                        @if (IsPatient)
+                        {
+                            <input type="checkbox" id="ChkHouseholdIncome_1" name="ContributesMonthlyIncome" value="Patient" checked="checked" disabled="disabled" />@:&nbsp;
+                            <strong>Patient</strong>
+                        }
+                        else
+                        {
+                            <input type="checkbox" id="ChkHouseholdIncome_1" name="ContributesMonthlyIncome" value="Patient" disabled="disabled" />@:&nbsp;
+                            <strong>Patient</strong>
+                        }
+                        @if (IsSpouse)
+                        {
+                            <input type="checkbox" id="ChkHouseholdIncome_2" name="ContributesMonthlyIncome" value="Spouse" checked="checked" disabled="disabled" />@:&nbsp;
+                            <strong>Spouse</strong>
+                        }
+                        else
+                        {
+                            <input type="checkbox" id="ChkHouseholdIncome_2" name="ContributesMonthlyIncome" value="Spouse" disabled="disabled" />@:&nbsp;
+                            <strong>Spouse</strong>
+                        }
+                        @if (IsResponsibleParty)
+                        {
+                            <input type="checkbox" id="ChkHouseholdIncome_3" name="ContributesMonthlyIncome" value="Responsible Party" checked="checked" disabled="disabled" />@:&nbsp;
+                            <strong>Responsible Party</strong>
+                        }
+                        else
+                        {
+                            <input type="checkbox" id="ChkHouseholdIncome_3" name="ContributesMonthlyIncome" value="Responsible Party" disabled="disabled" />@:&nbsp;
+                            <strong>Responsible Party</strong>
+                        }
+                        @if (IsChildrenWorking)
+                        {
+                            <input type="checkbox" id="ChkHouseholdIncome_4" name="ContributesMonthlyIncome" value="Children Working" checked="checked" disabled="disabled" />@:&nbsp;
+                            <strong>Children Working</strong>
+                        }
+                        else
+                        {
+                            <input type="checkbox" id="ChkHouseholdIncome_4" name="ContributesMonthlyIncome" value="Children Working" disabled="disabled" />@:&nbsp;
+                            <strong>Children Working</strong>
+                        }       
+                    </div>
+                </div>
+            </div>
+            <div id="dvid_21">
+                <div class="row">
+                    <div class="col-sm-6 col-md-5 form-group">
+                        <div class=headrightcont>Monthly Salary (Gross)</div>
+                        @Html.TextBoxFor(e => e.MonthlySalary, new { @class = "form-control", @disabled = true })
+                    </div>
+                    <div class="col-sm-6 col-md-5 form-group">
+                        <div class=headrightcont>Public Assistance Benefits</div>
+                        @Html.TextBoxFor(e => e.PublicAssistanceBenefits, new { @class = "form-control", @disabled = true })
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-sm-6 col-md-5 form-group">
+                        <div class=headrightcont>Unemployment Benefits</div>
+                        @Html.TextBoxFor(e => e.UnemploymentBenefits, new { @class = "form-control", @disabled = true })
+                    </div>
+                    <div class="col-sm-6 col-md-5 form-group">
+                        <div class=headrightcont>Social Security Benefits</div>
+                        @Html.TextBoxFor(e => e.SocialSecurityBenefits, new { @class = "form-control", @disabled = true })
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-sm-6 col-md-5 form-group">
+                        <div class=headrightcont>Workman’s Compensation</div>
+                        @Html.TextBoxFor(e => e.WorkmansCompensation, new { @class = "form-control", @disabled = true })
+                    </div>
+                    <div class="col-sm-6 col-md-5 form-group">
+                        <div class=headrightcont>Child Support</div>
+                        @Html.TextBoxFor(e => e.ChildSupport, new { @class = "form-control", @disabled = true })
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-sm-6 col-md-5 form-group">
+                        <div class=headrightcont>Other (Alimony, Etc.)</div>
+                        @Html.TextBoxFor(e => e.Other, new { @class = "form-control", @disabled = true })
+                    </div>
+                    <div class="col-sm-6 col-md-5 form-group">
+                        <div class=headrightcont><b>TOTAL FAMILY INCOME</b></div>
+                        @Html.TextBoxFor(e => e.TotalIncome, new { @class = "form-control", id = "TotalFamilyIncome", @disabled = true })
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div id="dvid_22" class="row">
+                <div style="padding:12px 0; font-weight:bold;">
+                    I HEREBY ACKNOWLEDGE THAT THE INFORMATION GIVEN HEREIN IS TRUE AND CORRECT. I AUTHORIZE
+                    ADVANCED PHYSICAL THERAPY OF CENTRAL FLORIDA, INC TO VERIFY ANY INFORMATION CONTAINED IN
+                    THIS DOCUMENT FOR THE SOLE PURPOSE OF ASSESSING FINANCIAL NEED.
+                </div>
+            </div>
+            <div class="row" id="dvid_23">
+                <div class="col-sm-6 col-md-5 form-group">
+                    <div class=headrightcont>Signature of Person Making Request</div>
+                    @{var imgurl1 = "";
+                    if (Model.SignatureOfPersonMakingReq != null)
+                    {
+                        imgurl1 = "data:image/png;base64," + Convert.ToBase64String(Model.SignatureOfPersonMakingReq);
+                    }
+                    }
+                    <img src="@imgurl1" alt="Alternate Text" id="imgSignatureofPersonMakingRequest" style="width: 200px; height: 120px; " />
+                </div>
+                <div class="col-sm-6 col-md-5 form-group">
+                    <div class=headrightcont><b>Date </b></div>
+                   @Html.TextBoxFor(m => m.HardShipDate, "{0:MM/dd/yyyy}", new { @class = "form-control datepicker datepicker-bg", @disabled = true })
+                </div>
+                <div class="clearfix"></div>
+
+                <div class="col-sm-6 col-md-5 form-group">
+                    <div class=headrightcont>Signature of Person Making Request</div>
+                    @{
+                    var imgurl2 = "";
+                    if (Model.SignatureOfSpouseOrOther != null)
+                    {
+                        imgurl2 = "data:image/png;base64," + Convert.ToBase64String(Model.SignatureOfSpouseOrOther);
+                    }
+                    }
+                    <img src="@imgurl2" alt="Alternate Text" id="imgSignatureofSpouse" style="width: 200px; height: 120px; " />
+                </div>
+                <div class="col-sm-6 col-md-5 form-group">
+                    <div class=headrightcont><b>Date </b></div>
+                    @Html.TextBoxFor(m => m.HardShipDate, "{0:MM/dd/yyyy}", new { @class = "form-control datepicker datepicker-bg", @disabled = true })
+                </div>
+
+            </div>
+            <div class="row" id="dvid_24">
+                <div>
+                    <h3 style="padding:0 0 5px 0; margin:0; font-size:19px;">Supporting Documents</h3>
+                    <p style="padding:0 0 15px 0; margin:0; font-size:15px; font-weight:bold;">Please return all items (as applicable) on this checklist (in person or by mail):</p>
+
+                    @if (Model.tblTPaymentHardShipSupportingDoc != null)
+                    {
+                        <div style="padding:5px 0;">
+                            @Html.CheckBox("tblTPaymentHardShipSupportingDoc.IsMostRecentIRSTaxFormSigned", new { @disabled = true })
+                            &nbsp;Most recent IRS tax forms (1040 and/or W-2). Must be signed.
+                        </div>
+                        <div style="padding:5px 0;">
+                            @Html.CheckBox("tblTPaymentHardShipSupportingDoc.IsCheckStubsForPast30Days", new { @disabled = true })
+                            &nbsp;Check stubs for the past 30 days for all persons employed in the home.
+                        </div>
+                        <div style="padding:5px 0;">
+                            @Html.CheckBox("tblTPaymentHardShipSupportingDoc.IsUnEmploymentCheckStubsFor30Days", new { @disabled = true })
+                            &nbsp;Unemployment check stubs for the past 30 days.
+                        </div>
+                        <div style="padding:5px 0;">
+                            @Html.CheckBox("tblTPaymentHardShipSupportingDoc.IsDriverLicenseOrIDCards", new { @disabled = true })
+                            &nbsp;Driver’s license or identification cards for adults.
+                        </div>
+                        <div style="padding:5px 0;">
+                            @Html.CheckBox("tblTPaymentHardShipSupportingDoc.IsProofOfAllOtherIncomeReceived", new { @disabled = true })
+                            &nbsp;Proof of all other income received in the past 30 days.
+                        </div>
+                        <div style="padding:5px 0;">
+                            @Html.CheckBox("tblTPaymentHardShipSupportingDoc.IsProofOfAllOutstandingBills", new { @disabled = true })
+                            &nbsp;Proof of all outstanding bills (payment stubs, cancelled checks, etc.).
+                        </div>
+                        <div style="padding:5px 0;">
+                            @Html.CheckBox("tblTPaymentHardShipSupportingDoc.IsDSHSDenialLetter", new { @disabled = true })
+                            &nbsp;DSHS Denial letter.
+                        </div>
+                        <div style="padding:5px 0;">
+                            @Html.CheckBox("tblTPaymentHardShipSupportingDoc.IsMedicaidFormsOrCard", new { @disabled = true })
+                            &nbsp;Medicaid forms or card
+                        </div>
+                        <div style="padding:5px 0;">
+                            @Html.CheckBox("tblTPaymentHardShipSupportingDoc.IsCompletedOrSignedDisclosureForm", new { @disabled = true })
+                            &nbsp;Completed and Signed Disclosure Form & Financial Statement (Page 2 of this application).
+                        </div>
+
+                    }
+                    else
+                    {
+                        <div style="padding:5px 0;">
+                            <input type="checkbox" id="tblTPaymentHardShipSupportingDoc.IsMostRecentIRSTaxFormSigned" name="tblTPaymentHardShipSupportingDoc.IsMostRecentIRSTaxFormSigned" disabled="disabled" />
+
+                            &nbsp;most recent irs tax forms (1040 and />or W-2). Must be signed.
+                        </div>
+                        <div style="padding:5px 0;">
+                            <input type="checkbox" id="tblTPaymentHardShipSupportingDoc.IsCheckStubsForPast30Days" name="tblTPaymentHardShipSupportingDoc.IsCheckStubsForPast30Days" disabled="disabled" />
+                            &nbsp;Check stubs for the past 30 days for all persons employed in the home.
+                        </div>
+                        <div style="padding:5px 0;">
+                            <input type="checkbox" id="tblTPaymentHardShipSupportingDoc.IsUnEmploymentCheckStubsFor30Days" name="tblTPaymentHardShipSupportingDoc.IsUnEmploymentCheckStubsFor30Days" disabled="disabled" />
+                            &nbsp;Unemployment check stubs for the past 30 days.
+                        </div>
+                        <div style="padding:5px 0;">
+                            <input type="checkbox" id="tblTPaymentHardShipSupportingDoc.IsDriverLicenseOrIDCards" name="tblTPaymentHardShipSupportingDoc.IsDriverLicenseOrIDCards" disabled="disabled" />
+                            &nbsp;Driver’s license or identification cards for adults.
+                        </div>
+                        <div style="padding:5px 0;">
+                            <input type="checkbox" id="tblTPaymentHardShipSupportingDoc.IsProofOfAllOtherIncomeReceived" name="tblTPaymentHardShipSupportingDoc.IsProofOfAllOtherIncomeReceived" disabled="disabled" />
+                            &nbsp;Proof of all other income received in the past 30 days.
+                        </div>
+                        <div style="padding:5px 0;">
+                            <input type="checkbox" id="tblTPaymentHardShipSupportingDoc.IsProofOfAllOutstandingBills" name="tblTPaymentHardShipSupportingDoc.IsProofOfAllOutstandingBills" disabled="disabled" />
+                            &nbsp;Proof of all outstanding bills (payment stubs, cancelled checks, etc.).
+                        </div>
+                        <div style="padding:5px 0;">
+                            <input type="checkbox" id="tblTPaymentHardShipSupportingDoc.IsDSHSDenialLetter" name="tblTPaymentHardShipSupportingDoc.IsDSHSDenialLetter" disabled="disabled" />
+                            &nbsp;DSHS Denial letter.
+                        </div>
+                        <div style="padding:5px 0;">
+                            <input type="checkbox" id="tblTPaymentHardShipSupportingDoc.IsMedicaidFormsOrCard" name="tblTPaymentHardShipSupportingDoc.IsMedicaidFormsOrCard" disabled="disabled" />
+                            &nbsp;Medicaid forms or card
+                        </div>
+                        <div style="padding:5px 0;">
+                            <input type="checkbox" id="tblTPaymentHardShipSupportingDoc.IsCompletedOrSignedDisclosureForm" name="tblTPaymentHardShipSupportingDoc.IsCompletedOrSignedDisclosureForm" disabled="disabled" />
+                            &nbsp;Completed and Signed Disclosure Form & Financial Statement (Page 2 of this application).
+                        </div>
+                    }
+
+                </div>
+            </div>
+    <br /><br />
+    <div class="row">
+        <div class="col-sm-12 col-md-12 form-group">
+            <div class="col-sm-2 col-md-2 form-group">
+                <p>@Html.ActionLink("Back to List", "PaymentHardShipList")</p>
+            </div>
+            <div class="col-sm-10 col-md-10 form-group">
+               
+            </div>
+        </div>
+    </div>
+        }
+    </div>
+</div>

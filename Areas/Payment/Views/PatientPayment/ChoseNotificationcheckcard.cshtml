@@ -1,0 +1,290 @@
+﻿@model DataLayer.Models.tblTPaymtPatient
+
+@{
+    // ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_PatientPortal.cshtml";
+}
+<style>
+    .clsloadingforCard {
+        display: block;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 9998;
+        background-color: rgba(0,0,0,.3);
+        -webkit-animation: fade 500ms;
+        -moz-animation: fade 500ms;
+        -o-animation: fade 500ms;
+        animation: fade 500ms;
+    }
+
+    .divloadingforCard {
+        width: 100%;
+        text-align: center;
+        padding-top: 26%;
+    }
+</style>
+
+<div class="body ">
+    <div class="activationform_fullpage">
+
+        <div class="report-form clearfix">
+            @using (Html.BeginForm("Create", "PatientPayment", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.PatientId)
+                @Html.HiddenFor(model => model.PatientPayTran_Id)
+                @Html.HiddenFor(model => model.NoOfInstallments)
+                @Html.HiddenFor(model => model.PaidAmount)
+                @Html.HiddenFor(model => model.DueAmount)
+                @Html.HiddenFor(model => model.AdvancePaidAmount)
+                 @Html.HiddenFor(model => model.LocationId)
+                 @Html.HiddenFor(model => model.TotalAmoutToPay)
+                 @Html.HiddenFor(model => model.ReScheduleAmount)
+                 @Html.HiddenFor(model => model.CancellationAmount)
+                @Html.HiddenFor(model => model.AdvPtAmount)
+               // @Html.HiddenFor(model => model.NoOfInstallments)
+                <h3 style="padding-bottom:15px;">Patient Payment</h3>
+                <div class="clearfix line"></div>
+
+               
+                <div class="row" id="dvid_1">
+
+                    <div class="col-sm-12 col-md-12 form-group">
+
+                        <div class="col-sm-6 col-md-3 form-group">
+                            <div class=headrightcont>Payment Mode:</div>
+
+                        </div>
+                       @*<div class="col-sm-6 col-md-3 headrightcont">
+                            <input type="radio" name="PaymentMode" id="PaymentMode" value="1" />&nbsp; Cheque
+                        </div>
+                  
+                        <div class="col-sm-6 col-md-3 headrightcont">
+
+                            <input type="radio" name="PaymentMode" id="PaymentMode" value="3" />&nbsp; Card
+                        </div>*@
+
+                        <div class="inlineradio">
+                            <label class="control control--radio greenbuttradio1">
+                                <span>Cheque</span>
+                                <input type="radio" name="PaymentMode" id="PaymentMode" value="1" />
+                                <div class="control__indicator"></div>
+                            </label>
+
+                        </div>
+                        <div class="inlineradio">
+                            <label class="control control--radio greenbuttradio1">
+                                <span>Card</span>
+                                <input type="radio" name="PaymentMode" id="PaymentMode" value="3" />
+                                <div class="control__indicator"></div>
+                            </label>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row" id="dvid_2" style="display:none">
+
+                    <div class="col-sm-12 col-md-12 form-group">
+
+                        <div class="col-sm-6 col-md-4 form-group">
+                            <div class=headrightcont>Cheque Number</div>
+                            @Html.TextBoxFor(e => e.ChequeNumber, new { @class = "form-control", maxlength = "25", onkeypress = "return restrictCharacters(this, event, integerOnly);" })
+                        </div>
+                        <div class="col-sm-6 col-md-4 form-group">
+                            <div class=headrightcont>Cheque Date</div>
+                            @Html.TextBoxFor(e => e.ChequeDate, new { @class = "form-control datepicker datepicker-bg", maxlength = "50" })
+                        </div>
+
+                        <div class="col-sm-6 col-md-4 form-group">
+                            <div class=headrightcont>Bank Name</div>
+                            @Html.TextBoxFor(e => e.BankName, new { @class = "form-control", maxlength = "40" })
+                        </div>
+                        <div class="col-sm-6 col-md-4 form-group">
+                            <div class=headrightcont>Branch Name</div>
+                            @Html.TextBoxFor(e => e.BranchName, new { @class = "form-control", maxlength = "10" })
+                        </div>
+                        <div class="col-sm-6 col-md-4 form-group">
+                            <div class=headrightcont>IFSC Code</div>
+                            @Html.TextBoxFor(e => e.IFSC, new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                </div>
+            
+                @Html.Partial("_PrevNext")
+
+
+                <div id="dvid_subbutt" class="subbutt" style="display:none">
+
+                    <button type="submit" class="btn btn-orange pull-right" id="btnsave">Save</button>
+                    <div class="clearfix"></div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div id="loadingforCard" class="clsloadingforCard">
+    <div class="divloadingforCard">
+        <img src="~/Images/pageloader1.gif" width="200" height="200" />
+    </div>
+</div>
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<script>
+    $(document).ready(function () {
+        $('#loadingforCard').hide();
+    });
+</script>
+
+
+<script type="text/javascript">
+    __last =2 ;
+
+    function fnValidate(pos) {
+        var ele = [];
+
+        return ___validate(ele);
+    }
+
+    function fnNextToShow(pos) {
+        
+
+        if (pos == 1) {
+
+            //alert($("input:radio[name='PaymentMode']:checked").val());
+
+
+            if ($("input:radio[name='PaymentMode']:checked").val() == "1") {
+                //alert('fhgfhgfh');
+                __last = 2;
+                $("#dvid_2").show();
+                //return 3;
+            }
+        
+            else if ($("input:radio[name='PaymentMode']:checked").val() == "3") {
+                
+                     {
+                         __last = 111;
+                         $('#loadingforCard').show();
+                         //$("#dvid_8").hide();
+                         $.post("@Url.Action("PaymentState", "PatientPayment", new { Area = "Payment" })", {
+                             Amount: $('#PaidAmount').val(), LocationId: $('#LocationId').val(),
+                             PaymentDate: $('#PaymentDate').val(), TotalAmoutToPay: $('#TotalAmoutToPay').val(),
+                             AdvPtAmount: $('#AdvPtAmount').val(), DueAmount: $('#DueAmount').val(),
+                             PaymentMode: $("input:radio[name='PaymentMode']:checked").val(),
+                             CancellationAmount: $('#CancellationAmount').val(), ReScheduleAmount: $('#ReScheduleAmount').val(),
+                             NoOfInstallments: $('#NoOfInstallments').val()
+                     }, function () {
+
+                         window.location.href = "Payment";
+                         $('#loadingforCard').hide();
+                     });
+                 }
+               
+               
+            }
+            else
+            {
+                return 1;
+            }
+        }
+       
+        return pos + 1;
+
+    }
+
+
+    function fnTriggerAtEnd() {
+
+        if (__last == 111)
+        {
+            $("#dvid_8").hide();
+            $('.dvPrevNext').hide();
+        }
+        else
+        {
+
+            if ($("#dvid_" + __last).is(':visible')) $('#dvid_subbutt').show();
+            else $('#dvid_subbutt').hide();
+        }
+
+
+
+    }
+
+    function fnfinancialapplicationPdf() {
+        //debugger;
+        var x = false;
+        $.ajax({
+            url: "@Url.Action("financialapplication", "PatientPayment", new { Area = "Payment" })",
+            type: "POST",
+            success: function (result) {
+                alert(result);
+                //window.location.href = result;
+                window.open(result, '_blank');
+            },
+            error: function () {
+                return false;
+            }
+        });
+
+
+    }
+
+   
+ 
+</script>
+<script>
+    $("#btnsave").click(function () {
+        $("#TotalAmoutToPay")
+                  .removeAttr("disabled")
+
+        $("#AdvancePaidAmount")
+                   .removeAttr("disabled")
+
+        $("#DueAmount")
+                   .removeAttr("disabled")
+
+        $("#PaidAmount")
+                   .removeAttr("disabled")
+    });
+
+
+
+</script>
+<script>
+
+    var digitsOnly = /[1234567890]/g;
+    var integerOnly = /[0-9\.]/g;
+    var alphaOnly = /[A-Za-z]/g;
+
+    function restrictCharacters(myfield, e, restrictionType) {
+        if (!e) var e = window.event
+        if (e.keyCode) code = e.keyCode;
+        else if (e.which) code = e.which;
+        var character = String.fromCharCode(code);
+
+        // if they pressed esc... remove focus from field...
+        if (code == 27) { this.blur(); return false; }
+
+        // ignore if they are press other keys
+        // strange because code: 39 is the down key AND ' key...
+        // and DEL also equals .
+        if (!e.ctrlKey && code != 9 && code != 8 && code != 36 && code != 37 && code != 38 && (code != 39 || (code == 39 && character == "'")) && code != 40) {
+            if (character.match(restrictionType)) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+    }
+
+
+</script>
