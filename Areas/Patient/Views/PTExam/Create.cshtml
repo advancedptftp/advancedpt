@@ -1627,7 +1627,9 @@
                 </div>
                 @*+@viewbag.conditionid +*@
                 @*<a href="/patient/index?PatientCondition_Id=@Model.PatientConditionId" class="btn btn-primary" id="hok">OK</a>*@
-                <a href="/ptotslp/patient/index?PatientCondition_Id=@Model.PatientConditionId" class="btn btn-primary" id="hok">OK</a>
+                @*<a href="/ptotslp/patient/index?PatientCondition_Id=@Model.PatientConditionId" class="btn btn-primary" id="hok">OK</a>*@
+                <a href='@Url.Content("~/patient/index?PatientCondition_Id=" + Model.PatientConditionId + "")' class="btn btn-primary" id="hok">OK</a>
+
                    @*<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>*@
 </div>
         </div>

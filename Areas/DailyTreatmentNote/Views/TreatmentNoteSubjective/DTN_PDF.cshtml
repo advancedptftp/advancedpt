@@ -67,19 +67,19 @@
                                     Daily Note /Billing Sheet
 
                                 </h2>
-                                
+
                                 <p style="margin:0 0 5px;">
                                     @{ if (ViewBag.interimdatestart != null)
- {
-     DateTime dt1 = Convert.ToDateTime(ViewBag.interimdatestart);
-     InitialExaminationDates = dt1.ToString("MM/dd/yyyy");
-    <strong>Date:  @Html.Display(InitialExaminationDates)</strong>
-     //InitialExaminationDate = Patient.InitialExaminationDate.GetExactValue().ToString();
- }
- else
- {
-     InitialExaminationDates = "";
- } } @InitialExaminationDates
+                                     {
+                                         DateTime dt1 = Convert.ToDateTime(ViewBag.interimdatestart);
+                                         InitialExaminationDates = dt1.ToString("MM/dd/yyyy");
+                                        <strong>Date:  @Html.Display(InitialExaminationDates)</strong>
+                                         //InitialExaminationDate = Patient.InitialExaminationDate.GetExactValue().ToString();
+                                     }
+                                     else
+                                     {
+                                         InitialExaminationDates = "";
+                                     } } @InitialExaminationDates
                                 </p>
                             </div>
                         </div>
@@ -162,15 +162,15 @@
                                          InitialExaminationDate = dt1.ToString("MM/dd/yyyy");
                                          //InitialExaminationDate = Patient.InitialExaminationDate.GetExactValue().ToString();
                                      }
-                                    
+
                                  }
                                  else
                                  {
                                      InitialExaminationDate = "";
                                  } } @InitialExaminationDate
                             </p>
-                            
-                            <p style="margin:0 0 5px;">
+
+                            @*<p style="margin:0 0 5px;">
                                 <strong>Visit No.</strong>:@{if (Patient != null)
                                 {
                                     //VisitNo = Patient.VisitNo.ToString();
@@ -180,10 +180,10 @@
                                 {
                                     VisitNo = "";
                                 } } @VisitNo
-                            </p>
+                            </p>*@
                         </td>
                         <td valign="top" width="65%" style="padding-left:50px;">
-                            
+
                             <p style="margin:0 0 5px;">
                                 <strong>Injury/Onset/Change of Status Date:</strong> @{ if (Patient != null)
                                  {
@@ -276,10 +276,10 @@
                                 var Details = Convert.ToString(@ViewBag.CIAdetails[0]);
                                 var Detailsplitss = Details.Split('.');
                                 string patientdesc = Detailsplitss[0];
-                                 @patientdesc
+                                @patientdesc
                             }
-                                   
-                                 
+
+
                         </td>
                     </tr>
                     <tr>
@@ -294,86 +294,86 @@
                             }
                             %
                         </td>
-                        </tr>
+                    </tr>
                     <tr>
                         <td>
                             Symptoms experienced presently:
                             @{
                                 if (@ViewBag.CIAdetails[2] != null)
                                 {
-                              
+
                                     if (@ViewBag.CIAdetails[2] == "1")
                                     {
-                                     <span>None</span>
+                                        <span>None</span>
                                     }
                                     else if (@ViewBag.CIAdetails[2] == "2")
                                     {
-                                       
-                                 <span>Mild</span>
+
+                                        <span>Mild</span>
                                     }
                                     else if (@ViewBag.CIAdetails[2] == "3")
                                     {
-                                       
-                                 <span>Moderate</span>
-                                    
+
+                                        <span>Moderate</span>
+
                                     }
                                     else if (@ViewBag.CIAdetails[2] == "4")
                                     {
-                                         
-                                 <span>Severe</span>
+
+                                        <span>Severe</span>
                                     }
                                 }
                             }
-                           
+
                         </td>
                     </tr>
-               
+
                     <tr>
                         <td>
                             Current Complaints / Gains:
                             @{
                                 if (@ViewBag.CIAdetails[3] != null)
                                 {
-                           
-                                  if (@ViewBag.CIAdetails[3] == "1")
+
+                                    if (@ViewBag.CIAdetails[3] == "1")
                                     {
-                                    
-                                <span>Better</span>
+
+                                        <span>Better</span>
                                     }
                                     else if (@ViewBag.CIAdetails[3] == "2")
                                     {
-                                      
-                                <span>Worse</span>
+
+                                        <span>Worse</span>
                                     }
                                     else if (@ViewBag.CIAdetails[3] == "3")
                                     {
-                                    
-                                <span>Same</span>
-                                    
+
+                                        <span>Same</span>
+
                                     }
                                     else if (@ViewBag.CIAdetails[3] == "4")
                                     {
-                                    
-                                <span>No Pain</span>
+
+                                        <span>No Pain</span>
                                     }
                                 }
                             }
-                          
+
                         </td>
-                        </tr>
-                   
+                    </tr>
+
                     <tr>
-                        
-                        
+
+
                         <td>
                             Patient demonstrates:
                             @{
                                 if (@ViewBag.CIAdetails[4] != null)
                                 {
-                                   @ViewBag.CIAdetails[4]
+                                    @ViewBag.CIAdetails[4]
                                 }
                             }
-                            
+
                         </td>
                     </tr>
                 </tbody>
@@ -393,80 +393,104 @@
                         </td>
 
                     </tr>
-                    <tr >
-                        <td valign="top" width="93%" >
-                        <span style="width:20%">
-                            CPT Code
-                        </span >
+                    <tr>
+                        <td valign="top" width="93%">
+                            <span style="width:20%">
+                                <b>CPT Code</b>
+                            </span>
                             <span style="width:60%;margin-left:30%;">
-                                Direct Timed Codes
+                                <b>Direct Timed Codes</b>
                             </span>
                             <span style="width: 10%; margin-left:30%;">
-                                Units
+                                <b>Units</b>  
                             </span>
-                        
+
                         </td>
-                       
+
                     </tr>
-                    
+                
                     @for (int i = 6; i < ((Convert.ToInt32(@ViewBag.CIAdetails[5]) + 6)); i++)
-{
-    var Detail = Convert.ToString(@ViewBag.CIAdetails[i]);
-    var Detailsplit = Detail.Split(':');
-    string cpt = Detailsplit[0];
-    string desc = Detailsplit[1];
-    string Unit = Detailsplit[2];
-    <tr >
-        <td valign="top" width="93%">
-            <span style="width:20%">
-                @cpt
-            </span>
-            <span style=" margin-left:10%;">
-               @desc
-            </span>
-            <span style="width: 10%; margin-left:10%">
-               @Unit
-            </span>
+                    {
+                        var Detail = Convert.ToString(@ViewBag.CIAdetails[i]);
+                        var Detailsplit = Detail.Split(':');
+                        string cpt = Detailsplit[0];
+                        string desc = Detailsplit[1];
+                        string Unit = Detailsplit[2];
+                        <tr>
+                            <td valign="top" width="93%">
+                                
+                                @*<span style=" margin-left:5%;">
+                                    @desc
+                                </span>
+                                <span style="width: 10%; margin-left:10%">
+                                    @Unit
+                                </span>*@
 
-        </td>
-       
-    </tr>
+                                <table width="100%">
+                                    <tr>
 
+                                        <td width="10%">
+    @cpt
+</td>
 
-}
+                                        <td width="80%">
+                                            @desc
+                                        </td>
+                                        <td width="10%">
+                                            @Unit
+                                        </td>
+
+                                    </tr>
+                                </table>
+
+                            </td>
+
+                        </tr>
+
+                        int icount=i;
+                    }
                 </tbody>
             </table>
-           
-        
+
+
         </div>
 
- 
+
 
         @*Assessment Part*@
 
-        @*<div style="padding:5px 0 5px 0;">
+        <div style="padding:5px 0 5px 0;">
             <table border="0" width="100%">
                 <tbody>
                     <tr>
                         <td valign="top" width="93%">
                             <strong style="font-size:24px; background: #99ccff; display:block; padding:12px;">Assessment</strong>
                         </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @{
-                                if (ViewBag.CIAdetails[2] != null)
-                                {
-                                    @ViewBag.CIAdetails[2];             //Print Assessment desc
-                                }
 
-                              
-                            }
-                        </td>
                     </tr>
+
+                    @for (int i = 16; i <= ((Convert.ToInt32(@ViewBag.CIAdetails[15]) + 16)); i++)
+                    {
+                        string AssesmentnoteDetail = Convert.ToString(@ViewBag.CIAdetails[i]);
+
+                        <tr>
+                            <td valign="top" width="93%">
+                                <span style="width:20%">
+                                    @AssesmentnoteDetail
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+                        int icount = i;
+                    }
+
                 </tbody>
             </table>
-        </div>*@
+        </div>
+
+
 
         @*End of Assessment*@
 
@@ -474,132 +498,139 @@
 
         @*Plan Desc Part*@
 
-        @*<div style="padding:5px 0 5px 0;">
+
+
+
+        <div style="padding:5px 0 5px 0;">
             <table border="0" width="100%">
                 <tbody>
                     <tr>
                         <td valign="top" width="93%">
                             <strong style="font-size:24px; background: #99ccff; display:block; padding:12px;">Plan</strong>
                         </td>
+                    </tr>
+                    @for (int i = 35; i <= ((Convert.ToInt32(@ViewBag.CIAdetails[34]) + 35)); i++)
+                    {
+                        string PlanDetail = Convert.ToString(@ViewBag.CIAdetails[i]);
 
-                    </tr>
-                    <tr>
-                        <td>
-                            @{
-                                if (ViewBag.CIAdetails[3] != null)
-                                {
-                                    @ViewBag.CIAdetails[6];             //Print Plan Desc
-                                }
-                            }
-                        </td>
-                    </tr>
+                        <tr>
+                            <td valign="top" width="93%">
+                                <span style="width:20%">
+                                    @PlanDetail
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+                        int icount = i;
+                    }
                 </tbody>
             </table>
-        </div>*@
-
+        </div>
         @*End of Paln Part*@
 
-        @*<div style="padding:5px 0 0;">
-            <table width="100%" border="0">
-                <tbody>
-                    <tr>
-                        <td width="100%" valign="top">
-                            <div>
-                                Certification of Medical Necessity: It will be understood that the treatment plan mentioned above is certified medically necessary
-                                by the documenting therapist and referring physician mentioned in this report. Unless the physician indicates otherwise through
-                                written correspondence with our office, all further referrals will act as certification of medical necessity on the treatment plan
-                                indicated above.
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="100%" valign="top">
-                            <div style="width:50%; vertical-align:top; float:left;">
-                                Thank you for this referral. If you have questions regarding this
-                                plan of care, please contact me at <br /> (352)693-3378.
-                            </div>
-                            <div style="width:50%; vertical-align:top; float:right;">
-                                Please sign and return:
-                                <br />
-                                Fax#: (888)758-9645
-                            </div>
-                        </td>
+        <div style="padding:5px 0 0;">
+                <table width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td width="100%" valign="top">
+                                <div>
+                                    Certification of Medical Necessity: It will be understood that the treatment plan mentioned above is certified medically necessary
+                                    by the documenting therapist and referring physician mentioned in this report. Unless the physician indicates otherwise through
+                                    written correspondence with our office, all further referrals will act as certification of medical necessity on the treatment plan
+                                    indicated above.
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="100%" valign="top">
+                                <div style="width:50%; vertical-align:top; float:left;">
+                                    Thank you for this referral. If you have questions regarding this
+                                    plan of care, please contact me at <br /> (352)693-3378.
+                                </div>
+                                <div style="width:50%; vertical-align:top; float:right;">
+                                    Please sign and return:
+                                    <br />
+                                    Fax#: (888)758-9645
+                                </div>
+                            </td>
 
-                    </tr>
+                        </tr>
 
 
-                    <tr>
+                        <tr>
 
-                        <td width="100%" valign="top">
-                            <div style="width:50%;vertical-align:top; float:left; border-bottom:20px; padding-top:55px;">
-                               
-                                @{var imgurl6 = "";
-                                if (Patient.TherapistSignature != null)
-                                {
-                                    imgurl6 = "data:image/png;base64," + Convert.ToBase64String(Patient.TherapistSignature);
-                                }
-                                else
-                                {
-                                    imgurl6 = "";
-                                }
-                                }
-                                <img src="@imgurl6" alt="" id="imgWitnessSignature" style="width: 80%; height: 80px; " />
-                                <div style="vertical-align:top">
-                                   
-                                    @ViewBag.PTName
-                                    <div>
-                                      
-                                        License #@ViewBag.licenseNo
-                                        <div style="font-style:italic;">
-                                            Electronically Signed by @ViewBag.PTName<br> on <span id="time"> @todaysDate </span>
+                            <td width="100%" valign="top">
+                                <div style="width:50%;vertical-align:top; float:left; border-bottom:20px; padding-top:55px;">
+
+                                    @{var imgurl6 = "";
+                                    if (Patient.TherapistSignature != null)
+                                    {
+                                        imgurl6 = "data:image/png;base64," + Convert.ToBase64String(Patient.TherapistSignature);
+                                    }
+                                    else
+                                    {
+                                        imgurl6 = "";
+                                    }
+                                    }
+                                    <img src="@imgurl6" alt="" id="imgWitnessSignature" style="width: 80%; height: 80px; " />
+                                    <div style="vertical-align:top">
+
+                                        @ViewBag.PTName
+                                        <div>
+
+                                            License #@ViewBag.licenseNo
+                                            <div style="font-style:italic;">
+                                                Electronically Signed by @ViewBag.PTName<br> on <span id="time"> @todaysDate </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div style="width:50%; vertical-align:top; float:right;">
-                                I certify the need for these services furnished under this plan of
-                                treatment and while under my care. <br />
-                                <input type="checkbox" id="chkCertified"  />
-                                I have no revisions to the plan of care.
-                                <br />
-                                <input type="checkbox" id="chkCertified" />
-                                Reviewed the plan of care as follows: <br /><br /><br /><br />
-                                <div style="padding:8px 0 8px 0;">
-                                    <div style="width: 300px;border-bottom: 1px solid black;position: absolute;"></div>
-                                </div>
-                                <div style="vertical-align:top">
-                                    Physician Signature
-                                    <div>
-                                      
-                                        @{
-                                            if (Patient != null)
-                                            {
-                                                if (Patient.ReferringPhysician.ToString() != null)
+                                <div style="width:50%; vertical-align:top; float:right;">
+                                    I certify the need for these services furnished under this plan of
+                                    treatment and while under my care. <br />
+                                    <input type="checkbox" id="chkCertified"  />
+                                    I have no revisions to the plan of care.
+                                    <br />
+                                    <input type="checkbox" id="chkCertified" />
+                                    Reviewed the plan of care as follows: <br /><br /><br /><br />
+                                    <div style="padding:8px 0 8px 0;">
+                                        <div style="width: 300px;border-bottom: 1px solid black;position: absolute;"></div>
+                                    </div>
+                                    <div style="vertical-align:top">
+                                        Physician Signature
+                                        <div>
+
+                                            @{
+                                                if (Patient != null)
                                                 {
-                                                    ReferringPhysician = Patient.ReferringPhysician.ToString();
+                                                    if (Patient.ReferringPhysician.ToString() != null)
+                                                    {
+                                                        ReferringPhysician = Patient.ReferringPhysician.ToString();
+                                                    }
+                                                    else
+                                                    {
+                                                        ReferringPhysician = "";
+                                                    }
                                                 }
                                                 else
                                                 {
                                                     ReferringPhysician = "";
                                                 }
                                             }
-                                            else
-                                            {
-                                                ReferringPhysician = "";
-                                            }
-                                        }
-                                        @ReferringPhysician   
+                                            @ReferringPhysician
+                                        </div>
+
                                     </div>
 
                                 </div>
 
-                            </div>
-
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>*@
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
     </div>
 </body>
 </html>

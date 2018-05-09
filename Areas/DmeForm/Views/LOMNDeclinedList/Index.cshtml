@@ -175,6 +175,7 @@
 <input type="hidden" id="HDNShortOrderStore" />
 <input type="hidden" id="HDNHeaderFilterId" />
 @*<input type="hidden" id="hdnLocation"/>*@
+<script src="~/js/Common.js"></script>
 <script>
 
     $(document).ready(function () {
@@ -299,9 +300,11 @@
                     vStatus = jsonData[i].Status.toString();
                     var CreatedBy = jsonData[i].CreatedBy.toString();
                     //alert(CreatedBy);
+                    var rootPath = GetSiteRoot();
+
                     if (vStatus.trim().indexOf('Letter') >= 0) {
                         //if (vStatus.trim() == "DME Delivery Pending") {
-                        vCustomHtml = '<td><a href="/ptotslp/DF_' + vControllerName + '/Create2New?DMEFormId=' + vDMEFromId + '"><i class="btn btn-primary" aria-hidden="true">ReGenerate LOMN</i></a></td>';
+                        vCustomHtml = '<td><a href="' + rootPath + 'DF_' + vControllerName + '/Create2New?DMEFormId=' + vDMEFromId + '"><i class="btn btn-primary" aria-hidden="true">ReGenerate LOMN</i></a></td>';
                         //vCustomHtml = '<td><a href="/ptotslp/DF_LOMNDeclinedList/Create2?id=' + id + '"><i class="btn btn-primary" aria-hidden="true">ReGenerate LOMN</i></a></td>';
                         //vCustomHtml = '<td><a href="/DF_DMECoverageNotAvailableList/Create?id=' + id + '"><i class="btn btn-primary" aria-hidden="true">DME Coverage</i></a></td>';
                     }

@@ -77,12 +77,21 @@
     }
 </style>
 
+<script src="~/js/Common.js"></script>
+
+
 @if (ViewBag.Error != null)
 {
-    Response.Write("<div id=\"loadforscheduleapp\" class=\"loadingdivschedule\"><div class=\"loadingcontainerschedule\"><img src=\"\\ptotslp/Images/pageloader1.gif\" width=\"200\" height=\"200\" /></div></div>");
+    //Response.Write("<div id=\"loadforscheduleapp\" class=\"loadingdivschedule\"><div class=\"loadingcontainerschedule\"><img src=\"\\ptotslp/Images/pageloader1.gif\" width=\"200\" height=\"200\" /></div></div>");
+    Response.Write("<div id=\"loadforscheduleapp\" class=\"loadingdivschedule\"><div class=\"loadingcontainerschedule\"><img id=\"imgScheduleapp\" width=\"200\" height=\"200\" /></div></div>");
     @Html.Raw(ViewBag.Error)
 }
 
+<script type="text/javascript">
+    var root = GetSiteRoot();
+    var path = root + 'Images/pageloader1.gif';
+    $("#imgScheduleapp").attr("src", path);
+</script>
 
 <div class="body ">
     <div class="activationform_fullpage">        
