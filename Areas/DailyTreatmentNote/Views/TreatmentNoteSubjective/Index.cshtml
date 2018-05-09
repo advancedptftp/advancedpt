@@ -105,9 +105,7 @@
                                 <th>
                                     Next Step
                                 </th>
-                                <th>
-
-                                </th>
+                               
                             </tr>
                         </thead>
                         @foreach (var item in Model)
@@ -189,7 +187,7 @@
                                 </td>
                                 <td>
                                    
-                                    @if (item.Dtn_Status ==0)
+                                    @if (item.Dtn_Status == 0 || item.Dtn_Status == 7)
                                     {
                                         <a href="@Url.Action("Create", "TreatmentNoteSubjective", new { PC_id = item.PatientConditionId, p_id = item.PatientID })">
                                             <i class="btn btn-primary btn-lg" aria-hidden="true">Create DTN</i>
@@ -296,7 +294,7 @@
 
                                     }
                                 </td>*@
-                                <td>
+                                @*<td>
                                     @if (item.Dtn_Status == 7)
                                     {
                                        <a href="#" onclick="fn_Report(@item.PatientID, @item.PatientConditionId)">
@@ -305,7 +303,7 @@
                            </a>
                                      
                                     }
-                                </td>
+                                </td>*@
                             </tr>
                         }
                     </table>

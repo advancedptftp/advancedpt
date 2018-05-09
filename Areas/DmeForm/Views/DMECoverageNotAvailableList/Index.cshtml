@@ -89,7 +89,7 @@
             margin-left: -25px;
             line-height: normal;
             border-left: 1px solid #fff;
-            background: url(../ptotslp/images/botharrow.png) no-repeat right 9px;
+            /*background: url(../ptotslp/images/botharrow.png) no-repeat right 9px;*/
             min-height: 50px;
             cursor: pointer;
         }
@@ -107,7 +107,7 @@
         margin-left: -25px;
         line-height: normal;
         border-left: 1px solid #fff;
-        background: url(../ptotslp/images/bottarrow.png) no-repeat right 15px;
+        /*background: url(../ptotslp/images/bottarrow.png) no-repeat right 15px;*/
         min-height: 50px;
         cursor: pointer;
     }
@@ -121,7 +121,7 @@
         margin-left: -25px;
         line-height: normal;
         border-left: 1px solid #fff;
-        background: url(../ptotslp/images/toparrow.png) no-repeat right 15px;
+        /*background: url(../ptotslp/images/toparrow.png) no-repeat right 15px;*/
         min-height: 50px;
         cursor: pointer;
     }
@@ -176,6 +176,7 @@
 <input type="hidden" id="HDNShortOrderStore" />
 <input type="hidden" id="HDNHeaderFilterId" />
 @*<input type="hidden" id="hdnLocation"/>*@
+<script src="~/js/Common.js"></script>
 <script>
 
     $(document).ready(function () {
@@ -185,6 +186,17 @@
         fnShowPatientList('');
         //$("#example").tablesorter();
         //$("#example").sortable();
+        var rootpathStr = GetSiteRoot();
+
+        var urlStrDivBottomArrow = 'url(' + rootpathStr + 'images/bottarrow.png) no-repeat right 15px';
+        var urlStrDivTopArrow = 'url(' + rootpathStr + 'images/toparrow.png) no-repeat right 15px';
+        var urlStrDivTotalArrow = 'url(' + rootpathStr + 'images/botharrow.png) no-repeat right 9px';
+       
+
+        $(".divbuttomArrow").css("background", urlStrDivBottomArrow);
+        $(".divTopArrow").css("background", urlStrDivTopArrow);
+        $(".totalarrow").css("background", urlStrDivTotalArrow);
+
     });
 
     function fnShowPatientList(objVal) {
@@ -304,7 +316,8 @@
                     //alert(CreatedBy);
                     if (vStatus.trim().indexOf('Similar') >= 0) {
                         //if (vStatus.trim() == "DME Delivery Pending") {
-                        vCustomHtml = '<td><a href="/ptotslp/DF_DMECoverageNotAvailableList/Create?id=' + id + '&HPSC=' + HPSC + '"><i class="btn btn-primary" aria-hidden="true">DME Coverage</i></a></td>';
+                        var rootPath = GetSiteRoot();
+                        vCustomHtml = '<td><a href="' + rootPath + 'DF_DMECoverageNotAvailableList/Create?id=' + id + '&HPSC=' + HPSC + '"><i class="btn btn-primary" aria-hidden="true">DME Coverage</i></a></td>';
                         //vCustomHtml = '<td><a href="/DF_DMECoverageNotAvailableList/Create?id=' + id + '"><i class="btn btn-primary" aria-hidden="true">DME Coverage</i></a></td>';
                     }
 

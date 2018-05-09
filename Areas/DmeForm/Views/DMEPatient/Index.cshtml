@@ -191,6 +191,7 @@
 <input type="hidden" id="HDNShortOrderStore" />
 <input type="hidden" id="HDNHeaderFilterId" />
 @*<input type="hidden" id="hdnLocation"/>*@
+<script src="~/js/Common.js"></script>
 <script>
 
     $(document).ready(function () {
@@ -200,6 +201,17 @@
         fnShowPatientList('');
         //$("#example").tablesorter();
         //$("#example").sortable();
+
+        var root = GetSiteRoot();
+        var totalarrowURL = 'url(' + root + 'images/botharrow.png) no-repeat right 9px';
+        var divbuttomArrowURL = 'url(' + root + 'images/bottarrow.png) no-repeat right 15px';
+        var divTopArrowURL = 'url(' + root + 'images/toparrow.png) no-repeat right 15px';
+        
+        $(".totalarrow").css("background", totalarrowURL);
+        $(".divbuttomArrow").css("background", divbuttomArrowURL);
+        $(".divTopArrow").css("background", divTopArrowURL);
+
+
     });
 
     function fnShowPatientList(objVal) {
@@ -314,25 +326,27 @@
                     vDMEFromId = jsonData[i].DMEFormId.toString();
                     vStatus = jsonData[i].Status.toString();
                     var CreatedBy = jsonData[i].CreatedBy.toString();
+
+                    var rootPath = GetSiteRoot();
                     //alert(CreatedBy);
                     if (vStatus.trim().indexOf('DME') >= 0 && CreatedBy != '3') {
                         //if (vStatus.trim() == "DME Delivery Pending") {
-                        vCustomHtml = '<td><a href="/ptotslp/DF_' + vControllerName + '/Create4New?DMEFormId=' + vDMEFromId + '"><i class="btn btn-primary" aria-hidden="true">Receive DME Delivery</i></a></td>';
+                        vCustomHtml = '<td><a href="' + rootPath + 'DF_' + vControllerName + '/Create4New?DMEFormId=' + vDMEFromId + '"><i class="btn btn-primary" aria-hidden="true">Receive DME Delivery</i></a></td>';
                         //vCustomHtml = '<td><a href="/DF_' + vControllerName + '/Create4New?DMEFormId=' + vDMEFromId + '"><i class="btn btn-primary" aria-hidden="true">Receive DME Delivery</i></a></td>';
                     }
                     else if (vStatus.trim().indexOf('Clinical') >= 0 && CreatedBy != '13' && CreatedBy != '3') {
                         //else if (vStatus.trim() == "Pending Physician Signature on LOMN") {
-                        vCustomHtml = '<td><a href="/ptotslp/DF_' + vControllerName + '/Create2New?DMEFormId=' + vDMEFromId + '"><i class="btn btn-primary" aria-hidden="true">Physician Signature on LOMN</i></a></td>';
+                        vCustomHtml = '<td><a href="' + rootPath + 'DF_' + vControllerName + '/Create2New?DMEFormId=' + vDMEFromId + '"><i class="btn btn-primary" aria-hidden="true">Physician Signature on LOMN</i></a></td>';
                         //vCustomHtml = '<td><a href="/DF_' + vControllerName + '/Create2New?DMEFormId=' + vDMEFromId + '"><i class="btn btn-primary" aria-hidden="true">Physician Signature on LOMN</i></a></td>';
                     }
                     else if (vStatus.trim().indexOf('LOMN') >= 0 && CreatedBy != '13' && CreatedBy != '3') {
                         //else if (vStatus.trim() == "Pending Physician Signature on LOMN") {
-                        vCustomHtml = '<td><a href="/ptotslp/DF_' + vControllerName + '/Create3New?DMEFormId=' + vDMEFromId + '"><i class="btn btn-primary" aria-hidden="true">Receive LOMN</i></a></td>';
+                        vCustomHtml = '<td><a href="' + rootPath + 'DF_' + vControllerName + '/Create3New?DMEFormId=' + vDMEFromId + '"><i class="btn btn-primary" aria-hidden="true">Receive LOMN</i></a></td>';
                         //vCustomHtml = '<td><a href="/DF_' + vControllerName + '/Create3New?DMEFormId=' + vDMEFromId + '"><i class="btn btn-primary" aria-hidden="true">Receive LOMN</i></a></td>';
                     }
                     else if (vStatus.trim().indexOf('Paperwork') >= 0 && CreatedBy == '13') {
                         //else if (vStatus.trim() == "Pending Physician Signature on LOMN") {
-                        vCustomHtml = '<td><a href="/ptotslp/DF_' + vControllerName + '/Create5New?DMEFormId=' + vDMEFromId + '"><i class="btn btn-primary" aria-hidden="true">Generate and sign paperwork for patient</i></a></td>';
+                        vCustomHtml = '<td><a href="' + rootPath + 'DF_' + vControllerName + '/Create5New?DMEFormId=' + vDMEFromId + '"><i class="btn btn-primary" aria-hidden="true">Generate and sign paperwork for patient</i></a></td>';
                         //vCustomHtml = '<td><a href="/DF_' + vControllerName + '/Create5New?DMEFormId=' + vDMEFromId + '"><i class="btn btn-primary" aria-hidden="true">Generate and sign paperwork for patient</i></a></td>';
                     }
                     else if (vStatus.trim().indexOf('Ready') >= 0 && vControllerName == 'KneeBraceCustomForm') {

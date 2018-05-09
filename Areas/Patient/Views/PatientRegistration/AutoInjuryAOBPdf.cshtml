@@ -109,7 +109,7 @@
         <div style="padding:15px 0 0 20px;">
             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
-                    <td width="5%">
+                    <td width="5%" valign="top">
                         @if (Model.IsAutoInsuranceExhaustedNotifiedForScenario1 != 1)
                         {
                             <span>
@@ -693,8 +693,16 @@
                     <tbody>
                         <tr>
                             <td width="10%" valign="top">Address:</td>
-                            <td width="90%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">@Html.DisplayFor(m => m.AutoEmployerAddressLine1),@Html.DisplayFor(m => m.AutoEmployerAddressLine1),@Html.DisplayFor(m => m.AutoEmployerCity),@Html.DisplayFor(m => m.AutoEmployerState),@Html.DisplayFor(m => m.AutoEmployerZipCode)</div></td>
-
+                            @if (Model.AutoEmployerAddressLine1 != "" && Model.AutoEmployerCity != "" && Model.AutoEmployerState != null && Model.AutoEmployerZipCode != "")
+                            {
+                              <td width="90%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">@Html.DisplayFor(m => m.AutoEmployerAddressLine1),@Html.DisplayFor(m => m.AutoEmployerAddressLine1),@Html.DisplayFor(m => m.AutoEmployerCity),@Html.DisplayFor(m => m.AutoEmployerState),@Html.DisplayFor(m => m.AutoEmployerZipCode)</div></td>
+  
+                            }
+                            else
+                            {
+                                <td width="90%" valign="top"><div style="height:30px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">&nbsp;</div></td>
+  
+                            }
 
                         </tr>
                     </tbody>
@@ -850,7 +858,7 @@
                     <tbody>
                         <tr>
                             <td width="8%" valign="top">Address:</td>
-                            @if (Model.PrimaryInsuranceCompanyName != null)
+                            @if (Model.AutoEmployerAddressLine1 != null && Model.AutoEmployerAddressLine1 != "" && Model.PrimaryPolicyHolderAddressLine2 != "" && Model.PrimaryPolicyHolderEmployerZipCode != "")
                             {
                                 <td width="92%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">@Html.DisplayFor(m => m.AutoEmployerAddressLine1),@Html.DisplayFor(m => m.PrimaryPolicyHolderAddressLine1),@Html.DisplayFor(m => m.PrimaryPolicyHolderAddressLine2),@Html.DisplayFor(m => m.PrimaryPolicyHolderEmployerCity),@Html.DisplayFor(m => m.PrimaryPolicyHolderEmployerState),@Html.DisplayFor(m => m.PrimaryPolicyHolderEmployerZipCode)</div></td>
                             }
@@ -966,7 +974,7 @@
                     <tbody>
                         <tr>
                             <td width="8%" valign="top">Address:</td>
-                            @if (Model.SecondaryInsuranceCompanyName != null)
+                            @if (Model.SecondaryInsuranceCompanyName != null && Model.AutoEmployerCity != "" && Model.AutoEmployerState != null && Model.AutoEmployerZipCode != "")
                             {
                                 <td width="92%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; margin-right:10px;">@Html.DisplayFor(m => m.SecondaryPolicyHolderAddressLine1),@Html.DisplayFor(m => m.SecondaryPolicyHolderAddressLine2),@Html.DisplayFor(m => m.SecondaryPolicyHolderState),@Html.DisplayFor(m => m.SecondaryPolicyHolderCity),@Html.DisplayFor(m => m.SecondaryPolicyHolderZipCode)</div></td>
                             }
@@ -1036,8 +1044,17 @@
                     <tbody>
                         <tr>
                             <td width="8%" valign="top">Address:</td>
-                            <td width="92%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; ">@Html.DisplayFor(m => m.AttorneyAddress1),@Html.DisplayFor(m => m.AttorneyAddress2),@Html.DisplayFor(m => m.AttorneyCity),@Html.DisplayFor(m => m.AttorneyState),@Html.DisplayFor(m => m.AttorneyZip)</div></td>
+                            @if(Model.AttorneyAddress1 != ""  && Model.AutoEmployerCity != "" && Model.AutoEmployerState != null && Model.AutoEmployerZipCode != "")
+                            {
+                                 <td width="92%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; ">@Html.DisplayFor(m => m.AttorneyAddress1),@Html.DisplayFor(m => m.AttorneyAddress2),@Html.DisplayFor(m => m.AttorneyCity),@Html.DisplayFor(m => m.AttorneyState),@Html.DisplayFor(m => m.AttorneyZip)</div></td>
 
+                            }
+                            else
+                            {
+                                <td width="92%" valign="top"><div style="height:20px; border-bottom:1px solid #000; margin-bottom:7px; ">&nbsp;</div></td>
+ 
+                            }
+                           
 
                         </tr>
                     </tbody>
@@ -1202,13 +1219,24 @@
                                 if (Model.SignOfPolicyholder != null)
                                 {
                                     imgurl2 = "data:image/png;base64," + Convert.ToBase64String(Model.SignOfPolicyholder);
+                                    <img src="@imgurl2" alt="" id="imgPolicyholderSign" style="width: 300px; height: 90px;" />
                                 }
                                 }
-                                <img src="@imgurl2" alt="Alternate Text" id="imgPolicyholderSign" style="width: 300px; height: 90px;" />
+                                @*<img src="@imgurl2" alt="" id="imgPolicyholderSign" style="width: 300px; height: 90px;" />*@
 
 
                             </div>
-                            <div style="padding:8px 0 8px 0;  margin-bottom:5px; min-height:20px;">@Html.DisplayFor(m => m.PolicyholderSignatureDate, new { @class = "applitextfield1 ", @style = "width: 400px;", @readonly = "true" })</div>
+                            @if (Model.SignOfPolicyholder != null)
+                            {
+                                  <div style="padding:8px 0 8px 0;  margin-bottom:5px; min-height:20px;">@Html.DisplayFor(m => m.PolicyholderSignatureDate, new { @class = "applitextfield1 ", @style = "width: 400px;", @readonly = "true" })</div>
+                           
+                            }
+                            else
+                            {
+                                <div style="padding:8px 0 8px 0;  margin-bottom:5px; min-height:110px;">@Html.DisplayFor(m => m.PolicyholderSignatureDate, new { @class = "applitextfield1 ", @style = "width: 400px;", @readonly = "true" })</div>
+                            
+                            }
+                                                       
                             <strong>Signature of Policyholder</strong>
 
 
@@ -1219,14 +1247,24 @@
                                 if (Model.ClaimantSignature != null)
                                 {
                                     imgurl4 = "data:image/png;base64," + Convert.ToBase64String(Model.ClaimantSignature);
+                                    <img src="@imgurl4" alt="" id="imgClaimantSignature" style="width: 300px; height: 90px;" />
                                 }
                                 }
-                                <img src="@imgurl4" alt="Alternate Text" id="imgClaimantSignature" style="width: 300px; height: 90px;" />
+                                
                             </div>
-                            <div style="padding:8px 0 8px 0;margin-bottom:5px; min-height:20px;">@Html.DisplayFor(m => m.ClaimantSignatureDate)</div>
+                            @if (Model.ClaimantSignature != null)
+                            {
+                                 <div style="padding:8px 0 8px 0;margin-bottom:5px; min-height:20px;">@Html.DisplayFor(m => m.ClaimantSignatureDate)</div>
+                            
+
+                            }
+                            else
+                            {
+                                <div style="padding:8px 0 8px 0;margin-bottom:2px; min-height:110px;">@Html.DisplayFor(m => m.ClaimantSignatureDate)</div>
+                            }
+
                             <strong>Signature of Claimant</strong><br>
                             (If other than Policyholder)
-
 
                         </td>
 
@@ -1236,14 +1274,24 @@
                                 if (Model.WitnessSignature != null)
                                 {
                                     imgurl3 = "data:image/png;base64," + Convert.ToBase64String(Model.WitnessSignature);
+                                    <img src="@imgurl3" alt="" id="imgWitnessSignature" style="width: 300px; height: 90px; " />
                                 }
                                 }
-                                <img src="@imgurl3" alt="Alternate Text" id="imgWitnessSignature" style="width: 300px; height: 90px; " />
+                                
                             </div>
-                            <div style="padding:8px 0 8px 0; margin-bottom:5px; min-height:20px;">@Html.DisplayFor(m => m.WitnessSignatureDate)</div>
+                            @*<div style="padding:8px 0 8px 0; margin-bottom:5px; min-height:20px;">@Html.DisplayFor(m => m.WitnessSignatureDate)</div>*@
+                            
+                            @if (Model.WitnessSignature != null)
+                            {
+                                <div style="padding:8px 0 8px 0;margin-bottom:5px; min-height:20px;">@Html.DisplayFor(m => m.WitnessSignatureDate)</div>
+
+
+                            }
+                            else
+                            {
+                                <div style="padding:8px 0 8px 0;margin-bottom:2px; min-height:110px;">@Html.DisplayFor(m => m.WitnessSignatureDate)</div>
+                            }
                             <strong>Signature of Witness</strong>
-
-
                         </td>
                         @*<td style="padding-right:10px;" width="37%" valign="top"></td>*@
                     </tr>

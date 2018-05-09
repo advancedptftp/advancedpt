@@ -288,7 +288,8 @@
                
 
                 <a href="" class="btn btn-primary" id="hno" onclick="sure(@ViewBag.PatientcondtaionId)">Yes</a>
-                <a href="/ptotslp/Interin/InterimAssessment/Index" class="btn btn-primary" id="hok">No</a>
+                @*<a href="/ptotslp/Interin/InterimAssessment/Index" class="btn btn-primary" id="hok">No</a>*@
+                <a href='@Url.Content("~/Interin/InterimAssessment/Index")' class="btn btn-primary" id="hok">No</a>
                 @*<a href="/Interin/InterimAssessment/Index" class="btn btn-primary" id="hok">No</a>*@
                 @*<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>*@
             </div>

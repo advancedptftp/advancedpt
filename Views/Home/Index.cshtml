@@ -569,7 +569,7 @@
                 <div class="clearfix"></div>
                 <div class="iFrame">
                     @*<iframe src="http://localhost:1605/PS_ScheduleSettings/LocationWiseBookingStatus" name="iframe1" id="iframe1" height="100%" width="100%;"></iframe>*@
-                    <iframe src="http://expert-dotnet-developers.com/ptotslp/PS_ScheduleSettings/LocationWiseBookingStatus" name="iframe1" id="iframe1" height="100%" width="100%;"></iframe>
+                    <iframe src='@Url.Content("~/PS_ScheduleSettings/LocationWiseBookingStatus")' name="iframe1" id="iframe1" height="100%" width="100%;"></iframe>
                 </div>
             </div>
 
@@ -1101,7 +1101,7 @@
         $("#Show").hide();
         $('#mySidenav').css("height", $("#divRight").height() + "px");
     });
-    //$(document).ready(function () {        
+    //$(document).ready(function () {
     //    var weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     //    var a = null;
     //    var a = new Date();

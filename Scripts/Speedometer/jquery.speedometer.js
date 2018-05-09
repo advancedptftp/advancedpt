@@ -68,8 +68,8 @@ Options:
 				border: '0px',
 				fontFamily: 'Arial',
 				fontWeight: '900',
-				//backgroundImage: "url('/Images/background.jpg')"
-			    backgroundImage: "url('/ptotslp/Images/background.jpg')"
+				backgroundImage: "url('/Images/background.jpg')"
+			    //backgroundImage: "url('/ptotslp/Images/background.jpg')"
 		
 			},
 			digitalCss: {
