@@ -1,0 +1,100 @@
+﻿@model DataLayer.Models.tblMVenderMaster
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+<section class="bodyinner">
+    <div class="container">
+        <div class="innerform">
+            <div class="user-form clearfix">
+
+                <h2 class="text-center"> Vendor Detail</h2>
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(model => model.Vendor_Id)
+                    <div class="col-sm-6 form-group">
+                        @Html.Label("Vendor Name")
+                        @Html.TextBoxFor(model => model.Vendor_Name, new { @class = "form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Vendor_Name)
+                    </div>
+                    <div class="col-sm-6 form-group">
+
+                        @Html.Label("Company Name")
+                        @Html.TextBoxFor(model => model.Company_Name, new { @class = "form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Company_Name)
+
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        @Html.Label("Street Address")
+                        @Html.TextBoxFor(model => model.Street_Address, new { @class = "form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Street_Address)
+
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        @Html.LabelFor(model => model.City, new { })
+                        @Html.TextBoxFor(model => model.City, new { @class = "form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.City)
+
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        @Html.LabelFor(model => model.State, new { })
+                        @Html.TextBoxFor(model => model.State, new { @class = "form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.State)
+
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        @Html.Label("Zip Code")
+                        @Html.TextBoxFor(model => model.ZIP_Code, new { @class = "form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.ZIP_Code)
+
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        @Html.Label("Phone")
+                        @Html.TextBoxFor(model => model.Phone, new { @class = "form-control UsCellFormat", pattern = @"\d{3}[\-]\d{3}[\-]\d{4}", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Phone)
+
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        @Html.Label("FAX")
+                        @Html.TextBoxFor(model => model.FAX, new { @class = "form-control UsCellFormat", pattern = @"\d{3}[\-]\d{3}[\-]\d{4}", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.FAX)
+
+                    </div>
+                    <div class="col-sm-6 form-group">
+                       @Html.Hidden("IsActive", Boolean.TrueString)
+                       
+                    </div>
+                    <div class="col-sm-6 form-group">
+                       @Html.Hidden("CreatedBy", 1)
+                       
+                    </div>
+                    <div class="col-sm-6 form-group">
+                       @Html.Hidden("CreatedOn", DateTime.Now)
+                       
+                    </div>
+                    <div class="subbutt">
+                        <input type="submit" value="Save" class="btn btn-orange pull-right" />
+
+                    </div>
+                    <p>@Html.ActionLink("Back to List", "Index")</p>
+                }
+
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</section>
+
+<script>
+    $('#UserRole').addClass('form-control');
+    $('#UserRole').attr("disabled", "true");
+</script>
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Vendor_Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
